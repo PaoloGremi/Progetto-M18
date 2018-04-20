@@ -23,11 +23,12 @@ public class Description {
     private HashSet<String> listTag;
 
 
-    public Description(String name,String text,String picUrl) {
+    public Description(String name,String text,String picUrl) throws IOException {
         this.name=name;
         this.text=text;
         this.picUrl=picUrl;
         this.pic=null;
+        loadImage(picUrl);
     }
 
     private void loadImage(String url) throws IOException {
@@ -35,9 +36,15 @@ public class Description {
         pic= ImageIO.read(picFile);
     }
 
+    private void autoGenerateTag(){
+
+
+
+    }
+
     public boolean addTag(String tag ){
-        String tagNoSens=tag.toLowerCase(); // Per non rip
-        return listTag.add(tagNoSens);
+        String tagLower=tag.toLowerCase(); // tutti tag lowerCase
+        return listTag.add(tagLower);
 
     }
 
