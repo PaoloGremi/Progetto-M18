@@ -9,8 +9,8 @@ public class Collection {
 
 
     protected boolean addCardToColl(Card card) {
-        // to be defined
-        return false; //solo di prova
+        cardSet.add(card);
+        return true; //solo di prova
     }
 
     protected Card[] searchByString(String string) {
@@ -19,8 +19,9 @@ public class Collection {
         return cards;
     }
 
-    protected void remCardFromColl(Card card) {
-        // to be defined
+    protected boolean remCardFromColl(Card card) {
+        cardSet.remove(card);
+        return false;
     }
 
 }

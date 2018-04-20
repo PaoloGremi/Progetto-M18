@@ -10,7 +10,10 @@ public class Card {
     private int id;
     private Description description;
 
-
+    public Card(int id, Description description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public Description getDescription() {
         return description;
