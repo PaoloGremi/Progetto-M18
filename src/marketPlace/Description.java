@@ -43,7 +43,10 @@ public class Description {
          possibili migliorie:
             -selezionare solo certe sottostrighe di text (es. lunghezza min 2 caratteri, per non memorizzare articoli)
             -oltre tutte le sotto stringhe, avere concatenazioni di esse (per migliorare il risultato di ricerca)
+
+            
          */
+
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
         for (int i=0;i<length;i++){
