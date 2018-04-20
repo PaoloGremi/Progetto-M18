@@ -12,12 +12,7 @@ public class Description {
      * @param description: Card's text description
      * ? @param cardType: Type of card
       */
-
-    private String name;
-    private BufferedImage pic;
-    private HashSet<String> tag;
-    private String description;
-    // private CardType cardType;
+    
 
 
     public String getName() {
