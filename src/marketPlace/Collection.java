@@ -16,4 +16,8 @@ public class Collection {
         // to be defined
     }
 
+    protected void remCardFromColl(Card card) {
+        // to be defined
+    }
+
 }

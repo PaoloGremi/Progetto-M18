@@ -20,6 +20,9 @@ public class Description {
     // private CardType cardType;
 
 
+    public String getName() {
+        return name;
+    }
 
     public HashSet<String> getTag() {
         return tag;
