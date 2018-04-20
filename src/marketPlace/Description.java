@@ -28,7 +28,9 @@ public class Description {
         this.text=text;
         this.picUrl=picUrl;
         this.pic=null;
+        this.listTag=new HashSet<>();
         loadImage(picUrl);
+        autoGenerateTag();
     }
 
     private void loadImage(String url) throws IOException {
@@ -37,11 +39,25 @@ public class Description {
     }
 
     private void autoGenerateTag(){
-
-
-
+        /* genera tag dal text inserito nel costruttore
+         possibili migliorie:
+            -selezionare solo certe sottostrighe di text (es. lunghezza min 2 caratteri, per non memorizzare articoli)
+            -oltre tutte le sotto stringhe, avere concatenazioni di esse (per migliorare il risultato di ricerca)
+         */
+        String[] textSplitted=text.split(" ");
+        int length=textSplitted.length;
+        for (int i=0;i<length;i++){
+            this.addTag(textSplitted[i]);  //aggiungere eccezione
+        }
     }
 
+    public void printTag(){
+        for (String tag:
+             listTag) {
+            System.out.println(tag);
+        }
+    }
+    
     public boolean addTag(String tag ){
         String tagLower=tag.toLowerCase(); // tutti tag lowerCase
         return listTag.add(tagLower);
