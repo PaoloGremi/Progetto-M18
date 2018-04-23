@@ -50,7 +50,8 @@ public class Customer {
         return id;
     }
 
-    public Customer(String username) {
-        this.username = username;
+    protected String getUsername() {
+        return username;
     }
+
 }
