@@ -15,27 +15,36 @@ public class TradeCenter {
         this.activeTrades = new ArrayList<Trade>();
     }
 
-    boolean addCustomer(String username, String password) {
+    void addCustomer(String username, String password) {
         customers.put(customers.size(), new Customer(customers.size(),username,password));
         //mettere al posto dell'id la stringa fatta come dice roby univoca
     }
 
-    boolean removeCustomer(int id) {
+    void removeCustomer(int id) {
         customers.remove(id);
     }
 
-    Customer searchCustomer(String user){
-
+    Customer searchCustomer(String username){
+        for(Integer key : customers.keySet()){
+            if((customers.get(key)).getUsername().equals(username)){        //assunto USERNAME UNIVOCO
+                return customers.get(key);
+            }
+        }
+        return null;
     }
 
-    boolean addDescription(Description description){
-
+    void addDescription(Description description){
+        //vuoto fino a che non viene creata la classe catalogo
     }
 
-    Card[] searchByString(String search){
-
+    HashMap<Customer, Card[]> searchByString(String searchString){
+        HashMap<Customer, Card[]> tmp = new HashMap<>();
+        for(int key : customers.keySet()){
+            tmp.put(customers.get(key), customers.get(key).searchByString(searchString));
+        }
+        return tmp;
     }
-
+/*finire
     boolean switchCards(Trade trade){
 
     }
@@ -43,6 +52,6 @@ public class TradeCenter {
     boolean checkDoneDeals(Trade trade){        //meglio mettere altro metodo che fa check per ognuno e ritornare un array?
 
     }
-
+*/
 
 }

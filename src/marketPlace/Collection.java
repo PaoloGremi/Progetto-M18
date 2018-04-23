@@ -16,7 +16,7 @@ public class Collection {
     // Search a card by its identificator in the card collection who calls this method.
     protected Card[] searchByString(String str) {
 
-        Card[] cards = new Card[100];
+        Card[] cards = new Card[100];       //METTERE CARDINALITA VARIABILE
         int i = 0;
 
         for (Card crd : cardSet){
