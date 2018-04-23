@@ -6,21 +6,22 @@ import java.util.HashMap;
 public class TradeCenter {
 
     //private DescriptionCatalog catalog;        // manca ancora la classe
-    private HashMap<String, Customer> customers;
+    private HashMap<Integer, Customer> customers;       //vedere se serve cambiare da int a long
     private ArrayList<Trade> activeTrades;
 
     public TradeCenter() {                    //puo servire passare il catalogo??
         //this.catalog = catalog;
-        this.customers = new HashMap<String, Customer>();
+        this.customers = new HashMap<Integer, Customer>();
         this.activeTrades = new ArrayList<Trade>();
     }
 
-    boolean addCustomer(Customer customer) {
-
+    boolean addCustomer(String username, String password) {
+        customers.put(customers.size(), new Customer(customers.size(),username,password));
+        //mettere al posto dell'id la stringa fatta come dice roby univoca
     }
 
-    boolean removeCustomer(Customer customer) {
-
+    boolean removeCustomer(int id) {
+        customers.remove(id);
     }
 
     Customer searchCustomer(String user){

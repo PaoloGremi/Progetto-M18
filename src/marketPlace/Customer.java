@@ -2,9 +2,17 @@ package marketPlace;
 
 public class Customer {
 
-    private String user;
-    private String pssw;
+    private int id;
+    private String username;
+    private String password;
     private Collection collection;
+
+    public Customer(int id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.collection = new Collection();
+    }
 
     // Add a card to the card collection of the customer who calls this method.
     protected boolean addCard(Card card){
@@ -15,7 +23,7 @@ public class Customer {
     }
 
     // Remove a card to the card collection of the customer who calls this method.
-    protected boolean rmCard(Card card){
+    protected boolean removeCard(Card card){
         if(collection.remCardFromColl(card)){
             return  true;
         }
@@ -28,7 +36,7 @@ public class Customer {
         if(addCard(newCard)){
             return true;
         }
-        return  false;
+        return false;
     }
    
     // Search a card by its identificator.
@@ -36,5 +44,7 @@ public class Customer {
         Card[] cardsFound = collection.searchByString(s);
         return cardsFound;
     }
+
+    //creare metodo per rimuoversi che ritorna il proprio id
 
 }
