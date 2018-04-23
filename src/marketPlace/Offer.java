@@ -16,7 +16,7 @@ public class Offer extends ATrade {
     // Add the selected card to the collection offered by Customer 1.
     protected boolean addCardToColl1(Card card) {
         if(super.getColl1().searchByString(card.getDescription().getName()).length == 0) {
-            this.getColl1().addCardToColl(card);
+            this.getColl1().addCardToCollection(card);
             return true;
         }
         return false;
@@ -25,7 +25,7 @@ public class Offer extends ATrade {
     // Method to add the selected card to the collection requested from Customer 2.
     protected boolean addCardToColl2(Card card) {
         if(this.getColl2().searchByString(card.getDescription().getName()).length == 0) {
-            this.getColl2().addCardToColl(card);
+            this.getColl2().addCardToCollection(card);
             return true;
         }
         return false;
@@ -34,7 +34,7 @@ public class Offer extends ATrade {
     // Method to remove the selected card from the collection offered by Customer 1.
     protected boolean remCardFromColl1(Card card) {
         if(this.getColl1().searchByString(card.getDescription().getName()).length != 0) {
-            this.getColl1().remCardFromColl(card);
+            this.getColl1().removeCardFromCollection(card);
             return true;
         }
         return false;
@@ -43,7 +43,7 @@ public class Offer extends ATrade {
     // Method to remove the selected card to the collection requested from Customer 2.
     protected boolean remCardFromColl2(Card card) {
         if(this.getColl2().searchByString(card.getDescription().getName()).length != 0) {
-            this.getColl2().remCardFromColl(card);
+            this.getColl2().removeCardFromCollection(card);
             return true;
         }
         return false;

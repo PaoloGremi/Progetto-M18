@@ -5,11 +5,11 @@ import java.util.HashMap;
 
 public class TradeCenter {
 
-    //private DescriptionCatalog catalog;        // manca ancora la classe
+    //private DescriptionCatalog catalog;               // manca ancora la classe
     private HashMap<Integer, Customer> customers;       //vedere se serve cambiare da int a long
     private ArrayList<Trade> activeTrades;
 
-    public TradeCenter() {                    //puo servire passare il catalogo??
+    public TradeCenter() {                               //puo servire passare il catalogo??
         //this.catalog = catalog;
         this.customers = new HashMap<Integer, Customer>();
         this.activeTrades = new ArrayList<Trade>();
@@ -21,7 +21,7 @@ public class TradeCenter {
     }
 
     void removeCustomer(int id) {
-        customers.remove(id);
+        customers.remove(id);                           //capire come passare id
     }
 
     Customer searchCustomer(String username){
@@ -44,14 +44,14 @@ public class TradeCenter {
         }
         return tmp;
     }
-/*finire
+/*FINIRE
     boolean switchCards(Trade trade){
-
+            //ricontrollare trade prima di fare questo metodo e il successivo
     }
 
     boolean checkDoneDeals(Trade trade){        //meglio mettere altro metodo che fa check per ognuno e ritornare un array?
-
+            //capire cosa vuole fare roberto con questo metodo (mettiamo lista di trade finiti?)
     }
-*/
 
+*/
 }

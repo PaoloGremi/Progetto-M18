@@ -8,7 +8,7 @@ public class Collection {
 
 
     // Add a card to the card collection who calls this method.
-    protected boolean addCardToColl(Card card) {
+    protected boolean addCardToCollection(Card card) {
         cardSet.add(card);
         return true; //solo di prova
     }
@@ -36,7 +36,7 @@ public class Collection {
     }
 
     // Remove the card from the card collection who calls this method.
-    protected boolean removeCardFromColl(Card card) {
+    protected boolean removeCardFromCollection(Card card) {
         cardSet.remove(card);
         return false;
     }

@@ -16,7 +16,7 @@ public class Customer {
 
     // Add a card to the card collection of the customer who calls this method.
     protected boolean addCard(Card card){
-        if(collection.addCardToColl(card)){
+        if(collection.addCardToCollection(card)){
             return true;
         }
         return false;
@@ -24,7 +24,7 @@ public class Customer {
 
     // Remove a card to the card collection of the customer who calls this method.
     protected boolean removeCard(Card card){
-        if(collection.remCardFromColl(card)){
+        if(collection.removeCardFromCollection(card)){
             return  true;
         }
         return  false;
