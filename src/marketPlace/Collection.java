@@ -7,12 +7,13 @@ public class Collection {
     private HashSet<Card> cardSet;
 
 
-
+    // Add a card to the card collection who calls this method.
     protected boolean addCardToColl(Card card) {
         cardSet.add(card);
         return true; //solo di prova
     }
 
+    // Search a card by its identificator in the card collection who calls this method.
     protected Card[] searchByString(String str) {
 
         Card[] cards = new Card[100];
@@ -33,6 +34,7 @@ public class Collection {
         return cards;
     }
 
+    // Remove the card from the card collection who calls this method.
     protected boolean remCardFromColl(Card card) {
         cardSet.remove(card);
         return false;
