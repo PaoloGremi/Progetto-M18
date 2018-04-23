@@ -30,7 +30,8 @@ public class Description {
         this.pic=null;
         this.listTag=new HashSet<>();
         loadImage(picUrl);
-        autoGenerateTag();
+        autoSplittedTag();
+        autoSubstringTag();
     }
 
     // Load an image by its url.
@@ -39,23 +40,27 @@ public class Description {
         pic= ImageIO.read(picFile);
     }
 
-    // Generate a casual tag for a card.
-    private void autoGenerateTag(){
-        /* genera tag dal text inserito nel costruttore
-         possibili migliorie:
-            -selezionare solo certe sottostrighe di text (es. lunghezza min 2 caratteri, per non memorizzare articoli)
-            -oltre tutte le sotto stringhe, avere concatenazioni di esse (per migliorare il risultato di ricerca)
-
-        //prova di push
-        //blablaba
-        
-            
-         */
-
+    // Generate a tags splitting text, doesn't consider worlds shorter than two
+    private void autoSplittedTag(){
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
+
         for (int i=0;i<length;i++){
+            if(textSplitted[i].length()>2)
             this.addTag(textSplitted[i]);  //aggiungere eccezione
+        }
+    }
+
+    //Generate tags as all possible combination of substring of text
+    private void autoSubstringTag(){
+        String[] textSplitted=text.split(" ");
+        int length=textSplitted.length;
+        for(int i=0;i<length;i++){
+            String substring=textSplitted[i];
+            for (int j = i+1; j<length-i; j++){
+                substring=substring+" "+textSplitted[j];
+                this.addTag(substring); //eccezione
+            }
         }
     }
 
