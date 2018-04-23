@@ -35,13 +35,6 @@ public class Customer {
         return  false;
     }
 
-<<<<<<< HEAD
-    /*protected Card[] searchByString(String s){
-
-
-
-    }*/
-=======
     protected Card[] searchByString(String s){
 
         Card[] cardsFound = collection.searchByString(s);
@@ -49,5 +42,5 @@ public class Customer {
         return cardsFound;
 
     }
->>>>>>> 357a6be2ff414c472b22ff55ddd87b3adb1bb7e1
+
 }
