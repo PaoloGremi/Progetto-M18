@@ -22,7 +22,7 @@ public class Description {
     private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
     private HashSet<String> listTag;
 
-
+    // Initialize a card description with the name, a text anche a picture of the card.
     public Description(String name,String text,String picUrl) throws IOException {
         this.name=name;
         this.text=text;
@@ -33,11 +33,13 @@ public class Description {
         autoGenerateTag();
     }
 
+    // Load an image by its url.
     private void loadImage(String url) throws IOException {
         File picFile= new File(url);
         pic= ImageIO.read(picFile);
     }
 
+    // Generate a casual tag for a card.
     private void autoGenerateTag(){
         /* genera tag dal text inserito nel costruttore
          possibili migliorie:
@@ -54,6 +56,7 @@ public class Description {
         }
     }
 
+    // Print the card tags.
     public void printTag(){
         for (String tag:
              listTag) {
@@ -61,10 +64,10 @@ public class Description {
         }
     }
     
+    // Add a tag for the card.
     public boolean addTag(String tag ){
         String tagLower=tag.toLowerCase(); // tutti tag lowerCase
         return listTag.add(tagLower);
-
     }
 
     public String getText() {
