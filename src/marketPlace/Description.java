@@ -9,21 +9,22 @@ import java.util.HashSet;
 public class Description {
 
     /**
-     * @param name: Card's name
-     * @param pic: Card's picture to be displayed on GUI
-     * @param picUrl: Url to load picture
-     * @param listTag: Card's list of tags to be used during search/filter
-     * @param text: Card's text description
-     * ? @param cardType: Type of card
+     * @param name: Descr's name
+     * @param text: Descr's text description
+     * @param picUrl: Url to load descr's picture
+     * @param pic: Descr's picture to be displayed on GUI
+     * @param listTag: Descr's list of tags to be used during search/filter
+     * @param descrType: Descr's type
       */
     private String name;
     private String text; //cambiare UML
     private String picUrl;
     private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
     private HashSet<String> listTag;
+    private CardType descrType;
 
-    // Initialize a card description with the name, a text anche a picture of the card.
-    public Description(String name,String text,String picUrl) throws IOException {
+    // Initialize a card description with the name, a text and a picture of the card.
+    public Description(String name,String text,CardType descrType,String picUrl) throws IOException {
         this.name=name;
         this.text=text;
         this.picUrl=picUrl;
@@ -40,7 +41,7 @@ public class Description {
         pic= ImageIO.read(picFile);
     }
 
-    // Generate a tags splitting text, doesn't consider worlds shorter than two
+    // Generate a tags splitting text, doesn't consider worlds shorter than two letters (e.g. articles)
     private void autoSplittedTag(){
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
@@ -51,7 +52,7 @@ public class Description {
         }
     }
 
-    //Generate tags as all possible combination of substring of text
+    //Generate tags from all possible combination of substring of text
     private void autoSubstringTag(){
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
@@ -96,4 +97,7 @@ public class Description {
     }
 
 
+    public CardType getDescrType() {
+        return descrType;
+    }
 }
