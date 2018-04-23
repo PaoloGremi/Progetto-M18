@@ -7,13 +7,14 @@ public class Offer extends ATrade {
     /**
      * Class for the Offer between two Customers. Extends ATrade class.
      */
-
+    
+    // Formalise a offer between two customers.
     protected Offer(Customer c1, Customer c2, Collection cl1, Collection cl2) {
         super(c1, c2, cl1, cl2);
     }
 
+    // Add the selected card to the collection offered by Customer 1.
     protected boolean addCardToColl1(Card card) {
-        /* Method to add the selected card to the collection offered by Customer 1 */
         if(super.getColl1().searchByString(card.getDescription().getName()).length == 0) {
             this.getColl1().addCardToColl(card);
             return true;
@@ -21,8 +22,8 @@ public class Offer extends ATrade {
         return false;
     }
 
+    // Method to add the selected card to the collection requested from Customer 2.
     protected boolean addCardToColl2(Card card) {
-        /* Method to add the selected card to the collection requested from Customer 2 */
         if(this.getColl2().searchByString(card.getDescription().getName()).length == 0) {
             this.getColl2().addCardToColl(card);
             return true;
@@ -30,8 +31,8 @@ public class Offer extends ATrade {
         return false;
     }
 
+    // Method to remove the selected card from the collection offered by Customer 1.
     protected boolean remCardFromColl1(Card card) {
-        /* Method to remove the selected card from the collection offered by Customer 1 */
         if(this.getColl1().searchByString(card.getDescription().getName()).length != 0) {
             this.getColl1().remCardFromColl(card);
             return true;
@@ -39,8 +40,8 @@ public class Offer extends ATrade {
         return false;
     }
 
+    // Method to remove the selected card to the collection requested from Customer 2.
     protected boolean remCardFromColl2(Card card) {
-        /* Method to remove the selected card to the collection requested from Customer 2 */
         if(this.getColl2().searchByString(card.getDescription().getName()).length != 0) {
             this.getColl2().remCardFromColl(card);
             return true;
@@ -48,9 +49,9 @@ public class Offer extends ATrade {
         return false;
     }
 
+    // A neater toString to print the Offer's specifics.
     @Override
     public String toString() {
-        /* A neater toString to print the Offer's specifics */
         StringBuilder tmp = new StringBuilder();
         tmp.append("\nOn the ");
         tmp.append(getDate().getDate());
