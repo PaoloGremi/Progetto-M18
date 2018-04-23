@@ -9,18 +9,33 @@ public class Collection {
 
 
     protected boolean addCardToColl(Card card) {
-        // to be defined
-        return false; //solo di prova
+        cardSet.add(card);
+        return true; //solo di prova
     }
 
-    protected Card[] searchByString(String string) {
-        // to be defined
-        Card[] cards = new Card[0];    //solo di prova
+    protected Card[] searchByString(String str) {
+
+        Card[] cards = new Card[100];
+        int i = 0;
+
+        for (Card crd : cardSet){
+            HashSet<String> cardTags = crd.getDescription().getListTag();
+
+            for(String tag : cardTags){
+
+                if(str == tag){
+
+                    cards[i]=crd;
+
+                }
+            }
+        }
         return cards;
     }
 
-    protected void remCardFromColl(Card card) {
-        // to be defined
+    protected boolean remCardFromColl(Card card) {
+        cardSet.remove(card);
+        return false;
     }
 
 }
