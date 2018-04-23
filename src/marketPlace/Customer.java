@@ -46,5 +46,11 @@ public class Customer {
     }
 
     //creare metodo per rimuoversi che ritorna il proprio id
+    protected  int removeMe(){
+        return id;
+    }
 
+    public Customer(String username) {
+        this.username = username;
+    }
 }
