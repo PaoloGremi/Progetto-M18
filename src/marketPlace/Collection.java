@@ -27,6 +27,7 @@ public class Collection {
                 if(str == tag){
 
                     cards[i]=crd;
+                    i++;
 
                 }
             }
