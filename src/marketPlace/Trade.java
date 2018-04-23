@@ -12,6 +12,7 @@ public class Trade extends ATrade {
     private int tradeCounter;
     private boolean doneDeal;
 
+    // Start a trade from an offer.
     protected Trade(Offer offer) {
         super(offer.getUser1(), offer.getUser2(), offer.getColl1(), offer.getColl2());
         this.history.add(offer);
@@ -19,8 +20,8 @@ public class Trade extends ATrade {
         this.doneDeal = false;
     }
 
+    // Method to update the current trade.
     protected boolean update(Offer offer) {
-        /* Method to update the current trade */
         this.history.add(offer);
         this.tradeCounter += 1;
         super.setColl1(offer.getColl1());
@@ -29,17 +30,17 @@ public class Trade extends ATrade {
         return true;
     }
 
+    // Method to check if a trade is over.
     protected boolean checkDeal(Offer offer) {
-        /* Method to check if a trade is over */
         if(history.get(tradeCounter).getColl1().equals(offer.getColl1()) && history.get(tradeCounter).getColl2().equals(offer.getColl2())) {
             this.doneDeal = true;
         }
         return doneDeal;
     }
-
+    
+    // Improved printing method.
     @Override
     public String toString() {
-        /* Improved printing method */
         StringBuilder tmp = new StringBuilder();
         tmp.append("Offer from ");
         tmp.append(getUser1().toString());
