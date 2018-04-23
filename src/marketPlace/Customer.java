@@ -40,8 +40,8 @@ public class Customer {
     }
    
     // Search a card by its identificator.
-    protected Card[] searchByString(String s){
-        Card[] cardsFound = collection.searchByString(s);
+    protected Card[] searchByString(String string){
+        Card[] cardsFound = collection.searchByString(string);
         return cardsFound;
     }
 
