@@ -36,7 +36,7 @@ public class Collection {
     }
 
     // Remove the card from the card collection who calls this method.
-    protected boolean remCardFromColl(Card card) {
+    protected boolean removeCardFromColl(Card card) {
         cardSet.remove(card);
         return false;
     }
