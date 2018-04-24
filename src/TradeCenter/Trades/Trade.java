@@ -52,7 +52,7 @@ public class Trade extends ATrade {
 
     /**
      * Returns wheter or not the trade is over and to be moved to the DoneTrades
-     * @return
+     * @return boolean
      */
     public boolean isDoneDeal() {
         return doneDeal;

@@ -44,7 +44,7 @@ public class Offer extends ATrade {
 
     /**
      * Checks if the Customers is the first or the second one
-     * @param customer
+     * @param customer Customer to be checked
      * @return True if first, False if second
      */
     private boolean isItTheFirstCustomer(Customer customer) {
