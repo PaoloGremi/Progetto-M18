@@ -7,55 +7,93 @@ public abstract class ATrade {
 
     /**
      * Abstract class for Offer and Trade.
-     * @param user1:    Customer 1;
-     * @param user2:    Customer 2;
-     * @param coll1:    Collection offered by Customer 1 to Customer 2;
-     * @param coll2:    Collection requested by Customer 1 from Customer 2;
-     * @param date:     Latest update date and time;
+     * @param user1 Customer 1
+     * @param user2 Customer 2
+     * @param coll1 Collection offered by Customer 1 to Customer 2
+     * @param coll2 Collection requested by Customer 1 from Customer 2
+     * @param date Latest update date and time
      */
-
-    private Customer user1;
-    private Customer user2;
-    private Collection coll1;
-    private Collection coll2;
+    private Customer customer1;
+    private Customer customer2;
+    private Collection collection1;
+    private Collection collection2;
     private Date date;
 
-    protected ATrade(Customer c1, Customer c2, Collection cl1, Collection cl2) {
-        this.user1 = c1;
-        this.user2 = c2;
-        this.coll1 = cl1;
-        this.coll2 = cl2;
+    /**
+     *
+     * @param customer1 First customer
+     * @param customer2 Second customer
+     * @param collection1 First customer's collection to be exchanged
+     * @param collection2 Second customer's collection to be exchanged
+     */
+    protected ATrade(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
+        this.customer1 = customer1;
+        this.customer2 = customer2;
+        this.collection1 = collection1;
+        this.collection2 = collection2;
         this.date = new Date();
     }
 
-    protected Customer getUser1() {
-        return user1;
+    /**
+     * Getter for first customer
+     * @return first customer
+     */
+    protected Customer getCustomer1() {
+        return customer1;
     }
 
-    protected Customer getUser2() {
-        return user2;
+    /**
+     * Getter for second customer
+     * @return second customer
+     */
+    protected Customer getCustomer2() {
+        return customer2;
     }
 
-    protected Collection getColl1() {
-        return coll1;
+    /**
+     * Getter for first customer's collection
+     * @return first customer's collection
+     */
+    protected Collection getCollection1() {
+        return collection1;
     }
 
-    protected Collection getColl2() {
-        return coll2;
+    /**
+     * Getter for second customer's collection
+     * @return second customer's collection
+     */
+    protected Collection getCollection2() {
+        return collection2;
     }
 
+    /**
+     * Getter for current date
+     * @return current date
+     */
     protected Date getDate() {
         return date;
     }
 
-    public void setColl1(Collection coll1) {
-        this.coll1 = coll1;
+    /**
+     * Setter for first customer
+     * @return void
+     */
+    public void setCollection1(Collection collection1) {
+        this.collection1 = collection1;
     }
 
-    public void setColl2(Collection coll2) {
-        this.coll2 = coll2;
+    /**
+     * Setter for second customer's collection
+     * @return void
+     */
+    public void setCollection2(Collection collection2) {
+        this.collection2 = collection2;
     }
 
+    /**
+     * Setter for current date
+     * @return void
+     */
     public void setDate(Date date) {
         this.date = date;
     }

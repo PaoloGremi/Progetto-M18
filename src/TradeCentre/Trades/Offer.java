@@ -8,58 +8,62 @@ public class Offer extends ATrade {
     /**
      * Class for the Offer between two Customers. Extends ATrade class.
      */
-    
-    // Formalise a offer between two customers.
-    protected Offer(Customer c1, Customer c2, Collection cl1, Collection cl2) {
-        super(c1, c2, cl1, cl2);
+
+    /**
+     * Make an offer between two customers
+     * @param customer1 First customer
+     * @param customer2 Second customer
+     * @param collection1 First customer's collection to be exchanged
+     * @param collection2 Second customer's collection to be exchanged
+     */
+    protected Offer(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
+        super(customer1, customer2, collection1, collection2);
     }
 
-    // Add the selected TradeCentre.card to the collection offered by Customer 1.
-    protected boolean addCardToColl1(Card card) {
-        if(super.getColl1().searchByString(card.getDescription().getName()).length == 0) {
-            this.getColl1().addCardToCollection(card);
-            return true;
-        }
-        return false;
+    /**
+     * Add a card to one of the customer's collection (use addCardToCollection(card, this))
+     * @param card Card to be added
+     * @param customer Customer to whose collection the card should be added
+     */
+    public void addCardToCollection(Card card, Customer customer) { //todo: add try-catch and exceptions
+        if(isItTheFirstCustomer(customer)) {
+            super.getCollection1().addCardToCollection(card);
+        } else super.getCollection2().addCardToCollection(card);
     }
 
-    // Method to add the selected TradeCentre.card to the collection requested from Customer 2.
-    protected boolean addCardToColl2(Card card) {
-        if(this.getColl2().searchByString(card.getDescription().getName()).length == 0) {
-            this.getColl2().addCardToCollection(card);
-            return true;
-        }
-        return false;
+    /**
+     * Remove a card from one of the customer's collection (use removeCardFromCollection(card, this))
+     * @param card Card to be removed
+     * @param customer Customer from whose collection the card should be removed
+     */
+    public void removeCardFromCollection(Card card, Customer customer) {
+        if (isItTheFirstCustomer(customer)) {
+            super.getCollection1().removeCardFromCollection(card);
+        } else super.getCollection2().removeCardFromCollection(card);
     }
 
-    // Method to remove the selected TradeCentre.card from the collection offered by Customer 1.
-    protected boolean remCardFromColl1(Card card) {
-        if(this.getColl1().searchByString(card.getDescription().getName()).length != 0) {
-            this.getColl1().removeCardFromCollection(card);
-            return true;
-        }
-        return false;
+    /**
+     * Checks if the customer is the first or the second one
+     * @param customer
+     * @return True if first, False if second
+     */
+    private boolean isItTheFirstCustomer(Customer customer) {
+        return customer.getId().equals(super.getCustomer1()().getId);
     }
 
-    // Method to remove the selected TradeCentre.card to the collection requested from Customer 2.
-    protected boolean remCardFromColl2(Card card) {
-        if(this.getColl2().searchByString(card.getDescription().getName()).length != 0) {
-            this.getColl2().removeCardFromCollection(card);
-            return true;
-        }
-        return false;
-    }
-
-    // A neater toString to print the Offer's specifics.
+    /**
+     * A neater toString to print the Offer's specifics
+     * @return improved listing of Offer's specifics
+     */
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
         tmp.append("\nOn the ");
         tmp.append(getDate().getDate());
         tmp.append("\n Offers: ");
-        tmp.append(getColl1().toString());
+        tmp.append(getCollection1().toString());
         tmp.append("\n For: ");
-        tmp.append(getColl2().toString());
+        tmp.append(getCollection2().toString());
 
         return tmp.toString();
     }
