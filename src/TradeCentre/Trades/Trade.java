@@ -4,15 +4,18 @@ import java.util.ArrayList;
 
 public class Trade extends ATrade {
     /**
-     * @param history: List of all past offers in the current trade
-     * @param tradeCounter: Counter of how many offers have been made in the current trade
-     * @param doneDeal: Boolean value to know when a deal is over, ending the current trade
+     * @param history List of all past offers in the current trade
+     * @param tradeCounter Counter of how many offers have been made in the current trade
+     * @param doneDeal Boolean value to know when a deal is over, ending the current trade
      */
     private ArrayList<Offer> history;
     private int tradeCounter;
     private boolean doneDeal;
 
-    // Start a trade from an offer.
+    /** Start a trade from an offer.
+     *
+     * @param offer Starting offer
+     */
     protected Trade(Offer offer) {
         super(offer.getUser1(), offer.getUser2(), offer.getColl1(), offer.getColl2());
         this.history.add(offer);
@@ -20,7 +23,11 @@ public class Trade extends ATrade {
         this.doneDeal = false;
     }
 
-    // Method to update the current trade.
+    /** Method to update the current trade.
+     *
+     * @param offer New offer to update current trade and save into history
+     * @return boolean to check wheter or not the method ran fine
+     */
     protected boolean update(Offer offer) {
         this.history.add(offer);
         this.tradeCounter += 1;
@@ -30,15 +37,22 @@ public class Trade extends ATrade {
         return true;
     }
 
-    // Method to check if a trade is over.
-    protected boolean checkDeal(Offer offer) {
+    /** Method to check if a trade is over.
+     *
+     * @param offer Last offer to compare to previous one
+     * @return if last offer has same plate as the previous one, meaning the user accepted the offer
+     */
+    protected boolean checkDeal(Offer offer) { //to check if it actually works
         if(history.get(tradeCounter).getColl1().equals(offer.getColl1()) && history.get(tradeCounter).getColl2().equals(offer.getColl2())) {
             this.doneDeal = true;
         }
         return doneDeal;
     }
-    
-    // Improved printing method.
+
+    /** Improved printing method.
+     *
+     * @return improved listing of trade properties and offers' history
+     */
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
