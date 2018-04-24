@@ -1,5 +1,6 @@
 package TradeCenter;
 
+import TradeCenter.Card.CardCatalog;
 import TradeCenter.Trades.Trade;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
@@ -11,14 +12,14 @@ import java.util.HashMap;
 public class TradeCenter {
 
     private int contUsers;                              //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
-    //private DescriptionCatalog catalog;               // manca ancora la classe
+    private CardCatalog catalog;
     private HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
 
-    public TradeCenter() {                               //puo servire passare il catalogo??
+    public TradeCenter() {
         this.contUsers = 0;                             //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
-        //this.catalog = catalog;
+        this.catalog = new CardCatalog();                  //todo: fare mettere nell'istanziazione del catalogo la creazione del database
         this.customers = new HashMap<String, Customer>();
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
@@ -48,9 +49,10 @@ public class TradeCenter {
     }
 
     public void addDescription(Description description){
-        //vuoto fino a che non viene creata la classe catalogo
+        catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
     }
 
+    //todo: puo essere utile mettere il metodo remove description ??
     public HashMap<Customer, Card[]> searchByString(String searchString){
         HashMap<Customer, Card[]> tmp = new HashMap<>();
         for(String key : customers.keySet()){
@@ -58,15 +60,17 @@ public class TradeCenter {
         }
         return tmp;
     }
-/*FINIRE
-    boolean switchCards(Trade trade){
+
+    void switchCards(Trade trade){
             //ricontrollare trade prima di fare questo metodo e il successivo
+        //devo aspettare che venga definito lo scambio delle carte
     }
 
-*/
+
     public void checkDoneDeals(){
         for(Trade trade : activeTrades){
             if(trade.isDoneDeal()){
+                switchCards(trade);
                 doneTrades.add(trade);
                 activeTrades.remove(trade);
             }
