@@ -1,8 +1,9 @@
-import TradeCenter.Description;
 import TradeCenter.TradeCenter;
 
-public class TestMain {
+public class MyMain {
     public static void main(String[] args) {
         TradeCenter tradeCenter = new TradeCenter();
+
+        //utilizzare per fare le mie prove
     }
 }

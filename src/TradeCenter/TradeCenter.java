@@ -1,9 +1,9 @@
-package TradeCentre;
+package TradeCenter;
 
-import TradeCentre.Trades.Trade;
-import TradeCentre.card.Card;
-import TradeCentre.card.Description;
-import TradeCentre.customer.Customer;
+import TradeCenter.Trades.Trade;
+import TradeCenter.Card.Card;
+import TradeCenter.Card.Description;
+import TradeCenter.Customers.Customer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

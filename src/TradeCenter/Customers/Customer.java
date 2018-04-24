@@ -1,16 +1,16 @@
-package TradeCentre.customer;
+package TradeCenter.Customers;
 
-import TradeCentre.card.Card;
-import TradeCentre.card.Description;
+import TradeCenter.Card.Card;
+import TradeCenter.Card.Description;
 
 public class Customer {
 
 
     /**
-     * @param id Unique id of the customer
-     * @param username Username of the customer
-     * @param password Password of the customer
-     * @param collection Card collection of the customer
+     * @param id Unique id of the Customers
+     * @param username Username of the Customers
+     * @param password Password of the Customers
+     * @param collection Card collection of the Customers
      */
     private String id;
     private String username;
@@ -24,9 +24,9 @@ public class Customer {
         this.collection = new Collection();
     }
 
-    /** Method to add a card to the customer collection
+    /** Method to add a Card to the Customers collection
      *
-     * @param card New card to
+     * @param card New Card to
      * @return boolean to check wheter or not the method ran fine
      */
     public boolean addCard(Card card){
@@ -36,7 +36,7 @@ public class Customer {
         return false;
     }
 
-    // Remove a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
+    // Remove a TradeCenter.Card to the TradeCenter.Card collection of the TradeCenter.Customers who calls this method.
     public boolean removeCard(Card card){
         if(collection.removeCardFromCollection(card)){
             return  true;
@@ -44,7 +44,7 @@ public class Customer {
         return  false;
     }
 
-    // The TradeCentre.customer adds a new TradeCentre.card that wasn't in the TradeCentre.card catalog before.
+    // The TradeCenter.Customers adds a new TradeCenter.Card that wasn't in the TradeCenter.Card catalog before.
     public boolean createCard(Description d, int id){
         Card newCard = new Card(id, d);
         if(addCard(newCard)){
@@ -53,7 +53,7 @@ public class Customer {
         return false;
     }
    
-    // Search a TradeCentre.card by its identificator.
+    // Search a TradeCenter.Card by its identificator.
     public Card[] searchByString(String string){
         Card[] cardsFound = collection.searchByString(string);
         return cardsFound;

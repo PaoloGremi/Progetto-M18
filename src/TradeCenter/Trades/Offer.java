@@ -1,7 +1,7 @@
-package TradeCentre.Trades;
+package TradeCenter.Trades;
 
-import TradeCentre.customer.*;
-import TradeCentre.card.Card;
+import TradeCenter.Customers.*;
+import TradeCenter.Card.Card;
 
 public class Offer extends ATrade {
 
@@ -11,19 +11,19 @@ public class Offer extends ATrade {
 
     /**
      * Make an offer between two customers
-     * @param customer1 First customer
-     * @param customer2 Second customer
-     * @param collection1 First customer's collection to be exchanged
-     * @param collection2 Second customer's collection to be exchanged
+     * @param customer1 First Customers
+     * @param customer2 Second Customers
+     * @param collection1 First Customers's collection to be exchanged
+     * @param collection2 Second Customers's collection to be exchanged
      */
     protected Offer(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
         super(customer1, customer2, collection1, collection2);
     }
 
     /**
-     * Add a card to one of the customer's collection (use addCardToCollection(card, this))
+     * Add a Card to one of the Customers's collection (use addCardToCollection(Card, this))
      * @param card Card to be added
-     * @param customer Customer to whose collection the card should be added
+     * @param customer Customer to whose collection the Card should be added
      */
     public void addCardToCollection(Card card, Customer customer) { //todo: add try-catch and exceptions
         if(isItTheFirstCustomer(customer)) {
@@ -32,9 +32,9 @@ public class Offer extends ATrade {
     }
 
     /**
-     * Remove a card from one of the customer's collection (use removeCardFromCollection(card, this))
+     * Remove a Card from one of the Customers's collection (use removeCardFromCollection(Card, this))
      * @param card Card to be removed
-     * @param customer Customer from whose collection the card should be removed
+     * @param customer Customer from whose collection the Card should be removed
      */
     public void removeCardFromCollection(Card card, Customer customer) {
         if (isItTheFirstCustomer(customer)) {
@@ -43,7 +43,7 @@ public class Offer extends ATrade {
     }
 
     /**
-     * Checks if the customer is the first or the second one
+     * Checks if the Customers is the first or the second one
      * @param customer
      * @return True if first, False if second
      */

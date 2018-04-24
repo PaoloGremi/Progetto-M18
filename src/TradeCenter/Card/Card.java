@@ -1,4 +1,4 @@
-package TradeCentre.card;
+package TradeCenter.Card;
 
 public class Card {
 

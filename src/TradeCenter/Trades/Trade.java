@@ -1,4 +1,4 @@
-package TradeCentre.Trades;
+package TradeCenter.Trades;
 
 import java.util.ArrayList;
 

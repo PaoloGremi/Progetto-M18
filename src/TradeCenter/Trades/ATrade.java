@@ -1,7 +1,7 @@
-package TradeCentre.Trades;
+package TradeCenter.Trades;
 
 import java.util.Date;
-import TradeCentre.customer.*;
+import TradeCenter.Customers.*;
 
 public abstract class ATrade {
 
@@ -21,10 +21,10 @@ public abstract class ATrade {
 
     /**
      *
-     * @param customer1 First customer
-     * @param customer2 Second customer
-     * @param collection1 First customer's collection to be exchanged
-     * @param collection2 Second customer's collection to be exchanged
+     * @param customer1 First Customers
+     * @param customer2 Second Customers
+     * @param collection1 First Customers's collection to be exchanged
+     * @param collection2 Second Customers's collection to be exchanged
      */
     protected ATrade(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
         this.customer1 = customer1;
@@ -35,32 +35,32 @@ public abstract class ATrade {
     }
 
     /**
-     * Getter for first customer
-     * @return first customer
+     * Getter for first Customers
+     * @return first Customers
      */
     protected Customer getCustomer1() {
         return customer1;
     }
 
     /**
-     * Getter for second customer
-     * @return second customer
+     * Getter for second Customers
+     * @return second Customers
      */
     protected Customer getCustomer2() {
         return customer2;
     }
 
     /**
-     * Getter for first customer's collection
-     * @return first customer's collection
+     * Getter for first Customers's collection
+     * @return first Customers's collection
      */
     protected Collection getCollection1() {
         return collection1;
     }
 
     /**
-     * Getter for second customer's collection
-     * @return second customer's collection
+     * Getter for second Customers's collection
+     * @return second Customers's collection
      */
     protected Collection getCollection2() {
         return collection2;
@@ -75,7 +75,7 @@ public abstract class ATrade {
     }
 
     /**
-     * Setter for first customer
+     * Setter for first Customers
      * @return void
      */
     public void setCollection1(Collection collection1) {
@@ -83,7 +83,7 @@ public abstract class ATrade {
     }
 
     /**
-     * Setter for second customer's collection
+     * Setter for second Customers's collection
      * @return void
      */
     public void setCollection2(Collection collection2) {
