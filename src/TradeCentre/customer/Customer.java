@@ -5,22 +5,33 @@ import TradeCentre.card.Description;
 
 public class Customer {
 
-    private int id;
+
+    /**
+     * @param id Unique id of the customer
+     * @param username Username of the customer
+     * @param password Password of the customer
+     * @param collection Card collection of the customer
+     */
+    private String id;
     private String username;
     private String password;
     private Collection collection;
 
-    public Customer(int id, String username, String password) {
+    public Customer(String id, String username, String password) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.collection = new Collection();
     }
 
-    // Add a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
+    /** Method to add a card to the customer collection
+     *
+     * @param card New card to
+     * @return boolean to check wheter or not the method ran fine
+     */
     public boolean addCard(Card card){
         if(collection.addCardToCollection(card)){
-            return true;
+            return true;//inizializza
         }
         return false;
     }
@@ -49,7 +60,7 @@ public class Customer {
     }
 
     //creare metodo per rimuoversi che ritorna il proprio id
-    public   int getId(){
+    public   String getId(){
         return id;
     }
 
