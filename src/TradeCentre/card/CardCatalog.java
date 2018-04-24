@@ -1,4 +1,4 @@
-package marketPlace;
+package TradeCentre.card;
 
 import java.util.HashSet;
 
@@ -6,7 +6,7 @@ public class CardCatalog {
 
     private HashSet<Description> catalog;
 
-    // This method return true if the card descrption is added to the card catalog for the first time
+    // This method return true if the TradeCentre.card descrption is added to the TradeCentre.card catalog for the first time
     public boolean addDescription(Description description){
         if (this.catalog.add(description)){
             return true;
@@ -16,7 +16,7 @@ public class CardCatalog {
         }
     }
 
-    // This method return true if the card description was in the catalog and is deleted from that
+    // This method return true if the TradeCentre.card description was in the catalog and is deleted from that
     public boolean removeDescription(Description description){
         if (this.catalog.remove(description)){
             return true;

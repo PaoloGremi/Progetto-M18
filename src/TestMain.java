@@ -1,7 +1,5 @@
-import marketPlace.Description;
-import marketPlace.TradeCenter;
-
-import java.io.IOException;
+import TradeCentre.Description;
+import TradeCentre.TradeCenter;
 
 public class TestMain {
     public static void main(String[] args) {

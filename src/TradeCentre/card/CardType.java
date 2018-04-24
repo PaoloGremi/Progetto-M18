@@ -1,4 +1,4 @@
-package marketPlace;
+package TradeCentre.card;
 
 public enum CardType {
 

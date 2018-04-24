@@ -1,6 +1,7 @@
-package marketPlace;
+package TradeCentre.Trades;
 
-import java.util.Date;
+import TradeCentre.customer.*;
+import TradeCentre.card.Card;
 
 public class Offer extends ATrade {
 
@@ -13,7 +14,7 @@ public class Offer extends ATrade {
         super(c1, c2, cl1, cl2);
     }
 
-    // Add the selected card to the collection offered by Customer 1.
+    // Add the selected TradeCentre.card to the collection offered by Customer 1.
     protected boolean addCardToColl1(Card card) {
         if(super.getColl1().searchByString(card.getDescription().getName()).length == 0) {
             this.getColl1().addCardToCollection(card);
@@ -22,7 +23,7 @@ public class Offer extends ATrade {
         return false;
     }
 
-    // Method to add the selected card to the collection requested from Customer 2.
+    // Method to add the selected TradeCentre.card to the collection requested from Customer 2.
     protected boolean addCardToColl2(Card card) {
         if(this.getColl2().searchByString(card.getDescription().getName()).length == 0) {
             this.getColl2().addCardToCollection(card);
@@ -31,7 +32,7 @@ public class Offer extends ATrade {
         return false;
     }
 
-    // Method to remove the selected card from the collection offered by Customer 1.
+    // Method to remove the selected TradeCentre.card from the collection offered by Customer 1.
     protected boolean remCardFromColl1(Card card) {
         if(this.getColl1().searchByString(card.getDescription().getName()).length != 0) {
             this.getColl1().removeCardFromCollection(card);
@@ -40,7 +41,7 @@ public class Offer extends ATrade {
         return false;
     }
 
-    // Method to remove the selected card to the collection requested from Customer 2.
+    // Method to remove the selected TradeCentre.card to the collection requested from Customer 2.
     protected boolean remCardFromColl2(Card card) {
         if(this.getColl2().searchByString(card.getDescription().getName()).length != 0) {
             this.getColl2().removeCardFromCollection(card);

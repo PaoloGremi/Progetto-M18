@@ -1,4 +1,4 @@
-package marketPlace;
+package TradeCentre.card;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -23,7 +23,7 @@ public class Description {
     private HashSet<String> listTag;
     private CardType descrType;
 
-    // Initialize a card description with the name, a text and a picture of the card.
+    // Initialize a TradeCentre.card description with the name, a text and a picture of the TradeCentre.card.
     public Description(String name,String text,CardType descrType,String picUrl) throws IOException {
         this.name=name;
         this.text=text;
@@ -65,7 +65,7 @@ public class Description {
         }
     }
 
-    // Print the card tags.
+    // Print the TradeCentre.card tags.
     public void printTag(){
         for (String tag:
              listTag) {
@@ -73,7 +73,7 @@ public class Description {
         }
     }
     
-    // Add a tag for the card.
+    // Add a tag for the TradeCentre.card.
     public boolean addTag(String tag ){
         String tagLower=tag.toLowerCase(); // tutti tag lowerCase
         return listTag.add(tagLower);

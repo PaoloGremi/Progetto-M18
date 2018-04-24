@@ -1,6 +1,7 @@
-package marketPlace;
+package TradeCentre.Trades;
 
 import java.util.Date;
+import TradeCentre.customer.*;
 
 public abstract class ATrade {
 

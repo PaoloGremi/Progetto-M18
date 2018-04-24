@@ -1,4 +1,4 @@
-package marketPlace;
+package TradeCentre.Trades;
 
 import java.util.ArrayList;
 

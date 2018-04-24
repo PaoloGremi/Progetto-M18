@@ -1,19 +1,21 @@
-package marketPlace;
+package TradeCentre.customer;
 
 import java.util.HashSet;
+
+import TradeCentre.card.Card;
 
 public class Collection {
 
     private HashSet<Card> cardSet;
 
 
-    // Add a card to the card collection who calls this method.
+    // Add a TradeCentre.card to the TradeCentre.card collection who calls this method.
     protected boolean addCardToCollection(Card card) {
         cardSet.add(card);
         return true; //solo di prova
     }
 
-    // Search a card by its identificator in the card collection who calls this method.
+    // Search a TradeCentre.card by its identificator in the TradeCentre.card collection who calls this method.
     protected Card[] searchByString(String str) {
 
         Card[] cards = new Card[100];       //METTERE CARDINALITA VARIABILE
@@ -35,7 +37,7 @@ public class Collection {
         return cards;
     }
 
-    // Remove the card from the card collection who calls this method.
+    // Remove the TradeCentre.card from the TradeCentre.card collection who calls this method.
     protected boolean removeCardFromCollection(Card card) {
         cardSet.remove(card);
         return false;

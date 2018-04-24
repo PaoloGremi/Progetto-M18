@@ -1,4 +1,7 @@
-package marketPlace;
+package TradeCentre.customer;
+
+import TradeCentre.card.Card;
+import TradeCentre.card.Description;
 
 public class Customer {
 
@@ -14,7 +17,7 @@ public class Customer {
         this.collection = new Collection();
     }
 
-    // Add a card to the card collection of the customer who calls this method.
+    // Add a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
     protected boolean addCard(Card card){
         if(collection.addCardToCollection(card)){
             return true;
@@ -22,7 +25,7 @@ public class Customer {
         return false;
     }
 
-    // Remove a card to the card collection of the customer who calls this method.
+    // Remove a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
     protected boolean removeCard(Card card){
         if(collection.removeCardFromCollection(card)){
             return  true;
@@ -30,7 +33,7 @@ public class Customer {
         return  false;
     }
 
-    // The customer adds a new card that wasn't in the card catalog before.
+    // The TradeCentre.customer adds a new TradeCentre.card that wasn't in the TradeCentre.card catalog before.
     protected boolean createCard(Description d, int id){
         Card newCard = new Card(id, d);
         if(addCard(newCard)){
@@ -39,7 +42,7 @@ public class Customer {
         return false;
     }
    
-    // Search a card by its identificator.
+    // Search a TradeCentre.card by its identificator.
     protected Card[] searchByString(String string){
         Card[] cardsFound = collection.searchByString(string);
         return cardsFound;
