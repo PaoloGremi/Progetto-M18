@@ -18,7 +18,7 @@ public class Customer {
     }
 
     // Add a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
-    protected boolean addCard(Card card){
+    public boolean addCard(Card card){
         if(collection.addCardToCollection(card)){
             return true;
         }
@@ -26,7 +26,7 @@ public class Customer {
     }
 
     // Remove a TradeCentre.card to the TradeCentre.card collection of the TradeCentre.customer who calls this method.
-    protected boolean removeCard(Card card){
+    public boolean removeCard(Card card){
         if(collection.removeCardFromCollection(card)){
             return  true;
         }
@@ -34,7 +34,7 @@ public class Customer {
     }
 
     // The TradeCentre.customer adds a new TradeCentre.card that wasn't in the TradeCentre.card catalog before.
-    protected boolean createCard(Description d, int id){
+    public boolean createCard(Description d, int id){
         Card newCard = new Card(id, d);
         if(addCard(newCard)){
             return true;
@@ -43,17 +43,17 @@ public class Customer {
     }
    
     // Search a TradeCentre.card by its identificator.
-    protected Card[] searchByString(String string){
+    public Card[] searchByString(String string){
         Card[] cardsFound = collection.searchByString(string);
         return cardsFound;
     }
 
     //creare metodo per rimuoversi che ritorna il proprio id
-    protected  int removeMe(){
+    public   int getId(){
         return id;
     }
 
-    protected String getUsername() {
+    public String getUsername() {
         return username;
     }
 

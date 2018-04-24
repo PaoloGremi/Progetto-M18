@@ -7,18 +7,22 @@ import TradeCentre.card.Card;
 public class Collection {
 
     private HashSet<Card> cardSet;
+    private int N = 100;
 
+    public Collection() {
+        this.cardSet = new HashSet<Card>();
+    }
 
     // Add a TradeCentre.card to the TradeCentre.card collection who calls this method.
-    protected boolean addCardToCollection(Card card) {
+    public boolean addCardToCollection(Card card) {
         cardSet.add(card);
-        return true; //solo di prova
+        return true;
     }
 
     // Search a TradeCentre.card by its identificator in the TradeCentre.card collection who calls this method.
-    protected Card[] searchByString(String str) {
+    public Card[] searchByString(String str) {
 
-        Card[] cards = new Card[100];       //METTERE CARDINALITA VARIABILE
+        Card[] cards = new Card[N];       //METTERE CARDINALITA VARIABILE
         int i = 0;
 
         for (Card crd : cardSet){
@@ -38,7 +42,7 @@ public class Collection {
     }
 
     // Remove the TradeCentre.card from the TradeCentre.card collection who calls this method.
-    protected boolean removeCardFromCollection(Card card) {
+    public boolean removeCardFromCollection(Card card) {
         cardSet.remove(card);
         return false;
     }
