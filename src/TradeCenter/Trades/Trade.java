@@ -18,7 +18,7 @@ public class Trade extends ATrade {
      * @param offer Starting offer
      */
     protected Trade(Offer offer) {
-        super(offer.getUser1(), offer.getUser2(), offer.getCollection1(), offer.getCollection2());
+        super(offer.getCustomer1(), offer.getCustomer2(), offer.getCollection1(), offer.getCollection2());
         this.history.add(offer);
         this.tradeCounter = 1;
         this.doneDeal = false;
@@ -32,9 +32,7 @@ public class Trade extends ATrade {
     protected boolean update(Offer offer) {
         this.history.add(offer);
         this.tradeCounter += 1;
-        super.setCollection1(offer.getCollection1());
-        super.setCollection2(offer.getCollection2());
-        super.setDate(offer.getDate());
+        super.updateParameters(offer.getCollection1(), offer.getCollection2(), offer.getDate());
         return true;
     }
 
@@ -66,9 +64,9 @@ public class Trade extends ATrade {
     public String toString() {
         StringBuilder tmp = new StringBuilder();
         tmp.append("Offer from ");
-        tmp.append(getUser1().toString());
+        tmp.append(getCustomer1().toString());
         tmp.append(" to ");
-        tmp.append(getUser2().toString());
+        tmp.append(getCustomer2().toString());
         for (int i=0; i<history.size(); i++) {
             tmp.append(history.get(i).toString());
         }

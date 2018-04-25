@@ -48,7 +48,7 @@ public class Offer extends ATrade {
      * @return True if first, False if second
      */
     private boolean isItTheFirstCustomer(Customer customer) {
-        return customer.getId().equals(super.getCustomer1()().getId);
+        return customer.getId().equals(super.getCustomer1().getId());
     }
 
     /**

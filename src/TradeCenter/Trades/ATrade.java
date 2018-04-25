@@ -7,10 +7,10 @@ public abstract class ATrade {
 
     /**
      * Abstract class for Offer and Trade.
-     * @param user1 Customer 1
-     * @param user2 Customer 2
-     * @param coll1 Collection offered by Customer 1 to Customer 2
-     * @param coll2 Collection requested by Customer 1 from Customer 2
+     * @param customer1 Customer 1
+     * @param customer2 Customer 2
+     * @param collection1 Collection offered by Customer 1 to Customer 2
+     * @param collection2 Collection requested by Customer 1 from Customer 2
      * @param date Latest update date and time
      */
     private Customer customer1;
@@ -20,7 +20,7 @@ public abstract class ATrade {
     private Date date;
 
     /**
-     *
+     * Constructor method
      * @param customer1 First Customers
      * @param customer2 Second Customers
      * @param collection1 First Customers's collection to be exchanged
@@ -75,26 +75,14 @@ public abstract class ATrade {
     }
 
     /**
-     * Setter for first Customers
-     * @return void
+     * Updater for first customer's collection, second customer's collection and current date
+     * @param collection1 Firs customer's collection
+     * @param collection2 Second customer's collection
+     * @param date Current date
      */
-    public void setCollection1(Collection collection1) {
+    protected void updateParameters(Collection collection1, Collection collection2, Date date) {
         this.collection1 = collection1;
-    }
-
-    /**
-     * Setter for second Customers's collection
-     * @return void
-     */
-    public void setCollection2(Collection collection2) {
         this.collection2 = collection2;
-    }
-
-    /**
-     * Setter for current date
-     * @return void
-     */
-    public void setDate(Date date) {
         this.date = date;
     }
 }
