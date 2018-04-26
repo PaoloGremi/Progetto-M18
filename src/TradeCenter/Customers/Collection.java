@@ -26,7 +26,7 @@ public class Collection {
         int i = 0;
 
         for (Card crd : cardSet){
-            HashSet<String> cardTags = crd.getListTag();  //F:meglio mettere metodo .getListTag in Card
+            HashSet<String> cardTags = crd.getListTag();  
 
             for(String tag : cardTags){
 
