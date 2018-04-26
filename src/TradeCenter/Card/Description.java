@@ -100,4 +100,15 @@ public class Description {
     public CardType getDescrType() {
         return descrType;
     }
+
+    
+    @Override
+    public boolean equals(Object obj) {
+        Description descr1=(Description)obj;
+        boolean condition=this.getName().equals(descr1.getName()) && this.getText().equals(descr1.getText()) && this.getDescrType().equals(descr1.getDescrType());
+        if(condition){
+            return true;
+        }
+        else return false;
+    }
 }
