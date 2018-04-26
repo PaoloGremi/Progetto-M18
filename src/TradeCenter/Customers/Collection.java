@@ -15,8 +15,8 @@ public class Collection {
 
     // Add a TradeCenter.Card to the TradeCenter.Card collection who calls this method.
     public boolean addCardToCollection(Card card) {
-        cardSet.add(card);
-        return true;
+        return cardSet.add(card);
+
     }
 
     // Search a TradeCenter.Card by its identificator in the TradeCenter.Card collection who calls this method.
@@ -26,11 +26,11 @@ public class Collection {
         int i = 0;
 
         for (Card crd : cardSet){
-            HashSet<String> cardTags = crd.getDescription().getListTag();
+            HashSet<String> cardTags = crd.getDescription().getListTag();  //F:meglio mettere metodo .getListTag in Card
 
             for(String tag : cardTags){
 
-                if(str == tag){
+                if(str.equals(tag)){
 
                     cards[i]=crd;
                     i++;
