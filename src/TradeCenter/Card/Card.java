@@ -23,4 +23,14 @@ public class Card {
     public Description getDescription() {
         return description;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        Card c=(Card)obj;
+        boolean condition=(this.id==c.id);
+        if(condition)
+            return true;
+        else return false;
+
+    }
 }
