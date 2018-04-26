@@ -1,5 +1,7 @@
 package TradeCenter.Card;
 
+import java.util.HashSet;
+
 public class Card {
 
     /**
@@ -15,6 +17,9 @@ public class Card {
         this.description = description;
     }
 
+    public HashSet<String> getListTag(){
+        return description.getListTag();
+    }
     public Description getDescription() {
         return description;
     }
