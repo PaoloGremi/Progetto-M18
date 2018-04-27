@@ -24,46 +24,76 @@ public class Customer {
         this.collection = new Collection();
     }
 
-    /** Method to add a Card to the Customers collection
+    /** Method to add a Card to the Customers collection.
      *
-     * @param card New Card to
+     * @param card New Card to add
      * @return boolean to check wheter or not the method ran fine
      */
-    public boolean addCard(Card card){
-        if(collection.addCardToCollection(card)){
-            return true;//inizializza
+    public void addCard(Card card){
+        try {
+            collection.addCardToCollection(card);
+        }catch (AddCardException e){
+            System.err.println(e.getMessage());
         }
-        return false;
+
     }
 
-    // Remove a TradeCenter.Card to the TradeCenter.Card collection of the TradeCenter.Customers who calls this method.
-    public boolean removeCard(Card card){
-        if(collection.removeCardFromCollection(card)){
-            return  true;
+    /**Remove a Card from the collection of the Customers who calls this method.
+     *
+     * @param card Card to remove
+     */
+    public void removeCard(Card card){
+        try {
+            collection.removeCardFromCollection(card);
+        }catch (RemoveCardException e){
+            System.err.println(e.getMessage());
         }
-        return  false;
+
+
     }
 
-    // The TradeCenter.Customers adds a new TradeCenter.Card that wasn't in the TradeCenter.Card catalog before.
-    public boolean createCard(Description d, int id){
-        Card newCard = new Card(id, d);
-        if(addCard(newCard)){
-            return true;
-        }
-        return false;
+    /**The customer create a new card that wasn't in the system before.
+     *
+     * @param description Description of the new card
+     * @param id ID of the new card
+     */
+    public void createCard(Description description, int id){
+        Card newCard = new Card(id, description);
+
+            addCard(newCard);
+
     }
-   
-    // Search a TradeCenter.Card by its identificator.
+
+    /**Search a Card in the collections of the customers by tags.
+     *
+     * @param string String to search cards in the customer's collection.
+     * @return Array of cards that match.
+     */
     public Card[] searchByString(String string){
-        Card[] cardsFound = collection.searchByString(string);
-        return cardsFound;
+
+        try {
+            Card[] cardsFound = collection.searchByString(string);
+            return cardsFound;
+        }catch (CardNotFoundException e){
+            e.cardNotFound(getId(),getUsername());
+        }
+
+        return null;
+
     }
 
-    //creare metodo per rimuoversi che ritorna il proprio id
+    /**Getter of the customer's id.
+     *
+     * @return Id of the customer
+     */
     public   String getId(){
         return id;
     }
 
+    /**Getter of the customer's username
+     *
+     * @return Username of the customer.
+     */
     public String getUsername() {
         return username;
     }
