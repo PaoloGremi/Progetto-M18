@@ -1,4 +1,4 @@
-import TradeCenter.Description;
+import TradeCenter.Card.Description;
 import TradeCenter.TradeCenter;
 
 public class TestMain {

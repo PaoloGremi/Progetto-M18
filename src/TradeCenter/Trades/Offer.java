@@ -25,10 +25,14 @@ public class Offer extends ATrade {
      * @param card Card to be added
      * @param customer Customer to whose collection the Card should be added
      */
-    public void addCardToCollection(Card card, Customer customer) { //todo: add try-catch and exceptions
-        if(isItTheFirstCustomer(customer)) {
-            super.getCollection1().addCardToCollection(card);
-        } else super.getCollection2().addCardToCollection(card);
+    public void addCardToCollection(Card card, Customer customer) {
+        try {
+            if (isItTheFirstCustomer(customer)) {
+                super.getCollection1().addCardToCollection(card);
+            } else super.getCollection2().addCardToCollection(card);
+        } catch (AddCardException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -37,9 +41,13 @@ public class Offer extends ATrade {
      * @param customer Customer from whose collection the Card should be removed
      */
     public void removeCardFromCollection(Card card, Customer customer) {
-        if (isItTheFirstCustomer(customer)) {
-            super.getCollection1().removeCardFromCollection(card);
-        } else super.getCollection2().removeCardFromCollection(card);
+        try {
+            if (isItTheFirstCustomer(customer)) {
+                super.getCollection1().removeCardFromCollection(card);
+            } else super.getCollection2().removeCardFromCollection(card);
+        } catch (AddCardException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -59,7 +67,7 @@ public class Offer extends ATrade {
     public String toString() {
         StringBuilder tmp = new StringBuilder();
         tmp.append("\nOn the ");
-        tmp.append(getDate().getDate());
+        tmp.append(getDate());
         tmp.append("\n Offers: ");
         tmp.append(getCollection1().toString());
         tmp.append("\n For: ");

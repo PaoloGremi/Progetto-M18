@@ -29,8 +29,11 @@ public abstract class ATrade {
     protected ATrade(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
         this.customer1 = customer1;
         this.customer2 = customer2;
-        this.collection1 = collection1;
-        this.collection2 = collection2;
+        if (collection1 == null | collection2 == null) throw new EmptyCollectionException();
+        else {
+            this.collection1 = collection1;
+            this.collection2 = collection2;
+        }
         this.date = new Date();
     }
 
