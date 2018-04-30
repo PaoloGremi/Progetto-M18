@@ -16,7 +16,7 @@ public class AddCardTest {
         Customer customer = tradeCenter.searchCustomer("nome");         //rendere più effieciente il prendere un customer
         try{
             //todo vedere perche devo dare io l'id alla carta, cosi non sarebbe univoco
-            Card card = new Card(1, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CustomerTests/drago.jpg"));
+            Card card = new Card(1, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CardTests/drago.jpg"));
             customer.addCard(card);
             customer.removeCard(card);
         }catch (IOException e) {
@@ -25,7 +25,7 @@ public class AddCardTest {
 
         //caso sfavorevole - provo ad aggiungere una carta ma l'url dell'immagine è sbagliato
         try{
-            Card card = new Card(2, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CustomerTests/drag.jpg"));
+            Card card = new Card(2, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CardTests/drag000.jpg"));
             customer.addCard(card);
             customer.removeCard(card);
         }catch (IOException e) {
@@ -34,7 +34,7 @@ public class AddCardTest {
 
         //caso sfavorevole - provo a rimuovere una carta che non c'è
         try{
-            customer.removeCard(new Card(1, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CustomerTests/drago.jpg")));
+            customer.removeCard(new Card(1, new Description("drago","bianco occhi blu",CardType.YuGiOh,"src/Test/CardTests/drago.jpg")));
         }catch (IOException e){
             e.printStackTrace();
         }
