@@ -1,7 +1,10 @@
 package TradeCenter;
 
 public class UserNotFoundException extends RuntimeException{
+    /**
+     * Exception that handle when there is no user that have the name searched
+     */
     public UserNotFoundException() {
-        super("Utente non trovato");
+        super("User Not Found");
     }
 }

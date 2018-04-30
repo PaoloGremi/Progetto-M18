@@ -43,6 +43,8 @@ public class TradeCenter {
      */
     public void addCustomer(String username, String password) {
         String id = customerID();
+        //todo mettere criterio per password es: almeno una maiuscola e un numero
+        //todo mettere poi la relativa eccezione
         customers.put(id, new Customer(id,username,password));
     }
 

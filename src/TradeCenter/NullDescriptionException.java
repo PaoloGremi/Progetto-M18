@@ -1,7 +1,11 @@
 package TradeCenter;
 
+
 public class NullDescriptionException extends NullPointerException {
+    /**
+     * Exception that handle the case when a user tries to add a description that is not valid
+     */
     public NullDescriptionException(){
-        super("Non è possibile aggiungere una descrizione nulla");
+        super("Impossible adding a null description");
     }
 }
