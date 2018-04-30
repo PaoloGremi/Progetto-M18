@@ -1,6 +1,7 @@
 package TradeCenter;
 
 import TradeCenter.Card.CardCatalog;
+import TradeCenter.Customers.CardNotFoundException;
 import TradeCenter.Trades.Trade;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
@@ -61,7 +62,14 @@ public class TradeCenter {
      * @param id user identifier
      */
     public void removeCustomer(int id) {
-        customers.remove(id);                           //capire come passare id
+        try{
+            if(customers.remove(id) == null){                                 //capire come passare id
+                throw new UserNotFoundException();          //todo: non bellissimo, vedere come migliorarlo
+            }
+        }catch (UserNotFoundException e){
+            e.printStackTrace();
+        }
+
     }
 
     /**
@@ -76,7 +84,8 @@ public class TradeCenter {
                 return customers.get(key);
             }
         }
-        return null;
+        //user not found
+        throw new UserNotFoundException();                 //todo Serve mettere il throws nwll'header??
     }
 
     /**
@@ -85,10 +94,25 @@ public class TradeCenter {
      * @param description the card
      */
     public void addDescription(Description description){
-        catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
+        try{
+            catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
+        }catch (NullDescriptionException e){
+            e.printStackTrace();                               //todo meglio cosi o con il throws nell'header del metodo??
+        }
     }
 
     //todo: puo essere utile mettere il metodo remove description ??
+
+    /**
+     * Method that search if the card is in the database or not
+     *
+     * @param description the card that we need to check
+     * @return boolean True if the card is in the database
+     */
+    public boolean searchCard(Description description){
+        //fino a che il metodo non c'è deve ritornare sempre true
+        return true;                //todo mettere il metodo che cerca nel DB
+    }
 
     /**
      * Users can search a card, they see all users that match the search
@@ -97,11 +121,15 @@ public class TradeCenter {
      * @return a list of customers with their own collections
      */
     public HashMap<Customer, Card[]> searchByString(String searchString){       //todo ritorna card[] o meglio collection??
-        HashMap<Customer, Card[]> tmp = new HashMap<>();
+        HashMap<Customer, Card[]> searched = new HashMap<>();
         for(String key : customers.keySet()){
-            tmp.put(customers.get(key), customers.get(key).searchByString(searchString));
+            searched.put(customers.get(key), customers.get(key).searchByString(searchString));
         }
-        return tmp;
+        if(searched.size() == 0){
+            //nothing found
+            throw new CardNotFoundException();          //todo eccezione da risolvere, se nessuno ha la carta il software deve continuare
+        }
+        return searched;
     }
 
     /**
