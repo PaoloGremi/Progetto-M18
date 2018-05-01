@@ -13,7 +13,8 @@ public class Collection {
         this.cardSet = new HashSet<Card>();
     }
 
-    /**Add a Card to the collection of the customer who calls this method.
+    /**
+     * Add a Card to the collection of the customer who calls this method.
      *
      * @param card Card to add.
      * @return boolean to check wheter or not the method ran fine
@@ -28,7 +29,8 @@ public class Collection {
         return true;
     }
 
-    /**Search a Card by its tads in the collection of the customer.
+    /**
+     * Search a Card by its tads in the collection of the customer.
      *
      * @param string String to search in the HashSet of the tags for every single card in the collection.
      * @return Array of cards that match.
@@ -71,10 +73,11 @@ public class Collection {
 
     }
 
-    /**Verify that the card is in the collection of the customer.
+    /**V
+     * erify that the card is in the collection of the customer.
      *
      * @param card Card to search in the collection.
-     * @return boolean to check wheter or not the method ran fine
+     * @return boolean to check wheter or not the method ran fine'
      */
     public boolean isInTheCollection(Card card){
         for(Card cardInThecollection : cardSet){
@@ -82,6 +85,15 @@ public class Collection {
         }
 
         return false;
+    }
+
+    /**
+     * Check if the collection of the customer is empty.
+     *
+     * @return boolean to check wheter or not the method ran fine.
+     */
+    public boolean collectionIsEmpty(){
+        return  cardSet.isEmpty();
     }
 
 }

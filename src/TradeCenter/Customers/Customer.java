@@ -18,10 +18,14 @@ public class Customer {
     private Collection collection;
 
     public Customer(String id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.collection = new Collection();
+        try {
+            this.id = id;
+            this.username = username;
+            this.password = checkPasswordConditions(password);
+            this.collection = new Collection();
+        }catch (CheckPasswordConditionsException e){
+            throw new CheckPasswordConditionsException();
+        }
     }
 
     /** Method to add a Card to the Customers collection.
@@ -75,10 +79,49 @@ public class Customer {
             Card[] cardsFound = collection.searchByString(string);
             return cardsFound;
         }catch (CardNotFoundException e){
-            e.cardNotFound(getId(),getUsername());
+            System.err.println(e.cardNotFound(getId(),getUsername()));
         }
 
         return null;
+
+    }
+
+    /**
+     * Verify that the password is valid under the conditions: eight characters, one number, one uppercase and one lowercas.
+     *
+     * @param password Password to verify if valid.
+     * @return Password accepted.
+     */
+    public String checkPasswordConditions(String password){
+
+        boolean noUppercase = true;
+        boolean noLowercase = true;
+        boolean noNumber = true;
+        boolean length = true;
+
+        int passwordLength = password.length();
+
+        if(passwordLength > 7){
+            length = false;
+        }
+
+        for(int index = 0; index < passwordLength; index++){
+            if(Character.isUpperCase(password.charAt(index))){
+                noUppercase = false;
+            }
+            if(Character.isLowerCase(password.charAt(index))){
+                noLowercase = false;
+            }
+            if((int)password.charAt(index)>47 && (int)password.charAt(index)<58){
+                noNumber = false;
+            }
+        }
+
+        if(noLowercase || noNumber || noUppercase || length){
+            throw new CheckPasswordConditionsException();
+        }
+
+        return  password;
 
     }
 
