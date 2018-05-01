@@ -3,11 +3,10 @@ package TradeCenter.Trades;
 import TradeCenter.Customers.*;
 import TradeCenter.Card.Card;
 
+/**
+ * Class for the Offer between two Customers. Extends ATrade class.
+ */
 public class Offer extends ATrade {
-
-    /**
-     * Class for the Offer between two Customers. Extends ATrade class.
-     */
 
     /**
      * Make an offer between two customers

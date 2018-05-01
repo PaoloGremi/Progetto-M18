@@ -2,7 +2,9 @@ package TradeCenter.Trades;
 
 import java.util.ArrayList;
 
+
 public class Trade extends ATrade {
+
     /**
      * Trade class
      * @param history List of all past offers in the current trade
