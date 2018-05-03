@@ -8,6 +8,9 @@ import TradeCenter.Card.Card;
  */
 public class Offer extends ATrade {
 
+    // Set to True if this offer approves the previously received offer (can't be set True for the first offer in a trade)
+    private boolean acceptedOffer = false;
+
     /**
      * Make an offer between two customers
      * @param customer1 First Customers
@@ -15,7 +18,7 @@ public class Offer extends ATrade {
      * @param collection1 First Customers's collection to be exchanged
      * @param collection2 Second Customers's collection to be exchanged
      */
-    protected Offer(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
+    public Offer(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
         super(customer1, customer2, collection1, collection2);
     }
 
@@ -59,6 +62,21 @@ public class Offer extends ATrade {
     }
 
     /**
+     * Accepts the offer received
+     */
+    public void acceptTheOffer() {
+        this.acceptedOffer = true;
+    }
+
+    /**
+     * Checks if this offer is an "accepted offer"
+     * @return offer's state
+     */
+    public boolean isAcceptedOffer() {
+        return acceptedOffer;
+    }
+
+    /**
      * A neater toString to print the Offer's specifics
      * @return improved listing of Offer's specifics
      */
@@ -67,10 +85,14 @@ public class Offer extends ATrade {
         StringBuilder tmp = new StringBuilder();
         tmp.append("\nOn the ");
         tmp.append(getDate());
-        tmp.append("\n Offers: ");
-        tmp.append(getCollection1().toString());
+        tmp.append("\n");
+        tmp.append(super.getCustomer1().getUsername());
+        tmp.append(" offers: ");
+        tmp.append(getCollection1().toString()); //todo FIX THE DAMN TOSTRING ON THE COLLECTIONS
         tmp.append("\n For: ");
         tmp.append(getCollection2().toString());
+        tmp.append(" from user ");
+        tmp.append(super.getCustomer2().getUsername());
 
         return tmp.toString();
     }

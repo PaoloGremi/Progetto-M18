@@ -11,7 +11,7 @@ public class Trade extends ATrade {
      * @param tradeCounter Counter of how many offers have been made in the current trade
      * @param doneDeal Boolean value to know when a deal is over, ending the current trade
      */
-    private ArrayList<Offer> history;
+    private ArrayList<Offer> history = new ArrayList<>();
     private int tradeCounter;
     private boolean doneDeal;
 
@@ -19,7 +19,7 @@ public class Trade extends ATrade {
      * Start a trade from an offer
      * @param offer Starting offer
      */
-    protected Trade(Offer offer) {
+    public Trade(Offer offer) {
         super(offer.getCustomer1(), offer.getCustomer2(), offer.getCollection1(), offer.getCollection2());
         this.history.add(offer);
         this.tradeCounter = 1;
@@ -31,11 +31,11 @@ public class Trade extends ATrade {
      * @param offer New offer to update current trade and save into history
      * @return boolean to check wheter or not the method ran fine
      */
-    protected boolean update(Offer offer) {
+    public void update(Offer offer) {
         this.history.add(offer);
         this.tradeCounter += 1;
         super.updateParameters(offer.getCollection1(), offer.getCollection2(), offer.getDate());
-        return true;
+        this.checkDeal(offer);
     }
 
     /**
@@ -43,11 +43,10 @@ public class Trade extends ATrade {
      * @param offer Last offer to compare to previous one
      * @return if last offer has same plate as the previous one, meaning the user accepted the offer
      */
-    public boolean checkDeal(Offer offer) { //to check if it actually works
-        if(history.get(tradeCounter).getCollection1().equals(offer.getCollection1()) && history.get(tradeCounter).getCollection2().equals(offer.getCollection2())) {
+    private void checkDeal(Offer offer) {
+        if(history.get(tradeCounter-1).isAcceptedOffer()) {
             this.doneDeal = true;
         }
-        return doneDeal;
     }
 
     /**
