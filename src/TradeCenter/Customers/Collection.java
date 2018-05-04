@@ -96,4 +96,18 @@ public class Collection {
         return  cardSet.isEmpty();
     }
 
+    @Override
+    public String toString() {
+        StringBuilder tmp = new StringBuilder();
+        int index = 1;
+        for(Card card :cardSet){
+            tmp.append(card.toString());
+            if(index != cardSet.size()){
+                tmp.append(", ");
+            }
+
+        }
+
+        return tmp.toString();
+    }
 }

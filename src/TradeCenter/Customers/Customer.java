@@ -17,15 +17,13 @@ public class Customer {
     private String password;
     private Collection collection;
 
-    public Customer(String id, String username, String password) {
-        try {
+    public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
+
             this.id = id;
             this.username = username;
             this.password = checkPasswordConditions(password);
             this.collection = new Collection();
-        }catch (CheckPasswordConditionsException e){
-            throw new CheckPasswordConditionsException();
-        }
+
     }
 
     /** Method to add a Card to the Customers collection.
