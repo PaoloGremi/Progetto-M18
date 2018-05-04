@@ -33,7 +33,7 @@ public class Collection {
      * Search a Card by its tads in the collection of the customer.
      *
      * @param string String to search in the HashSet of the tags for every single card in the collection.
-     * @return Array of cards that match.
+     * @return HashSet of cards that match.
      */
     public HashSet<Card> searchByString(String string) {
 

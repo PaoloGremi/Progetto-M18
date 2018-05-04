@@ -71,7 +71,7 @@ public class Customer {
     /**Search a Card in the collections of the customers by tags.
      *
      * @param string String to search cards in the customer's collection.
-     * @return Array of cards that match.
+     * @return HashSet of cards that match.
      */
     public HashSet<Card> searchByString(String string){
 
