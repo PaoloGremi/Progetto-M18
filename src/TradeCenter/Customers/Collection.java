@@ -35,10 +35,10 @@ public class Collection {
      * @param string String to search in the HashSet of the tags for every single card in the collection.
      * @return Array of cards that match.
      */
-    public Card[] searchByString(String string) {
+    public HashSet<Card> searchByString(String string) {
 
-        Card[] cards = new Card[N];       //todo: METTERE CARDINALITA VARIABILE
-        int i = 0;
+        HashSet<Card> cards = new HashSet<Card>();       //todo: METTERE CARDINALITA VARIABILE
+
 
         for (Card card : cardSet){
             HashSet<String> cardTags = card.getDescription().getListTag();
@@ -47,14 +47,14 @@ public class Collection {
 
                 if(string == tag){
 
-                    cards[i]=card;
-                    i++;
+                    cards.add(card);
+
 
                 }
             }
         }
 
-        if(cards[0]==null) throw  new CardNotFoundException();
+        if(cards.isEmpty()) throw  new CardNotFoundException();
 
         return cards;
     }

@@ -3,6 +3,8 @@ package TradeCenter.Customers;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 
+import java.util.HashSet;
+
 public class Customer {
 
 
@@ -71,10 +73,10 @@ public class Customer {
      * @param string String to search cards in the customer's collection.
      * @return Array of cards that match.
      */
-    public Card[] searchByString(String string){
+    public HashSet<Card> searchByString(String string){
 
         try {
-            Card[] cardsFound = collection.searchByString(string);
+            HashSet<Card> cardsFound = collection.searchByString(string);
             return cardsFound;
         }catch (CardNotFoundException e){
             System.err.println(e.cardNotFound(getId(),getUsername()));
