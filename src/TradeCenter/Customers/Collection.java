@@ -73,8 +73,8 @@ public class Collection {
 
     }
 
-    /**V
-     * erify that the card is in the collection of the customer.
+    /**
+     * Verify that the card is in the collection of the customer.
      *
      * @param card Card to search in the collection.
      * @return boolean to check wheter or not the method ran fine'
@@ -95,6 +95,12 @@ public class Collection {
     public boolean collectionIsEmpty(){
         return  cardSet.isEmpty();
     }
+
+    /**
+     * Override toString method
+     *
+     * @return New String for the collection class
+     */
 
     @Override
     public String toString() {
