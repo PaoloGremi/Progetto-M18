@@ -7,7 +7,6 @@ import TradeCenter.Card.Card;
 public class Collection {
 
     private HashSet<Card> cardSet;
-    private int N = 100;
 
     public Collection() {
         this.cardSet = new HashSet<Card>();
