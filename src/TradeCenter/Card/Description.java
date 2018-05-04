@@ -9,6 +9,7 @@ import java.util.HashSet;
 public class Description {
 
     /**
+     * Class Description
      * @param name: Descr's name
      * @param text: Descr's text description
      * @param picUrl: Url to load descr's picture
@@ -24,9 +25,17 @@ public class Description {
     private CardType descrType;
 
     // Initialize a TradeCenter.Card description with the name, a text and a picture of the TradeCenter.Card.
+    /**
+     * Constructor method
+     * @param name  name: Descr's name
+     * @param text Descr's text description
+     * @param descrType: Descr's type
+     * @param picUrl: Url to load descr's picture
+     * */
     public Description(String name,String text,CardType descrType,String picUrl) throws IOException {
         this.name=name;
         this.text=text;
+        this.descrType=descrType;
         this.picUrl=picUrl;
         this.pic=null;
         this.listTag=new HashSet<>();
@@ -35,13 +44,21 @@ public class Description {
         autoSubstringTag();
     }
 
-    // Load an image by its url.
+
+    /**
+     * Load an image by its url, set pic
+     * @param url url of the pic
+     * */
     private void loadImage(String url) throws IOException {
         File picFile= new File(url);
         pic= ImageIO.read(picFile);
     }
 
-    // Generate a tags splitting text, doesn't consider worlds shorter than two letters (e.g. articles)
+
+    /**
+     *Generate a tags splitting text, doesn't consider worlds shorter than two letters (e.g. articles)
+     *
+     * */
     private void autoSplittedTag(){
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
@@ -52,7 +69,10 @@ public class Description {
         }
     }
 
-    //Generate tags from all possible combination of substring of text
+    /**
+     *Generate tags from all possible combination of substring of text
+     *
+     * */
     private void autoSubstringTag(){
         String[] textSplitted=text.split(" ");
         int length=textSplitted.length;
@@ -65,7 +85,9 @@ public class Description {
         }
     }
 
-    // Print the TradeCenter.Card tags.
+    /**
+     * Print the TradeCenter.Card tags.
+     * */
     public void printTag(){
         for (String tag:
              listTag) {
@@ -74,29 +96,48 @@ public class Description {
     }
     
     // Add a tag for the TradeCenter.Card.
+    /**
+     * Add a tag for the TradeCenter.Card.
+     * @param tag
+     * @return boolean todo: vedi cosa scrivere
+     * */
     public boolean addTag(String tag ){
         String tagLower=tag.toLowerCase(); // tutti tag lowerCase
         return listTag.add(tagLower);
     }
+    /**
+     * Getter for text
+     * @return text
+     * */
 
     public String getText() {
         return text;
     }
 
+    /**
+     * Getter of pic
+     * */
     public BufferedImage getPic() {
         return pic;
     }
 
-
+    /**
+     * Getter of name
+     * */
     public String getName() {
         return name;
     }
 
+    /**
+     * Getter of listTag
+     * */
     public HashSet<String> getListTag() {
         return listTag;
     }
 
-
+    /**
+     * Getter of descrType
+     * */
     public CardType getDescrType() {
         return descrType;
     }
@@ -110,5 +151,10 @@ public class Description {
             return true;
         }
         else return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: "+name+"    Description: "+text+"    Card's type:"+descrType;
     }
 }

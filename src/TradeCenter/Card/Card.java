@@ -31,6 +31,10 @@ public class Card {
         if(condition)
             return true;
         else return false;
+    }
 
+    @Override
+    public String toString() {
+        return "ID: "+id+""+description;
     }
 }
