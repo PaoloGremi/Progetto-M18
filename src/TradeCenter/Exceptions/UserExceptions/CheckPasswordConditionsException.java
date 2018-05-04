@@ -1,4 +1,4 @@
-package TradeCenter.Customers;
+package TradeCenter.Exceptions.UserExceptions;
 
 public class CheckPasswordConditionsException extends  RuntimeException {
     /**

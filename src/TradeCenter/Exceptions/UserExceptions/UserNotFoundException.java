@@ -1,4 +1,6 @@
-package TradeCenter;
+package TradeCenter.Exceptions.UserExceptions;
+
+import TradeCenter.TradeCenter;
 
 public class UserNotFoundException extends RuntimeException{
     /**

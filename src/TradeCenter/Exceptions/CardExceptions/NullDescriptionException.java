@@ -1,5 +1,7 @@
-package TradeCenter;
+package TradeCenter.Exceptions.CardExceptions;
 
+
+import TradeCenter.TradeCenter;
 
 public class NullDescriptionException extends NullPointerException {
     /**
