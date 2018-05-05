@@ -2,6 +2,7 @@ package TradeCenter.Trades;
 
 import java.util.Date;
 import TradeCenter.Customers.*;
+import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 
 public abstract class ATrade {
 
