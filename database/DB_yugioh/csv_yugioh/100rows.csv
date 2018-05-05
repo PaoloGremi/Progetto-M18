@@ -1,0 +1,97 @@
+1,Flame Swordsman,"""Flame Manipulator"" + ""Masaki the Legendary Swordsman""",LOB-003,5,1800,1600,18,3,NULL
+2,Charubin the Fire Knight,"""Monster Egg"" + ""Hinotama Soul""",LOB-015,3,1100,800,12,3,NULL
+3,Darkfire Dragon,"""Firegrass"" + ""Petit Dragon""",LOB-019,4,1500,1250,5,3,NULL
+4,Fusionist,"""Petit Angel"" + ""Mystical Sheep #2""",LOB-022,3,900,700,2,3,NULL
+5,Flame Ghost,"""Skull Servant"" + ""Dissolverock""",LOB-029,3,1000,800,20,3,NULL
+6,Legendary Sword,Increase the ATK and DEF of a Warrior-Type monster equipped with this card by 300 points.,LOB-040,NULL,NULL,NULL,NULL,7,NULL
+7,Beast Fangs,Increase the ATK and DEF of a Beast-Type monster equipped with this card by 300 points.,LOB-041,NULL,NULL,NULL,NULL,7,NULL
+8,Violet Crystal,Increase the ATK and DEF of a Zombie-Type monster equipped with this card by 300 points.,LOB-042,NULL,NULL,NULL,NULL,7,NULL
+9,Book of Secret Arts,Increase the ATK and DEF of a Spellcaster-Type monster equipped with this card by 300 points.,LOB-043,NULL,NULL,NULL,NULL,7,NULL
+10,Power of Kaishin,Increase the ATK and DEF of an Aqua-Type monster equipped with this card by 300 points.,LOB-044,NULL,NULL,NULL,NULL,7,NULL
+11,Dragon Capture Jar,"As long as this card remains face-up on the field, all face-up Dragon-Type monsters are changed to Defense Position and cannot change their Battle Position.",LOB-045,NULL,NULL,NULL,NULL,12,NULL
+12,Forest,"Increase the ATK and DEF of all Insect, Beast, Plant, and Beast-Warrior-Type monsters by 200 points.",LOB-046,NULL,NULL,NULL,NULL,8,NULL
+13,Wasteland,"Increase the ATK and DEF of all Dinosaur, Zombie, and Rock-Type monsters by 200 points.",LOB-047,NULL,NULL,NULL,NULL,8,NULL
+14,Mountain,"Increase the ATK and DEF of all Dragon, Winged Beast, and Thunder-Type monsters by 200 points.",LOB-048,NULL,NULL,NULL,NULL,8,NULL
+15,Sogen,Increase the ATK and DEF of all Beast-Warrior and Warrior-Type monsters by 200 points.,LOB-049,NULL,NULL,NULL,NULL,8,NULL
+16,Umi,"Increase the ATK and DEF of all Fish, Sea Serpent, Thunder, and Aqua-Type monsters by 200 points. Decrease the ATK and DEF of all Machine and Pyro-Type monsters by 200 points.",LOB-050,NULL,NULL,NULL,NULL,8,NULL
+17,Yami,Increase the ATK and DEF of all Fiend and Spellcaster-Type monsters by 200 points. Decrease the ATK and DEF of all Fairy-Type monsters by 200 points.,LOB-051,NULL,NULL,NULL,NULL,8,NULL
+18,Dark Hole,Destroy all monsters on the field.,LOB-052,NULL,NULL,NULL,NULL,5,NULL
+19,Raigeki,Destroy all monsters on your opponent's side of the field.,LOB-053,NULL,NULL,NULL,NULL,5,NULL
+20,Red Medicine,Increase your Life Points by 500 points.,LOB-054,NULL,NULL,NULL,NULL,5,NULL
+21,Sparks,Inflict 200 points of damage to your opponent's Life Points.,LOB-055,NULL,NULL,NULL,NULL,5,NULL
+22,Hinotama,Inflict 500 points of damage to your opponent's Life Points.,LOB-056,NULL,NULL,NULL,NULL,5,NULL
+23,Fissure,"Destroy 1 face-up monster with the lowest ATK on your opponent's side of the field. (If it's a tie, you get to choose.)",LOB-057,NULL,NULL,NULL,NULL,5,NULL
+24,Trap Hole,"When your opponent Normal Summons or Flip Summons a monster with an ATK of 1000 points or more, destroy the monster.",LOB-058,NULL,NULL,NULL,NULL,11,NULL
+25,Polymerization,"Send Fusion Material Monsters that are listed by a Fusion Monster Card from your hand or your side of the field to the Graveyard, and Special Summon the Fusion Monster from your Fusion Deck.",LOB-059,NULL,NULL,NULL,NULL,5,NULL
+26,Remove Trap,Select 1 face-up Trap Card on the field and destroy it.,LOB-060,NULL,NULL,NULL,NULL,5,NULL
+27,Two-Pronged Attack,Select and destroy 2 of your monsters and 1 of your opponent's monsters.,LOB-061,NULL,NULL,NULL,NULL,11,NULL
+28,Gravedigger Ghoul,Select up to 2 Monster Card(s) from your opponent's Graveyard. Remove the selected card(s) from play.,LOB-065,NULL,NULL,NULL,NULL,5,NULL
+29,Karbonala Warrior,"""M-Warrior #1"" + ""M-Warrior #2""",LOB-067,4,1500,1200,18,3,NULL
+30,Reaper of the Cards,"FLIP: Select 1 Trap Card on the field and destroy it. If the selected card is Set, pick up and see the card. If it is a Trap Card, it is destroyed. If it is a Spell Card, return it to its original position.",LOB-071,5,1380,1930,7,2,NULL
+31,Dragoness the Wicked Knight,"""Armaill"" + ""One-Eyed Shield Dragon""",LOB-086,3,1200,900,18,3,NULL
+32,Dark Energy,Increase the ATK and DEF of a Fiend-Type monster equipped with this card by 300 points.,LOB-088,NULL,NULL,NULL,NULL,7,NULL
+33,Laser Cannon Armor,Increase the ATK and DEF of an Insect-Type monster equipped with this card by 300 points.,LOB-089,NULL,NULL,NULL,NULL,7,NULL
+34,Vile Germs,Increase the ATK and DEF of a Plant-Type monster equipped with this card by 300 points.,LOB-090,NULL,NULL,NULL,NULL,7,NULL
+35,Silver Bow and Arrow,Increase the ATK and DEF of a Fairy-Type monster equipped with this card by 300 points.,LOB-091,NULL,NULL,NULL,NULL,7,NULL
+36,Dragon Treasure,Increase the ATK and DEF of a Dragon-Type monster equipped with this card by 300 points.,LOB-092,NULL,NULL,NULL,NULL,7,NULL
+37,Electro-Whip,Increase the ATK and DEF of a Thunder-Type monster equipped with this card by 300 points.,LOB-093,NULL,NULL,NULL,NULL,7,NULL
+38,Mystical Moon,Increase the ATK and DEF of a Beast-Warrior-Type monster equipped with this card by 300 points.,LOB-094,NULL,NULL,NULL,NULL,7,NULL
+39,Stop Defense,Select 1 Defense Position monster on your opponent's side of the field and change it to Attack Position.,LOB-095,NULL,NULL,NULL,NULL,5,NULL
+40,Machine Conversion Factory,Increase the ATK and DEF of a Machine-Type monster equipped with this card by 300 points.,LOB-096,NULL,NULL,NULL,NULL,7,NULL
+41,Raise Body Heat,Increase the ATK and DEF of a Dinosaur-Type monster equipped with this card by 300 points.,LOB-097,NULL,NULL,NULL,NULL,7,NULL
+42,Follow Wind,Increase the ATK and DEF of a Winged Beast-Type monster equipped with this card by 300 points.,LOB-098,NULL,NULL,NULL,NULL,7,NULL
+43,Goblin's Secret Remedy,Increase your Life Points by 600 points.,LOB-099,NULL,NULL,NULL,NULL,5,NULL
+44,Final Flame,Inflict 600 points of damage to your opponent's Life Points.,LOB-100,NULL,NULL,NULL,NULL,5,NULL
+45,Swords of Revealing Light,"Flip all face-down monsters on your opponent's side of the field face-up. This card remains face-up on the field for 3 of your opponent's turns. As long as this card remains face-up on the field, your opponent cannot declare an attack.",LOB-101,NULL,NULL,NULL,NULL,5,NULL
+46,Metal Dragon,"""Steel Ogre Grotto #1"" + ""Lesser Dragon""",LOB-102,6,1850,1700,10,3,NULL
+47,Armed Ninja,"FLIP: Select 1 Spell Card on the field and destroy it. If the selected card is Set, pick up and see the card. If it is a Spell Card, it is destroyed. If it is a Trap Card, return it to its original position.",LOB-106,1,300,300,18,2,NULL
+48,Flower Wolf,"""Silver Fang"" + ""Darkworld Thorns""",LOB-107,5,1800,1400,2,3,NULL
+49,Man-Eater Bug,FLIP: Destroy 1 monster on the field.,LOB-108,2,450,600,9,2,NULL
+50,Hane-Hane,FLIP: Select 1 monster on the field and return it to its owner's hand.,LOB-110,2,450,500,2,2,NULL
+51,Monster Reborn,Select 1 monster from either you or your opponent's Graveyard. Special Summon the selected monster on your side of the field.,LOB-118,NULL,NULL,NULL,NULL,5,NULL
+52,Pot of Greed,Draw 2 cards from your Deck.,LOB-119,NULL,NULL,NULL,NULL,5,NULL
+53,Exodia the Forbidden One,"When you have ""Right Leg of the Forbidden One"", ""Left Leg of the Forbidden One"", ""Right Arm of the Forbidden One"" and ""Left Arm of the Forbidden One"" in addition to this card in your hand, you win the Duel.",LOB-124,3,1000,1000,16,2,NULL
+54,Gaia the Dragon Champion,"""Gaia The Fierce Knight"" + ""Curse of Dragon""",LOB-125,7,2600,2100,5,3,NULL
+55,Gate Guardian,"This card cannot be Normal Summoned or Set. This card can only be Special Summoned by Tributing ""Sanga of the Thunder"", ""Kazejin"" and ""Suijin"".",MRD-000,11,3750,3400,18,2,NULL
+56,Larvae Moth,"This monster cannot be Normal Summoned or Set. This card can only be Special Summoned by offering ""Petit Moth"" as a Tribute on the 2nd of your turns after ""Petit Moth"" has been equipped with ""Cocoon of Evolution"".",MRD-007,2,500,400,9,2,NULL
+57,Harpie Lady Sisters,"This card cannot be Normal Summoned or Set. This card can only be Special Summoned by the effect of ""Elegant Egotist"".",MRD-009,6,1950,2100,19,2,NULL
+58,Cocoon of Evolution,"You can equip this card from your hand as an Equip Spell Card to a face-up ""Petit Moth"" on the field. If equipped, the ATK and DEF of ""Cocoon of Evolution"" is applied to ""Petit Moth"".",MRD-011,3,0,2000,9,2,NULL
+59,Mask of Darkness,FLIP: Select 1 Trap Card from your Graveyard. Add the selected card to your hand.,MRD-014,2,900,400,7,2,NULL
+60,White Magical Hat,"When this card inflicts Battle Damage to your opponent's Life Points, your opponent discards 1 card randomly from his/her hand.",MRD-016,3,1000,700,16,2,NULL
+61,Big Eye,"FLIP: See the 5 cards from the top of your Deck, arrange them in any order desired, and replace them on top of the Deck",MRD-017,4,1200,1000,7,2,NULL
+62,B. Skull Dragon,"""Summoned Skull"" + ""Red-Eyes B. Dragon""",MRD-018,9,3200,2500,5,3,NULL
+63,Masked Sorcerer,"When this card inflicts Battle Damage to your opponent's Life Points, draw 1 card from your Deck.",MRD-019,4,900,1400,16,2,NULL
+64,Roaring Ocean Snake,"""Mystic Lamp"" + ""Hyosube""",MRD-020,6,2100,1800,1,3,NULL
+65,Elegant Egotist,"You can only activate this card when there are 1 or more ""Harpie Lady"" on the field. Special Summon 1 ""Harpie Lady"" or ""Harpie Lady Sisters"" from your hand or your Deck.",MRD-024,NULL,NULL,NULL,NULL,5,NULL
+66,Sanga of the Thunder,You can only activate this card's effect during your opponent's damage calculation. Make the ATK of a monster attacking this card 0 during damage calculation. This effect can only be used once as long as this card remains face-up on the field.,MRD-025,7,2600,2200,17,2,NULL
+67,Kazejin,You can only activate this card's effect during your opponent's damage calculation. Make the ATK of a monster attacking this card 0 during damage calculation. This effect can only be used once as long as this card remains face-up on the field.,MRD-026,7,2400,2200,16,2,NULL
+68,Suijin,You can only activate this card's effect during your opponent's damage calculation. Make the ATK of a monster attacking this card 0 during damage calculation. This effect can only be used once as long as this card remains face-up on the field.,MRD-027,7,2500,2400,1,2,NULL
+69,Mystic Lamp,This monster can attack your opponent's Life Points directly,MRD-028,1,400,300,16,2,NULL
+70,Steel Scorpion,"A non Machine-Type Monster attacking ""Steel Scorpion"" will be destroyed at the End Phase of your opponent's 2nd turn after the attack.",MRD-029,1,250,300,10,2,NULL
+71,Leghul,This monster can attack your opponent's Life Points directly.,MRD-031,1,300,350,9,2,NULL
+72,Ooguchi,This monster can attack your opponent's Life Points directly.,MRD-032,1,300,250,1,2,NULL
+73,Blast Juggler,You can only activate this effect during your Standby Phase. Offer this face-up card as a Tribute to select and destroy 2 face-up monsters with an ATK 1000 or less.,MRD-034,3,800,900,10,2,NULL
+74,Jinzo #7,This monster can attack your opponent's Life Points directly.,MRD-035,2,500,400,10,2,NULL
+75,Magician of Faith,FLIP: Select 1 Spell Card in your Graveyard. Add it to your hand.,MRD-036,1,300,400,16,2,NULL
+76,Deepsea Shark,"""Bottom Dweller"" + ""Tongyo""",MRD-038,5,1900,1600,8,3,NULL
+77,Kaminari Attack,"""Ocubeam"" + ""Mega Thunderball""",MRD-041,5,1900,1400,17,3,NULL
+78,Rainbow Flower,This monster can attack your opponent's Life Points directly.,MRD-042,2,400,500,11,2,NULL
+79,Empress Judge,"""Queen's Double"" + ""Hibikime""",MRD-046,6,2100,1700,18,3,NULL
+80,Electric Lizard,"A non Zombie-Type monster attacking ""Electric Lizard"" cannot attack on its following turn.",MRD-048,3,850,800,17,2,NULL
+81,Queen's Double,This monster can attack your opponent's Life Points directly.,MRD-051,1,350,300,18,2,NULL
+82,Fake Trap,"You can only activate this card when your opponent uses an effect of a Spell, Trap, or Effect Monster to destroy Trap Card(s) on your side of the field. Destroy this card as a substitute of those Trap Card(s) and the other Trap Card(s) are not destroyed. If a Set card(s) would have been destroyed, pick up and see the Set card(s).",MRD-056,NULL,NULL,NULL,NULL,11,NULL
+83,Tribute To The Doomed,Discard 1 card from your hand. Select 1 monster on the field and destroy it.,MRD-057,NULL,NULL,NULL,NULL,5,NULL
+84,Soul Release,Select up to 5 cards from either your or your opponent's Graveyard(s) and remove them from play.,MRD-058,NULL,NULL,NULL,NULL,5,NULL
+85,The Cheerful Coffin,Discard up to 3 Monster Cards from your hand to the Graveyard.,MRD-059,NULL,NULL,NULL,NULL,5,NULL
+86,Change of Heart,Select 1 monster on your opponent's side of the field. Take control of the selected monster until the End Phase of this turn.,MRD-060,NULL,NULL,NULL,NULL,5,NULL
+87,Swamp Battleguard,"Increase the ATK of this monster by 500 points for every face-up ""Lava Battleguard"" on your side of the field.",MRD-063,5,1800,1500,18,2,NULL
+88,Time Wizard,"Toss a coin and call it. If you call it right, destroy all monsters on your opponent's side of the field. If you call it wrong, destroy all monsters on your side of the field, and you lose Life Points equal to half the total ATK of the destroyed monsters. You can only use this effect once per turn, during your Main Phase.",MRD-065,2,500,400,16,2,NULL
+89,Dragon Piper,"FLIP: Destroy all face-up ""Dragon Capture Jar""(s) on the field. If you destroy any, change all face-up Dragon-Type monsters on the field to Attack Position.",MRD-067,3,200,1800,12,2,NULL
+90,Sangan,"When this card is sent from the field to the Graveyard, select 1 monster with an ATK of 1500 or less from your Deck, show it to your opponent, and add it to your hand. Then shuffle your Deck.",MRD-069,3,1000,600,7,2,NULL
+91,Great Moth,"This monster cannot be Normal Summoned or Set. This card can only be Special Summoned by Tributing ""Petit Moth"" on the 4th of your turns after ""Petit Moth"" has been equipped with ""Cocoon of Evolution"".",MRD-070,8,2600,2500,9,2,NULL
+92,Kuriboh,Discard this card. Make the Battle Damage inflicted to your Life Points by 1 of your opponent's monsters 0. You can only use this effect during your opponent's Battle Phase.,MRD-071,1,300,200,7,2,NULL
+93,Castle of Dark Illusions,"FLIP: Increase the ATK and DEF of all Zombie-Type monsters by 200 points. As long as this card remains face-up on the field, the ATK and DEF of Zombie-Type monsters continues to increase by 200 points during each of your Standby Phases. This effect continues until your 4th turn after the card is activated.",MRD-073,4,920,1930,7,2,NULL
+94,Catapult Turtle,Tribute 1 monster on your side of the field. Inflict damage equal to half of the Tributed monster's ATK to your opponent's Life Points.,MRD-075,5,1000,2000,1,2,NULL
+95,Rabid Horseman,"""Battle Ox"" + ""Mystic Horseman""",MRD-077,6,2000,1700,3,3,NULL
+96,Crass Clown,"When this card is changed from Defense Position to Attack Position, return 1 monster on your opponent's side of the field to the owner's hand.",MRD-078,4,1350,1400,7,2,NULL
+97,Pumpking the King of Ghosts,"If ""Castle of Dark Illusions"" is face-up on the field, increase the ATK and DEF of this card by 100 points. As long as this ""Castle of Dark Illusions"" remains face-up on the field, the ATK and DEF of this card continues to increase by 100 points during each of your Standby Phases. This effect continues until your 4th turn after the card is activated.",MRD-079,6,1800,2000,20,2,NULL
