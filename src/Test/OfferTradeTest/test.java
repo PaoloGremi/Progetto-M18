@@ -3,6 +3,7 @@ package Test.OfferTradeTest;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardType;
 import TradeCenter.Card.Description;
+import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.TradeCenter;
@@ -21,8 +22,8 @@ public class test {
         tc.addCustomer(c2.getUsername(), "SuchSecurity002");
 
         try {
-            Description d1 = new Description("Big Blue Dragon", "A big dragon, which is blue", CardType.YuGiOh, "./src/i-kings.png");
-            Description d2 = new Description("Big Trap", "A trap, which is big", CardType.YuGiOh, "./src/i-kings.png");
+            Description d1 = new YuGiOhDescription("Big Blue Dragon", "A big dragon, which is blue", "./src/BS_001.jpg","NON SO", 2,0,0,0,0);
+            Description d2 = new YuGiOhDescription("Big Trap", "A trap, which is big", "./src/BS_001.jpg", "NON SO", 2,0,0,0,0);
 
             Card card1 = new Card(01, d1);
             Card card2 = new Card(02, d2);
