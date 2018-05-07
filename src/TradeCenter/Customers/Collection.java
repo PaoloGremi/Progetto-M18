@@ -11,12 +11,20 @@ import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
 public class Collection implements Iterable<Card>{
 
+    /**
+     * @param cardSet HashSet that contains the card of the collection.
+     */
     private HashSet<Card> cardSet;
 
     public Collection() {
         this.cardSet = new HashSet<Card>();
     }
 
+    /**
+     * Iterator for the collection.
+     *
+     * @return the iterator.
+     */
     @Override
     public Iterator<Card> iterator() {
         return cardSet.iterator();
