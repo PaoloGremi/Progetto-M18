@@ -22,6 +22,7 @@ public class Customer {
     private String username;
     private String password;
     private Collection collection;
+    private Collection wishList;
 
     public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
 
@@ -29,6 +30,7 @@ public class Customer {
             this.username = username;
             this.password = checkPasswordConditions(password);
             this.collection = new Collection();
+            this.wishList = new Collection();
 
     }
 
