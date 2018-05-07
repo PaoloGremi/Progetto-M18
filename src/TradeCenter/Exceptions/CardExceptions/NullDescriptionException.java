@@ -1,8 +1,5 @@
 package TradeCenter.Exceptions.CardExceptions;
 
-
-import TradeCenter.TradeCenter;
-
 public class NullDescriptionException extends NullPointerException {
     /**
      * Exception that handle the case when a user tries to add a description that is not valid
