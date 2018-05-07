@@ -2,19 +2,16 @@ package TradeCenter;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
-import TradeCenter.Customers.Collection;
+
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
-import TradeCenter.Trades.ATrade;
-import TradeCenter.Trades.Offer;
-import TradeCenter.Trades.Trade;
 import TradeCenter.Card.Description;
-import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.*;
+import TradeCenter.Customers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * Class representing the trading center.
@@ -192,6 +189,9 @@ public class TradeCenter {
         }
     }
 
+    /**
+     * A method that shows a log of all the trades that ended
+     */
     public void logDoneTrades(){
         for (Trade trade : doneTrades){
             System.out.println(trade);
