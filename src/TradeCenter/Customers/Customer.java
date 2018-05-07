@@ -34,7 +34,7 @@ public class Customer {
 
     }
 
-    /** Method to add a Card to the Customers collection.
+    /** Method to add a Card to the Customer's collection.
      *
      * @param card New Card to add
      * @return boolean to check wheter or not the method ran fine
@@ -129,6 +129,21 @@ public class Customer {
 
         return  password;
 
+    }
+
+    /**
+     *Method to add a Card to the Customer's wish list .
+     *
+     * @param card Card to add.
+     */
+    public void addCardToWishList(Card card){
+        try {
+
+            wishList.addCardToCollection(card);
+
+        }catch (AddCardException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     /**Getter of the customer's id.
