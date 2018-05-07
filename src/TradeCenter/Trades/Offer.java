@@ -94,6 +94,7 @@ public class Offer extends ATrade {
         tmp.append(getOffer2().toString());
         tmp.append(" from user ");
         tmp.append(super.getCustomer2().getUsername());
+        tmp.append("\n");
 
         return tmp.toString();
     }
