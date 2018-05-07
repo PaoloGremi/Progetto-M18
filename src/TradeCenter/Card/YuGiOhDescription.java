@@ -16,7 +16,7 @@ public class YuGiOhDescription extends Description{
 
     public YuGiOhDescription(String name,String text,String picUrl, String reference, int level, int atk, int def, int monster_type_id, int type_id) throws IOException {
         super(name, text, CardType.YUGIOH, picUrl);
-        if(type_id = )
+        //if(type_id = ) //todo FIX
         this.reference = reference;
         this.level = level;
         this.atk = atk;
@@ -48,4 +48,6 @@ public class YuGiOhDescription extends Description{
     public int getType_id() {
         return type_id;
     }
+
+    //todo ADD THE TOSTRING() METHOD
 }

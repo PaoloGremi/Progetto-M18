@@ -10,7 +10,7 @@ public class Card {
      */
 
     private int id;
-    private Description description;
+    private Description description; //todo CHANGE TO YUGIOHDESCRITPION
 
     public Card(int id, Description description) {
         this.id = id;

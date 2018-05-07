@@ -65,7 +65,7 @@ public class Offer extends ATrade {
     /**
      * Accepts the offer received
      */
-    protected void acceptTheOffer() {
+    public void acceptTheOffer() {
         this.acceptedOffer = true;
     }
 
