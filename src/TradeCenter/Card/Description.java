@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
-public class Description {
+public abstract class Description {
 
     /**
      * Class Description
@@ -153,8 +153,4 @@ public class Description {
         else return false;
     }
 
-    @Override
-    public String toString() {
-        return "Name: "+name+"    Description: "+text+"    Card's type:"+descrType;
-    }
 }
