@@ -2,6 +2,11 @@ package TradeCenter;
 
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Customers.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.NullDescriptionException;
+import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
+import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
+import TradeCenter.Trades.ATrade;
+import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
@@ -135,13 +140,24 @@ public class TradeCenter {
     }
 
     /**
+     * This method starts a new trade between two customers
+     * @param offer the first offer
+     */
+    void createTrade(Offer offer){         //todo magari vedere per EXCEP se esistono i customer
+        Trade Trade = new Trade(offer);      //todo mi aspetto che l'offerta si crei dall'interfaccia grafica, o desicedere di istanziarla qua
+        activeTrades.add(Trade);        //aspettare che robi rifaccia i trade
+    }
+    /**
      * Do the exchange, users collection are update, and so the trade
      *
      * @param trade a card exchange
      */
-    void switchCards(Trade trade){
-            //ricontrollare trade prima di fare questo metodo e il successivo
-        //devo aspettare che venga definito lo scambio delle carte
+    void switchCards(ATrade trade){
+        if(activeTrades.contains(trade)){
+            //todo fare, quando logica trade viene rifdatta meglio
+        }else{
+            throw new NoSuchTradeException();
+        }
     }
 
     /**
