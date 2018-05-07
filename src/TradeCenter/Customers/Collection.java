@@ -1,18 +1,24 @@
 package TradeCenter.Customers;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
-public class Collection {
+public class Collection implements Iterable<Card>{
 
     private HashSet<Card> cardSet;
 
     public Collection() {
         this.cardSet = new HashSet<Card>();
+    }
+
+    @Override
+    public Iterator<Card> iterator() {
+        return cardSet.iterator();
     }
 
     /**

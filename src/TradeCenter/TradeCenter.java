@@ -1,20 +1,20 @@
 package TradeCenter;
 
+import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
-import TradeCenter.Customers.CardNotFoundException;
 import TradeCenter.Customers.Collection;
-import TradeCenter.Exceptions.CardExceptions.NullDescriptionException;
+import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
 import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
-import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 /**
  * Class representing the trading center.
@@ -159,17 +159,20 @@ public class TradeCenter {
      * @param trade a card exchange
      */
     private void switchCards(ATrade trade){
-        if(activeTrades.contains(trade)){
+        if(activeTrades.contains(trade)) {
+            
             Customer customer1 = trade.getCustomer1();
             Customer customer2 = trade.getCustomer2();      //todo controllare se i customer esistono
-            /*
-            for(Card card : ) {     //todo mettere iteratore nelle collection e finire
 
-            }      //metto a c1 e tolgo a c2
-            for(Card card : ){
+            for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2
+                customer2.addCard(card);
+                customer1.removeCard(card);
+            }
+            for (Card card : trade.getOffer2()) {       //take card offered from customer2, add to customer1
+                customer1.addCard(card);
+                customer2.removeCard(card);
+            }
 
-            }       //metto a c2 e tolgo a c1
-            */
         }else{
             throw new NoSuchTradeException();
         }
