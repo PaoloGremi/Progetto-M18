@@ -74,10 +74,10 @@ public class Customer {
      * @param string String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public HashSet<Card> searchByString(String string){
+    public Collection searchByString(String string){
 
         try {
-            HashSet<Card> cardsFound = collection.searchByString(string);
+            Collection cardsFound = collection.searchByString(string);
             return cardsFound;
         }catch (CardNotFoundException e){
             System.err.println(e.cardNotFound(getId(),getUsername()));

@@ -2,6 +2,7 @@ package TradeCenter;
 
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Customers.CardNotFoundException;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Exceptions.CardExceptions.NullDescriptionException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
@@ -63,11 +64,13 @@ public class TradeCenter {
         return "USER-" + contUsers;
     }
 
+
     /**
      * Allow the user to delete his account
      *
      * @param id user identifier
      */
+    /*
     public void removeCustomer(int id) {
         try{
             if(customers.remove(id) == null){                                 //capire come passare id
@@ -78,6 +81,7 @@ public class TradeCenter {
         }
 
     }
+    */
 
     /**
      * User can find another user by searching his name
@@ -100,6 +104,7 @@ public class TradeCenter {
      *
      * @param description the card
      */
+    /*
     public void addDescription(Description description){
         try{
             catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
@@ -107,6 +112,7 @@ public class TradeCenter {
             e.printStackTrace();                               //todo meglio cosi o con il throws nell'header del metodo??
         }
     }
+    */
 
     //todo: puo essere utile mettere il metodo remove description ??
 
@@ -127,8 +133,8 @@ public class TradeCenter {
      * @param searchString name or description of a card
      * @return a list of customers with their own collections
      */
-    public HashMap<Customer, Card[]> searchByString(String searchString){       //todo ritorna card[] o meglio collection??
-        HashMap<Customer, Card[]> searched = new HashMap<>();
+    public HashMap<Customer, Collection> searchByString(String searchString){       //todo ritorna card[] o meglio collection??
+        HashMap<Customer, Collection> searched = new HashMap<>();
         for(String key : customers.keySet()){
             searched.put(customers.get(key), customers.get(key).searchByString(searchString));
         }
@@ -152,9 +158,18 @@ public class TradeCenter {
      *
      * @param trade a card exchange
      */
-    void switchCards(ATrade trade){
+    private void switchCards(ATrade trade){
         if(activeTrades.contains(trade)){
-            customers.get()
+            Customer customer1 = trade.getCustomer1();
+            Customer customer2 = trade.getCustomer2();      //todo controllare se i customer esistono
+            /*
+            for(Card card : ) {     //todo mettere iteratore nelle collection e finire
+
+            }      //metto a c1 e tolgo a c2
+            for(Card card : ){
+
+            }       //metto a c2 e tolgo a c1
+            */
         }else{
             throw new NoSuchTradeException();
         }
@@ -165,7 +180,7 @@ public class TradeCenter {
      * Also if a deal it's over, the exchange is done
      */
     public void checkDoneDeals(){
-        for(Trade trade : activeTrades){
+        for(Trade trade : activeTrades){        //todo togliere ciclo
             if(trade.isDoneDeal()){
                 switchCards(trade);
                 doneTrades.add(trade);
