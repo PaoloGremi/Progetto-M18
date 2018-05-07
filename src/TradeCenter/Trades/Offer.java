@@ -2,6 +2,7 @@ package TradeCenter.Trades;
 
 import TradeCenter.Customers.*;
 import TradeCenter.Card.Card;
+import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 
 /**
  * Class for the Offer between two Customers. Extends ATrade class.
@@ -15,11 +16,11 @@ public class Offer extends ATrade {
      * Make an offer between two customers
      * @param customer1 First Customers
      * @param customer2 Second Customers
-     * @param collection1 First Customers's collection to be exchanged
-     * @param collection2 Second Customers's collection to be exchanged
+     * @param offer1 First Customers's collection to be exchanged
+     * @param offer2 Second Customers's collection to be exchanged
      */
-    public Offer(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
-        super(customer1, customer2, collection1, collection2);
+    public Offer(Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
+        super(customer1, customer2, offer1, offer2);
     }
 
     /**
@@ -30,8 +31,8 @@ public class Offer extends ATrade {
     public void addCardToCollection(Card card, Customer customer) {
         try {
             if (isItTheFirstCustomer(customer)) {
-                super.getCollection1().addCardToCollection(card);
-            } else super.getCollection2().addCardToCollection(card);
+                super.getOffer1().addCardToCollection(card);
+            } else super.getOffer2().addCardToCollection(card);
         } catch (AddCardException e) {
             System.err.println(e.getMessage());
         }
@@ -45,9 +46,9 @@ public class Offer extends ATrade {
     public void removeCardFromCollection(Card card, Customer customer) {
         try {
             if (isItTheFirstCustomer(customer)) {
-                super.getCollection1().removeCardFromCollection(card);
-            } else super.getCollection2().removeCardFromCollection(card);
-        } catch (AddCardException e) {
+                super.getOffer1().removeCardFromCollection(card);
+            } else super.getOffer2().removeCardFromCollection(card);
+        } catch (CardNotFoundException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -64,7 +65,7 @@ public class Offer extends ATrade {
     /**
      * Accepts the offer received
      */
-    public void acceptTheOffer() {
+    protected void acceptTheOffer() {
         this.acceptedOffer = true;
     }
 
@@ -88,9 +89,9 @@ public class Offer extends ATrade {
         tmp.append("\n");
         tmp.append(super.getCustomer1().getUsername());
         tmp.append(" offers: ");
-        tmp.append(getCollection1().toString()); //todo FIX THE DAMN TOSTRING ON THE COLLECTIONS
+        tmp.append(getOffer1().toString());
         tmp.append("\n For: ");
-        tmp.append(getCollection2().toString());
+        tmp.append(getOffer2().toString());
         tmp.append(" from user ");
         tmp.append(super.getCustomer2().getUsername());
 

@@ -10,30 +10,30 @@ public abstract class ATrade {
      * Abstract class for Offer and Trade.
      * @param customer1 Customer 1
      * @param customer2 Customer 2
-     * @param collection1 Collection offered by Customer 1 to Customer 2
-     * @param collection2 Collection requested by Customer 1 from Customer 2
+     * @param offer1 Collection offered by Customer 1 to Customer 2
+     * @param offer2 Collection requested by Customer 1 from Customer 2
      * @param date Latest update date and time
      */
     private Customer customer1;
     private Customer customer2;
-    private Collection collection1;
-    private Collection collection2;
+    private Collection offer1;
+    private Collection offer2;
     private Date date;
 
     /**
      * Constructor method
      * @param customer1 First Customers
      * @param customer2 Second Customers
-     * @param collection1 First Customers's collection to be exchanged
-     * @param collection2 Second Customers's collection to be exchanged
+     * @param offer1 First Customers's collection to be exchanged
+     * @param offer2 Second Customers's collection to be exchanged
      */
-    protected ATrade(Customer customer1, Customer customer2, Collection collection1, Collection collection2) {
+    protected ATrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
         this.customer1 = customer1;
         this.customer2 = customer2;
-        if (collection1.collectionIsEmpty() | collection2.collectionIsEmpty()) throw new EmptyCollectionException();
+        if (offer1.collectionIsEmpty() || offer2.collectionIsEmpty()) throw new EmptyCollectionException();
         else {
-            this.collection1 = collection1;
-            this.collection2 = collection2;
+            this.offer1 = offer2;
+            this.offer2 = offer2;
         }
         this.date = new Date();
     }
@@ -42,7 +42,7 @@ public abstract class ATrade {
      * Getter for first Customers
      * @return first Customers
      */
-    protected Customer getCustomer1() {
+    public Customer getCustomer1() {
         return customer1;
     }
 
@@ -50,24 +50,24 @@ public abstract class ATrade {
      * Getter for second Customers
      * @return second Customers
      */
-    protected Customer getCustomer2() {
+    public Customer getCustomer2() {
         return customer2;
     }
 
     /**
-     * Getter for first Customers's collection
-     * @return first Customers's collection
+     * Getter for first Customers's offer
+     * @return first Customers's offer
      */
-    protected Collection getCollection1() {
-        return collection1;
+    public Collection getOffer1() {
+        return offer1;
     }
 
     /**
-     * Getter for second Customers's collection
-     * @return second Customers's collection
+     * Getter for second Customers's offer
+     * @return second Customers's offer
      */
-    protected Collection getCollection2() {
-        return collection2;
+    public Collection getOffer2() {
+        return offer2;
     }
 
     /**
@@ -80,13 +80,13 @@ public abstract class ATrade {
 
     /**
      * Updater for first customer's collection, second customer's collection and current date
-     * @param collection1 Firs customer's collection
-     * @param collection2 Second customer's collection
+     * @param offer1 Firs customer's collection
+     * @param offer2 Second customer's collection
      * @param date Current date
      */
-    protected void updateParameters(Collection collection1, Collection collection2, Date date) {
-        this.collection1 = collection1;
-        this.collection2 = collection2;
+    protected void updateParameters(Collection offer1, Collection offer2, Date date) {
+        this.offer1 = offer1;
+        this.offer2 = offer2;
         this.date = date;
     }
 }
