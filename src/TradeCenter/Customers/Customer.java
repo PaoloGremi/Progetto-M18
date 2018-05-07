@@ -165,6 +165,25 @@ public class Customer {
         }
     }
 
+    /**
+     * Search a Card in the collections of the customers by tags.
+     *
+     * @param description String to search cards in the customer's collection.
+     * @return HashSet of cards that match.
+     */
+    public Collection searchByDescription(Description description){
+
+        try {
+            Collection cardsFound = collection.searchByDescription(description);
+            return cardsFound;
+        }catch (CardNotFoundException e){
+            System.err.println(e.cardNotFound(getId(),getUsername()));
+        }
+
+        return null;
+
+    }
+
     /**Getter of the customer's id.
      *
      * @return Id of the customer

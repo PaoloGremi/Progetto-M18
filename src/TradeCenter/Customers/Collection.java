@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import TradeCenter.Card.Card;
+import TradeCenter.Card.Description;
 import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
@@ -38,7 +39,7 @@ public class Collection implements Iterable<Card>{
     }
 
     /**
-     * Search a Card by its tads in the collection of the customer.
+     * Search a Card by its tags in the collection of the customer.
      *
      * @param string String to search in the HashSet of the tags for every single card in the collection.
      * @return HashSet of cards that match.
@@ -92,6 +93,24 @@ public class Collection implements Iterable<Card>{
      */
     public boolean collectionIsEmpty(){
         return  cardSet.isEmpty();
+    }
+
+    /**
+     * Search a Card by its description in the collection of the customer.
+     *
+     * @param description Description to search in the HashSet of the tags for every single card in the collection.
+     * @return HashSet of cards that match.
+     */
+    public Collection searchByDescription(Description description) {
+        Collection cards = new Collection();
+        for (Card card : cardSet){
+            Description cardDescription = card.getDescription();
+                if(description.equals(cardDescription)){
+                    cards.addCardToCollection(card);
+                    }
+        }
+        if(cards.collectionIsEmpty()) throw  new CardNotFoundException();
+        return cards;
     }
 
     /**
