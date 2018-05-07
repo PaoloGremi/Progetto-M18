@@ -34,7 +34,8 @@ public class Customer {
 
     }
 
-    /** Method to add a Card to the Customer's collection.
+    /**
+     * Method to add a Card to the Customer's collection.
      *
      * @param card New Card to add
      * @return boolean to check wheter or not the method ran fine
@@ -48,7 +49,8 @@ public class Customer {
 
     }
 
-    /**Remove a Card from the collection of the Customers who calls this method.
+    /**
+     * Remove a Card from the collection of the Customers who calls this method.
      *
      * @param card Card to remove
      */
@@ -62,7 +64,8 @@ public class Customer {
 
     }
 
-    /**The customer create a new card that wasn't in the system before.
+    /**
+     * The customer create a new card that wasn't in the system before.
      *
      * @param description Description of the new card
      * @param id ID of the new card
@@ -74,7 +77,8 @@ public class Customer {
 
     }
 
-    /**Search a Card in the collections of the customers by tags.
+    /**
+     * Search a Card in the collections of the customers by tags.
      *
      * @param string String to search cards in the customer's collection.
      * @return HashSet of cards that match.
@@ -142,6 +146,21 @@ public class Customer {
             wishList.addCardToCollection(card);
 
         }catch (AddCardException e){
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Remove a Card from the wish list of the Customers who calls this method.
+     *
+     * @param card Card to remove.
+     */
+    public void removeFromWishList(Card card){
+        try {
+
+            wishList.removeCardFromCollection(card);
+
+        }catch (RemoveCardException e){
             System.err.println(e.getMessage());
         }
     }
