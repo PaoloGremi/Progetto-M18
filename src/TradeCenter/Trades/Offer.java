@@ -2,7 +2,7 @@ package TradeCenter.Trades;
 
 import TradeCenter.Customers.*;
 import TradeCenter.Card.Card;
-import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.*;
 
 /**
  * Class for the Offer between two Customers. Extends ATrade class.
