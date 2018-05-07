@@ -2,6 +2,9 @@ package TradeCenter.Customers;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
+import TradeCenter.Exceptions.CardExceptions.AddCardException;
+import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 
 import java.util.HashSet;

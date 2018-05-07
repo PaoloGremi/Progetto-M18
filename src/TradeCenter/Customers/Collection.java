@@ -3,6 +3,9 @@ package TradeCenter.Customers;
 import java.util.HashSet;
 
 import TradeCenter.Card.Card;
+import TradeCenter.Exceptions.CardExceptions.AddCardException;
+import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
 public class Collection {
 
