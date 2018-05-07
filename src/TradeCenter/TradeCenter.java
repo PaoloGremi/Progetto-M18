@@ -133,7 +133,7 @@ public class TradeCenter {
      * @param searchString name or description of a card
      * @return a list of customers with their own collections
      */
-    public HashMap<Customer, Collection> searchByString(String searchString){       //todo ritorna card[] o meglio collection??
+    public HashMap<Customer, Collection> searchByString(String searchString){
         HashMap<Customer, Collection> searched = new HashMap<>();
         for(String key : customers.keySet()){
             searched.put(customers.get(key), customers.get(key).searchByString(searchString));
@@ -160,7 +160,7 @@ public class TradeCenter {
      */
     private void switchCards(ATrade trade){
         if(activeTrades.contains(trade)) {
-            
+
             Customer customer1 = trade.getCustomer1();
             Customer customer2 = trade.getCustomer2();      //todo controllare se i customer esistono
 
@@ -192,5 +192,9 @@ public class TradeCenter {
         }
     }
 
-
+    public void logDoneTrades(){
+        for (Trade trade : doneTrades){
+            System.out.println(trade);
+        }
+    }
 }
