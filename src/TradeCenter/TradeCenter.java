@@ -154,7 +154,7 @@ public class TradeCenter {
      */
     void switchCards(ATrade trade){
         if(activeTrades.contains(trade)){
-            //todo fare, quando logica trade viene rifdatta meglio
+            customers.get()
         }else{
             throw new NoSuchTradeException();
         }
