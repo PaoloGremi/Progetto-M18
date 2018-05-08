@@ -6,7 +6,9 @@ import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
+import TradeCenter.Exceptions.UserExceptions.NoTradesExeption;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Customer {
@@ -23,6 +25,7 @@ public class Customer {
     private String password;
     private Collection collection;
     private Collection wishList;
+    private ArrayList<String> tradeList;
 
     public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
 
@@ -31,6 +34,7 @@ public class Customer {
             this.password = checkPasswordConditions(password);
             this.collection = new Collection();
             this.wishList = new Collection();
+            this.tradeList = new ArrayList<>();
 
     }
 
@@ -182,6 +186,25 @@ public class Customer {
 
         return null;
 
+    }
+
+    /**
+     * Add a trade to the list if the customer is involved.
+     *
+     * @param trade Trade to add
+     */
+    public void addToTradeList(String trade){
+        tradeList.add(trade);
+    }
+
+    /**
+     * Method to return the list with all the trades of the customer
+     *
+     * @return The list with the trades
+     */
+    public ArrayList<String> getTradeList(){
+        if(tradeList.isEmpty()) throw new NoTradesExeption();
+        return tradeList;
     }
 
     /**Getter of the customer's id.
