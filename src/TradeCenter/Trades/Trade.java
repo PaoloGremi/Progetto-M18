@@ -54,6 +54,13 @@ public class Trade extends ATrade {
         return doneDeal;
     }
 
+    public boolean betweenUsers(String username) {
+        if(super.getCustomer1().getUsername().equals(username) || super.getCustomer1().getUsername().equals(username)) {
+            return true;
+        }
+        else return false;
+    }
+
     /**
      * Improved printing method
      * @return improved listing of trade properties and offers' history
