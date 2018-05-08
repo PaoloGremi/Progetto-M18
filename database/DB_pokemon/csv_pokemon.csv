@@ -37,63 +37,63 @@ ID,Nome,Tipo,HP,Descrizione,Length,Weight,Level
 36,Magmar,Fire,50,Spitfire Pokémon.,4’3’’,98,24
 37,Nidorino,Grass,60,Poison pin Pokémon.,2’11’’,43,25
 38,Poliwhirl,Water,60,Tadpole Pokémon.,3’4’’,44,28
-39,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-40,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-41,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-42,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-43,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-44,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-45,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-46,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-47,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-48,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-49,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-50,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-51,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-52,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-53,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-54,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-55,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-56,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-57,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-58,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-59,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-60,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-61,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-62,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-63,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-64,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-65,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-66,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-67,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-68,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-69,NULL,NULL,NULL,NULL,NULL,NULL,NULL
-70,Clefairy Doll,TRAINER,10,Play Clefairy Doll as…,NULL,NULL,NULL
-71,Computer Search,TRAINER,NULL,Discard 2 of the other…,NULL,NULL,NULL
-72,Devolution Spray,TRAINER,NULL,Choose 1 of your own…,NULL,NULL,NULL
-73,Impostor Professor Oak,TRAINER,NULL,Your opponent shuffles…,NULL,NULL,NULL
-74,Item Finder,TRAINER,NULL,Discard 2 of the other…,NULL,NULL,NULL
-75,Lass,TRAINER,NULL,You and your opponent…,NULL,NULL,NULL
-76,Pokémon Bredder,TRAINER,NULL,Put a stage 2 evolution…,NULL,NULL,NULL
-77,Pokémon Trader,TRAINER,NULL,Trade 1 of the basic…,NULL,NULL,NULL
-78,Scoop up,TRAINER,NULL,Choose 1 of your own…,NULL,NULL,NULL
-79,Super energy removal,TRAINER,NULL,Discard 1 Energy card…,NULL,NULL,NULL
-80,Defender,TRAINER,NULL,Attach defender to 1 of…,NULL,NULL,NULL
-81,Energy retrival,TRAINER,NULL,Trade 1 of the other…,NULL,NULL,NULL
-82,Full heal,TRAINER,NULL,You active Pokémon…,NULL,NULL,NULL
-83,Maintenance,TRAINER,NULL,Shuffle 2 of the other…,NULL,NULL,NULL
-84,PlusPower,TRAINER,NULL,Attach PlusPower to…,NULL,NULL,NULL
-85,Pokémon center,TRAINER,NULL,Remove all damage…,NULL,NULL,NULL
-86,Pokémon flute,TRAINER,NULL,Choose 1 Basic Pokémon…,NULL,NULL,NULL
-87,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-88,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-89,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-90,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-91,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-92,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-93,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-94,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
-95,NULL,TRAINER,NULL,NULL,NULL,NULL,NULL
+39,Porygon,Fairy,30,Virtual Pokémon.,2’7’’,80,12
+40,Raticate,Fairy,60,Rat Pokémon.,2’4’’,41,41
+41,Seel,Water,60,"Sea lion Pokémon,",3’7’’,198,12
+42,Wartortle,Water,70,Turtle Pokémon.,3’3’’,50,22
+43,Abra,Psychic,30,Psi Pokémon.,2’11’’,43,10
+44,Bulbasaur,Grass,40,Seed Pokémon.,2’4’’,15,13
+45,Caterpie,Grass,40,Worm Pokémon.,1’0’’,6,13
+46,Charmander,Fire,50,Lizard Pokémon.,2’0’’,19,10
+47,Diglett,Fighting,30,Male Pokémon.,0’8’’,2,8
+48,Doduo,Fairy,50,Twin bird Pokémon.,4’7’’,86,10
+49,Drowzee,Psychic,50,Hypnosis Pokémon.,3’3’’,71,12
+50,Gastly,Psychic,30,Gas Pokémon.,4’3’’,0.2,8
+51,Koffing,Grass,50,Poison gas Pokémon.,2’0’’,2,13
+52,Machop,Fighting,50,Superpower Pokémon.,2’7’’,43,20
+53,Magnemite,Electric,40,Magnet Pokémon.,1’0’’,13,13
+54,Metapod,Grass,70,Cocoon Pokémon.,2’4’’,22,21
+55,Nidoran,Grass,40,Poison pin Pokémon.,1’4’’,15,20
+56,Onix,Fighting,90,Rock snake Pokémon.,28’10’’,463,12
+57,Pidgey,Fairy,40,Tiny bird Pokémon.,1’0’’,4,8
+58,Pikachu,Electric,40,Mole Pokémon.,1’4’’,13,12
+59,Poliwag,Water,40,Tadpole Pokémon.,2’0’’,27,13
+60,Ponyta,Fire,40,Fire horse Pokémon.,3’3’’,66,10
+61,Rattata,Fairy,30,Rat Pokémon.,1’0’’,8,9
+62,Sandshrew,Fighting,40,Mouse Pokémon.,2’0’’,26,12
+63,Squirtle,Water,40,Tiny turtle Pokémon.,1’8’’,20,8
+64,Starmie,Water,60,Mysterious Pokémon.,3’7’’,176,28
+65,Staryu,Water,40,Starshape Pokémon.,2’7’’,76,15
+66,Tangela,Grass,50,Vine Pokémon.,3’3’’,77,8
+67,Voltorb,Electric,40,"Ball Pokémon,",1’8’’,23,10
+68,Vulpix,Fire,50,Fox Pokémon.,2’0’’,22,11
+69,Weedle,Grass,40,Hairy bug Pokémon.,1’0’’,7,12
+70,Clefairy Doll,TRAINER,10,"Play Clefairy Doll as if it were a Basic Pokémon. While in play, Clefairy Doll counts as a Pokémon (instead of a Trainer card). Clefairy Doll has no attacks, can't retreat, and can't be Asleep, Confused, Paralyzed, or Poisoned. If Clefairy Doll is Knocked Out, it doesn't count as a Knocked Out Pokémon. At any time during your turn before your attack, you may discard Clefairy Doll.",NULL,NULL,NULL
+71,Computer Search,TRAINER,NULL,Discard 2 of the other cards from your hand in order to search your deck for any card and put it into your hand. Shuffle your deck afterward. ,NULL,NULL,NULL
+72,Devolution Spray,TRAINER,NULL,"Choose 1 of your own Pokémon in play and a Stage of Evolution. Discard all Evolution cards of that Stage or higher attached to that Pokémon. That Pokémon is no longer Asleep, Confused, Paralyzed, Poisoned or anything else that might be the result of an attack (just as if you had evolved it).",NULL,NULL,NULL
+73,Impostor Professor Oak,TRAINER,NULL,"Your opponent shuffles his or her hand into his or her deck, then draws 7 cards.",NULL,NULL,NULL
+74,Item Finder,TRAINER,NULL,Discard 2 of the other cards from your hand in order to put a Trainer card from your discard pile into your hand.,NULL,NULL,NULL
+75,Lass,TRAINER,NULL,"You and your opponent show each other your hands, then shuffle all the Trainer cards from your hands into your decks.",NULL,NULL,NULL
+76,Pokémon Bredder,TRAINER,NULL,Put a Stage 2 Eolution card from your hand on the matching Basic Pokémon. You can only play this card when you would be allowed to evolve that Pokémon anyway.,NULL,NULL,NULL
+77,Pokémon Trader,TRAINER,NULL,Trade 1 of the Basic Pokémon or Evolution cards in your hand for 1 of the Basic Pokémon or Evolution cards from your deck. Show both cards to your opponent. Shuffle your deck afterward.,NULL,NULL,NULL
+78,Scoop up,TRAINER,NULL,Choose 1 of your own Pokémon in play and return its Basic Pokémon card to your hand. (Discard all cards attached to that card.),NULL,NULL,NULL
+79,Super energy removal,TRAINER,NULL,Discard 1 Energy card attached to 1 of your own Pokémon in order to choose 1 of your opponent’s Pokémon and up to 2 Energy cards attached to it. Discard those Energy cards.,NULL,NULL,NULL
+80,Defender,TRAINER,NULL,"Attach Defender to 1 of your Pokémon. At the end of your opponent’s next turn, discard Defender. Damage done to that Pokémon by attacks is reduced by 20 (after applying Weakness and Resistance).",NULL,NULL,NULL
+81,Energy retrival,TRAINER,NULL,Trade 1 of the other cards in your hand for up to 2 basic Energy cards from your discard pile.,NULL,NULL,NULL
+82,Full heal,TRAINER,NULL,"You active Pokémon is no longer Asleep, Confused, Paralyzed, or Poisoned.",NULL,NULL,NULL
+83,Maintenance,TRAINER,NULL,Shuffle 2 of the other from your hand into your deck in order to draw a card.,NULL,NULL,NULL
+84,PlusPower,TRAINER,NULL,"Attach PlusPower to your active Pokémon. At the end of your turn, discard PlusPower. If this Pokémon’s attack does damage to the Defending Pokémon (after applying Weakness and Resistance), the attack does 10 more damage to the Defending Pokémon.",NULL,NULL,NULL
+85,Pokémon center,TRAINER,NULL,"Remove all damage counters from all of your own Pokémon with damage counters on them, then discard all Energy cards attached to those Pokémon.",NULL,NULL,NULL
+86,Pokémon flute,TRAINER,NULL,Choose 1 Basic Pokémon card from your opponent’s discard pile and put it onto his or her Bench. (You can’t play Pokémon Fluite if your opponent’s Bench is full.),NULL,NULL,NULL
+87,Pokédex,TRAINER,NULL,Look at up to 5 cards from the top of your deck and rearrange them as you like.,NULL,NULL,NULL
+88,Professor Oak,TRAINER,NULL,"Discard your hand, then draw 7 cards.",NULL,NULL,NULL
+89,Revive,TRAINER,NULL,Put 1 Basic Pokémon card from your discard pile onto your Bench. Put damage counters on thtat Pokémon equal to half its HP (rounded down to the nearest 10). (You can’t play Revive if your Bench is full.),NULL,NULL,NULL
+90,Super potion,TRAINER,NULL,Discard 1 Energy card attached to 1 of your own Pokémon in order to remove up to 4 damage counters from that Pokémon.,NULL,NULL,NULL
+91,Bill,TRAINER,NULL,Draw 2 cards.,NULL,NULL,NULL
+92,Energy removal,TRAINER,NULL,Choose 1 Energy card attached to 1 of your opponent’s Pokémon and discard it.,NULL,NULL,NULL
+93,Gust of wind,TRAINER,NULL,Choose 1 of your opponent’s Benched Pokémon and switch it with his or her Active Pokémon.,NULL,NULL,NULL
+94,Potion,TRAINER,NULL,Remove up to 2 damage counters from 1 of your Pokémon.,NULL,NULL,NULL
+95,Switch,TRAINER,NULL,Switch 1 of your own Benched Pokémon with your active Pokémon.,NULL,NULL,NULL
 96,Fairy,ENERGY,NULL,Double colorless energy,NULL,NULL,NULL
 97,Fighting,ENERGY,NULL,NULL,NULL,NULL,NULL
 98,Fire,ENERGY,NULL,NULL,NULL,NULL,NULL
