@@ -72,7 +72,7 @@ public class WishListScene extends Application {
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button1);
 
-            Button button2 = new Button("Reomve");
+            Button button2 = new Button("Search");
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button2);
 
