@@ -37,7 +37,7 @@ public class Collection implements Iterable<Card>{
      * @return boolean to check wheter or not the method ran fine
      */
     public boolean addCardToCollection(Card card) {
-        if(true) {                          //Al posto del "true" va messo il metodo che verifichi la presenza della carta nel database
+        if(true) {                          //todo Al posto del "true" va messo il metodo che verifichi la presenza della carta nel database
             cardSet.add(card);
         }
         else {
