@@ -2,13 +2,12 @@ package Interface;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,50 +23,47 @@ public class MainWindow{
         window.setTitle("MAIN MENU");
 
         StackPane layout = new StackPane();
+        layout.setAlignment(Pos.CENTER);
 
         VBox vbox = new VBox();
-        vbox.setAlignment(Pos.TOP_LEFT);
-        vbox.setPadding(new Insets(20));
-        vbox.setSpacing(8);
+            vbox.setAlignment(Pos.TOP_LEFT);
+            vbox.setPadding(new Insets(20));
+            vbox.setSpacing(8);
 
-        Label username = new Label("USERNAME"); //todo passare username da login
+            Label username = new Label("USERNAME"); //todo passare username da login
 
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.BASELINE_LEFT);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+            TilePane tileButtons = new TilePane(Orientation.VERTICAL);
+                tileButtons.setTileAlignment(Pos.CENTER_LEFT);
+                tileButtons.setPrefRows(5);
+                tileButtons.setPadding(new Insets(20, 10, 20, 0));
+                tileButtons.setHgap(10.0);
+                tileButtons.setVgap(8.0);
 
-        Button myCollection = new Button("My Collection");
-        Button myWishlist = new Button("My Wishlist");
-        Button searchCard = new Button("Search a card...");
-        Button searchUser = new Button("Search a user...");
-        Button myTrades = new Button("My Trades");
-        Button logOut = new Button("LOG OUT");
+                Button myCollection = new Button("My Collection");
+                Button myWishlist = new Button("My Wishlist");
+                Button searchCard = new Button("Search a card...");
+                Button searchUser = new Button("Search a user...");
+                Button myTrades = new Button("My Trades");
+                Button logOut = new Button("LOG OUT");
 
-        logOut.setOnAction(event -> {
-            window.close();
-            Platform.exit();
-        });
+                logOut.setOnAction(event -> {
+                    window.close();
+                    Platform.exit();
+                });
 
-        grid.add(myCollection,0,0);
-        grid.add(myWishlist,0,1);
-        grid.add(myTrades,0,2);
-        grid.add(searchCard,0,3);
-        grid.add(searchUser,0,4);
+                tileButtons.getChildren().addAll(myCollection, myWishlist, myTrades, searchCard, searchUser);
 
-        VBox dynamicContent = new VBox();
-        dynamicContent.setAlignment(Pos.TOP_RIGHT);
+        vbox.getChildren().addAll(username, tileButtons, logOut);
 
-        // todo sistemare il contenuto dinamico (wishlist, trade, etc)
+        StackPane dynamicContent = new StackPane();
+            dynamicContent.setAlignment(Pos.TOP_RIGHT);
+            dynamicContent.setStyle("-fx-background-color: DAE6A2;");
+            dynamicContent.setMinSize(900,600);
+            dynamicContent.setMaxSize(900,600);
 
-        vbox.getChildren().add(username);
-        vbox.getChildren().add(grid);
-        vbox.getChildren().add(logOut);
+        layout.getChildren().addAll(vbox, dynamicContent);
 
-        vbox.getChildren().add(dynamicContent);
-
-        Scene scene = new Scene(vbox, 1200, 700);
+        Scene scene = new Scene(layout, 1200, 700);
         window.setScene(scene);
         window.show();
     }
