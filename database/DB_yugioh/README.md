@@ -1,4 +1,4 @@
-# Database per le carte di YU-GI-OH!https://github.com/IngSW-unipv/Progetto-M18/pulse
+# Database per le carte di YU-GI-OH! 
 
 # csv_yugioh
 
