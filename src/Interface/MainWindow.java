@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 
 public class MainWindow {
 
-    // Nell'actionevent di login aggiungere MainWindow.display(); per visualizzare questa finestra
+    // Nell'actionevent di login aggiungere MainWindow.display(username.getText()); per visualizzare questa finestra
 
-    public static void display(){
+    public static void display(String login_username){
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("MAIN MENU");
@@ -33,7 +33,7 @@ public class MainWindow {
             vbox.setPadding(new Insets(20));
             vbox.setSpacing(8);
 
-            Label username = new Label("USERNAME"); //todo passare username da login
+            Label username = new Label(login_username);
             username.setTextFill(Color.web("#ffffff"));
             username.setStyle("-fx-font-weight: bold");
 
@@ -65,7 +65,7 @@ public class MainWindow {
 
         logOut.setOnAction(event -> {
             window.close();
-            Platform.exit();
+            LogIn.display();
         });
 
         myWishlist.setOnAction(event -> {
