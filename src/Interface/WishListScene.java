@@ -9,13 +9,15 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+
 import java.io.File;
 
 public class WishListScene extends Application {
 
     Stage wishListWindow;
 
-    @Override
+
     public void start(Stage primaryStage) throws Exception {
         wishListWindow = primaryStage;
         wishListWindow.setTitle("Wish List");
@@ -28,15 +30,7 @@ public class WishListScene extends Application {
         flow.setVgap(4);
         flow.setHgap(4);
         flow.setStyle("-fx-background-color: DAE6A2;");
-        //String image = WishListScene.class.getResource("maxresdefault.jpg").toExternalForm();
-        //flow.setStyle("-fx-background-color: rgba(0, 0, 0, 0); -fx-background-radius: 10;");
-        //flow.setStyle(Sty);
-        /*flow.setStyle(
-                "-fx-background-image: url(" +
-                        "'maxresdefault.jpg'" +
-                        "); " +
-                        "-fx-background-size: cover;"
-        );*/
+
         ScrollPane scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
@@ -67,15 +61,21 @@ public class WishListScene extends Application {
 
             pane.setCenter(card);
             pane.setBottom(hbox1);
+
             flow.getChildren().add(pane);
         }
 
         border.setCenter(scroll);
 
-        Scene scene = new Scene(border, 1280, 720);
-        //scene.getStylesheets().add(.class.getResource("Login.css").toExternalForm());
+        Scene scene = new Scene(border, 1350, 720);
+
         wishListWindow.setScene(scene);
+        wishListWindow.setResizable(false);
         wishListWindow.show();
 
     }
+
+
 }
+
+
