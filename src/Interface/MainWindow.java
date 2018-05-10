@@ -8,12 +8,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class MainWindow{
-
-    Stage mainWindow;
+public class MainWindow {
 
     // Nell'actionevent di login aggiungere MainWindow.display(); per visualizzare questa finestra
 
@@ -24,6 +23,10 @@ public class MainWindow{
 
         StackPane layout = new StackPane();
         layout.setAlignment(Pos.CENTER);
+        String image = MainWindow.class.getResource("sfondoKrenar.jpg").toExternalForm();
+        layout.setStyle("-fx-background-image: url('" + image + "'); " +
+                "-fx-background-position: center left; " +
+                "-fx-background-repeat: stretch;");
 
         VBox vbox = new VBox();
             vbox.setAlignment(Pos.TOP_LEFT);
@@ -31,6 +34,8 @@ public class MainWindow{
             vbox.setSpacing(8);
 
             Label username = new Label("USERNAME"); //todo passare username da login
+            username.setTextFill(Color.web("#ffffff"));
+            username.setStyle("-fx-font-weight: bold");
 
             TilePane tileButtons = new TilePane(Orientation.VERTICAL);
                 tileButtons.setTileAlignment(Pos.CENTER_LEFT);
@@ -46,11 +51,6 @@ public class MainWindow{
                 Button myTrades = new Button("My Trades");
                 Button logOut = new Button("LOG OUT");
 
-                logOut.setOnAction(event -> {
-                    window.close();
-                    Platform.exit();
-                });
-
                 tileButtons.getChildren().addAll(myCollection, myWishlist, myTrades, searchCard, searchUser);
 
         vbox.getChildren().addAll(username, tileButtons, logOut);
@@ -63,8 +63,18 @@ public class MainWindow{
 
         layout.getChildren().addAll(vbox, dynamicContent);
 
+        logOut.setOnAction(event -> {
+            window.close();
+            Platform.exit();
+        });
+
+        myWishlist.setOnAction(event -> {
+            dynamicContent.getChildren().add(WishListScene.display());
+        });
+
         Scene scene = new Scene(layout, 1200, 700);
         window.setScene(scene);
+        window.setResizable(false);
         window.show();
     }
 
