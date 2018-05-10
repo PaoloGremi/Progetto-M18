@@ -4,15 +4,15 @@
 
 `insert_without_pic.sql`: vecchia versione per gli insert (da togliere)
 
-#csv_pokemon
+# csv_pokemon
 
 Contiene in formato .csv tutit attributi a meno delle immagini
 
-#pokemon_pics
+# pokemon_pics
 
 102 immagini in formato `.jpg`
 
-#script_sql
+# script_sql
 
 `structure_pokemon.sql`: crea le tabelle, presuppone DB già esistente
 
