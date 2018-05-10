@@ -106,7 +106,7 @@ public class Customer {
      * @param password Password to verify if valid.
      * @return Password accepted.
      */
-    public String checkPasswordConditions(String password){
+    private String checkPasswordConditions(String password){
 
         boolean noUppercase = true;
         boolean noLowercase = true;
@@ -137,6 +137,18 @@ public class Customer {
 
         return  password;
 
+    }
+
+    /**
+     * Check the password of the customer
+     *
+     * @param password String to check
+     * @return Boolean
+     */
+    public boolean checkPassword(String password){
+        if(this.password == password) return true;
+
+        return false;
     }
 
     /**
