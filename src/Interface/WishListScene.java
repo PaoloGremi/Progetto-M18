@@ -20,7 +20,9 @@ public class WishListScene {
     static int i = 0;
     static File[] files;
     static ArrayList<File> files1;
-    static void display()  {
+    static ScrollPane scroll;
+
+    static ScrollPane display()  {
        // wishListWindow = primaryStage;
         //wishListWindow.setTitle("Wish List");
 
@@ -35,7 +37,7 @@ public class WishListScene {
         flow.setHgap(4);
         flow.setStyle("-fx-background-color: DAE6A2;");
 
-        ScrollPane scroll = new ScrollPane();
+        scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
@@ -96,14 +98,16 @@ public class WishListScene {
             flow.getChildren().add(pane);
         }
 
-        border.setCenter(scroll);
+        //border.setCenter(scroll);
+
+        return scroll;
 
         /*wishListWindow.setScene(scene);
         wishListWindow.setResizable(false);
         wishListWindow.show();*/
 
-        window.setScene(scene);
-        window.show();
+        //window.setScene(scene);
+        //window.show();
 
     }
 
