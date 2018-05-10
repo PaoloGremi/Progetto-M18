@@ -86,10 +86,10 @@ public class TradeCenter {
      * @param username
      * @return
      */
-    public String searchCustomer(String username){        //todo: potrebbe ritornare solo l'ID--> do meno info a chi non le deve avere
+    public Customer searchCustomer(String username){        //todo: potrebbe ritornare solo l'ID--> do meno info a chi non le deve avere
         for(String key : customers.keySet()){
             if((customers.get(key)).getUsername().equals(username)){
-                return customers.get(key).getId();
+                return customers.get(key);
             }
         }
         //user not found
@@ -176,18 +176,18 @@ public class TradeCenter {
     }
 
     public boolean loggedIn(String username, String password){
-        String id;
+        Customer customer;
         try{
-            id = searchCustomer(username);
+            customer = searchCustomer(username);
         }catch(UserNotFoundException e){
-            id = null;
+            customer = null;
             e.printStackTrace();
         }
-        if(id == null){
+        if(customer == null){
             //todo username inesistente fare registrare
             return false;
         }
-        if(customers.get(id).getUsername() == username && customers.get(id).checkPassword(password)){
+        if(customer.getUsername() == username && customer.checkPassword(password)){
             return true;
         }else{
             //usere registrato ma password sbagliata //todo richiedere password

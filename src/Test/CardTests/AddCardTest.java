@@ -13,7 +13,7 @@ public class AddCardTest {
         //caso favorevole
         TradeCenter tradeCenter = new TradeCenter();
         tradeCenter.addCustomer("nome", "Abcdefghil123");
-        Customer customer = new Customer("123", "nome", "Abcdefghil123");        //rendere più effieciente il prendere un customer
+        Customer customer = tradeCenter.searchCustomer("nome");     //rendere più effieciente il prendere un customer
         try{
             //todo vedere perche devo dare io l'id alla carta, cosi non sarebbe univoco
             Card card = new Card(1, new YuGiOhDescription("drago","bianco occhi blu", "src/Test/CardTests/drago.jpg", "Reference", 7, 3000, 1200, 1, 2));

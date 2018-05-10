@@ -17,5 +17,6 @@ public class AddCustomerTest {
 
         //caso sfavorevole - utente non trovato
         Customer customer1 = tradeCenter.searchCustomer("aaa");     //todo vedere perche printa tutto e non solo il messaggio
+
     }
 }
