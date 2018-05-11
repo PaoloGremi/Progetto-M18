@@ -1,12 +1,20 @@
+
 package Interface;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.*;
 
+import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -16,9 +24,12 @@ public class WishListScene {
     static ArrayList<File> files1;
     static ScrollPane scroll;
 
+
     static ScrollPane display()  {
+
         FlowPane flow = new FlowPane();
-        flow.setPadding(new Insets(5, 0, 5, 0));
+
+        flow.setPadding(new Insets(5, 5, 5, 5));
         flow.setVgap(4);
         flow.setHgap(4);
         flow.setStyle("-fx-background-color: DAE6A2;");
@@ -29,13 +40,15 @@ public class WishListScene {
         scroll.setContent(flow);
 
         HBox hbox1;
-        ImageView card;
+
 
         for(File file2 : files1){
             BorderPane pane = new BorderPane();
+            Pane pane2 = new Pane();
+            pane.setPadding(new Insets(0));
 
             hbox1 = new HBox();
-            hbox1.setPadding(new Insets(20, 10, 20, 0));
+            hbox1.setPadding(new Insets(20, 10, 20, 10));
             hbox1.setSpacing(10);
             hbox1.setStyle("-fx-background-color: orange");
 
@@ -47,13 +60,19 @@ public class WishListScene {
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button2);
 
+
             File file3 = new File(file2.getPath());
             Image image3 = new Image(file3.toURI().toString());
-            card = new ImageView();
+            ImageView card = new ImageView();
             card.setImage(image3);
+            pane2.getChildren().add(card);
+            card.setPreserveRatio(true);
+            card.setFitHeight(313);
 
             pane.setCenter(card);
             pane.setBottom(hbox1);
+            //pane.setScaleX(pane.getScaleX() * 0.8);
+            //pane.setScaleY(pane.getScaleY() * 0.8);
 
             button1.setOnAction(event -> {
 
@@ -65,8 +84,27 @@ public class WishListScene {
                 }
 
             });
+
+            button2.setOnAction(event -> {
+                MainWindow.refreshDynamicContent(Demo.display(pane));
+            });
+
+            EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
+                    new EventHandler<javafx.scene.input.MouseEvent>() {
+
+                        @Override
+                        public void handle(javafx.scene.input.MouseEvent e) {
+                            MainWindow.refreshDynamicContent(Demo.display(pane));
+                        }
+                    };
+
+            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+
             flow.getChildren().add(pane);
+            flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }
+        scroll.setPadding(new Insets(3));
+        scroll.setStyle("-fx-background-color: orange");
         return scroll;
     }
 
@@ -87,5 +125,3 @@ public class WishListScene {
     }
 
 }
-
-
