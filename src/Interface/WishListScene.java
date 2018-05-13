@@ -48,7 +48,7 @@ public class WishListScene {
             pane.setPadding(new Insets(0));
 
             hbox1 = new HBox();
-            hbox1.setPadding(new Insets(20, 10, 20, 10));
+            hbox1.setPadding(new Insets(10));
             hbox1.setSpacing(10);
             hbox1.setStyle("-fx-background-color: orange");
 
@@ -71,8 +71,6 @@ public class WishListScene {
 
             pane.setCenter(card);
             pane.setBottom(hbox1);
-            //pane.setScaleX(pane.getScaleX() * 0.8);
-            //pane.setScaleY(pane.getScaleY() * 0.8);
 
             button1.setOnAction(event -> {
 
@@ -85,20 +83,16 @@ public class WishListScene {
 
             });
 
-            button2.setOnAction(event -> {
-                MainWindow.refreshDynamicContent(Demo.display(pane));
-            });
-
-            EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
+            /*EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(pane));
+                            MainWindow.refreshDynamicContent(Demo.display(card));
                         }
-                    };
+                    };*/
 
-            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+            //card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
