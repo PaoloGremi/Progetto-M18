@@ -1,11 +1,7 @@
-
 package Interface;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -14,14 +10,25 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 import java.util.ArrayList;
 
-public class WishListScene{
+public class CollectionScene{
     static boolean flag = true;
-    static File[] files = generateFiles();
+    static File[] files;
     static ArrayList<File> files1;
     static ScrollPane scroll;
+    static String Url;
 
+    static HBox hbox;
 
-    static ScrollPane display()  {
+    static BorderPane display(String url)  {
+
+        files = generateFiles(url);
+        BorderPane border = new BorderPane();
+        Button buttonAdd= new Button("Add Card");
+        hbox = new HBox();
+        hbox.setPadding(new Insets(10));
+        hbox.setSpacing(10);
+        hbox.setStyle("-fx-background-color: orange");
+        hbox.getChildren().add(buttonAdd);
 
         FlowPane flow = new FlowPane();
 
@@ -35,56 +42,26 @@ public class WishListScene{
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
 
-        HBox hbox1;
-
-
         for(File file2 : files1){
             BorderPane pane = new BorderPane();
-            Pane pane2 = new Pane();
-            pane.setPadding(new Insets(0));
 
-            hbox1 = new HBox();
-            hbox1.setPadding(new Insets(10));
-            hbox1.setSpacing(10);
-            hbox1.setStyle("-fx-background-color: orange");
-
-            Button button1 = new Button("Remove");
-            button1.setPrefSize(100, 20);
-            hbox1.getChildren().add(button1);
-
-            Button button2 = new Button("Search");
-            button1.setPrefSize(100, 20);
-            hbox1.getChildren().add(button2);
-
+            pane.setPadding(new Insets(5,0,0,5));
 
             File file3 = new File(file2.getPath());
             Image image3 = new Image(file3.toURI().toString());
             ImageView card = new ImageView();
             card.setImage(image3);
-            pane2.getChildren().add(card);
             card.setPreserveRatio(true);
-            card.setFitHeight(313);
+            card.setFitHeight(285);
 
             pane.setCenter(card);
-            pane.setBottom(hbox1);
-
-            button1.setOnAction(event -> {
-
-                for (File file4 : files){
-                    if(file4.equals(file2)) {
-                        flow.getChildren().remove(pane);
-                        WishListScene.removeFile(files1,file4);
-                    }
-                }
-
-            });
 
             /*EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(card, "wish"));
+                            MainWindow.refreshDynamicContent(Demo.display(card, "collection"));
                         }
                     };
 
@@ -95,16 +72,18 @@ public class WishListScene{
         }
         scroll.setPadding(new Insets(3));
         scroll.setStyle("-fx-background-color: orange");
-        return scroll;
+        border.setCenter(scroll);
+        border.setBottom(hbox);
+        return border;
     }
 
     static void removeFile(ArrayList<File> files, File file){
         files.remove(file);
     }
 
-    static File[] generateFiles() {
+    static File[] generateFiles(String url) {
         if(flag) {
-            files = new File("database/DB_yugioh/yugioh_pics/").listFiles();
+            files = new File(url).listFiles();
             files1 = new ArrayList<>();
             flag=false;
             for(int i=0; i<files.length; i++){
@@ -114,4 +93,9 @@ public class WishListScene{
         return files;
     }
 
+    static BorderPane refresh(){
+        return display(Url);
+    }
+
 }
+

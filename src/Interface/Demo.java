@@ -5,9 +5,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 
-public class Demo {
+public  class Demo {
 
-    static Pane display(Node e){
+    static Pane display(Node e, String scene){
         BorderPane pane = new BorderPane();
         e.setScaleX(pane.getScaleX() * 1.7);
         e.setScaleY(pane.getScaleY() * 1.7);
@@ -21,7 +21,12 @@ public class Demo {
         pane.setTop(hBox);
 
         button.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(WishListScene.display());
+            switch (scene){
+                case "wish": {//MainWindow.refreshDynamicContent(WishListScene.display());
+                             break;}
+                case "collection": {//MainWindow.refreshDynamicContent(CollectionScene.refresh());
+                            break;}
+            }
         });
 
 
