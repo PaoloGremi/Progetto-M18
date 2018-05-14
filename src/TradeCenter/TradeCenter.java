@@ -61,25 +61,6 @@ public class TradeCenter {
         return "USER-" + contUsers;
     }
 
-
-    /**
-     * Allow the user to delete his account
-     *
-     * @param id user identifier
-     */
-    /*
-    public void removeCustomer(int id) {
-        try{
-            if(customers.remove(id) == null){                                 //capire come passare id
-                throw new UserNotFoundException();          //todo: non bellissimo, vedere come migliorarlo
-            }
-        }catch (UserNotFoundException e){
-            e.printStackTrace();
-        }
-
-    }
-    */
-
     /**
      * User can find another user by searching his name
      *
@@ -102,7 +83,7 @@ public class TradeCenter {
      * @param description the card
      */
     /*
-    public void addDescription(Description description){
+    public void addDescription(Description description){        //todo: l'utente dovrebbe aggiungere anche l'immagine della carta
         try{
             catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
         }catch (NullDescriptionException e){
@@ -110,8 +91,6 @@ public class TradeCenter {
         }
     }
     */
-
-    //todo: puo essere utile mettere il metodo remove description ??
 
     /**
      * Method that search if the card is in the database or not
