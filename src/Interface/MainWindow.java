@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -15,6 +16,9 @@ import javafx.stage.Stage;
 public class MainWindow {
 
     // Nell'actionevent di login aggiungere MainWindow.display(username.getText()); per visualizzare questa finestra
+
+    static StackPane dynamicContent;
+
 
     public static void display(String login_username){
         Stage window = new Stage();
@@ -55,7 +59,7 @@ public class MainWindow {
 
         vbox.getChildren().addAll(username, tileButtons, logOut);
 
-        StackPane dynamicContent = new StackPane();
+        dynamicContent = new StackPane();
             dynamicContent.setAlignment(Pos.TOP_RIGHT);
             dynamicContent.setStyle("-fx-background-color: DAE6A2;");
             dynamicContent.setMinSize(900,600);
@@ -72,10 +76,20 @@ public class MainWindow {
             dynamicContent.getChildren().add(WishListScene.display());
         });
 
+        myCollection.setOnAction(event -> {
+            dynamicContent.getChildren().add(CollectionScene.display("database/DB_pokemon/pokemon_pics/"));
+        });
+
         Scene scene = new Scene(layout, 1200, 700);
         window.setScene(scene);
         window.setResizable(false);
         window.show();
+    }
+
+    public static void refreshDynamicContent(Node node) {
+        dynamicContent.getChildren().removeAll();
+        dynamicContent.getChildren().add(node);
+
     }
 
 }
