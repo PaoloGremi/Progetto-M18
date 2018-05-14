@@ -22,11 +22,11 @@ public class PokemonDescription extends Description {
      * @param cardID    Identificator for Pokemon cards
      * @param type      Pokemons type
      * @param hp        Pokemons hit points
-     * @param weigth    Pokemons weight
+     * @param weight    Pokemons weight
      * @param length    Pokemons length
      * @param level     Pokemons level
      */
-    public PokemonDescription(String name, String text, String picUrl, int cardID, String type, int hp, int weigth, String length, int level) throws IOException {
+    public PokemonDescription(String name, String text, String picUrl, int cardID, String type, int hp, int weight, String length, int level) throws IOException {
         super(name, text, CardType.POKEMON, picUrl);
         this.cardID = cardID;
         this.type = type;
