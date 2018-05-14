@@ -22,7 +22,7 @@ public  class Demo {
 
         button.setOnAction(event -> {
             switch (scene){
-                case "wish": {MainWindow.refreshDynamicContent(WishListScene.display());
+                case "wish": {MainWindow.refreshDynamicContent(WishListScene.refresh());
                              break;}
                 case "collection": {MainWindow.refreshDynamicContent(CollectionScene.refresh());
                             break;}
