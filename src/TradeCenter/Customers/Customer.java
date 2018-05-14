@@ -219,6 +219,15 @@ public class Customer {
         return tradeList;
     }
 
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public ArrayList<Description> getWishList() {
+        return wishList;
+    }
+
     /**Getter of the customer's id.
      *
      * @return Id of the customer
