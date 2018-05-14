@@ -23,7 +23,7 @@ public class CollectionScene{
 
         files = generateFiles(url);
         BorderPane border = new BorderPane();
-        Button buttonAdd= new Button("Add Card");
+        Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();
         hbox.setPadding(new Insets(10));
         hbox.setSpacing(10);
@@ -56,7 +56,7 @@ public class CollectionScene{
 
             pane.setCenter(card);
 
-            /*EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
+            EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
@@ -65,7 +65,7 @@ public class CollectionScene{
                         }
                     };
 
-            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);*/
+            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));

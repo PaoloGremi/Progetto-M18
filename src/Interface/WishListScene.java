@@ -14,6 +14,8 @@ import javafx.scene.image.ImageView;
 import java.io.File;
 import java.util.ArrayList;
 
+import static javafx.scene.input.KeyCode.U;
+
 public class WishListScene{
     static boolean flag = true;
     static File[] files = generateFiles();
@@ -48,11 +50,11 @@ public class WishListScene{
             hbox1.setSpacing(10);
             hbox1.setStyle("-fx-background-color: orange");
 
-            Button button1 = new Button("Remove");
+            Button button1 = new Button("Remove "+ "\uD83D\uDD71");
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button1);
 
-            Button button2 = new Button("Search");
+            Button button2 = new Button("Search " + "\uD83D\uDD0D");
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button2);
 
@@ -79,7 +81,7 @@ public class WishListScene{
 
             });
 
-            /*EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
+            EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
@@ -88,7 +90,7 @@ public class WishListScene{
                         }
                     };
 
-            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);*/
+            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
