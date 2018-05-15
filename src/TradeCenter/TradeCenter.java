@@ -5,6 +5,7 @@ import TradeCenter.Card.CardCatalog;
 
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
+import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
 import TradeCenter.Card.Description;
 import TradeCenter.Trades.*;
@@ -45,11 +46,9 @@ public class TradeCenter {
      * @param username
      * @param password
      */
-    public void addCustomer(String username, String password) {
+    public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
         String id = customerID();
-        //todo mettere criterio per password es: almeno una maiuscola e un numero
-        //todo mettere poi la relativa eccezione
-        customers.put(id, new Customer(id,username,password));
+        customers.put(id, new Customer(id, username, password));
     }
 
     /**

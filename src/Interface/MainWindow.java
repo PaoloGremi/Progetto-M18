@@ -105,6 +105,12 @@ public class MainWindow {
             dynamicContent.getChildren().add(SearchCardScene.display());
         });
 
+        //prova Gore
+        myTrades.setOnAction(event -> {
+            dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
+            dynamicContent.getChildren().add(OtherUserProfileScene.display(tempUser));
+        });
+
         dynamicContent.getChildren().add(CollectionScene.display(tempUser.getCollection(), tempUser.getUsername()));
 
         Scene scene = new Scene(layout, 1200, 700);

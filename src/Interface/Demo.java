@@ -26,6 +26,8 @@ public  class Demo {
                              break;}
                 case "collection": {MainWindow.refreshDynamicContent(CollectionScene.refresh());
                             break;}
+                case "other_user": {MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
+                    break;}
             }
         });
 
