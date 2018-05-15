@@ -1,5 +1,6 @@
 import Interface.MainWindow;
-import Interface.SignUp;
+import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
+import TradeCenter.TradeCenter;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,15 +25,14 @@ public class LogIn extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        TradeCenter tc = new TradeCenter();
         window = primaryStage;
         window.setTitle("LogIn interface");
         signUp = new Button("SignUp");
-        signUp.setOnAction(event -> {
-            boolean Logged = SignUp.display();
-        });
+
         logIn = new Button("LogIn");
 
-        credentials = new Label("Please enter username and password");
+        credentials = new Label("Please enter username and password\n the password must have at least 8 characters\n an Uppercase a lowercase and a number.");
         username = new TextField("Username");
         password = new PasswordField();
         password.setPromptText("Password");
@@ -44,6 +44,29 @@ public class LogIn extends Application{
         logIn_Register.getChildren().addAll(logIn, signUp);
         logIn_Register.setSpacing(30);
         logIn_Register.setAlignment(Pos.CENTER);
+
+        signUp.setOnAction(event -> {
+            PasswordField passwordVerified = new PasswordField();
+            passwordVerified.setPromptText("Repeat the password");
+            credentialBox.getChildren().add(passwordVerified);
+            Button confirm = new Button("Confirm");
+
+            confirm.setOnAction(event1 -> {
+                if(tc.verifyPassword(password.getText(), passwordVerified.getText())) {
+                    {
+                        try {
+                            tc.addCustomer(username.getText(), password.getText());
+                        } catch (CheckPasswordConditionsException e) {
+                            Label error = new Label("Incorrect password");
+                            credentialBox.getChildren().add(error);
+                        }
+                    }
+                }
+            });
+
+            logIn_Register.getChildren().add(confirm);
+            logIn_Register.getChildren().removeAll(signUp, logIn);
+        });
         logIn.setOnAction(event -> {
             MainWindow.display(username.getText());
         });
