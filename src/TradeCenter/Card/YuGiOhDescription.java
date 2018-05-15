@@ -13,7 +13,19 @@ public class YuGiOhDescription extends Description{
     private int type_id;
 
 
-
+    /**
+     * Constructor method
+     *
+     * @param name              name: Descr's name
+     * @param text              Descr's text description
+     * @param picUrl            : Url to load descr's picture
+     * @param reference         The description of the card
+     * @param level             Card level
+     * @param atk               The attack for monster cards
+     * @param def               The defense for monsters cards
+     * @param monster_type_id   The type of a monster
+     * @param type_id           Type of the card: monster, magical or trap
+     */
     public YuGiOhDescription(String name,String text,String picUrl, String reference, int level, int atk, int def, int monster_type_id, int type_id) throws IOException {
         super(name, text, CardType.YUGIOH, picUrl);
         //if(type_id = ) //todo FIX

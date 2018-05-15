@@ -12,7 +12,7 @@ public  class Demo {
         e.setScaleX(pane.getScaleX() * 1.7);
         e.setScaleY(pane.getScaleY() * 1.7);
         HBox hBox = new HBox();
-        Button button = new Button("Go Back");
+        Button button = new Button("\u2B8C");
         hBox.getChildren().add(button);
         hBox.setPadding(new Insets(10));
         hBox.setStyle("-fx-background-color: orange;");
@@ -22,9 +22,9 @@ public  class Demo {
 
         button.setOnAction(event -> {
             switch (scene){
-                case "wish": {//MainWindow.refreshDynamicContent(WishListScene.display());
+                case "wish": {MainWindow.refreshDynamicContent(WishListScene.refresh());
                              break;}
-                case "collection": {//MainWindow.refreshDynamicContent(CollectionScene.refresh());
+                case "collection": {MainWindow.refreshDynamicContent(CollectionScene.refresh());
                             break;}
             }
         });

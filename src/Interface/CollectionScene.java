@@ -1,5 +1,8 @@
 package Interface;
 
+import TradeCenter.Card.Card;
+import TradeCenter.Customers.Collection;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -7,6 +10,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
 import java.io.File;
 import java.util.ArrayList;
 
@@ -15,19 +21,29 @@ public class CollectionScene{
     static File[] files;
     static ArrayList<File> files1;
     static ScrollPane scroll;
-    static String Url;
+    static Collection coll;
+    static String user;
 
     static HBox hbox;
 
-    static BorderPane display(String url)  {
+    static BorderPane display(Collection collection, String username)  {
 
-        files = generateFiles(url);
+        coll=collection;
+        user=username;
+        //files = generateFiles(url);
         BorderPane border = new BorderPane();
-        Button buttonAdd= new Button("Add Card");
+        Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();
-        hbox.setPadding(new Insets(10));
-        hbox.setSpacing(10);
+        hbox.setPadding(new Insets(5));
+        hbox.setSpacing(600);
         hbox.setStyle("-fx-background-color: orange");
+
+        TextFlow textFlow = new TextFlow();
+        textFlow.setPadding(new Insets(5));
+        Text text = new Text(username +"'s collection");
+        text.setStyle("-fx-font-weight: bold");
+        textFlow.getChildren().add(text);
+        hbox.getChildren().add(textFlow);
         hbox.getChildren().add(buttonAdd);
 
         FlowPane flow = new FlowPane();
@@ -42,13 +58,14 @@ public class CollectionScene{
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
 
-        for(File file2 : files1){
+        for(Card file2 : collection){
             BorderPane pane = new BorderPane();
 
             pane.setPadding(new Insets(5,0,0,5));
 
-            File file3 = new File(file2.getPath());
-            Image image3 = new Image(file3.toURI().toString());
+            //File file3 = new File(file2.getDescription().getPicUrl());
+            //Image image3 = new Image(file3.toURI().toString());
+            Image image3 = SwingFXUtils.toFXImage(file2.getDescription().getPic(),null);
             ImageView card = new ImageView();
             card.setImage(image3);
             card.setPreserveRatio(true);
@@ -56,7 +73,7 @@ public class CollectionScene{
 
             pane.setCenter(card);
 
-            /*EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
+            EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
@@ -65,7 +82,7 @@ public class CollectionScene{
                         }
                     };
 
-            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);*/
+            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
@@ -73,7 +90,7 @@ public class CollectionScene{
         scroll.setPadding(new Insets(3));
         scroll.setStyle("-fx-background-color: orange");
         border.setCenter(scroll);
-        border.setBottom(hbox);
+        border.setTop(hbox);
         return border;
     }
 
@@ -94,7 +111,7 @@ public class CollectionScene{
     }
 
     static BorderPane refresh(){
-        return display(Url);
+        return display(coll,user);
     }
 
 }

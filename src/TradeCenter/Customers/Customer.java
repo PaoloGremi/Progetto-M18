@@ -24,7 +24,7 @@ public class Customer {
     private String username;
     private String password;
     private Collection collection;
-    private Collection wishList;
+    private ArrayList<Description> wishList;
     private ArrayList<String> tradeList;
 
     public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
@@ -33,7 +33,7 @@ public class Customer {
             this.username = username;
             this.password = checkPasswordConditions(password);
             this.collection = new Collection();
-            this.wishList = new Collection();
+            this.wishList = new ArrayList<>();
             this.tradeList = new ArrayList<>();
 
     }
@@ -154,12 +154,12 @@ public class Customer {
     /**
      *Method to add a Card to the Customer's wish list .
      *
-     * @param card Card to add.
+     * @param cardDescription Card description to add.
      */
-    public void addCardToWishList(Card card){
+    public void addCardToWishList(Description cardDescription){
         try {
 
-            wishList.addCardToCollection(card);
+            wishList.add(cardDescription);
 
         }catch (AddCardException e){
             System.err.println(e.getMessage());
@@ -169,12 +169,12 @@ public class Customer {
     /**
      * Remove a Card from the wish list of the Customers who calls this method.
      *
-     * @param card Card to remove.
+     * @param cardDescription Card description to remove.
      */
-    public void removeFromWishList(Card card){
+    public void removeFromWishList(Description cardDescription){
         try {
 
-            wishList.removeCardFromCollection(card);
+            wishList.remove(cardDescription);
 
         }catch (RemoveCardException e){
             System.err.println(e.getMessage());
@@ -217,6 +217,15 @@ public class Customer {
     public ArrayList<String> getTradeList(){
         if(tradeList.isEmpty()) throw new NoTradesExeption();
         return tradeList;
+    }
+
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public ArrayList<Description> getWishList() {
+        return wishList;
     }
 
     /**Getter of the customer's id.
