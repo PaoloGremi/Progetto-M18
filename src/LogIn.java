@@ -1,3 +1,4 @@
+import Interface.MainWindow;
 import Interface.SignUp;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -30,7 +31,7 @@ public class LogIn extends Application{
             boolean Logged = SignUp.display();
         });
         logIn = new Button("LogIn");
-        //fare l'azione per login
+
         credentials = new Label("Please enter username and password");
         username = new TextField("Username");
         password = new PasswordField();
@@ -43,7 +44,9 @@ public class LogIn extends Application{
         logIn_Register.getChildren().addAll(logIn, signUp);
         logIn_Register.setSpacing(30);
         logIn_Register.setAlignment(Pos.CENTER);
-
+        logIn.setOnAction(event -> {
+            MainWindow.display(username.getText());
+        });
         BorderPane layout = new BorderPane();
         layout.setCenter(credentialBox);
         layout.setBottom(logIn_Register);
