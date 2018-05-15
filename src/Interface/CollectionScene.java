@@ -35,12 +35,12 @@ public class CollectionScene{
         Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();
         hbox.setPadding(new Insets(5));
-        hbox.setSpacing(670);
+        hbox.setSpacing(600);
         hbox.setStyle("-fx-background-color: orange");
 
         TextFlow textFlow = new TextFlow();
         textFlow.setPadding(new Insets(5));
-        Text text = new Text(username +"'s wish list");
+        Text text = new Text(username +"'s collection");
         text.setStyle("-fx-font-weight: bold");
         textFlow.getChildren().add(text);
         hbox.getChildren().add(textFlow);
