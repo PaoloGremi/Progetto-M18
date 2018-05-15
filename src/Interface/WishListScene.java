@@ -3,6 +3,7 @@ package Interface;
 
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
@@ -82,9 +83,8 @@ public class WishListScene{
             button1.setPrefSize(100, 20);
             hbox1.getChildren().add(button2);
 
-
-            File file3 = new File(file2.getPicUrl());
-            Image image3 = new Image(file3.toURI().toString());
+            
+            Image image3 = SwingFXUtils.toFXImage(file2.getPic(),null);
             ImageView card = new ImageView();
             card.setImage(image3);
             pane2.getChildren().add(card);

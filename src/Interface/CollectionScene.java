@@ -2,6 +2,7 @@ package Interface;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -62,8 +63,9 @@ public class CollectionScene{
 
             pane.setPadding(new Insets(5,0,0,5));
 
-            File file3 = new File(file2.getDescription().getPicUrl());
-            Image image3 = new Image(file3.toURI().toString());
+            //File file3 = new File(file2.getDescription().getPicUrl());
+            //Image image3 = new Image(file3.toURI().toString());
+            Image image3 = SwingFXUtils.toFXImage(file2.getDescription().getPic(),null);
             ImageView card = new ImageView();
             card.setImage(image3);
             card.setPreserveRatio(true);
