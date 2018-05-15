@@ -1,16 +1,14 @@
 package Interface;
 
-import com.sun.javafx.font.freetype.HBGlyphLayout;
+
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import sun.applet.Main;
+
 
 public class SearchCardScene {
     static BorderPane mainBorder;
@@ -20,6 +18,7 @@ public class SearchCardScene {
     //filtri
     static VBox vBoxFilter;
     static HBox hBoxFilterTop;
+    static ComboBox comboCardType;
 
 
     static BorderPane display(){
@@ -27,6 +26,9 @@ public class SearchCardScene {
         hBoxTop=new HBox();
         hBoxInner=new HBox();
         vBoxTop=new VBox();
+
+        mainBorder.setPadding(new Insets(5));
+        mainBorder.setStyle("-fx-background-color: orange");
 
         Button buttSearch=new Button("Search  "+ "\uD83D\uDD0D");
         Button buttFilter=new Button("Filter");
@@ -44,13 +46,22 @@ public class SearchCardScene {
 
         vBoxFilter=new VBox();
         hBoxFilterTop=new HBox();
+        comboCardType=new ComboBox();
+        comboCardType.setPromptText("Choose type of Card");
 
-        hBoxFilterTop.setPadding(new Insets(3));
+        vBoxFilter.setPadding(new Insets(5));
+
+        comboCardType.getItems().addAll( //farlo dinamico
+          "Pokèmon",
+          "YU-GI-OH!"
+        );
 
 
 
 
+        vBoxFilter.getChildren().add(comboCardType);
         mainBorder.setTop(hBoxTop);
+        mainBorder.setLeft(vBoxFilter);
         return mainBorder;
     }
 }
