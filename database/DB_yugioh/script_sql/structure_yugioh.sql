@@ -4,7 +4,7 @@
 
 -- 3 tabelle create: Monster_Type,Card_Type,Yugioh_card
 
--- !!!NOTA BENE!!:lo script presuppone un DB già esistene denominato "YUGIOH_CARD",
+-- !!!NOTA BENE!!:lo script presuppone un DB già esistene denominato "CARDS",
 -- 			se non esistente, fare query CREATE DATABASE YUGIOH_CARD
 
 -- le parti non standard dei comandi è:
@@ -13,7 +13,10 @@
 --      definizione dei vincoli di integrita'Â  referenziale
 --      FOREIGN KEY
 
-USE YUGIOH_CARD;
+
+ create database CARDS;
+
+USE CARDS;
 -- ------------ FIRST TABLE ----------------
 create table Monster_Type
 ( Monster_Type_ID int primary key,
@@ -43,6 +46,3 @@ create table Yugioh_card
  foreign key (Type_ID) references card_type(Type_ID)
 )
 ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
-
-

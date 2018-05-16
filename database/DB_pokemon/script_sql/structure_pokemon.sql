@@ -4,12 +4,14 @@
 
 -- 1 tabelle create: Pokemon_card
 
--- !!!NOTA BENE!!:lo script presuppone un DB già esistene denominato "Pokemon_card",
+-- !!!NOTA BENE!!:lo script presuppone un DB già esistene denominato "cards",
 -- 			se non esistente, fare query CREATE DATABASE Pokemon_card
 
 -- le parti non standard dei comandi è:
 -- 		la clausola ENGINE=InnoDB 
-use Pokemon_card;
+
+-- create database CARDS;
+use CARDS;
 create table pokemon_card
 ( Cards_ID int primary key,
   Name varchar(120),
@@ -21,5 +23,3 @@ create table pokemon_card
   Level int,
   Picture mediumblob
 )ENGINE = InnoDB DEFAULT CHARSET=utf8;
-
-
