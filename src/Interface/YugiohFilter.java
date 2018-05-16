@@ -52,6 +52,7 @@ public class YugiohFilter {
         atkSlider.setBlockIncrement(500);
 
 
+
         defSlider.setMin(0);
         defSlider.setMax(5000);
         defSlider.setShowTickLabels(true);
@@ -60,8 +61,23 @@ public class YugiohFilter {
         defSlider.setMinorTickCount(250);
         defSlider.setBlockIncrement(500);
 
-        atkContainer.getChildren().addAll(new Label("ATK:"),atkSlider);
+        Label atkLabel=new Label("Non modificato");
+        atkContainer.getChildren().addAll(new Label("ATK:"),atkSlider,atkLabel);
         defContainer.getChildren().addAll(new Label("DEF:") ,defSlider);
+
+        atkSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            atkLabel.setText(Integer.toString(newValue.intValue()   ));
+
+        });
+        /*double valatk;
+        String valAtk=new String();
+        if(atkSlider.valueCh){
+            atkContainer.getChildren().remove(atkPrint);
+            valatk=atkSlider.getValue();
+            valAtk=Double.toString(valatk);
+            atkPrint.setText(valAtk);
+            atkContainer.getChildren().add(atkPrint);
+        }*/
 
 
         vBoxMain.getChildren().addAll(comboMonster,comboType,atkContainer,defContainer);

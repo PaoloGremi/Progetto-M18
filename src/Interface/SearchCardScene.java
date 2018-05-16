@@ -8,9 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 
 public class SearchCardScene {
@@ -48,12 +46,12 @@ public class SearchCardScene {
         /**filtri**/
 
         vBoxFilter=new VBox();
-        vBoxFilter.setStyle("-fx-background-color: DAE6A2;");
         //hBoxFilterTop=new HBox();
         comboCardType=new ComboBox();
         comboCardType.setPromptText("Choose type of Card");
 
         vBoxFilter.setPadding(new Insets(5));
+        vBoxFilter.setStyle("-fx-border-color:orange;-fx-border-width:5px;-fx-background-color: DAE6A2;");
 
         comboCardType.getItems().addAll( //farlo dinamico
           "Pokèmon",
@@ -67,20 +65,21 @@ public class SearchCardScene {
                 if(comboCardType.getValue().equals("Pokèmon")){
                    if(vBoxFilter.getChildren().size()==2)
                    vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
-                   vBoxFilter.getChildren().add(new Label("scelto Pokemon"));
+                   vBoxFilter.getChildren().add(PokemonFilter.display());
                 }
                 if (comboCardType.getValue().equals("YU-GI-OH!")){
                     if(vBoxFilter.getChildren().size()==2)
-                    vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(2));
-                    vBoxFilter.getChildren().add(yugiohFilterScene.display());
+                    vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
+                    vBoxFilter.getChildren().add(YugiohFilter.display());
 
                 }
             }
         });
 
 
-
-
+        Pane paneProva=new Pane();
+        paneProva.setStyle("-fx-background-color: DAE6A2;");
+        mainBorder.setCenter(paneProva);
         vBoxFilter.getChildren().add(comboCardType);
         mainBorder.setTop(hBoxTop);
         mainBorder.setLeft(vBoxFilter);
