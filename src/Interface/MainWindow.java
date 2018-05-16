@@ -4,6 +4,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -20,12 +21,11 @@ import java.io.IOException;
 
 public class MainWindow {
 
-    // Nell'actionevent di login aggiungere MainWindow.display(username.getText()); per visualizzare questa finestra
-
     static StackPane dynamicContent;
 
     public static void display(String login_username){
 
+        // values for testing purpose
         Customer tempUser = new Customer("01", login_username, "APassword123");
         try {
             tempUser.addCardToWishList(new YuGiOhDescription("Ancient Dragon", "an ancient dragon", "./database/DB_yugioh/yugioh_pics/AncientDragon-YS15-EU-C-1E.png", "cos",0,0,0,0,0)); {
@@ -39,7 +39,6 @@ public class MainWindow {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
 
         Stage window = new Stage();
@@ -87,7 +86,7 @@ public class MainWindow {
 
         logOut.setOnAction(event -> {
             window.close();
-            SignUp.display();
+            Platform.exit();
         });
 
         myWishlist.setOnAction(event -> {
