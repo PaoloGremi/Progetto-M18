@@ -91,12 +91,12 @@ public class MainWindow {
 
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(tempUser.getWishList(), tempUser.getUsername()));
+            dynamicContent.getChildren().add(WishListScene.display(tempUser.getWishList(), tempUser.getUsername(), false));
         });
 
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(CollectionScene.display(tempUser.getCollection(), tempUser.getUsername()));
+            dynamicContent.getChildren().add(CollectionScene.display(tempUser.getCollection(), tempUser.getUsername(), false));
         });
 
         searchCard.setOnAction(event -> {
