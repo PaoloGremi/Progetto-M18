@@ -91,12 +91,12 @@ public class MainWindow {
 
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(tempUser.getWishList(), tempUser.getUsername(), false));
+            dynamicContent.getChildren().add(WishListScene.display(tempUser.getWishList(), tempUser.getUsername()));
         });
 
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(CollectionScene.display(tempUser.getCollection(), tempUser.getUsername(), false));
+            dynamicContent.getChildren().add(CollectionScene.display(tempUser, tempUser.getUsername(), false));
         });
 
         searchCard.setOnAction(event -> {
@@ -110,7 +110,7 @@ public class MainWindow {
             dynamicContent.getChildren().add(OtherUserProfileScene.display(tempUser));
         });
 
-        dynamicContent.getChildren().add(CollectionScene.display(tempUser.getCollection(), tempUser.getUsername()));
+        dynamicContent.getChildren().add(CollectionScene.display(tempUser, tempUser.getUsername(), false));
 
         Scene scene = new Scene(layout, 1200, 700);
         window.setScene(scene);
