@@ -45,6 +45,7 @@ public class WishListScene{
         hBox2.setPadding(new Insets(10));
         hBox2.setSpacing(10);
         hBox2.setStyle("-fx-background-color: orange");
+        hBox2.setAlignment(Pos.CENTER);
         TextFlow textFlow = new TextFlow();
         Text text = new Text(username +"'s wish list");
         text.setStyle("-fx-font-weight: bold");

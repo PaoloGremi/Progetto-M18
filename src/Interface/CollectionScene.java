@@ -7,6 +7,7 @@ import TradeCenter.Customers.Customer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -93,6 +94,7 @@ public class CollectionScene{
                 HBox hbox1 = new HBox();
                 hbox1.setPadding(new Insets(10));
                 hbox1.setSpacing(10);
+                hbox1.setAlignment(Pos.CENTER);
                 Button buUser = new Button(username);
                 Button bTrade = new Button("Trade");
                 hbox1.getChildren().addAll(buUser, bTrade);
