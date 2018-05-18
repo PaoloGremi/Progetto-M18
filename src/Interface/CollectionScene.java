@@ -1,7 +1,9 @@
 package Interface;
 
 import TradeCenter.Card.Card;
+import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
+import TradeCenter.Customers.Customer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -14,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CollectionScene{
@@ -21,14 +24,14 @@ public class CollectionScene{
     static File[] files;
     static ArrayList<File> files1;
     static ScrollPane scroll;
-    static Collection coll;
+    static Customer cust;
     static String user;
 
     static HBox hbox;
 
-    static BorderPane display(Collection collection, String username)  {
+    static BorderPane display(Customer customer1, String username, boolean searchFlag)  {
 
-        coll=collection;
+        cust=customer1;
         user=username;
         //files = generateFiles(url);
         BorderPane border = new BorderPane();
@@ -44,7 +47,9 @@ public class CollectionScene{
         text.setStyle("-fx-font-weight: bold");
         textFlow.getChildren().add(text);
         hbox.getChildren().add(textFlow);
-        hbox.getChildren().add(buttonAdd);
+        if(!searchFlag) {
+            hbox.getChildren().add(buttonAdd);
+        }
 
         FlowPane flow = new FlowPane();
 
@@ -58,7 +63,7 @@ public class CollectionScene{
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
 
-        for(Card file2 : collection){
+        for(Card file2 : cust.getCollection()){
             BorderPane pane = new BorderPane();
 
             pane.setPadding(new Insets(5,0,0,5));
@@ -84,9 +89,33 @@ public class CollectionScene{
 
             card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
+            if(searchFlag){
+                HBox hbox1 = new HBox();
+                hbox1.setPadding(new Insets(10));
+                hbox1.setSpacing(10);
+                Button buUser = new Button(username);
+                Button bTrade = new Button("Trade");
+                hbox1.getChildren().addAll(buUser, bTrade);
+                hbox1.setStyle("-fx-background-color: orange");
+                pane.setBottom(hbox1);
+                /*buUser.setOnAction(event -> {
+                    Customer customer = MainWindow.tradeCenter.searchCustomer(username);
+                    MainWindow.refreshDynamicContent(OtherUserProfileScene.display(customer));
+                });*/
+
+            }
+
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }
+        buttonAdd.setOnAction(event -> {
+            try {
+                cust.addCard(new Card(1, new YuGiOhDescription("Ancient Dragon", "an ancient dragon", "./database/DB_yugioh/yugioh_pics/BannerofCourage-YS15-EU-C-1E.png", "cos",0,0,0,0,0)));
+                MainWindow.refreshDynamicContent(refresh());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         scroll.setPadding(new Insets(3));
         scroll.setStyle("-fx-background-color: orange");
         border.setCenter(scroll);
@@ -111,7 +140,7 @@ public class CollectionScene{
     }
 
     static BorderPane refresh(){
-        return display(coll,user);
+        return display(cust ,user,false);
     }
 
 }
