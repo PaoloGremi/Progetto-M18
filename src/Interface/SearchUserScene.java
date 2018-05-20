@@ -25,6 +25,7 @@ public class SearchUserScene {
     TextField usernameCercato = new TextField();
     Button cerca = new Button();
     Button risultatiRicerca = new Button("Risultato della ricerca");
+    boolean trovato = false;
 
 
 
@@ -82,12 +83,16 @@ public class SearchUserScene {
         cerca.setOnAction(event -> {
             String username = usernameCercato.getText();
             if(TradeCenter.getCustomers().containsKey(username)){
+                trovato = true;
                 risultatiRicerca.setText(username);
             }
         });
 
         // A questo punto bisogna che il pulsante "risultatiRicerca" apra la scena OtherUserProfileScene, fatelo come meglio credete
         risultatiRicerca.setOnAction(event -> {
+            if (trovato){
+
+            }
 
         });
 
