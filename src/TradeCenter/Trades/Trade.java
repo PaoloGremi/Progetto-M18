@@ -2,11 +2,13 @@ package TradeCenter.Trades;
 
 import java.util.ArrayList;
 
-
+/**
+ * Trade class
+ * @author Roberto Gallotta
+ */
 public class Trade extends ATrade {
 
     /**
-     * Trade class
      * @param history List of all past offers in the current trade
      * @param tradeCounter Counter of how many offers have been made in the current trade
      * @param doneDeal Boolean value to know when a deal is over, ending the current trade

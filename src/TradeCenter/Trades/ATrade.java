@@ -4,15 +4,18 @@ import java.util.Date;
 import TradeCenter.Customers.*;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 
+/**
+ * Abstract class for Offer and Trade.
+ * @author Roberto Gallotta
+ */
 public abstract class ATrade {
 
     /**
-     * Abstract class for Offer and Trade.
-     * @param customer1 Customer 1
-     * @param customer2 Customer 2
-     * @param offer1 Collection offered by Customer 1 to Customer 2
-     * @param offer2 Collection requested by Customer 1 from Customer 2
-     * @param date Latest update date and time
+     *@param customer1 Customer 1
+     *@param customer2 Customer 2
+     *@param offer1 Collection offered by Customer 1 to Customer 2
+     *@param offer2 Collection requested by Customer 1 from Customer 2
+     *@param date Latest update date and time
      */
     private Customer customer1;
     private Customer customer2;

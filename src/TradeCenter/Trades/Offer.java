@@ -6,6 +6,7 @@ import TradeCenter.Exceptions.CardExceptions.*;
 
 /**
  * Class for the Offer between two Customers. Extends ATrade class.
+ * @author Roberto Gallotta
  */
 public class Offer extends ATrade {
 
