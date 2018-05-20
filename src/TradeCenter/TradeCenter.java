@@ -25,7 +25,7 @@ public class TradeCenter {
 
     private int contUsers;                              //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
     private CardCatalog catalog;
-    private HashMap<String, Customer> customers;
+    private static HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
 
@@ -200,5 +200,9 @@ public class TradeCenter {
         for (Trade trade : doneTrades){
             System.out.println(trade);
         }
+    }
+
+    public static HashMap<String, Customer> getCustomers() {
+        return customers;
     }
 }
