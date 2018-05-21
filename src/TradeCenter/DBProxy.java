@@ -1,7 +1,6 @@
 package TradeCenter;
 
 import TradeCenter.Card.CardCatalog;
-import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
@@ -15,7 +14,7 @@ import java.sql.*;
  */
 public class DBProxy {
 
-    Connection connection;
+    private Connection connection;
 
     /*
     Scaricate mysql-connector-java-8.0.11.jar e mettetelo sotto src, poi File -> Project Structure -> Libraries e aggiungete il jar.
@@ -24,14 +23,20 @@ public class DBProxy {
     CREATE USER 'tradecenter'@'localhost' IDENTIFIED BY 'Password1!';
     GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON cards.* TO 'tradecenter'@'localhost';
     Poi usate gli script di Fede per caricare le tabelle e popolarle.
-    //todo add a customer database
+    //todo add a customer database:
+
+    -- ------------ TABLE ----------------
+    create table customers
+    ( ID int primary key,
+      customer mediumblob
+    );
      */
 
     /**
      * Connects to database
      * @param database: database name
      */
-    public void connectToDB(String database) {
+    private void connectToDB(String database) {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC", "tradecenter", "Password1!");
@@ -117,7 +122,7 @@ public class DBProxy {
                         rs.getInt("Cards_ID"),
                         rs.getString("Type"),
                         rs.getInt("Hp"),
-                        rs.getInt("Weight"), //todo correggere nel database il nome della colonna
+                        rs.getInt("Weigth"),
                         rs.getString("Length"),
                         rs.getInt("Level")));
                 }
@@ -134,20 +139,46 @@ public class DBProxy {
     }
 
     /**
+     * Calculate customer table size (number of customers saved in the database)
+     * @return number of customers
+     */
+    public int customersSize() {
+        connectToDB("customers");
+        int result = 0;
+
+        try {
+            PreparedStatement ps = connection.prepareStatement("select count from customers;");
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                result = rs.getInt(1);
+            }
+            connection.commit();
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            disconnectFromDB();
+        }
+
+        return result;
+    }
+
+    /**
      * Updates a customer in the database (contains all customer's informations)
      * @param customer: Customer object to be updated
      * @param position: Index of the customer in the database
      */
     public void updateCustomer(Customer customer, int position) {
-        connectToDB("cards");
+        connectToDB("customers");
 
         try {
             // convert class object to blob
             Blob b1 = createBlob(customer);
             // create prepared statement and execute it/commit changes
-            PreparedStatement ps = connection.prepareStatement("update t1 set customer = ? where `id` = ?");
+            PreparedStatement ps = connection.prepareStatement("update customers set customer = ? where `id` = ?");
             ps.setBlob(1, b1);
-            ps.setInt(2, position);
+            ps.setString(2, "USER-" + position);
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -166,11 +197,11 @@ public class DBProxy {
      */
     public Customer getCostumer(int i) {
         Object obj = null;
-        connectToDB("cards");
+        connectToDB("customers");
 
         try {
-            PreparedStatement ps = connection.prepareStatement("select customer from t1 where `id` = ?");
-            ps.setInt(1, i);
+            PreparedStatement ps = connection.prepareStatement("select customer from customers where ID = ?");
+            ps.setString(1, "USER-" + i);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 Blob b2 = rs.getBlob("customer");
@@ -185,4 +216,27 @@ public class DBProxy {
         }
         return (Customer)obj;
     }
+
+    /**
+     * Insert a new customer in the database
+     * @param customer: Customer to be inserted
+     */
+    public void insertCustomer(Customer customer) {
+        connectToDB("customers");
+
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO customers (ID,customer) VALUES(?,?);");
+            Blob blob = createBlob(customer);
+            ps.setString(1, customer.getId());
+            ps.setBlob(2,blob);
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            disconnectFromDB();
+        }
+    }
+
 }
