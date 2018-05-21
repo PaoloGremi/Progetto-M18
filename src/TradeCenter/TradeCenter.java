@@ -24,17 +24,23 @@ import java.util.HashMap;
 public class TradeCenter {
 
     private int contUsers;                              //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
-    private CardCatalog catalog;
+    private CardCatalog pokemonCatalog;
+    private CardCatalog yugiohCatalog;
     private static HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
+    private DBProxy proxy;
 
     /**
      * Create a new trade center, with  the database and no users
      */
     public TradeCenter() {
         this.contUsers = 0;                             //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
-        this.catalog = new CardCatalog();                  //todo: fare mettere nell'istanziazione del catalogo la creazione del database
+        this.proxy = new DBProxy();
+        this.pokemonCatalog = new CardCatalog();        //todo: fare mettere nell'istanziazione del catalogo la creazione del database
+        this.yugiohCatalog = new CardCatalog();
+        proxy.populateCatalog("cards", "pokemon_cards", pokemonCatalog);
+        proxy.populateCatalog("cards", "Yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
@@ -76,21 +82,6 @@ public class TradeCenter {
         //user not found
         throw new UserNotFoundException();                 //todo Serve mettere il throws nwll'header??
     }
-
-    /**
-     * If a card doesn't exist in the database, the user can add it
-     *
-     * @param description the card
-     */
-    /*
-    public void addDescription(Description description){        //todo: l'utente dovrebbe aggiungere anche l'immagine della carta
-        try{
-            catalog.addDescription(description);            //todo secondo me il catalog non va messo qua come attributo(diventano 2 istanze diverse), RIVEDERE
-        }catch (NullDescriptionException e){
-            e.printStackTrace();                               //todo meglio cosi o con il throws nell'header del metodo??
-        }
-    }
-    */
 
     /**
      * Method that search if the card is in the database or not
