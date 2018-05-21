@@ -11,9 +11,10 @@ import TradeCenter.Card.Description;
 import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
 
-import java.awt.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Callable;
 
 /**
  * Class representing the trading center.
@@ -42,8 +43,16 @@ public class TradeCenter {
         proxy.populateCatalog("cards", "pokemon_cards", pokemonCatalog);
         proxy.populateCatalog("cards", "Yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
+        populateCustomers();
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
+    }
+
+    //todo fare javadocs
+    private void populateCustomers(){
+        for(int i = 0;i<proxy.customersSize();i++){
+            customers.put(proxy.getCostumer(i).getId(), proxy.getCostumer(i));
+        }
     }
 
     /**
@@ -54,7 +63,9 @@ public class TradeCenter {
      */
     public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
         String id = customerID();
-        customers.put(id, new Customer(id, username, password));
+        Customer temporaryCustomer = new Customer(id, username, password);
+        customers.put(id, temporaryCustomer);
+        proxy.insertCustomer(temporaryCustomer);
     }
 
     /**
