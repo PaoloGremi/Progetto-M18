@@ -41,10 +41,8 @@ public class DBProxy {
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC", "tradecenter", "Password1!");
             connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            System.err.println(e);
-        } catch (ClassNotFoundException e) {
-            System.err.println(e);
+        } catch (SQLException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -55,7 +53,7 @@ public class DBProxy {
         try {
             connection.close();
         } catch (SQLException e) {
-            System.err.println(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -65,11 +63,10 @@ public class DBProxy {
      * @return blob
      */
     private Blob createBlob(Object obj) {
-        ByteArrayOutputStream bos = null;
-        ObjectOutputStream oos = null;
+        ByteArrayOutputStream bos;
+        ObjectOutputStream oos;
         Blob blob = null;
         try {
-            // convert class object to blob
             blob = connection.createBlob();
             bos = new ByteArrayOutputStream();
             oos = new ObjectOutputStream(bos);
@@ -77,7 +74,7 @@ public class DBProxy {
             oos.flush();
             blob.setBytes(1, bos.toByteArray());
         } catch (IOException | SQLException e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return blob;
     }
@@ -89,14 +86,14 @@ public class DBProxy {
      */
     private Object getObjFromBlob(Blob blob) {
         Object obj = null;
-        ByteArrayInputStream bis = null;
-        ObjectInputStream ois = null;
+        ByteArrayInputStream bis;
+        ObjectInputStream ois;
         try {
             bis = new ByteArrayInputStream(blob.getBytes(1, (int) blob.length()));
             ois = new ObjectInputStream(bis);
             obj = ois.readObject();
         } catch (Exception e) {
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
         return obj;
     }
@@ -110,12 +107,13 @@ public class DBProxy {
     public void populateCatalog(String database, String table, CardCatalog cc) {
         connectToDB(database);
         try {
-            PreparedStatement ps = connection.prepareStatement("select * from ?");
-            ps.setString(1, table);
-            ResultSet rs = ps.executeQuery();
             if(table.equals("pokemon_cards")) {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM ?;");
+                ps.setString(1, table);
+                ResultSet rs = ps.executeQuery();
+
                 while (rs.next()) {
-                cc.addDescription(new PokemonDescription(
+                    cc.addDescription(new PokemonDescription(
                         rs.getString("Name"),
                         rs.getString("Description"),
                         "tmp",//(File)getObjFromBlob(rs.getBlob("Picture")),
@@ -126,10 +124,24 @@ public class DBProxy {
                         rs.getString("Length"),
                         rs.getInt("Level")));
                 }
-            } else {
-                /*cc.addDescription(new YuGiOhDescription( //todo lettura carte yugioh
-                        */
+            } else if (table.equals("Yugioh_card")) {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM ? natural join Monster_Type natural join Card_Type;"); //todo modificare query
+                ps.setString(1, table);
+                ResultSet rs = ps.executeQuery();
 
+                while (rs.next()) {
+                    cc.addDescription(new YuGiOhDescription(
+                            rs.getString("Name"),
+                            rs.getString("Description"),
+                            "tmp",//(File)getObjFromBlob(rs.getBlob("Picture"),
+                            rs.getString("Reference"),
+                            rs.getInt("Level"),
+                            rs.getInt("Atk"),
+                            rs.getInt("Def"),
+                            rs.getInt("Monster_Type_ID"),
+                            rs.getInt("Type_ID")
+                    ));
+                }
             }
         } catch (Exception e ) {
             e.printStackTrace();
@@ -147,7 +159,7 @@ public class DBProxy {
         int result = 0;
 
         try {
-            PreparedStatement ps = connection.prepareStatement("select count from customers;");
+            PreparedStatement ps = connection.prepareStatement("SELECT COUNT FROM customers;");
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 result = rs.getInt(1);
@@ -176,7 +188,7 @@ public class DBProxy {
             // convert class object to blob
             Blob b1 = createBlob(customer);
             // create prepared statement and execute it/commit changes
-            PreparedStatement ps = connection.prepareStatement("update customers set customer = ? where `id` = ?");
+            PreparedStatement ps = connection.prepareStatement("UPDATE customers SET customer = ? WHERE id = ?;");
             ps.setBlob(1, b1);
             ps.setString(2, "USER-" + position);
             ps.executeUpdate();
@@ -200,7 +212,7 @@ public class DBProxy {
         connectToDB("customers");
 
         try {
-            PreparedStatement ps = connection.prepareStatement("select customer from customers where ID = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT customer FROM customers WHERE ID = ?;");
             ps.setString(1, "USER-" + i);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
