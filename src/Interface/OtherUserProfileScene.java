@@ -3,6 +3,7 @@ package Interface;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.ATrade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -60,7 +61,10 @@ public class OtherUserProfileScene {
             MainWindow.refreshDynamicContent(borderPane);
         });
         //todo mettere listener sul bottone
-        //trade.setOnAction();
+
+        trade.setOnAction(event -> {
+            MainWindow.refreshDynamicContent(TradeScene.display());// todo mettere i parametri, della fuznione
+        });
 
         return borderPane;
     }
