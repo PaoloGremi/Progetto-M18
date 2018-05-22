@@ -26,11 +26,7 @@ public class OtherUserProfileScene {
     static HBox hBox;
     static boolean watchingWishlist = false;
 
-    static Customer otherCustomer;
-
     static BorderPane display(Customer myCustomer, Customer otherCustomer) {
-        otherCustomer = otherCustomer;
-        //todo selezionare carte e fare zoom e tornare indietro
         borderPane = new BorderPane();
         cardList = new StackPane();
 
@@ -43,42 +39,39 @@ public class OtherUserProfileScene {
         Button trade = new Button("Trade");
         hBox.getChildren().addAll(collection, wishlist, trade);
 
-        borderPane.setCenter(displayCollection());
+        borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
 
 
         collection.setOnAction(event -> {
             watchingWishlist = false;
             cardList.getChildren().removeAll(cardList.getChildren());
-            cardList.getChildren().add(displayCollection());
+            cardList.getChildren().add(displayCollection(otherCustomer));
             borderPane.setCenter(cardList);
             MainWindow.refreshDynamicContent(borderPane);
         });
         wishlist.setOnAction(event -> {
             watchingWishlist = true;
             cardList.getChildren().removeAll(cardList.getChildren());
-            cardList.getChildren().add(displayWishlist());
+            cardList.getChildren().add(displayWishlist(otherCustomer));
             borderPane.setCenter(cardList);
             MainWindow.refreshDynamicContent(borderPane);
         });
         //todo mettere listener sul bottone
 
-        //todo mi fa mettere l'altro customer come final
-
-        Customer finalOtherCustomer = otherCustomer;
         trade.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, finalOtherCustomer));// todo mettere i parametri, della fuznione
+            MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, otherCustomer));// todo mettere i parametri, della fuznione
         });
 
         return borderPane;
     }
 
-    private static ScrollPane displayCollection(){
+    private static ScrollPane displayCollection(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
         flowPane.setStyle("-fx-background-color: #fbff2e");
 
-        for (Card card: otherCustomer.getCollection()){
+        for (Card card: customer.getCollection()){
             BorderPane cardPane = new BorderPane();
             Image image = SwingFXUtils.toFXImage(card.getDescription().getPic(), null);
             ImageView imageView = new ImageView();
@@ -106,12 +99,12 @@ public class OtherUserProfileScene {
         cardGrid.setStyle("-fx-background-color: #fffd14");
         return cardGrid;
     }
-    private static ScrollPane displayWishlist(){
+    private static ScrollPane displayWishlist(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
         flowPane.setStyle("-fx-background-color: #fff910");
 
-        for (Description card: otherCustomer.getWishList()){
+        for (Description card: customer.getWishList()){
             BorderPane cardPane = new BorderPane();
             Image image = SwingFXUtils.toFXImage(card.getPic(), null);
             ImageView imageView = new ImageView();
@@ -139,13 +132,13 @@ public class OtherUserProfileScene {
         return cardGrid;
     }
 
-    public static BorderPane refresh(){
+    public static BorderPane refresh(Customer customer){
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){
             //return to whishlist
-            cardList.getChildren().add(displayWishlist());
+            cardList.getChildren().add(displayWishlist(customer));
         }else{
-            cardList.getChildren().add(displayCollection());
+            cardList.getChildren().add(displayCollection(customer));
         }
         borderPane.setCenter(cardList);
         return borderPane;
