@@ -24,11 +24,12 @@ public class OtherUserProfileScene {
     static BorderPane borderPane;
     static ScrollPane cardGrid;
     static HBox hBox;
-    static Customer customer1;
     static boolean watchingWishlist = false;
 
-    static BorderPane display(Customer customer) {
-        customer1 = customer;
+    static Customer otherCustomer;
+
+    static BorderPane display(Customer myCustomer, Customer otherCustomer) {
+        otherCustomer = otherCustomer;
         //todo selezionare carte e fare zoom e tornare indietro
         borderPane = new BorderPane();
         cardList = new StackPane();
@@ -62,8 +63,11 @@ public class OtherUserProfileScene {
         });
         //todo mettere listener sul bottone
 
+        //todo mi fa mettere l'altro customer come final
+
+        Customer finalOtherCustomer = otherCustomer;
         trade.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(TradeScene.display());// todo mettere i parametri, della fuznione
+            MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, finalOtherCustomer));// todo mettere i parametri, della fuznione
         });
 
         return borderPane;
@@ -74,7 +78,7 @@ public class OtherUserProfileScene {
         cardGrid = new ScrollPane();
         flowPane.setStyle("-fx-background-color: #fbff2e");
 
-        for (Card card: customer1.getCollection()){
+        for (Card card: otherCustomer.getCollection()){
             BorderPane cardPane = new BorderPane();
             Image image = SwingFXUtils.toFXImage(card.getDescription().getPic(), null);
             ImageView imageView = new ImageView();
@@ -107,7 +111,7 @@ public class OtherUserProfileScene {
         cardGrid = new ScrollPane();
         flowPane.setStyle("-fx-background-color: #fff910");
 
-        for (Description card: customer1.getWishList()){
+        for (Description card: otherCustomer.getWishList()){
             BorderPane cardPane = new BorderPane();
             Image image = SwingFXUtils.toFXImage(card.getPic(), null);
             ImageView imageView = new ImageView();

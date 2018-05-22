@@ -40,10 +40,10 @@ public class TradeCenter {
         this.proxy = new DBProxy();
         this.pokemonCatalog = new CardCatalog();        //todo: fare mettere nell'istanziazione del catalogo la creazione del database
         this.yugiohCatalog = new CardCatalog();
-        proxy.populateCatalog("cards", "pokemon_cards", pokemonCatalog);
-        proxy.populateCatalog("cards", "Yugioh_card", yugiohCatalog);
+        proxy.populateCatalog("CARDS", "pokemon_cards", pokemonCatalog);
+        proxy.populateCatalog("CARDS", "Yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
-        populateCustomers();
+        //populateCustomers();
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
     }
