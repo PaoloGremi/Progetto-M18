@@ -14,7 +14,6 @@ import TradeCenter.Customers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 
 /**
  * Class representing the trading center.
@@ -24,7 +23,7 @@ import java.util.concurrent.Callable;
  */
 public class TradeCenter {
 
-    private int contUsers;                              //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
+    private int contUsers;                              //todo: Migliorare ID utente
     private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
     private static HashMap<String, Customer> customers;
@@ -36,19 +35,21 @@ public class TradeCenter {
      * Create a new trade center, with  the database and no users
      */
     public TradeCenter() {
-        this.contUsers = 0;                             //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
+        this.contUsers = 0;
         this.proxy = new DBProxy();
         this.pokemonCatalog = new CardCatalog();        //todo: fare mettere nell'istanziazione del catalogo la creazione del database
         this.yugiohCatalog = new CardCatalog();
         proxy.populateCatalog("CARDS", "pokemon_cards", pokemonCatalog);
         proxy.populateCatalog("CARDS", "Yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
-        //populateCustomers();
+        //populateCustomers();                          //todo decommentare quando il DB sara pronto
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
     }
 
-    //todo fare javadocs
+    /**
+     * a method that take the customers from the database
+     */
     private void populateCustomers(){
         for(int i = 0;i<proxy.customersSize();i++){
             customers.put(proxy.getCostumer(i).getId(), proxy.getCostumer(i));
@@ -156,10 +157,22 @@ public class TradeCenter {
         }
     }
 
+    /**
+     * A method that verify if the passwords are the same when singin-up
+     * @param password1 the password
+     * @param password2 check for first password
+     * @return if the password are equals
+     */
     public boolean verifyPassword(String password1, String password2){
         return password1.equals(password2);
     }
 
+    /**
+     * A method that checks if the user's password is correct
+     * @param username
+     * @param password
+     * @return if the login ended in a correct way
+     */
     public boolean loggedIn(String username, String password){
         Customer customer;
         try{
@@ -204,6 +217,10 @@ public class TradeCenter {
         }
     }
 
+    /**
+     * A method that return alla the customers
+     * @return the customers map
+     */
     public static HashMap<String, Customer> getCustomers() {
         return customers;
     }
