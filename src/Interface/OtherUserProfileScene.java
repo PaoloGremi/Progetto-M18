@@ -3,7 +3,6 @@ package Interface;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
-import TradeCenter.Trades.ATrade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -26,7 +25,11 @@ public class OtherUserProfileScene {
     static HBox hBox;
     static boolean watchingWishlist = false;
 
-    static BorderPane display(Customer myCustomer, Customer otherCustomer) {
+    static Customer otherCustomer;
+
+
+    static BorderPane display(Customer myCustomer, Customer otherUser) {
+        final Customer otherCustomer = otherUser;
         borderPane = new BorderPane();
         cardList = new StackPane();
 
@@ -132,19 +135,15 @@ public class OtherUserProfileScene {
         return cardGrid;
     }
 
-    public static BorderPane refresh(Customer customer){
+    public static BorderPane refresh(){
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){
             //return to whishlist
-            cardList.getChildren().add(displayWishlist(customer));
+            cardList.getChildren().add(displayWishlist(otherCustomer));
         }else{
-            cardList.getChildren().add(displayCollection(customer));
+            cardList.getChildren().add(displayCollection(otherCustomer));
         }
         borderPane.setCenter(cardList);
         return borderPane;
     }
 }
-
-
-
-

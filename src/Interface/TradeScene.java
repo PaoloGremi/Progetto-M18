@@ -7,7 +7,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -15,8 +14,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
-import javax.swing.*;
 
 public class TradeScene {
 
@@ -41,10 +41,15 @@ public class TradeScene {
 
         //todo mettere le griglie ecc...
         //titoli
-        TextArea myCollectionTitle = new TextArea("myCollection");
-        TextArea myOfferTitle = new TextArea("myOffer");
-        TextArea otherCollectionTitle = new TextArea("otherCollection");
-        TextArea otherOfferTitle = new TextArea("otherOffer");
+
+        Text myCollection = new Text("myCollection");       //todo abbellire i titoli
+        TextFlow myCollectionTitle = new TextFlow(myCollection);
+        Text otherCollection = new Text("otherCollection");
+        TextFlow otherCollectionTitle = new TextFlow(otherCollection);
+        Text myOffer = new Text("myOffer");
+        TextFlow myOfferTitle = new TextFlow(myOffer);
+        Text otherOffer = new Text("otherOffer");
+        TextFlow otherOfferTitle = new TextFlow(otherOffer);
 
         //griglie
         myCollectionGrid = new ScrollPane();
@@ -80,13 +85,14 @@ public class TradeScene {
         return mainPane;
     }
 
-    static BorderPane displayCards(Customer customer, TextArea title, ScrollPane grid){
+    static BorderPane displayCards(Customer customer, TextFlow title, ScrollPane grid){
 
         BorderPane pane = new BorderPane();
         pane.setTop(title);                 //titolo
         FlowPane flowPane = new FlowPane();
         flowPane.setStyle("-fx-background-color: #fff910");
 
+        //todo togliere if e gestire le offerte
         if(customer == null){
             grid.setFitToWidth(true);
             grid.setFitToHeight(true);
