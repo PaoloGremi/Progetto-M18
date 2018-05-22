@@ -23,13 +23,14 @@ public class DBProxy {
     CREATE USER 'tradecenter'@'localhost' IDENTIFIED BY 'Password1!';
     GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON cards.* TO 'tradecenter'@'localhost';
     Poi usate gli script di Fede per caricare le tabelle e popolarle.
-    //todo add a customer database:
+    Customer database:
 
     -- ------------ TABLE ----------------
     create table customers
     ( ID int primary key,
       customer mediumblob
     );
+
      */
 
     /**
@@ -107,7 +108,7 @@ public class DBProxy {
     public void populateCatalog(String database, String table, CardCatalog cc) {
         connectToDB(database);
         try {
-            if(table.equals("pokemon_cards")) {
+            if(table.equals("pokemon_card")) {
                 PreparedStatement ps = connection.prepareStatement("SELECT * FROM ?;");
                 ps.setString(1, table);
                 ResultSet rs = ps.executeQuery();
@@ -124,8 +125,8 @@ public class DBProxy {
                         rs.getString("Length"),
                         rs.getInt("Level")));
                 }
-            } else if (table.equals("Yugioh_card")) {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM ? natural join Monster_Type natural join Card_Type;"); //todo modificare query
+            } else if (table.equals("yugioh_card")) {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM ? as a left join SELECT b.Monster_Type_ID, b.Name as MonsterTypeName, c.Type_ID, c.Name as CardTypeName FROM Monster_Type as b join Card_Type as c) as d on a.Monster_Type_ID = d.Monster_Type_ID and a.Cards_ID = d.Type_ID;");
                 ps.setString(1, table);
                 ResultSet rs = ps.executeQuery();
 
@@ -138,8 +139,8 @@ public class DBProxy {
                             rs.getInt("Level"),
                             rs.getInt("Atk"),
                             rs.getInt("Def"),
-                            rs.getInt("Monster_Type_ID"),
-                            rs.getInt("Type_ID")
+                            rs.getInt("Monster_Type_ID"), //rs.getString("MonsterTypeName"),
+                            rs.getInt("Type_ID") //rs.getString("CardTypeName")
                     ));
                 }
             }
