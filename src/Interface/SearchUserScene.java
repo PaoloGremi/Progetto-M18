@@ -21,15 +21,15 @@ import java.util.ArrayList;
 
 public class SearchUserScene {
 
-    GridPane pannello = new GridPane();
-    TextField usernameCercato = new TextField();
-    Button cerca = new Button();
-    Button risultatiRicerca = new Button("Risultato della ricerca");
-    boolean trovato = false;
+    static GridPane pannello = new GridPane();
+    static TextField usernameCercato = new TextField();
+    static Button cerca = new Button();
+    static Button risultatiRicerca = new Button("Risultato della ricerca");
+    static boolean trovato = false;
 
 
 
-    public GridPane display() {
+    public static GridPane display() {
         pannello.setAlignment(Pos.TOP_CENTER);
         pannello.setEffect(new SepiaTone());
         pannello.prefWidth(600);
@@ -88,10 +88,10 @@ public class SearchUserScene {
             }
         });
 
-        // A questo punto bisogna che il pulsante "risultatiRicerca" apra la scena OtherUserProfileScene, fatelo come meglio credete
+
         risultatiRicerca.setOnAction(event -> {
             if (trovato){
-
+                MainWindow.refreshDynamicContent(OtherUserProfileScene.display(TradeCenter.getCustomers().get(usernameCercato.getText())));
             }
 
         });
