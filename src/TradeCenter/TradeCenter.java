@@ -37,10 +37,10 @@ public class TradeCenter {
     public TradeCenter() {
         this.contUsers = 0;
         this.proxy = new DBProxy();
-        this.pokemonCatalog = new CardCatalog();        //todo: fare mettere nell'istanziazione del catalogo la creazione del database
+        this.pokemonCatalog = new CardCatalog();
         this.yugiohCatalog = new CardCatalog();
-        proxy.populateCatalog("CARDS", "pokemon_cards", pokemonCatalog);
-        proxy.populateCatalog("CARDS", "Yugioh_card", yugiohCatalog);
+        proxy.populateCatalog("pokemon_cards", pokemonCatalog);
+        proxy.populateCatalog("Yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
         //populateCustomers();                          //todo decommentare quando il DB sara pronto
         this.activeTrades = new ArrayList<Trade>();
@@ -75,7 +75,7 @@ public class TradeCenter {
      * @return the ID
      */
     private String customerID(){
-        contUsers++;                                    //todo: CAMBIARE QUANDO MIGLIORO ID UTENTE
+        contUsers++;
         return "USER-" + contUsers;
     }
 
@@ -92,7 +92,7 @@ public class TradeCenter {
             }
         }
         //user not found
-        throw new UserNotFoundException();                 //todo Serve mettere il throws nwll'header??
+        throw new UserNotFoundException();
     }
 
     /**
@@ -128,9 +128,9 @@ public class TradeCenter {
      * This method starts a new trade between two customers
      * @param offer the first offer
      */
-    void createTrade(Offer offer){         //todo magari vedere per EXCEP se esistono i customer
+    void createTrade(Offer offer){
         Trade Trade = new Trade(offer);      //todo mi aspetto che l'offerta si crei dall'interfaccia grafica, o desicedere di istanziarla qua
-        activeTrades.add(Trade);        //aspettare che robi rifaccia i trade
+        activeTrades.add(Trade);
     }
     /**
      * Do the exchange, users collection are update, and so the trade
@@ -141,7 +141,7 @@ public class TradeCenter {
         if(activeTrades.contains(trade)) {
 
             Customer customer1 = trade.getCustomer1();
-            Customer customer2 = trade.getCustomer2();      //todo controllare se i customer esistono
+            Customer customer2 = trade.getCustomer2();
 
             for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2
                 customer2.addCard(card);
