@@ -8,10 +8,11 @@ import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.NoTradesExeption;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-public class Customer {
+public class Customer implements Serializable {
 
 
     /**

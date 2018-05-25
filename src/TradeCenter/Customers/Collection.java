@@ -1,5 +1,6 @@
 package TradeCenter.Customers;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -9,7 +10,7 @@ import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
-public class Collection implements Iterable<Card>{
+public class Collection implements Iterable<Card>, Serializable {
 
     /**
      * @param cardSet HashSet that contains the card of the collection.

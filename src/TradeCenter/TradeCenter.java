@@ -26,7 +26,7 @@ public class TradeCenter {
     private int contUsers;                              //todo: Migliorare ID utente
     private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
-    private static HashMap<String, Customer> customers;
+    private HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
     private DBProxy proxy;
@@ -39,10 +39,10 @@ public class TradeCenter {
         this.proxy = new DBProxy();
         this.pokemonCatalog = new CardCatalog();
         this.yugiohCatalog = new CardCatalog();
-        proxy.populateCatalog("pokemon_cards", pokemonCatalog);
-        proxy.populateCatalog("Yugioh_card", yugiohCatalog);
+        proxy.populateCatalog("pokemon_card", pokemonCatalog);
+        //proxy.populateCatalog("yugioh_card", yugiohCatalog); //todo decommentare quando il DB sarà ultimato
         this.customers = new HashMap<String, Customer>();
-        //populateCustomers();                          //todo decommentare quando il DB sara pronto
+        populateCustomers();
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
     }
@@ -51,22 +51,19 @@ public class TradeCenter {
      * a method that take the customers from the database
      */
     private void populateCustomers(){
-        for(int i = 0;i<proxy.customersSize();i++){
+        for(int i = 1;i<proxy.customersSize();i++){
             customers.put(proxy.getCostumer(i).getId(), proxy.getCostumer(i));
         }
     }
 
     /**
      * Create an account for a new user
-     *
-     * @param username
-     * @param password
      */
-    public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
+    public void addCustomer(Customer customer) throws CheckPasswordConditionsException{
         String id = customerID();
-        Customer temporaryCustomer = new Customer(id, username, password);
-        customers.put(id, temporaryCustomer);
-        proxy.insertCustomer(temporaryCustomer);
+        //Customer temporaryCustomer = new Customer(id, username, password);
+        customers.put(id, customer);
+        proxy.insertCustomer(customer);
     }
 
     /**
@@ -81,8 +78,6 @@ public class TradeCenter {
 
     /**
      * User can find another user by searching his name
-     *
-     * @param username
      * @return
      */
     public Customer searchCustomer(String username){        //todo: potrebbe ritornare solo l'ID--> do meno info a chi non le deve avere
@@ -221,7 +216,7 @@ public class TradeCenter {
      * A method that return alla the customers
      * @return the customers map
      */
-    public static HashMap<String, Customer> getCustomers() {
+    public HashMap<String, Customer> getCustomers() {
         return customers;
     }
 }

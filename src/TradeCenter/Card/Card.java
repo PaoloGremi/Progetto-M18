@@ -1,8 +1,9 @@
 package TradeCenter.Card;
 
+import java.io.Serializable;
 import java.util.HashSet;
 
-public class Card {
+public class Card implements Serializable {
 
     /**
      * @param id: Card's unique id number

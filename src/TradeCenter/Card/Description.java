@@ -2,25 +2,22 @@ package TradeCenter.Card;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 
-public abstract class Description {
+public abstract class Description implements Serializable {
 
     /**
      * Class Description
      * @param name: Descr's name
      * @param text: Descr's text description
-     * @param picUrl: Url to load descr's picture
      * @param pic: Descr's picture to be displayed on GUI
      * @param listTag: Descr's list of tags to be used during search/filter
      * @param descrType: Descr's type
       */
     private String name;
     private String text; //cambiare UML
-    private String picUrl;
-    private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
+    transient private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
     private HashSet<String> listTag;
     private CardType descrType;
 
@@ -30,16 +27,14 @@ public abstract class Description {
      * @param name  name: Descr's name
      * @param text Descr's text description
      * @param descrType: Descr's type
-     * @param picUrl: Url to load descr's picture
+     * @param pic: descr's picture
      * */
-    public Description(String name,String text,CardType descrType,String picUrl) throws IOException {
+    public Description(String name,String text,CardType descrType,BufferedImage pic) throws IOException {
         this.name=name;
         this.text=text;
         this.descrType=descrType;
-        this.picUrl=picUrl;
-        this.pic=null;
+        this.pic=pic;
         this.listTag=new HashSet<>();
-        loadImage(picUrl);
         autoSplittedTag();
         autoSubstringTag();
     }
@@ -49,10 +44,10 @@ public abstract class Description {
      * Load an image by its url, set pic
      * @param url url of the pic
      * */
-    private void loadImage(String url) throws IOException {
+    /*private void loadImage(String url) throws IOException {
         File picFile= new File(url);
         pic= ImageIO.read(picFile);
-    }
+    }*/
 
 
     /**
@@ -151,6 +146,18 @@ public abstract class Description {
             return true;
         }
         else return false;
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(1);
+        ImageIO.write(pic, "jpg", out);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        final int imageCount = in.readInt();
+        pic = ImageIO.read(in);
     }
 
 }

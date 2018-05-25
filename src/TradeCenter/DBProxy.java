@@ -1,10 +1,13 @@
 package TradeCenter;
 
+import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 
@@ -21,13 +24,15 @@ public class DBProxy {
     Sotto MySQL create il database "CARDS".
     Usate il seguente script SQL sul database "cards" per poter usare correttamente il db:
     CREATE USER 'tradecenter'@'localhost' IDENTIFIED BY 'Password1!';
+	GRANT USAGE ON *.* TO 'tradecenter'@'localhost';
     GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON CARDS.* TO 'tradecenter'@'localhost';
+    GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON CUSTOMERS.* TO 'tradecenter'@'localhost';
     Poi usate gli script di Fede per caricare le tabelle e popolarle.
     Customer database:
 
     -- ------------ TABLE ----------------
     create table customers
-    ( ID int primary key,
+    ( ID varchar(120) primary key,
       customer mediumblob
     );
 
@@ -75,7 +80,7 @@ public class DBProxy {
             oos.flush();
             blob.setBytes(1, bos.toByteArray());
         } catch (IOException | SQLException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return blob;
     }
@@ -83,9 +88,8 @@ public class DBProxy {
     /**
      * Get an Object from a given Blob
      * @param blob: Blob to convert
-     * @return: Object
      */
-    private Object getObjFromBlob(Blob blob) {
+    public Object getObjFromBlob(Blob blob) {
         Object obj = null;
         ByteArrayInputStream bis;
         ObjectInputStream ois;
@@ -100,6 +104,43 @@ public class DBProxy {
     }
 
     /**
+     * Temporary method to get a card from the pokemon db
+     * @param i: card id
+     * @return pokemon card
+     */
+    public Card getCard(int i) {
+        connectToDB("CARDS");
+        byte[] bytes;
+        Blob blob;
+        Card card = null;
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM pokemon_card where Cards_ID = ?;");
+            ps.setInt(1, i);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                blob = rs.getBlob("Picture");
+                bytes = blob.getBytes(1, (int)blob.length());
+                BufferedImage pic = ImageIO.read(new ByteArrayInputStream(bytes));
+                card = new Card(i,new PokemonDescription(
+                        rs.getString("Name"),
+                        rs.getString("Description"),
+                        pic,
+                        rs.getInt("Cards_ID"),
+                        rs.getString("Type"),
+                        rs.getInt("Hp"),
+                        rs.getInt("Weigth"),
+                        rs.getString("Length"),
+                        rs.getInt("Level")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        disconnectFromDB();
+        return card;
+    }
+
+    /**
      * Populates the provided CardCatalog with the Descriptions from the selected table
      * @param table: Name of the table (pokemon_cards or Yugioh_card)
      * @param cc: Card Catalog
@@ -108,6 +149,7 @@ public class DBProxy {
         connectToDB("CARDS");
         PreparedStatement ps;
         ResultSet rs;
+        BufferedImage picture = null;
         try {
             switch(table) {
                 case "pokemon_card":
@@ -117,7 +159,6 @@ public class DBProxy {
                     // handles NULL values for the different card types
                     String name;
                     String description;
-                    File picture;
                     int card_id;
                     String type;
                     int hp;
@@ -125,9 +166,18 @@ public class DBProxy {
                     String length;
                     int level;
                     while (rs.next()) {
+                        byte[] bytes;
+                        Blob blob;
+
+                        blob = rs.getBlob("Picture");
+                        bytes = blob.getBytes(1, (int)blob.length());
+                        picture = ImageIO.read(new ByteArrayInputStream(bytes));
+
                         name = rs.getString("Name");
                         description = rs.getString("Description");
-                        picture = (File)getObjFromBlob(rs.getBlob("Picture"));
+                        if(rs.wasNull()) {
+                            description = "NO DESCRIPTION AVAILABLE";
+                        }
                         card_id = rs.getInt("Cards_ID");
                         type = rs.getString("Type");
                         hp = rs.getInt("Hp");
@@ -151,15 +201,24 @@ public class DBProxy {
                     }
                     break;
                 case "yugioh_card":
-                    ps = connection.prepareStatement("SELECT * FROM yugioh_card as a left join SELECT b.Monster_Type_ID, b.Name as MonsterTypeName, c.Type_ID, c.Name as CardTypeName FROM Monster_Type as b join Card_Type as c) as d on a.Monster_Type_ID = d.Monster_Type_ID and a.Cards_ID = d.Type_ID;");
+                    ps = connection.prepareStatement("SELECT * FROM yugioh_card as a left join (SELECT b.Monster_Type_ID, b.Name as MonsterTypeName, c.Type_ID, c.Name as CardTypeName FROM Monster_Type as b join Card_Type as c) as d on a.Monster_Type_ID = d.Monster_Type_ID and a.Cards_ID = d.Type_ID;");
                     rs = ps.executeQuery();
 
                     while (rs.next()) {
+                        byte[] bytes;
+                        Blob blob;
+
+                        blob = rs.getBlob("Picture");
+                        if(!rs.wasNull()) {
+                            bytes = blob.getBytes(1, (int) blob.length());
+                            picture = ImageIO.read(new ByteArrayInputStream(bytes));
+                        }
+
                         // todo add NULL values handling
                         cc.addDescription(new YuGiOhDescription(
                                 rs.getString("Name"),
                                 rs.getString("Description"),
-                                (File)getObjFromBlob(rs.getBlob("Picture")),
+                                picture,
                                 rs.getString("Reference"),
                                 rs.getInt("Level"),
                                 rs.getInt("Atk"),

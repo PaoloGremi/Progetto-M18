@@ -1,5 +1,7 @@
 package TradeCenter.Card;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class PokemonDescription extends Description {
@@ -18,7 +20,7 @@ public class PokemonDescription extends Description {
      *
      * @param name      name: Descr's name
      * @param text      Descr's text description
-     * @param picUrl    : Url to load descr's picture
+     * @param pic       Descr's picture
      * @param cardID    Identificator for Pokemon cards
      * @param type      Pokemons type
      * @param hp        Pokemons hit points
@@ -26,8 +28,8 @@ public class PokemonDescription extends Description {
      * @param length    Pokemons length
      * @param level     Pokemons level
      */
-    public PokemonDescription(String name, String text, String picUrl, int cardID, String type, int hp, int weight, String length, int level) throws IOException {
-        super(name, text, CardType.POKEMON, picUrl);
+    public PokemonDescription(String name, String text, BufferedImage pic, int cardID, String type, int hp, int weight, String length, int level) throws IOException {
+        super(name, text, CardType.POKEMON, pic);
         this.cardID = cardID;
         this.type = type;
         this.hp = hp;

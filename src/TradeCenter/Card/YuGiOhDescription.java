@@ -1,5 +1,7 @@
 package TradeCenter.Card;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 public class YuGiOhDescription extends Description{
@@ -9,8 +11,8 @@ public class YuGiOhDescription extends Description{
     private int level;
     private int atk;
     private int def;
-    private int monster_type_id;
-    private int type_id;
+    private String monster_type_id;
+    private String type_id;
 
 
     /**
@@ -18,7 +20,7 @@ public class YuGiOhDescription extends Description{
      *
      * @param name              name: Descr's name
      * @param text              Descr's text description
-     * @param picUrl            : Url to load descr's picture
+     * @param pic               Descr's picture
      * @param reference         The description of the card
      * @param level             Card level
      * @param atk               The attack for monster cards
@@ -26,8 +28,8 @@ public class YuGiOhDescription extends Description{
      * @param monster_type_id   The type of a monster
      * @param type_id           Type of the card: monster, magical or trap
      */
-    public YuGiOhDescription(String name,String text,String picUrl, String reference, int level, int atk, int def, int monster_type_id, int type_id) throws IOException {
-        super(name, text, CardType.YUGIOH, picUrl);
+    public YuGiOhDescription(String name, String text, BufferedImage pic, String reference, int level, int atk, int def, String monster_type_id, String type_id) throws IOException {
+        super(name, text, CardType.YUGIOH, pic);
         //if(type_id = ) //todo FIX
         this.reference = reference;
         this.level = level;
@@ -53,11 +55,11 @@ public class YuGiOhDescription extends Description{
         return def;
     }
 
-    public int getMonster_type_id() {
+    public String getMonster_type_id() {
         return monster_type_id;
     }
 
-    public int getType_id() {
+    public String getType_id() {
         return type_id;
     }
 
