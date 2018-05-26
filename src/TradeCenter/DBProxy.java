@@ -209,21 +209,36 @@ public class DBProxy {
                         Blob blob;
 
                         blob = rs.getBlob("Picture");
-                        if(!rs.wasNull()) {
-                            bytes = blob.getBytes(1, (int) blob.length());
-                            picture = ImageIO.read(new ByteArrayInputStream(bytes));
+                        bytes = blob.getBytes(1, (int) blob.length());
+                        picture = ImageIO.read(new ByteArrayInputStream(bytes));
+
+                        level = rs.getInt("Level");
+                        if(rs.wasNull()) {
+                            level = 0;
+                        }
+                        int atk = rs.getInt("Atk");
+                        if(rs.wasNull()) {
+                            atk = 0;
+                        }
+                        int def = rs.getInt("Def");
+                        if(rs.wasNull()) {
+                            def = 0;
+                        }
+                        String monsterTypeName = rs.getString("MonsterTypeName");
+                        if(rs.wasNull()) {
+                            monsterTypeName = "NOT A MONSTER";
                         }
 
-                        // todo add NULL values handling
+
                         cc.addDescription(new YuGiOhDescription(
                                 rs.getString("Name"),
                                 rs.getString("Description"),
                                 picture,
                                 rs.getString("Reference"),
-                                rs.getInt("Level"),
-                                rs.getInt("Atk"),
-                                rs.getInt("Def"),
-                                rs.getString("MonsterTypeName"),
+                                level,
+                                atk,
+                                def,
+                                monsterTypeName,
                                 rs.getString("CardTypeName")
                         ));
                     }
