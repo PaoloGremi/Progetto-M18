@@ -5,6 +5,8 @@ import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 
+import java.io.IOException;
+
 public  class Demo {
 
     static Pane display(Node e, String scene){
@@ -24,8 +26,13 @@ public  class Demo {
             switch (scene){
                 case "wish": {MainWindow.refreshDynamicContent(WishListScene.refresh());
                              break;}
-                case "collection": {MainWindow.refreshDynamicContent(CollectionScene.refresh());
-                            break;}
+                case "collection": {
+                    try {
+                        MainWindow.refreshDynamicContent(CollectionScene.refresh());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    break;}
                 case "other_user": {MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
                     break;}
             }

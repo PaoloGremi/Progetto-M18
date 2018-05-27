@@ -1,5 +1,7 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
@@ -18,6 +20,9 @@ import javafx.scene.text.TextFlow;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class CollectionScene{
@@ -30,7 +35,14 @@ public class CollectionScene{
 
     static HBox hbox;
 
-    static BorderPane display(Customer customer1, String username, boolean searchFlag)  {
+    static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException {
+
+        System.out.println("welcome client");
+        Socket socket = new Socket("localhost", 8080);
+
+        System.out.println("Client connected");
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        System.out.println("Ok");
 
         cust=customer1;
         user=username;
@@ -100,10 +112,19 @@ public class CollectionScene{
                 hbox1.getChildren().addAll(buUser, bTrade);
                 hbox1.setStyle("-fx-background-color: orange");
                 pane.setBottom(hbox1);
-                /*buUser.setOnAction(event -> {
-                    Customer customer = MainWindow.tradeCenter.searchCustomer(username);
-                    MainWindow.refreshDynamicContent(OtherUserProfileScene.display(customer));
-                });*/
+                buUser.setOnAction(event -> {
+                    try {
+                        os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username));
+                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                        Customer returnMessage = (Customer) is.readObject();
+                        MainWindow.refreshDynamicContent(OtherUserProfileScene.display(customer1, returnMessage));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                });
 
             }
 
@@ -111,12 +132,14 @@ public class CollectionScene{
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }
         buttonAdd.setOnAction(event -> {
+
             try {
-                cust.addCard(new Card(1, new YuGiOhDescription("Ancient Dragon", "an ancient dragon", "./database/DB_yugioh/yugioh_pics/BannerofCourage-YS15-EU-C-1E.png", "cos",0,0,0,0,0)));
+
                 MainWindow.refreshDynamicContent(refresh());
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         });
         scroll.setPadding(new Insets(3));
         scroll.setStyle("-fx-background-color: orange");
@@ -141,7 +164,7 @@ public class CollectionScene{
         return files;
     }
 
-    static BorderPane refresh(){
+    static BorderPane refresh() throws IOException {
         return display(cust ,user,false);
     }
 

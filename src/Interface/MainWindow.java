@@ -34,7 +34,7 @@ public class MainWindow {
      * Display the window
      * @param login_username //todo change to customer object
      */
-    public static void display(String login_username, Customer customer){
+    public static void display(String login_username, Customer customer) throws IOException {
 
         // values for testing purpose
         /*Customer tempUser = new Customer("01", login_username, "APassword123");
@@ -97,7 +97,11 @@ public class MainWindow {
         // Action events for the buttons
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
+            try {
+                dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
