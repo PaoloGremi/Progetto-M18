@@ -61,6 +61,7 @@ public class TradeCenter {
      */
     public void addCustomer(Customer customer) throws CheckPasswordConditionsException{
         String id = customerID();
+        customer.setId(id);
         //Customer temporaryCustomer = new Customer(id, username, password);
         customers.put(id, customer);
         proxy.insertCustomer(customer);

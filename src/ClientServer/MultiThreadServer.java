@@ -5,6 +5,7 @@ package ClientServer;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.TradeCenter;
 import com.mysql.cj.protocol.Message;
 
@@ -28,7 +29,7 @@ public class MultiThreadServer implements Runnable {
             new Thread(new MultiThreadServer(sock)).start();
         }
     }
-    public void run() {
+    public void run() throws CheckPasswordConditionsException {
         try {
             ObjectInputStream in = new ObjectInputStream(csocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(csocket.getOutputStream());
@@ -37,7 +38,8 @@ public class MultiThreadServer implements Runnable {
 
             switch (m.getMessage()){
                 case ADDCUSTOMER:
-                    td.addCustomer(m.getString1(),m.getString2());
+                    Customer customerAdd = new Customer(m.getString1(),m.getString2());
+                    td.addCustomer(customerAdd);
                     Customer c = td.searchCustomer(m.getString1());
                     os.writeObject(c);
                     break;

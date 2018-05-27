@@ -1,4 +1,8 @@
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import Interface.MainWindow;
+import Interface.OtherUserProfileScene;
+import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.TradeCenter;
 import javafx.application.Application;
@@ -14,6 +18,11 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 public class LogIn extends Application{
 
@@ -32,7 +41,15 @@ public class LogIn extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        TradeCenter tc = new TradeCenter();
+
+        System.out.println("welcome client");
+        Socket socket = new Socket("localhost", 8080);
+
+        System.out.println("Client connected");
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        System.out.println("Ok");
+
+
         window = primaryStage;
         window.setTitle("LogIn interface");
         signUp = new Button("SignUp");
@@ -73,34 +90,47 @@ public class LogIn extends Application{
             confirm.setOnAction(event1 -> {
 
 
+                try {
+                    if(verifyPassword(password.getText(), passwordVerified.getText())) {
+                        {
+                            try {
+                                os.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
+                                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                                Customer returnMessage = (Customer) is.readObject();
+                                MainWindow.display(username.getText(), returnMessage);
+                                socket.close();
 
-                if(tc.verifyPassword(password.getText(), passwordVerified.getText())) {
-                    {
-                        try {
-                            tc.addCustomer(username.getText(), password.getText());
-                            MainWindow.display(username.getText());
-                        } catch (CheckPasswordConditionsException e) {
-                            Text errorText = new Text(e.getMessage());
+                            } catch (CheckPasswordConditionsException e) {
+                                Text errorText = new Text(e.getMessage());
 
-                            TextFlow error = new TextFlow();
-                            error.setPadding(new Insets(0,5,5,5));
-                            error.setTextAlignment(TextAlignment.CENTER);
-                            error.getChildren().add(errorText);
-                            stack.getChildren().removeAll(stack.getChildren());
-                            stack.getChildren().add(error);
+                                TextFlow error = new TextFlow();
+                                error.setPadding(new Insets(0,5,5,5));
+                                error.setTextAlignment(TextAlignment.CENTER);
+                                error.getChildren().add(errorText);
+                                stack.getChildren().removeAll(stack.getChildren());
+                                stack.getChildren().add(error);
 
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-                }
-                else {
-                    Text errorTextMatch = new Text("Sorry, passwords doesn't match.");
+                    else {
+                        Text errorTextMatch = new Text("Sorry, passwords doesn't match.");
 
-                    TextFlow error = new TextFlow();
-                    error.setPadding(new Insets(0,5,5,5));
+                        TextFlow error = new TextFlow();
+                        error.setPadding(new Insets(0,5,5,5));
 
-                    error.getChildren().add(errorTextMatch);
-                    stack.getChildren().removeAll(stack.getChildren());
-                    stack.getChildren().add(error);
+                        error.getChildren().add(errorTextMatch);
+                        stack.getChildren().removeAll(stack.getChildren());
+                        stack.getChildren().add(error);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
             });
 
@@ -108,7 +138,22 @@ public class LogIn extends Application{
             logIn_Register.getChildren().removeAll(signUp, logIn);
         });
         logIn.setOnAction(event -> {
-            MainWindow.display(username.getText());
+            try {
+                os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
+                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                if((boolean) is.readObject()){
+                    os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
+                    Customer customer = (Customer) is.readObject();
+                    MainWindow.display(username.getText(), customer);
+                    socket.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
         });
         border.setCenter(credentialBox);
         border.setBottom(stack);
@@ -118,5 +163,26 @@ public class LogIn extends Application{
         Scene scene = new Scene(layout, 300, 335);
         window.setScene(scene);
         window.show();
+    }
+
+    private boolean verifyPassword(String password1, String password2) throws IOException, ClassNotFoundException {
+
+        System.out.println("welcome client");
+        Socket socket = new Socket("localhost", 8080);
+
+        System.out.println("Client connected");
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        System.out.println("Ok");
+
+        os.writeObject(new MessageServer(MessageType.VERIFYPASSWORD, password1, password2));
+        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+        boolean returnMessage = (boolean) is.readObject();
+        socket.close();
+
+        if(returnMessage){
+            return true;
+        }
+
+        return false;
     }
 }

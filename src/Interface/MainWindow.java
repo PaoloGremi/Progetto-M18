@@ -34,10 +34,10 @@ public class MainWindow {
      * Display the window
      * @param login_username //todo change to customer object
      */
-    public static void display(String login_username){
+    public static void display(String login_username, Customer customer){
 
         // values for testing purpose
-        Customer tempUser = new Customer("01", login_username, "APassword123");
+        /*Customer tempUser = new Customer("01", login_username, "APassword123");
         try {
             tempUser.addCardToWishList(new YuGiOhDescription("Ancient Dragon", "an ancient dragon", "./database/DB_yugioh/yugioh_pics/AncientDragon-YS15-EU-C-1E.png", "cos",0,0,0,0,0)); {
             }
@@ -49,7 +49,7 @@ public class MainWindow {
             tempUser.addCard(new Card(0, new PokemonDescription("Blastoise", "A better squirtle", "./database/DB_pokemon/pokemon_pics/BS_002.jpg", 002,"Water",100,189,"5'3''",52 )));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         // actual MainWindow stuff
         Stage window = new Stage();
@@ -97,11 +97,11 @@ public class MainWindow {
         // Action events for the buttons
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(CollectionScene.display(tempUser, tempUser.getUsername(), false));
+            dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
         });
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(tempUser.getWishList(), tempUser.getUsername()));
+            dynamicContent.getChildren().add(WishListScene.display(customer.getWishList(), customer.getUsername()));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
@@ -113,7 +113,7 @@ public class MainWindow {
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(OtherUserProfileScene.display(tempUser));
+            //dynamicContent.getChildren().add(OtherUserProfileScene.display(tempUser));
         });
         logOut.setOnAction(event -> {
             window.close();
@@ -121,7 +121,7 @@ public class MainWindow {
         });
 
         // Beginning view set on customer's CollectionScene
-        dynamicContent.getChildren().add(CollectionScene.display(tempUser, tempUser.getUsername(), false));
+        dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
 
         // Prepare scene and dispay it
         Scene scene = new Scene(layout, 1200, 700);
