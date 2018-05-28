@@ -91,6 +91,15 @@ public class TradeCenter {
         throw new UserNotFoundException();
     }
 
+    public ArrayList<Customer> searchUsers(String username){
+        ArrayList<Customer> results = new ArrayList<>();
+        for(String key: customers.keySet()){
+            String name = customers.get(key).getUsername();
+
+        }
+        return results;
+    }
+
     /**
      * Method that search if the card is in the database or not
      *
@@ -181,7 +190,7 @@ public class TradeCenter {
             //todo username inesistente fare registrare
             return false;
         }
-        if(customer.getUsername() == username && customer.checkPassword(password)){
+        if(customer.getUsername().equals(username) && customer.checkPassword(password)){
             return true;
         }else{
             //usere registrato ma password sbagliata //todo richiedere password
