@@ -38,7 +38,7 @@ public class CollectionScene{
     static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException {
 
         System.out.println("welcome client");
-        Socket socket = new Socket("localhost", 8080);
+        Socket socket = new Socket("localhost", 8889);
 
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
