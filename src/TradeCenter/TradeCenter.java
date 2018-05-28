@@ -54,17 +54,17 @@ public class TradeCenter {
         for(int i = 1;i<proxy.customersSize();i++){
             customers.put(proxy.getCostumer(i).getId(), proxy.getCostumer(i));
         }
+        contUsers = proxy.customersSize();
     }
 
     /**
      * Create an account for a new user
      */
-    public void addCustomer(Customer customer) throws CheckPasswordConditionsException{
+    public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
         String id = customerID();
-        customer.setId(id);
-        //Customer temporaryCustomer = new Customer(id, username, password);
-        customers.put(id, customer);
-        proxy.insertCustomer(customer);
+        Customer temporaryCustomer = new Customer(id, username, password);
+        customers.put(id, temporaryCustomer);
+        proxy.insertCustomer(temporaryCustomer);
     }
 
     /**
@@ -195,7 +195,7 @@ public class TradeCenter {
      * Also if a deal it's over, the exchange is done
      */
     public void checkDoneDeals(){
-        for(Trade trade : activeTrades){        //todo togliere ciclo
+        for(Trade trade : activeTrades){        //todo togliere ciclo, ricontrollare per sincronia con interfaccia grafica e db
             if(trade.isDoneDeal()){
                 switchCards(trade);
                 doneTrades.add(trade);
