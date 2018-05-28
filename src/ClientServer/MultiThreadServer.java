@@ -38,8 +38,7 @@ public class MultiThreadServer implements Runnable {
 
             switch (m.getMessage()){
                 case ADDCUSTOMER:
-                    Customer customerAdd = new Customer(m.getString1(),m.getString2());
-                    td.addCustomer(customerAdd);
+                    td.addCustomer(m.getString1(), m.getString2());
                     Customer c = td.searchCustomer(m.getString1());
                     os.writeObject(c);
                     break;

@@ -28,9 +28,9 @@ public class Customer implements Serializable {
     private ArrayList<Description> wishList;
     private ArrayList<String> tradeList;
 
-    public Customer(String username, String password) throws CheckPasswordConditionsException {
+    public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
 
-
+            this.id = id;
             this.username = username;
             this.password = checkPasswordConditions(password);
             this.collection = new Collection();
