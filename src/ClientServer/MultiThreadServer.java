@@ -12,6 +12,7 @@ import com.mysql.cj.protocol.Message;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class MultiThreadServer implements Runnable {
     Socket csocket;
@@ -20,7 +21,7 @@ public class MultiThreadServer implements Runnable {
         this.csocket = csocket;
     }
     public static void main(String args[]) throws Exception {
-        ServerSocket ssock = new ServerSocket(8080);
+        ServerSocket ssock = new ServerSocket(8889);
         System.out.println("Listening");
 
         while (true) {
@@ -59,6 +60,12 @@ public class MultiThreadServer implements Runnable {
                 case LOGDIN:
                     boolean flagLog = td.loggedIn(m.getString1(),m.getString2());
                     os.writeObject(flagLog);
+                    os.close();
+                    break;
+
+                case SEARCHUSER:
+                    ArrayList<Customer> users = td.searchUsers(m.getString1());
+                    os.writeObject(users);
                     os.close();
                     break;
 

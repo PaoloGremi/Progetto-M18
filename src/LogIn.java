@@ -94,7 +94,7 @@ public class LogIn extends Application{
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
                             try {
-                                Socket socket2 = new Socket("localhost", 8080);
+                                Socket socket2 = new Socket("localhost", 8889);
                                 ObjectOutputStream os1 = new ObjectOutputStream(socket2.getOutputStream());
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
@@ -141,7 +141,7 @@ public class LogIn extends Application{
         });
         logIn.setOnAction(event -> {
             try {
-                Socket socket3 = new Socket("localhost", 8080);
+                Socket socket3 = new Socket("localhost", 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
                 ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
@@ -152,7 +152,7 @@ public class LogIn extends Application{
                     //os.reset();
                     //socket.close();
                     socket3.close();
-                    Socket socket1 = new Socket("localhost", 8080);
+                    Socket socket1 = new Socket("localhost", 8889);
                     ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
                     ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
                     System.out.println("connected");
@@ -184,7 +184,7 @@ public class LogIn extends Application{
     private boolean verifyPassword(String password1, String password2) throws IOException, ClassNotFoundException {
 
         System.out.println("welcome client");
-        Socket socket = new Socket("localhost", 8080);
+        Socket socket = new Socket("localhost", 8889);
 
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

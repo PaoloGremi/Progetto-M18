@@ -95,9 +95,15 @@ public class TradeCenter {
         ArrayList<Customer> results = new ArrayList<>();
         for(String key: customers.keySet()){
             String name = customers.get(key).getUsername();
-
+            if(possibleSearch(name)){
+                results.add(customers.get(key));
+            }
         }
         return results;
+    }
+
+    private boolean possibleSearch(String search){
+        return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
     }
 
     /**

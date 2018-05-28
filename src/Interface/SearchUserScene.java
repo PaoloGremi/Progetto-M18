@@ -1,6 +1,8 @@
 package Interface;
 
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
 import TradeCenter.TradeCenter;
 import javafx.event.EventHandler;
@@ -9,6 +11,10 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 
@@ -117,7 +123,15 @@ public class SearchUserScene {
             String searchText = searchString.getText();
             if(searchText == null) searchText = "";     //handling null string
 
-            ArrayList<Customer> users = tradeCenter.searchUsers(searchText);
+            //ArrayList<Customer> users = tradeCenter.searchUsers(searchText);
+
+            try {
+                Socket socket = new Socket("localhost", 8889);
+                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+                outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText));
+                ArrayList<Customer> users = (ArrayList<Customer>)(inputStream.readObject());
+                socket.close();
                 if(users != null){
                     for(Customer customer : users){
                         Label user = new Label(customer.getUsername());
@@ -137,6 +151,11 @@ public class SearchUserScene {
                     }
                     resultsArea.setContent(results);
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
             });
         HBox topScene = new HBox();
         topScene.setStyle("-fx-background-color: #aa12ff");
