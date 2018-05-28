@@ -41,21 +41,25 @@ public class MultiThreadServer implements Runnable {
                     td.addCustomer(m.getString1(), m.getString2());
                     Customer c = td.searchCustomer(m.getString1());
                     os.writeObject(c);
+                    os.close();
                     break;
                 case SEARCHCUSTOMER:
                     td.searchCustomer(m.getString1());
                     Customer customer = td.searchCustomer(m.getString1());
                     os.writeObject(customer);
+                    os.close();
                     break;
                 //case CREATEOFFER:
                 //case SWITCHCARDS:
                 case VERIFYPASSWORD:
                     boolean flagPass = td.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
+                    os.close();
                     break;
                 case LOGDIN:
                     boolean flagLog = td.loggedIn(m.getString1(),m.getString2());
                     os.writeObject(flagLog);
+                    os.close();
                     break;
 
             }

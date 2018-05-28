@@ -43,7 +43,7 @@ public class LogIn extends Application{
     public void start(Stage primaryStage) throws Exception {
 
         System.out.println("welcome client");
-        Socket socket = new Socket("localhost", 8080);
+
 
         System.out.println("Client connected");
 
@@ -94,12 +94,13 @@ public class LogIn extends Application{
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
                             try {
-                                ObjectOutputStream os1 = new ObjectOutputStream(socket.getOutputStream());
+                                Socket socket2 = new Socket("localhost", 8080);
+                                ObjectOutputStream os1 = new ObjectOutputStream(socket2.getOutputStream());
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
-                                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                                ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
                                 Customer returnMessage = (Customer) is.readObject();
                                 MainWindow.display(username.getText(), returnMessage);
-                                socket.close();
+                                socket2.close();
 
                             } catch (CheckPasswordConditionsException e) {
                                 Text errorText = new Text(e.getMessage());
@@ -140,16 +141,17 @@ public class LogIn extends Application{
         });
         logIn.setOnAction(event -> {
             try {
-                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                Socket socket3 = new Socket("localhost", 8080);
+                ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
-                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
                 System.out.println("connected");
                 if((boolean) is.readObject()){
                     System.out.println("closed");
 
                     //os.reset();
                     //socket.close();
-                    socket.close();
+                    socket3.close();
                     Socket socket1 = new Socket("localhost", 8080);
                     ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
                     ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
@@ -160,7 +162,7 @@ public class LogIn extends Application{
                     MainWindow.display(username.getText(), customer);
                     socket1.close();
                 }
-                socket.close();
+                socket3.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
