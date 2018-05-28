@@ -30,12 +30,12 @@ public class Customer implements Serializable {
 
     public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
 
-            this.id = id;
-            this.username = username;
-            this.password = checkPasswordConditions(password);
-            this.collection = new Collection();
-            this.wishList = new ArrayList<>();
-            this.tradeList = new ArrayList<>();
+        this.id = id;
+        this.username = username;
+        this.password = checkPasswordConditions(password);
+        this.collection = new Collection();
+        this.wishList = new ArrayList<>();
+        this.tradeList = new ArrayList<>();
 
     }
 
@@ -45,10 +45,10 @@ public class Customer implements Serializable {
      * @param card New Card to add
      * @return boolean to check wheter or not the method ran fine
      */
-    public void addCard(Card card){
+    public void addCard(Card card) {
         try {
             collection.addCardToCollection(card);
-        }catch (AddCardException e){
+        } catch (AddCardException e) {
             System.err.println(e.getMessage());
         }
 
@@ -59,10 +59,10 @@ public class Customer implements Serializable {
      *
      * @param card Card to remove
      */
-    public void removeCard(Card card){
+    public void removeCard(Card card) {
         try {
             collection.removeCardFromCollection(card);
-        }catch (RemoveCardException e){
+        } catch (RemoveCardException e) {
             System.err.println(e.getMessage());
         }
 
@@ -73,12 +73,12 @@ public class Customer implements Serializable {
      * The customer create a new card that wasn't in the system before.
      *
      * @param description Description of the new card
-     * @param id ID of the new card
+     * @param id          ID of the new card
      */
-    public void createCard(Description description, int id){
+    public void createCard(Description description, int id) {
         Card newCard = new Card(id, description);
 
-            addCard(newCard);
+        addCard(newCard);
 
     }
 
@@ -88,13 +88,13 @@ public class Customer implements Serializable {
      * @param string String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public Collection searchByString(String string){
+    public Collection searchByString(String string) {
 
         try {
             Collection cardsFound = collection.searchByString(string);
             return cardsFound;
-        }catch (CardNotFoundException e){
-            System.err.println(e.cardNotFound(getId(),getUsername()));
+        } catch (CardNotFoundException e) {
+            System.err.println(e.cardNotFound(getId(), getUsername()));
         }
 
         return null;
@@ -107,7 +107,7 @@ public class Customer implements Serializable {
      * @param password Password to verify if valid.
      * @return Password accepted.
      */
-    private String checkPasswordConditions(String password){
+    private String checkPasswordConditions(String password) {
 
         boolean noUppercase = true;
         boolean noLowercase = true;
@@ -116,27 +116,27 @@ public class Customer implements Serializable {
 
         int passwordLength = password.length();
 
-        if(passwordLength > 7){
+        if (passwordLength > 7) {
             length = false;
         }
 
-        for(int index = 0; index < passwordLength; index++){
-            if(Character.isUpperCase(password.charAt(index))){
+        for (int index = 0; index < passwordLength; index++) {
+            if (Character.isUpperCase(password.charAt(index))) {
                 noUppercase = false;
             }
-            if(Character.isLowerCase(password.charAt(index))){
+            if (Character.isLowerCase(password.charAt(index))) {
                 noLowercase = false;
             }
-            if((int)password.charAt(index)>47 && (int)password.charAt(index)<58){
+            if ((int) password.charAt(index) > 47 && (int) password.charAt(index) < 58) {
                 noNumber = false;
             }
         }
 
-        if(noLowercase || noNumber || noUppercase || length){
+        if (noLowercase || noNumber || noUppercase || length) {
             throw new CheckPasswordConditionsException();
         }
 
-        return  password;
+        return password;
 
     }
 
@@ -146,23 +146,23 @@ public class Customer implements Serializable {
      * @param password String to check
      * @return Boolean
      */
-    public boolean checkPassword(String password){
-        if(this.password == password) return true;
+    public boolean checkPassword(String password) {
+        if (this.password.equals(password)) {return true;}
 
         return false;
     }
 
     /**
-     *Method to add a Card to the Customer's wish list .
+     * Method to add a Card to the Customer's wish list .
      *
      * @param cardDescription Card description to add.
      */
-    public void addCardToWishList(Description cardDescription){
+    public void addCardToWishList(Description cardDescription) {
         try {
 
             wishList.add(cardDescription);
 
-        }catch (AddCardException e){
+        } catch (AddCardException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -172,12 +172,12 @@ public class Customer implements Serializable {
      *
      * @param cardDescription Card description to remove.
      */
-    public void removeFromWishList(Description cardDescription){
+    public void removeFromWishList(Description cardDescription) {
         try {
 
             wishList.remove(cardDescription);
 
-        }catch (RemoveCardException e){
+        } catch (RemoveCardException e) {
             System.err.println(e.getMessage());
         }
     }
@@ -188,13 +188,13 @@ public class Customer implements Serializable {
      * @param description String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public Collection searchByDescription(Description description){
+    public Collection searchByDescription(Description description) {
 
         try {
             Collection cardsFound = collection.searchByDescription(description);
             return cardsFound;
-        }catch (CardNotFoundException e){
-            System.err.println(e.cardNotFound(getId(),getUsername()));
+        } catch (CardNotFoundException e) {
+            System.err.println(e.cardNotFound(getId(), getUsername()));
         }
 
         return null;
@@ -206,7 +206,7 @@ public class Customer implements Serializable {
      *
      * @param trade Trade to add
      */
-    public void addToTradeList(String trade){
+    public void addToTradeList(String trade) {
         tradeList.add(trade);
     }
 
@@ -215,8 +215,8 @@ public class Customer implements Serializable {
      *
      * @return The list with the trades
      */
-    public ArrayList<String> getTradeList(){
-        if(tradeList.isEmpty()) throw new NoTradesExeption();
+    public ArrayList<String> getTradeList() {
+        if (tradeList.isEmpty()) throw new NoTradesExeption();
         return tradeList;
     }
 
@@ -229,15 +229,17 @@ public class Customer implements Serializable {
         return wishList;
     }
 
-    /**Getter of the customer's id.
+    /**
+     * Getter of the customer's id.
      *
      * @return Id of the customer
      */
-    public   String getId(){
+    public String getId() {
         return id;
     }
 
-    /**Getter of the customer's username
+    /**
+     * Getter of the customer's username
      *
      * @return Username of the customer.
      */
@@ -245,7 +247,4 @@ public class Customer implements Serializable {
         return username;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 }

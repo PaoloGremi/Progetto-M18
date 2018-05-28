@@ -46,7 +46,7 @@ public class LogIn extends Application{
         Socket socket = new Socket("localhost", 8080);
 
         System.out.println("Client connected");
-        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+
         System.out.println("Ok");
 
 
@@ -94,7 +94,8 @@ public class LogIn extends Application{
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
                             try {
-                                os.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
+                                ObjectOutputStream os1 = new ObjectOutputStream(socket.getOutputStream());
+                                os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                                 Customer returnMessage = (Customer) is.readObject();
                                 MainWindow.display(username.getText(), returnMessage);
@@ -139,14 +140,27 @@ public class LogIn extends Application{
         });
         logIn.setOnAction(event -> {
             try {
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                System.out.println("connected");
                 if((boolean) is.readObject()){
-                    os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
-                    Customer customer = (Customer) is.readObject();
-                    MainWindow.display(username.getText(), customer);
+                    System.out.println("closed");
+
+                    //os.reset();
+                    //socket.close();
                     socket.close();
+                    Socket socket1 = new Socket("localhost", 8080);
+                    ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
+                    ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
+                    System.out.println("connected");
+                    os2.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
+                    Customer customer = (Customer) is1.readObject();
+                    System.out.println(customer);
+                    MainWindow.display(username.getText(), customer);
+                    socket1.close();
                 }
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
