@@ -10,6 +10,7 @@ import TradeCenter.Exceptions.UserExceptions.NoTradesExeption;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 public class Customer implements Serializable {
@@ -188,10 +189,12 @@ public class Customer implements Serializable {
      * @param description String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public Collection searchByDescription(Description description) {
+    public HashMap searchByDescription(Description description) {
 
         try {
-            Collection cardsFound = collection.searchByDescription(description);
+            HashMap<Customer, Collection> cardsFound = new HashMap<Customer, Collection>();
+            Collection cards = collection.searchByDescription(description);
+            cardsFound.put(this, cards);
             return cardsFound;
         } catch (CardNotFoundException e) {
             System.err.println(e.cardNotFound(getId(), getUsername()));

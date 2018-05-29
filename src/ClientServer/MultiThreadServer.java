@@ -4,6 +4,7 @@ package ClientServer;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Card.PokemonDescription;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.TradeCenter;
@@ -13,6 +14,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MultiThreadServer implements Runnable {
     Socket csocket;
@@ -66,6 +68,12 @@ public class MultiThreadServer implements Runnable {
                 case SEARCHUSER:
                     ArrayList<Customer> users = td.searchUsers(m.getString1());
                     os.writeObject(users);
+                    os.close();
+                    break;
+
+                case SEARCHDESCRIPTION:
+                    ArrayList<HashMap<Customer, Collection>> descriptions = td.searchByDescription(m.getDescription());
+                    os.writeObject(descriptions);
                     os.close();
                     break;
 

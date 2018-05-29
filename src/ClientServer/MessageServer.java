@@ -1,5 +1,6 @@
 package ClientServer;
 
+import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
@@ -14,6 +15,7 @@ public class MessageServer implements Serializable {
     private Offer offer;
     private Trade trade;
     private Customer customer;
+    private Description description;
 
     public MessageServer(MessageType message, String string1, String string2) {
         this.message = message;
@@ -39,6 +41,15 @@ public class MessageServer implements Serializable {
     public MessageServer(MessageType message, Trade trade) {
         this.message = message;
         this.trade = trade;
+    }
+
+    public MessageServer(MessageType message, Description description) {
+        this.message = message;
+        this.description = description;
+    }
+
+    public Description getDescription() {
+        return description;
     }
 
     public Customer getCustomer() {

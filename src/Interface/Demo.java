@@ -35,6 +35,13 @@ public  class Demo {
                     break;}
                 case "other_user": {MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
                     break;}
+                case"searchDescription":{
+                    try {
+                        MainWindow.refreshDynamicContent(SearchDescriptionScene.refresh());
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         });
 

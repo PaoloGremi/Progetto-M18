@@ -102,6 +102,16 @@ public class TradeCenter {
         return results;
     }
 
+    public ArrayList<HashMap<Customer, Collection>> searchByDescription(Description description){
+        ArrayList<HashMap<Customer, Collection>> cards = new ArrayList<HashMap<Customer, Collection>>();
+
+        for(String key: customers.keySet()){
+            cards.add(customers.get(key).searchByDescription(description));
+        }
+
+        return cards;
+    }
+
     private boolean possibleSearch(String search){
         return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
     }

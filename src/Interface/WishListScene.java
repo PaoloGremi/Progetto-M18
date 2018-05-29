@@ -1,7 +1,10 @@
 
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Card.Description;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
@@ -20,7 +23,12 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import static javafx.scene.input.KeyCode.U;
 
@@ -112,6 +120,28 @@ public class WishListScene{
                     };
 
             card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+
+            button2.setOnAction(event -> {
+                System.out.println("welcome client");
+                Socket socket = null;
+                try {
+                    socket = new Socket("localhost", 8889);
+                    System.out.println("Client connected");
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    System.out.println("Ok");
+                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, file2));
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                    ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
+                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage));
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+
+            });
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
