@@ -49,6 +49,14 @@ public class SearchDescriptionScene {
         hbox.getChildren().addAll(bBack, bSearch);
         hbox.setStyle("-fx-background-color: orange");
 
+        bSearch.setOnAction(event -> {
+            MainWindow.refreshDynamicContent(SearchCardScene.display());
+        });
+
+        bBack.setOnAction(event -> {
+            MainWindow.refreshDynamicContent(WishListScene.refresh());
+        });
+
         scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
@@ -113,9 +121,7 @@ public class SearchDescriptionScene {
 
                     });
 
-                    bSearch.setOnAction(event -> {
-                        MainWindow.refreshDynamicContent(SearchCardScene.display());
-                    });
+
 
                     flow1.getChildren().add(pane);
                     flow1.setMargin(pane, new Insets(5, 0, 5, 0));
