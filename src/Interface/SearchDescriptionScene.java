@@ -113,6 +113,10 @@ public class SearchDescriptionScene {
 
                     });
 
+                    bSearch.setOnAction(event -> {
+                        MainWindow.refreshDynamicContent(SearchCardScene.display());
+                    });
+
                     flow1.getChildren().add(pane);
                     flow1.setMargin(pane, new Insets(5, 0, 5, 0));
 
