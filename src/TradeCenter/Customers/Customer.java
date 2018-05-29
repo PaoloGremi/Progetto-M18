@@ -29,6 +29,8 @@ public class Customer implements Serializable {
     private ArrayList<Description> wishList;
     private ArrayList<String> tradeList;
 
+    private static final long serialVersionUID = 1977347776266038746L;
+
     public Customer(String id, String username, String password) throws CheckPasswordConditionsException {
 
         this.id = id;
