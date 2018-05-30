@@ -18,9 +18,10 @@ import java.util.HashMap;
 
 public class MultiThreadServer implements Runnable {
     Socket csocket;
-    TradeCenter td = new TradeCenter();
-    MultiThreadServer(Socket csocket) {
+    static TradeCenter td = new TradeCenter();
+    MultiThreadServer(Socket csocket, TradeCenter td) {
         this.csocket = csocket;
+        this.td = td;
     }
     public static void main(String args[]) throws Exception {
         ServerSocket ssock = new ServerSocket(8889);
@@ -29,7 +30,7 @@ public class MultiThreadServer implements Runnable {
         while (true) {
             Socket sock = ssock.accept();
             System.out.println("Connected");
-            new Thread(new MultiThreadServer(sock)).start();
+            new Thread(new MultiThreadServer(sock, td)).start();
         }
     }
     public void run() throws CheckPasswordConditionsException {
