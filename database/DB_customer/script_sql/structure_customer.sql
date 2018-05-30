@@ -4,6 +4,6 @@
 create database CUSTOMERS;
 use CUSTOMERS;
 create table customers
-    ( ID int primary key,
+    ( ID varchar(120) primary key,
       customer mediumblob
     )ENGINE = InnoDB DEFAULT CHARSET=utf8;
