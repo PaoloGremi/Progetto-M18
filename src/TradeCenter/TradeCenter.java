@@ -106,7 +106,11 @@ public class TradeCenter {
         ArrayList<HashMap<Customer, Collection>> cards = new ArrayList<HashMap<Customer, Collection>>();
 
         for(String key: customers.keySet()){
-            cards.add(customers.get(key).searchByDescription(description));
+            HashMap<Customer, Collection> customerCollection = customers.get(key).searchByDescription(description);
+                if(customerCollection!=null) {
+                    cards.add(customerCollection);
+                }
+
         }
 
         return cards;

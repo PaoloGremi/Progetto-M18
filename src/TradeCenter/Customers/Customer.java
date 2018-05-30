@@ -191,7 +191,7 @@ public class Customer implements Serializable {
      * @param description String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public HashMap searchByDescription(Description description) {
+    public HashMap<Customer, Collection> searchByDescription(Description description) {
 
         try {
             HashMap<Customer, Collection> cardsFound = new HashMap<Customer, Collection>();

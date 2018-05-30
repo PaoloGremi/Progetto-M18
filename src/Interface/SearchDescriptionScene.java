@@ -36,6 +36,9 @@ public class SearchDescriptionScene {
 
     static BorderPane display(ArrayList<HashMap<Customer,Collection>> cards){
 
+        if(cards.isEmpty()){
+            System.out.println("questo motivo");
+        }
         array = cards;
 
         flow1 = new FlowPane();
@@ -60,9 +63,10 @@ public class SearchDescriptionScene {
         scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
-        scroll.setContent(flow2);
+        scroll.setContent(flow1);
 
         for(HashMap<Customer, Collection> collection : cards){
+
             for(Customer customer : collection.keySet()){
 
                 Collection coll = collection.get(customer);
@@ -78,6 +82,8 @@ public class SearchDescriptionScene {
                     cardV.setImage(image3);
                     cardV.setPreserveRatio(true);
                     cardV.setFitHeight(285);
+
+                    pane.setCenter(cardV);
 
                     HBox hbox1 = new HBox();
                     hbox1.setPadding(new Insets(10));
@@ -128,8 +134,8 @@ public class SearchDescriptionScene {
 
                 }
 
-                flow2.getChildren().add(flow1);
-                flow2.setMargin(flow1, new Insets(5, 0, 5, 0));
+               // flow2.getChildren().add(flow1);
+               // flow2.setMargin(flow1, new Insets(5, 0, 5, 0));
 
             }
 
