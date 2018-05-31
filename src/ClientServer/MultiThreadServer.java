@@ -45,37 +45,42 @@ public class MultiThreadServer implements Runnable {
                     td.addCustomer(m.getString1(), m.getString2());
                     Customer c = td.searchCustomer(m.getString1());
                     os.writeObject(c);
-                    os.close();
+                    csocket.close();
                     break;
                 case SEARCHCUSTOMER:
                     td.searchCustomer(m.getString1());
                     Customer customer = td.searchCustomer(m.getString1());
                     os.writeObject(customer);
-                    os.close();
+                    csocket.close();
                     break;
                 //case CREATEOFFER:
                 //case SWITCHCARDS:
                 case VERIFYPASSWORD:
                     boolean flagPass = td.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
-                    os.close();
+                    csocket.close();
                     break;
                 case LOGDIN:
                     boolean flagLog = td.loggedIn(m.getString1(),m.getString2());
                     os.writeObject(flagLog);
-                    os.close();
+                    csocket.close();
                     break;
 
                 case SEARCHUSER:
                     ArrayList<Customer> users = td.searchUsers(m.getString1());
                     os.writeObject(users);
-                    os.close();
+                    csocket.close();
                     break;
 
                 case SEARCHDESCRIPTION:
                     ArrayList<HashMap<Customer, Collection>> descriptions = td.searchByDescription(m.getDescription());
                     os.writeObject(descriptions);
-                    os.close();
+                    csocket.close();
+                    break;
+                case REMOVEWISH:
+                    Customer customer2 = td.searchCustomer(m.getString1());
+                    td.removeFromWishList(m.getDescription(),customer2);
+                    csocket.close();
                     break;
 
             }

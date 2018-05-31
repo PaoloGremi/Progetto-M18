@@ -48,6 +48,12 @@ public class MessageServer implements Serializable {
         this.description = description;
     }
 
+    public MessageServer(MessageType message,  String username, Description description) {
+        this.message = message;
+        this.string1 = username;
+        this.description = description;
+    }
+
     public Description getDescription() {
         return description;
     }

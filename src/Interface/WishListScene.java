@@ -104,6 +104,18 @@ public class WishListScene{
             pane.setBottom(hbox1);
 
             button1.setOnAction(event -> {
+                Socket socket;
+                try {
+                    socket = new Socket("localhost", 8889);
+                    System.out.println("Client connected");
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    System.out.println("Ok");
+                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, username, file2));
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
 
                 flow.getChildren().remove(pane);
                 WishListScene.removeFile(wishList,file2);

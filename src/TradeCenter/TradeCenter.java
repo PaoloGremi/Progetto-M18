@@ -4,6 +4,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
@@ -114,6 +115,12 @@ public class TradeCenter {
         }
 
         return cards;
+    }
+
+    public void removeFromWishList(Description cardDescription, Customer customer) {
+
+        customer.removeFromWishList(cardDescription);
+
     }
 
     private boolean possibleSearch(String search){
