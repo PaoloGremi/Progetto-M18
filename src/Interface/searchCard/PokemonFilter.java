@@ -1,4 +1,4 @@
-package Interface;
+package Interface.searchCard;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;

@@ -1,12 +1,13 @@
-package Interface;
+package Interface.searchCard;
 
 
+import Interface.searchCard.PokemonFilter;
+import Interface.searchCard.YugiohFilter;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 
@@ -22,7 +23,7 @@ public class SearchCardScene {
     static ComboBox comboCardType;
 
 
-    static BorderPane display(){
+    public static BorderPane display(){
         mainBorder=new BorderPane();
         hBoxTop=new HBox();
         hBoxInner=new HBox();
@@ -39,6 +40,7 @@ public class SearchCardScene {
         hBoxInner.setSpacing(18);
         hBoxInner.getChildren().add(buttFilter);
         hBoxInner.getChildren().add(buttSearch);
+
 
         vBoxTop.getChildren().addAll(searchText,hBoxInner);
         hBoxTop.getChildren().addAll(vBoxTop);
@@ -57,7 +59,6 @@ public class SearchCardScene {
           "Pokèmon",
           "YU-GI-OH!"
         );
-
         //action del combo
         comboCardType.setOnAction(new EventHandler<ActionEvent>() {
             @Override

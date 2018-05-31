@@ -1,8 +1,6 @@
 package Interface;
 
-import TradeCenter.Card.Card;
-import TradeCenter.Card.PokemonDescription;
-import TradeCenter.Card.YuGiOhDescription;
+import Interface.searchCard.SearchCardScene;
 import TradeCenter.Customers.Customer;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
