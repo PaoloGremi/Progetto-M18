@@ -40,7 +40,7 @@ public class TradeCenter {
         this.pokemonCatalog = new CardCatalog();
         this.yugiohCatalog = new CardCatalog();
         proxy.populateCatalog("pokemon_card", pokemonCatalog);
-        //proxy.populateCatalog("yugioh_card", yugiohCatalog); //todo decommentare quando il DB sarà ultimato
+        proxy.populateCatalog("yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
         populateCustomers();
         this.activeTrades = new ArrayList<Trade>();
@@ -138,7 +138,7 @@ public class TradeCenter {
      */
     public boolean searchCard(Description description){
         //fino a che il metodo non c'è deve ritornare sempre true
-        return true;                //todo mettere il metodo che cerca nel DB
+        return true;                //todo mettere il metodo che cerca nel DB, PARLARE CON FEDE
     }
 
     /**
@@ -155,7 +155,7 @@ public class TradeCenter {
         if(searched.size() == 0){
             //nothing found
             throw new CardNotFoundException();          //todo eccezione da risolvere, se nessuno ha la carta il software deve continuare
-        }
+        }                                               //todo PARLARE CON FEDE
         return searched;
     }
 
@@ -186,10 +186,20 @@ public class TradeCenter {
                 customer1.addCard(card);
                 customer2.removeCard(card);
             }
+            proxy.updateCustomer(customer1);
+            proxy.updateCustomer(customer2);
 
         }else{
             throw new NoSuchTradeException();
         }
+    }
+
+    /**
+     * A Method that updates the customer's attributes, like wishlist
+     * @param customer the user that has to be updated
+     */
+    private void updateCustomer(Customer customer){
+        proxy.updateCustomer(customer);
     }
 
     /**
