@@ -282,9 +282,8 @@ public class DBProxy {
     /**
      * Updates a customer in the database (contains all customer's informations)
      * @param customer: Customer object to be updated
-     * @param position: Index of the customer in the database
      */
-    public void updateCustomer(Customer customer, int position) {
+    public void updateCustomer(Customer customer) {
         connectToDB("CUSTOMERS");
 
         try {
@@ -293,7 +292,7 @@ public class DBProxy {
             // create prepared statement and execute it/commit changes
             PreparedStatement ps = connection.prepareStatement("UPDATE customers SET customer = ? WHERE id = ?;");
             ps.setBlob(1, b1);
-            ps.setString(2, "USER-" + position);
+            ps.setString(2, customer.getId());
             ps.executeUpdate();
             connection.commit();
             ps.close();
