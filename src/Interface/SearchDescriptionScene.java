@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import Interface.searchCard.SearchCardScene;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
