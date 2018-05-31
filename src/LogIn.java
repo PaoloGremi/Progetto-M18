@@ -28,6 +28,7 @@ public class LogIn extends Application{
     TextField username;
     PasswordField password;
     Text credentials;
+    Text info;
     BorderPane border;
     StackPane stack;
 
@@ -58,6 +59,7 @@ public class LogIn extends Application{
         credFlow.setPadding(new Insets(5, 5,0,5));
         credFlow.setTextAlignment(TextAlignment.CENTER);
         credFlow.getChildren().add(credentials);
+        TextFlow infoFlow= new TextFlow();
         username = new TextField("Username");
         password = new PasswordField();
         password.setPromptText("Password");
@@ -65,7 +67,7 @@ public class LogIn extends Application{
         stack = new StackPane();
         stack.setPadding(new Insets(5,0,20,0));
         border = new BorderPane();
-        credentialBox.getChildren().addAll(credFlow, username, password);
+        credentialBox.getChildren().addAll(credFlow, username, password,infoFlow);
         credentialBox.setSpacing(20);
         credentialBox.setPadding(new Insets(5));
 
@@ -159,7 +161,15 @@ public class LogIn extends Application{
                     MainWindow.display(customer);
                     socket1.close();
                 }
-                socket3.close();
+                else{
+                    info = new Text("Invalid Username or Password");
+                    infoFlow.setPadding(new Insets(5));
+                    infoFlow.setTextAlignment(TextAlignment.CENTER);
+                    infoFlow.getChildren().add(info);
+
+                    socket3.close();
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
