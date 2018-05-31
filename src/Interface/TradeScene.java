@@ -44,11 +44,11 @@ public class TradeScene {
 
         Text myCollection = new Text("myCollection");       //todo abbellire i titoli
         TextFlow myCollectionTitle = new TextFlow(myCollection);
-        Text otherCollection = new Text("otherCollection");
+        Text otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
         TextFlow otherCollectionTitle = new TextFlow(otherCollection);
         Text myOffer = new Text("myOffer");
         TextFlow myOfferTitle = new TextFlow(myOffer);
-        Text otherOffer = new Text("otherOffer");
+        Text otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
         TextFlow otherOfferTitle = new TextFlow(otherOffer);
 
         //griglie

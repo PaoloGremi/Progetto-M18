@@ -32,9 +32,9 @@ public class MainWindow {
 
     /**
      * Display the window
-     * @param login_username //todo change to customer object
+     * @param customer //todo complete javadocs
      */
-    public static void display(String login_username, Customer customer) throws IOException {
+    public static void display(Customer customer) throws IOException {
 
         // values for testing purpose
         /*Customer tempUser = new Customer("01", login_username, "APassword123");
@@ -65,7 +65,7 @@ public class MainWindow {
         vbox.setPadding(new Insets(20, 10, 20, 20));
         vbox.setSpacing(200);
         // Username label
-        Label username = new Label(login_username);
+        Label username = new Label(customer.getUsername());
         username.setTextFill(Color.web("#ffffff"));
         username.setStyle("-fx-font-weight: bold");
         // Tile of buttons for main navigation
@@ -113,7 +113,7 @@ public class MainWindow {
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchUserScene.display());
+            dynamicContent.getChildren().add(SearchUserScene.display(customer));
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
