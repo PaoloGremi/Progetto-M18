@@ -92,11 +92,10 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    public ArrayList<Customer> searchUsers(String username){
+    public ArrayList<Customer> searchUsers(String searchString){
         ArrayList<Customer> results = new ArrayList<>();
         for(String key: customers.keySet()){
-            String name = customers.get(key).getUsername();
-            if(possibleSearch(name)){
+            if(customers.get(key).getUsername().contains(searchString)){
                 results.add(customers.get(key));
             }
         }
@@ -120,14 +119,9 @@ public class TradeCenter {
 
     //todo add javadocs
     public void removeFromWishList(Description cardDescription, Customer customer) {
-
         customer.removeFromWishList(cardDescription);
+        updateCustomer(customer);
 
-    }
-
-    //todo add javadocs
-    private boolean possibleSearch(String search){
-        return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
     }
 
     /**
@@ -260,13 +254,5 @@ public class TradeCenter {
         for (Trade trade : doneTrades){
             System.out.println(trade);
         }
-    }
-
-    /**
-     * A method that return alla the customers
-     * @return the customers map
-     */
-    public HashMap<String, Customer> getCustomers() {
-        return customers;
     }
 }
