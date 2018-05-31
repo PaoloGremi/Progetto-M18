@@ -51,8 +51,8 @@ public class TradeCenter {
      * a method that take the customers from the database
      */
     private void populateCustomers(){
-        for(int i = 1;i<proxy.customersSize();i++){
-            customers.put(proxy.getCostumer(i).getId(), proxy.getCostumer(i));
+        for(int i = 0;i<proxy.customersSize();i++){
+            customers.put(proxy.getCostumer(i+1).getId(), proxy.getCostumer(i+1));
         }
         contUsers = proxy.customersSize();
     }
@@ -92,10 +92,11 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    public ArrayList<Customer> searchUsers(String searchString){
+    public ArrayList<Customer> searchUsers(String username){
         ArrayList<Customer> results = new ArrayList<>();
         for(String key: customers.keySet()){
-            if(customers.get(key).getUsername().contains(searchString)){
+            String name = customers.get(key).getUsername();
+            if(possibleSearch(name)){
                 results.add(customers.get(key));
             }
         }
@@ -119,9 +120,14 @@ public class TradeCenter {
 
     //todo add javadocs
     public void removeFromWishList(Description cardDescription, Customer customer) {
-        customer.removeFromWishList(cardDescription);
-        updateCustomer(customer);
 
+        customer.removeFromWishList(cardDescription);
+
+    }
+
+    //todo add javadocs
+    private boolean possibleSearch(String search){
+        return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
     }
 
     /**
@@ -254,5 +260,13 @@ public class TradeCenter {
         for (Trade trade : doneTrades){
             System.out.println(trade);
         }
+    }
+
+    /**
+     * A method that return alla the customers
+     * @return the customers map
+     */
+    public HashMap<String, Customer> getCustomers() {
+        return customers;
     }
 }

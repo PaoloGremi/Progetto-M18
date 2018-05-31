@@ -82,6 +82,7 @@ public class LogIn extends Application{
             credentials.setText("Please enter username and password the password must have at least 8 characters an uppercase a lowercase and a number.");
             PasswordField passwordVerified = new PasswordField();
             passwordVerified.setPromptText("Repeat the password");
+            credentialBox.getChildren().remove(infoFlow);
             credentialBox.getChildren().add(passwordVerified);
             Button confirm = new Button("Confirm");
 
