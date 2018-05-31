@@ -1,16 +1,13 @@
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import Interface.MainWindow;
-import Interface.OtherUserProfileScene;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
-import TradeCenter.TradeCenter;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -99,7 +96,7 @@ public class LogIn extends Application{
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
                                 Customer returnMessage = (Customer) is.readObject();
-                                MainWindow.display(username.getText(), returnMessage);
+                                MainWindow.display(returnMessage);
                                 socket2.close();
 
                             } catch (CheckPasswordConditionsException e) {
@@ -159,7 +156,7 @@ public class LogIn extends Application{
                     os2.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
                     Customer customer = (Customer) is1.readObject();
                     System.out.println(customer);
-                    MainWindow.display(username.getText(), customer);
+                    MainWindow.display(customer);
                     socket1.close();
                 }
                 socket3.close();
