@@ -4,7 +4,6 @@ package Interface;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
-import TradeCenter.TradeCenter;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;

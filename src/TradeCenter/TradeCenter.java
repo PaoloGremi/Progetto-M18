@@ -4,7 +4,6 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
-import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
@@ -92,6 +91,7 @@ public class TradeCenter {
         throw new UserNotFoundException();
     }
 
+    //todo add javadocs
     public ArrayList<Customer> searchUsers(String username){
         ArrayList<Customer> results = new ArrayList<>();
         for(String key: customers.keySet()){
@@ -103,6 +103,7 @@ public class TradeCenter {
         return results;
     }
 
+    //todo add javadocs
     public ArrayList<HashMap<Customer, Collection>> searchByDescription(Description description){
         ArrayList<HashMap<Customer, Collection>> cards = new ArrayList<HashMap<Customer, Collection>>();
 
@@ -117,12 +118,14 @@ public class TradeCenter {
         return cards;
     }
 
+    //todo add javadocs
     public void removeFromWishList(Description cardDescription, Customer customer) {
 
         customer.removeFromWishList(cardDescription);
 
     }
 
+    //todo add javadocs
     private boolean possibleSearch(String search){
         return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
     }

@@ -1,14 +1,9 @@
 package ClientServer;
 
-
-
-import TradeCenter.Card.Card;
-import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.TradeCenter;
-import com.mysql.cj.protocol.Message;
 
 import java.io.*;
 import java.net.ServerSocket;
