@@ -51,10 +51,11 @@ public class TradeCenter {
      * a method that take the customers from the database
      */
     private void populateCustomers(){
-        for(int i = 0;i<proxy.customersSize();i++){
-            customers.put(proxy.getCostumer(i+1).getId(), proxy.getCostumer(i+1));
-        }
         contUsers = proxy.customersSize();
+        for(int i = 1; i<=contUsers; i++){
+            Customer customer = proxy.getCostumer(i);
+            customers.put(customer.getId(), customer);
+        }
     }
 
     /**
