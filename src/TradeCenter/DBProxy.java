@@ -19,33 +19,14 @@ public class DBProxy {
 
     private Connection connection;
 
-    /*
-    Scaricate mysql-connector-java-8.0.11.jar e mettetelo sotto src, poi File -> Project Structure -> Libraries e aggiungete il jar.
-    Sotto MySQL create il database "CARDS".
-    Usate il seguente script SQL sul database "cards" per poter usare correttamente il db:
-    CREATE USER 'tradecenter'@'localhost' IDENTIFIED BY 'Password1!';
-	GRANT USAGE ON *.* TO 'tradecenter'@'localhost';
-    GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON CARDS.* TO 'tradecenter'@'localhost';
-    GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP ON CUSTOMERS.* TO 'tradecenter'@'localhost';
-    Poi usate gli script di Fede per caricare le tabelle e popolarle.
-    Customer database:
-
-    -- ------------ TABLE ----------------
-    create table customers
-    ( ID varchar(120) primary key,
-      customer mediumblob
-    );
-
-     */
-
     /**
      * Connects to database
      * @param database: database name
      */
     private void connectToDB(String database) {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC", "tradecenter", "Password1!");
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "tradecenter", "Password1!");
             connection.setAutoCommit(false);
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
@@ -89,7 +70,7 @@ public class DBProxy {
      * Get an Object from a given Blob
      * @param blob: Blob to convert
      */
-    public Object getObjFromBlob(Blob blob) {
+    private Object getObjFromBlob(Blob blob) {
         Object obj = null;
         ByteArrayInputStream bis;
         ObjectInputStream ois;
@@ -146,6 +127,7 @@ public class DBProxy {
      * @param cc: Card Catalog
      */
     public void populateCatalog(String table, CardCatalog cc) {
+        System.err.println("Populating catalog...");
         connectToDB("CARDS");
         PreparedStatement ps;
         ResultSet rs;
@@ -153,6 +135,7 @@ public class DBProxy {
         try {
             switch(table) {
                 case "pokemon_card":
+                    System.err.println("Dumping Pokémon cards into catalog...");
                     ps = connection.prepareStatement("SELECT * FROM pokemon_card;");
                     rs = ps.executeQuery();
 
@@ -199,8 +182,10 @@ public class DBProxy {
 
                         cc.addDescription(new PokemonDescription(name, description, picture, card_id, type, hp, weight, length, level));
                     }
+                    System.err.println("Dumping Pokémon cards into catalog completed.");
                     break;
                 case "yugioh_card":
+                    System.err.println("Dumping Yu-Gi-Oh cards into catalog...");
                     ps = connection.prepareStatement("SELECT * FROM yugioh_card as a left join (SELECT b.Monster_Type_ID, b.Name as MonsterTypeName, c.Type_ID, c.Name as CardTypeName FROM Monster_Type as b join Card_Type as c) as d on a.Monster_Type_ID = d.Monster_Type_ID and a.Cards_ID = d.Type_ID;");
                     rs = ps.executeQuery();
 
@@ -242,6 +227,7 @@ public class DBProxy {
                                 rs.getString("CardTypeName")
                         ));
                     }
+                    System.err.println("Dumping Yu-Gi-Oh cards into catalog completed.");
                     break;
                 default:
                     throw new SQLException("ERROR: TABLE NOT RECOGNIZED");
@@ -250,6 +236,7 @@ public class DBProxy {
             System.err.println(e.getMessage());
         } finally {
             disconnectFromDB();
+            System.err.println("Dumping completed.");
         }
     }
 
@@ -258,6 +245,7 @@ public class DBProxy {
      * @return number of customers
      */
     public int customersSize() {
+        System.err.println("Getting number of customers...");
         connectToDB("CUSTOMERS");
         int result = 0;
 
@@ -284,6 +272,7 @@ public class DBProxy {
      * @param customer: Customer object to be updated
      */
     public void updateCustomer(Customer customer) {
+        System.err.println("Updating customer...");
         connectToDB("CUSTOMERS");
 
         try {
@@ -300,6 +289,7 @@ public class DBProxy {
             e.printStackTrace();
         } finally {
             disconnectFromDB();
+            System.err.println("Updating customer completed.");
         }
 
     }
@@ -311,6 +301,7 @@ public class DBProxy {
      */
     public Customer getCostumer(int i) {
         Object obj = null;
+        System.err.println("Loading customer from DB...");
         connectToDB("CUSTOMERS");
 
         try {
@@ -328,6 +319,7 @@ public class DBProxy {
         } finally {
             disconnectFromDB();
         }
+        System.err.println("Loaded customer.");
         return (Customer)obj;
     }
 
@@ -336,6 +328,7 @@ public class DBProxy {
      * @param customer: Customer to be inserted
      */
     public void insertCustomer(Customer customer) {
+        System.err.println("Adding customer to DB...");
         connectToDB("CUSTOMERS");
 
         try {
@@ -350,6 +343,7 @@ public class DBProxy {
             e.printStackTrace();
         } finally {
             disconnectFromDB();
+            System.err.println("Customer added to DB.");
         }
     }
 
