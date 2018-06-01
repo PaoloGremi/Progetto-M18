@@ -6,6 +6,7 @@ import Interface.searchCard.SearchCardScene;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.Trade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -31,19 +32,19 @@ public class SearchDescriptionScene {
 
     static BorderPane border;
     static FlowPane flow1;
-    static FlowPane flow2;
     static ArrayList<HashMap<Customer, Collection>> array;
+    static Customer user;
     static ScrollPane scroll;
 
-    static BorderPane display(ArrayList<HashMap<Customer,Collection>> cards){
+    static BorderPane display(ArrayList<HashMap<Customer,Collection>> cards, Customer customerThis){
 
         if(cards.isEmpty()){
             System.out.println("questo motivo");
         }
         array = cards;
-
+        user=customerThis;
         flow1 = new FlowPane();
-        flow2 = new FlowPane();
+        flow1.setStyle("-fx-background-color: DAE6A2;");
         border = new BorderPane();
         HBox hbox = new HBox();
         Button bBack = new Button("\u2B8C");
@@ -128,6 +129,28 @@ public class SearchDescriptionScene {
 
                     });
 
+                    bTrade.setOnAction(event -> {
+                        System.out.println("welcome client");
+                        Socket socket = null;
+                        try {
+                            socket = new Socket("localhost", 8889);
+                            System.out.println("Client connected");
+                            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                            System.out.println("Ok");
+                            os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
+                            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                            Customer returnMessage = (Customer) is.readObject();
+                            MainWindow.refreshDynamicContent(TradeScene.display(customerThis,returnMessage));
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ClassNotFoundException e) {
+                            e.printStackTrace();
+                        }
+
+
+                    });
+
 
 
                     flow1.getChildren().add(pane);
@@ -135,8 +158,6 @@ public class SearchDescriptionScene {
 
                 }
 
-               // flow2.getChildren().add(flow1);
-               // flow2.setMargin(flow1, new Insets(5, 0, 5, 0));
 
             }
 
@@ -144,13 +165,13 @@ public class SearchDescriptionScene {
         }
 
         scroll.setPadding(new Insets(3));
-        scroll.setStyle("-fx-background-color: green");
+        scroll.setStyle("-fx-background-color: orange");
         border.setCenter(scroll);
         border.setTop(hbox);
         return border;
     }
 
     static BorderPane refresh() throws IOException {
-        return display(array);
+        return display(array, user);
     }
 }

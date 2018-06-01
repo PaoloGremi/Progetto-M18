@@ -103,7 +103,7 @@ public class MainWindow {
         });
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(customer.getWishList(), customer.getUsername()));
+            dynamicContent.getChildren().add(WishListScene.display(customer.getWishList(), customer));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());

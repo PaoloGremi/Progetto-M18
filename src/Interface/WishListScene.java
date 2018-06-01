@@ -34,17 +34,16 @@ import static javafx.scene.input.KeyCode.U;
 
 public class WishListScene{
     static boolean flag = true;
-    static File[] files = generateFiles();
     static ArrayList<File> files1;
     static ScrollPane scroll;
     static ArrayList<Description> wish;
     static BorderPane border;
-    static String user;
+    static Customer user;
     static HBox hBox2;
 
-    static BorderPane display(ArrayList<Description> wishList, String username)  {
+    static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
 
-        user=username;
+        user=customer;
         wish=wishList;
 
         border = new BorderPane();
@@ -55,7 +54,7 @@ public class WishListScene{
         hBox2.setStyle("-fx-background-color: orange");
         hBox2.setAlignment(Pos.CENTER);
         TextFlow textFlow = new TextFlow();
-        Text text = new Text(username +"'s wish list");
+        Text text = new Text(customer.getUsername() +"'s wish list");
         text.setStyle("-fx-font-weight: bold");
         textFlow.getChildren().add(text);
         hBox2.getChildren().add(textFlow);
@@ -110,7 +109,7 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, username, file2));
+                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer.getUsername(), file2));
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -118,7 +117,7 @@ public class WishListScene{
 
 
                 flow.getChildren().remove(pane);
-                WishListScene.removeFile(wishList,file2);
+
 
             });
 
@@ -144,7 +143,7 @@ public class WishListScene{
                     os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, file2));
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                     ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
-                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage));
+                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage, customer));
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -165,21 +164,7 @@ public class WishListScene{
         return border;
     }
 
-    static void removeFile(ArrayList<Description> files, Description file){
-        files.remove(file);
-    }
 
-    static File[] generateFiles() {
-        if(flag) {
-            files = new File("database/DB_yugioh/yugioh_pics/").listFiles();
-            files1 = new ArrayList<>();
-            flag=false;
-            for(int i=0; i<files.length; i++){
-                files1.add(files[i]);
-            }
-        }
-        return files;
-    }
 
     static BorderPane refresh(){
         return display(wish, user);

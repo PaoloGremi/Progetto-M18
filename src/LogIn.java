@@ -120,7 +120,7 @@ public class LogIn extends Application{
                         }
                     }
                     else {
-                        Text errorTextMatch = new Text("Sorry, passwords doesn't match.");
+                        Text errorTextMatch = new Text("Sorry, passwords don't match.");
 
                         TextFlow error = new TextFlow();
                         error.setPadding(new Insets(0,5,5,5));
@@ -166,6 +166,7 @@ public class LogIn extends Application{
                     info = new Text("Invalid Username or Password");
                     infoFlow.setPadding(new Insets(5));
                     infoFlow.setTextAlignment(TextAlignment.CENTER);
+                    infoFlow.getChildren().removeAll(infoFlow.getChildren());
                     infoFlow.getChildren().add(info);
 
                     socket3.close();

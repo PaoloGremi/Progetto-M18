@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import Interface.searchCard.SearchCardScene;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
@@ -26,9 +27,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class CollectionScene{
-    static boolean flag = true;
-    static File[] files;
-    static ArrayList<File> files1;
     static ScrollPane scroll;
     static Customer cust;
     static String user;
@@ -46,12 +44,11 @@ public class CollectionScene{
 
         cust=customer1;
         user=username;
-        //files = generateFiles(url);
         BorderPane border = new BorderPane();
         Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();
         hbox.setPadding(new Insets(5));
-        hbox.setSpacing(600);
+        hbox.setSpacing(580);
         hbox.setStyle("-fx-background-color: orange");
 
         TextFlow textFlow = new TextFlow();
@@ -59,6 +56,7 @@ public class CollectionScene{
         Text text = new Text(username +"'s collection");
         text.setStyle("-fx-font-weight: bold");
         textFlow.getChildren().add(text);
+        textFlow.setPrefWidth(200);
         hbox.getChildren().add(textFlow);
         if(!searchFlag) {
             hbox.getChildren().add(buttonAdd);
@@ -81,8 +79,6 @@ public class CollectionScene{
 
             pane.setPadding(new Insets(5,0,0,5));
 
-            //File file3 = new File(file2.getDescription().getPicUrl());
-            //Image image3 = new Image(file3.toURI().toString());
             Image image3 = SwingFXUtils.toFXImage(file2.getDescription().getPic(),null);
             ImageView card = new ImageView();
             card.setImage(image3);
@@ -133,12 +129,7 @@ public class CollectionScene{
         }
         buttonAdd.setOnAction(event -> {
 
-            try {
-
-                MainWindow.refreshDynamicContent(refresh());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            MainWindow.refreshDynamicContent(SearchCardScene.display());
 
         });
         scroll.setPadding(new Insets(3));
@@ -146,22 +137,6 @@ public class CollectionScene{
         border.setCenter(scroll);
         border.setTop(hbox);
         return border;
-    }
-
-    static void removeFile(ArrayList<File> files, File file){
-        files.remove(file);
-    }
-
-    static File[] generateFiles(String url) {
-        if(flag) {
-            files = new File(url).listFiles();
-            files1 = new ArrayList<>();
-            flag=false;
-            for(int i=0; i<files.length; i++){
-                files1.add(files[i]);
-            }
-        }
-        return files;
     }
 
     static BorderPane refresh() throws IOException {
