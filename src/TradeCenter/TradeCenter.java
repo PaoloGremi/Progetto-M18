@@ -14,6 +14,7 @@ import TradeCenter.Customers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Class representing the trading center.
@@ -241,6 +242,32 @@ public class TradeCenter {
                 activeTrades.remove(trade);
             }
         }
+    }
+
+    /**
+     * 
+     * @param type
+     * @param hp
+     * @param lev
+     * @param weigth
+     * @param len1
+     * @param len2
+     * @return
+     */
+
+    public HashSet<Description> searchDescrInPokemonDb(String type,int hp,int lev, int weigth,String len1,String len2){
+
+        HashSet<Description> descrMatched=new HashSet<>();
+        return descrMatched;
+    }
+
+    /**
+     *
+     * @return
+     */
+    public HashSet<Description> searchDescrInYugiohDb(){
+        HashSet<Description> descrMatched=new HashSet<>();
+        return descrMatched;
     }
 
     /**
