@@ -42,20 +42,9 @@ public class TradeCenter {
         proxy.populateCatalog("pokemon_card", pokemonCatalog);
         proxy.populateCatalog("yugioh_card", yugiohCatalog);
         this.customers = new HashMap<String, Customer>();
-        populateCustomers();
+        contUsers = proxy.retrieveCustomers(customers);
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
-    }
-
-    /**
-     * a method that take the customers from the database
-     */
-    private void populateCustomers(){
-        contUsers = proxy.customersSize();
-        for(int i = 1; i<=contUsers; i++){
-            Customer customer = proxy.getCostumer(i);
-            customers.put(customer.getId(), customer);
-        }
     }
 
     /**

@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
+import java.util.HashMap;
 
 /**
  * Proxy class for DataBase connection.
@@ -241,11 +242,26 @@ public class DBProxy {
     }
 
     /**
+     * Populates the customers' hashmap
+     * @param customers: hashmap for the customers
+     * @return number of total customers in the table
+     */
+    public int retrieveCustomers(HashMap<String, Customer> customers) {
+        int n = this.customersSize();
+        System.err.println("Retrieving "+n+" customers from DB...");
+        for(int i=1; i<= n; i++) {
+            Customer customer = this.getCostumer(i);
+            customers.put(customer.getId(), customer);
+        }
+        System.err.println(n + " customers retrieved.");
+        return n;
+    }
+
+    /**
      * Calculate customer table size (number of customers saved in the database)
      * @return number of customers
      */
-    public int customersSize() {
-        System.err.println("Getting number of customers...");
+    private int customersSize() {
         connectToDB("CUSTOMERS");
         int result = 0;
 
@@ -299,9 +315,8 @@ public class DBProxy {
      * @param i: customer's index in the database
      * @return Customer object (to be referenced)
      */
-    public Customer getCostumer(int i) {
+    private Customer getCostumer(int i) {
         Object obj = null;
-        System.err.println("Loading customer from DB...");
         connectToDB("CUSTOMERS");
 
         try {
@@ -319,7 +334,6 @@ public class DBProxy {
         } finally {
             disconnectFromDB();
         }
-        System.err.println("Loaded customer.");
         return (Customer)obj;
     }
 
