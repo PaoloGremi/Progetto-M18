@@ -3,6 +3,7 @@ package Interface.searchCard;
 
 import Interface.searchCard.PokemonFilter;
 import Interface.searchCard.YugiohFilter;
+import TradeCenter.Customers.Customer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,7 +23,7 @@ public class SearchCardScene {
     static ComboBox comboCardType;
 
 
-    public static BorderPane display(){
+    public static BorderPane display(Customer customer){
         mainBorder=new BorderPane();
         hBoxTop=new HBox();
         hBoxInner=new HBox();
@@ -32,7 +33,8 @@ public class SearchCardScene {
         mainBorder.setStyle("-fx-background-color: orange");
 
         Button buttSearch=new Button("Search  "+ "\uD83D\uDD0D");
-        Button buttFilter=new Button("Filter");
+        Button buttFilter=new Button("Add Filters");
+        buttFilter.setStyle("-fx-border-color:blue;-fx-border-width:2px;");
         TextField searchText=new TextField("    ");
         /***parte alta*/
         hBoxInner.setPadding(new Insets(3));
@@ -44,7 +46,7 @@ public class SearchCardScene {
         vBoxTop.getChildren().addAll(searchText,hBoxInner);
         hBoxTop.getChildren().addAll(vBoxTop);
         /**action Searc**/
-        buttFilter.setOnAction(new FilterHandler());
+        buttFilter.setOnAction(new FilterHandler(customer));
 
         /**filtri**/
 

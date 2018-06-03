@@ -1,9 +1,6 @@
 package TradeCenter;
 
-import TradeCenter.Card.Card;
-import TradeCenter.Card.CardCatalog;
-import TradeCenter.Card.PokemonDescription;
-import TradeCenter.Card.YuGiOhDescription;
+import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 
 import javax.imageio.ImageIO;
@@ -11,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Proxy class for DataBase connection.
@@ -27,7 +25,7 @@ public class DBProxy {
     private void connectToDB(String database) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "tradecenter", "Password1!");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "root", "federico");
             connection.setAutoCommit(false);
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
@@ -360,5 +358,85 @@ public class DBProxy {
             System.err.println("Customer added to DB.");
         }
     }
+
+    /**
+     *
+     * @param typeInput
+     * @param hpInput
+     * @param lev
+     * @param weigth
+     * @param len1
+     * @param len2
+     * @return
+     */
+    public HashSet<PokemonDescription> getSearchedDescrPokemon(String typeInput,int hpInput,int lev, int weigth,String len1,String len2){
+        HashSet<PokemonDescription> descrCreated=new HashSet<>();
+        System.err.println("Searching a Pokemon description...");
+        connectToDB("CARDS");
+        PreparedStatement ps;
+        ResultSet rs;
+        BufferedImage picture = null;
+        try {
+            ps=connection.prepareStatement("SELECT * FROM pokemon_card WHERE Type=? and Hp=? and length=? and weigth=? and level=?");
+            ps.setString(1,typeInput);
+            ps.setInt(2,hpInput);
+            ps.setString(3,len1+"’"+len2+"’’");
+            ps.setInt(4,weigth);
+            ps.setInt(5,lev);
+            rs=ps.executeQuery();
+
+            String name;
+            String description;
+            int card_id;
+            String type;
+            int hp;
+            int weight;
+            String length;
+            int level;
+
+            while (rs.next()){
+
+                byte[] bytes;
+                Blob blob;
+
+                blob = rs.getBlob("Picture");
+                bytes = blob.getBytes(1, (int)blob.length());
+                picture = ImageIO.read(new ByteArrayInputStream(bytes));
+
+                name = rs.getString("Name");
+                description = rs.getString("Description");
+                if(rs.wasNull()) {
+                    description = "NO DESCRIPTION AVAILABLE";
+                }
+                card_id = rs.getInt("Cards_ID");
+                type = rs.getString("Type");
+                hp = rs.getInt("Hp");
+                if(rs.wasNull()) {
+                    hp = 0;
+                } //could be NULL
+                weight = rs.getInt("Weigth");
+                if(rs.wasNull()) {
+                    weight = 0;
+                } //could be NULL
+                length = rs.getString("Length");
+                if(rs.wasNull()) {
+                    length = "";
+                } //could be NULL
+                level = rs.getInt("Level");
+                if(rs.wasNull()) {
+                    level = 0;
+                } //could be NULL
+
+                descrCreated.add(new PokemonDescription(name, description, picture, card_id, type, hp, weight, length, level));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return descrCreated;
+    }
+
 
 }

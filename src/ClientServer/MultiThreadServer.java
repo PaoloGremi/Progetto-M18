@@ -1,5 +1,6 @@
 package ClientServer;
 
+import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
@@ -10,6 +11,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MultiThreadServer implements Runnable {
     private Socket csocket;
@@ -50,6 +52,10 @@ public class MultiThreadServer implements Runnable {
                     break;
                 //case CREATEOFFER:
                 //case SWITCHCARDS:
+                case CREATEOFFER:
+                    break;
+                case SWITCHCARDS:
+                    break;
                 case VERIFYPASSWORD:
                     boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
@@ -75,6 +81,22 @@ public class MultiThreadServer implements Runnable {
                 case REMOVEWISH:
                     Customer customer2 = tradeCenter.searchCustomer(m.getString1());
                     tradeCenter.removeFromWishList(m.getDescription(),customer2);
+                    csocket.close();
+                    break;
+                case FILTERPOKEMONDESCR:
+                    HashSet<PokemonDescription> descrMatched = tradeCenter.searchDescrInPokemonDb(m.getPokemonAll());
+                    if(descrMatched.size()==1) {
+                        ArrayList<HashMap<Customer, Collection>> list = tradeCenter.searchByDescription(descrMatched.iterator().next());
+                        os.writeObject(list);
+                    }
+                    else{
+                        ArrayList<HashMap<Customer, Collection>> listVuota=new ArrayList<>();
+                        os.writeObject(listVuota);
+                        System.err.println("Piu descrizioni trovate o nessuna, ancora da implementare");}
+                    csocket.close();
+
+
+
                     csocket.close();
                     break;
 

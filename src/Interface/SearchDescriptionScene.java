@@ -36,7 +36,7 @@ public class SearchDescriptionScene {
     static Customer user;
     static ScrollPane scroll;
 
-    static BorderPane display(ArrayList<HashMap<Customer,Collection>> cards, Customer customerThis){
+    public static BorderPane display(ArrayList<HashMap<Customer, Collection>> cards, Customer customerThis){
 
         if(cards.isEmpty()){
             System.out.println("questo motivo");
@@ -55,7 +55,7 @@ public class SearchDescriptionScene {
         hbox.setStyle("-fx-background-color: orange");
 
         bSearch.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(SearchCardScene.display());
+            MainWindow.refreshDynamicContent(SearchCardScene.display(customerThis));
         });
 
         bBack.setOnAction(event -> {

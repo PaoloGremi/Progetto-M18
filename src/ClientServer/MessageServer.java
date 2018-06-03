@@ -1,5 +1,6 @@
 package ClientServer;
 
+import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Offer;
@@ -16,6 +17,8 @@ public class MessageServer implements Serializable {
     private Trade trade;
     private Customer customer;
     private Description description;
+
+    private PokemonAll pokemonAll;
 
     public MessageServer(MessageType message, String string1, String string2) {
         this.message = message;
@@ -52,6 +55,15 @@ public class MessageServer implements Serializable {
         this.message = message;
         this.string1 = username;
         this.description = description;
+    }
+
+    public MessageServer(MessageType message, PokemonAll pokemonAll) {
+        this.message=message;
+        this.pokemonAll=pokemonAll;
+    }
+
+    public PokemonAll getPokemonAll() {
+        return pokemonAll;
     }
 
     public Description getDescription() {

@@ -107,7 +107,7 @@ public class MainWindow {
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchCardScene.display());
+            dynamicContent.getChildren().add(SearchCardScene.display(customer));
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());

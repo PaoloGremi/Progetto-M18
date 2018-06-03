@@ -1,9 +1,12 @@
 package TradeCenter;
 
+import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 
+import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.TradeExceptions.NoSuchDescriptionFoundedException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
@@ -245,19 +248,24 @@ public class TradeCenter {
     }
 
     /**
-     * 
-     * @param type
-     * @param hp
-     * @param lev
-     * @param weigth
-     * @param len1
-     * @param len2
+     *
+     * @param pokemonAll
      * @return
      */
 
-    public HashSet<Description> searchDescrInPokemonDb(String type,int hp,int lev, int weigth,String len1,String len2){
+    public HashSet<PokemonDescription> searchDescrInPokemonDb(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
 
-        HashSet<Description> descrMatched=new HashSet<>();
+        String type=pokemonAll.getType();
+        int hp=pokemonAll.getHp();
+        int lev=pokemonAll.getLev();
+        int weigth=pokemonAll.getWeigth();
+        String len1=pokemonAll.getLen1();
+        String len2=pokemonAll.getLen2();
+        HashSet<PokemonDescription> descrMatched=new HashSet<>();
+        descrMatched=proxy.getSearchedDescrPokemon(type,hp,lev,weigth,len1,len2);
+        /*if(descrMatched.size()==0)
+            throw new NoSuchDescriptionFoundedException();
+            */
         return descrMatched;
     }
 

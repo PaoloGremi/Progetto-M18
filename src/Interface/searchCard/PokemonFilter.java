@@ -81,12 +81,12 @@ public class PokemonFilter {
         levSlider.setBlockIncrement(5);
 
         weightSlider.setMin(0);
-        weightSlider.setMax(518);
+        weightSlider.setMax(100);//518
         weightSlider.setShowTickLabels(true);
         weightSlider.setShowTickMarks(true);
-        weightSlider.setMajorTickUnit(259);
-        weightSlider.setMinorTickCount(12);
-        weightSlider.setBlockIncrement(24);
+        weightSlider.setMajorTickUnit(50);
+        weightSlider.setMinorTickCount(2);
+        weightSlider.setBlockIncrement(5);
 
         Label hpLabel=new Label("--");
         Label levLabel=new Label("--");
@@ -133,5 +133,30 @@ public class PokemonFilter {
         vBoxMain.getChildren().addAll(comboType,hpContainer,levContainer,weigthContainer,lengContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
+    }
+
+
+    public static ComboBox getComboType() {
+        return comboType;
+    }
+
+    public static Slider getHpSlider() {
+        return hpSlider;
+    }
+
+    public static Slider getLevSlider() {
+        return levSlider;
+    }
+
+    public static Slider getWeightSlider() {
+        return weightSlider;
+    }
+
+    public static TextField getTextLen1() {
+        return textLen1;
+    }
+
+    public static TextField getTextLen2() {
+        return textLen2;
     }
 }

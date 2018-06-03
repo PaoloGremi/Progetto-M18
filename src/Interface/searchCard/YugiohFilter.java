@@ -126,4 +126,19 @@ public class YugiohFilter {
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
     }
+    public static ComboBox getComboMonster() {
+        return comboMonster;
+    }
+
+    public static ComboBox getComboType() {
+        return comboType;
+    }
+
+    public static Slider getAtkSlider() {
+        return atkSlider;
+    }
+
+    public static Slider getDefSlider() {
+        return defSlider;
+    }
 }

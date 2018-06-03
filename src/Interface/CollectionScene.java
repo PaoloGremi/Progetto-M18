@@ -129,7 +129,7 @@ public class CollectionScene{
         }
         buttonAdd.setOnAction(event -> {
 
-            MainWindow.refreshDynamicContent(SearchCardScene.display());
+            MainWindow.refreshDynamicContent(SearchCardScene.display(customer1));
 
         });
         scroll.setPadding(new Insets(3));
