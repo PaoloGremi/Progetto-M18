@@ -19,8 +19,7 @@ public class PokemonFilter {
     static VBox hpContainer;
     static VBox levContainer;
     static VBox weigthContainer;
-    static VBox lengContainer;
-    static HBox textContainer;
+    static HBox lengContainer;
     static TextField textLen1;
     static TextField textLen2;
 
@@ -40,8 +39,18 @@ public class PokemonFilter {
         vBoxMain.setSpacing(10);
 
         comboType.setPromptText("Type of Pokèmon");
-        comboType.getItems().addAll("1","2","3");
+        comboType.getItems().addAll("--Type of",
+                "Psychic",
+                "Water",
+                "Fairy",
+                "Fire",
+                "Fightning",
+                "Eletric",
+                "Grass",
+                "TRAINER",
+                "ENERGY"
 
+        );
         //Slider:
         hpContainer.setPadding(new Insets(15));
         hpContainer.setSpacing(7);
@@ -79,14 +88,27 @@ public class PokemonFilter {
         weightSlider.setMinorTickCount(12);
         weightSlider.setBlockIncrement(24);
 
-        hpContainer.getChildren().addAll(new Label("HP: "), hpSlider);
-        levContainer.getChildren().addAll(new Label("Level: "), levSlider);
-        weigthContainer.getChildren().addAll(new Label("Weigth: "), weightSlider);
+        Label hpLabel=new Label("--");
+        Label levLabel=new Label("--");
+        Label weightLabel=new Label("--");
+        hpContainer.getChildren().addAll(new Label("HP: "), hpSlider,hpLabel);
+        levContainer.getChildren().addAll(new Label("Level: "), levSlider,levLabel);
+        weigthContainer.getChildren().addAll(new Label("Weigth: "), weightSlider,weightLabel);
 
+        //Action Slider
+        hpSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            hpLabel.setText(Integer.toString(newValue.intValue()   ));
+        });
+        levSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            levLabel.setText(Integer.toString(newValue.intValue()   ));
+        });
+        weightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            weightLabel.setText(Integer.toString(newValue.intValue()   ));
+        });
         //Length:
 
-        lengContainer=new VBox();
-        textContainer=new HBox();
+
+        lengContainer= new HBox();
         textLen1=new TextField();
         textLen2=new TextField();
         textLen1.setPrefSize(0.8,0.8); //capire come settarli giusti
@@ -98,12 +120,10 @@ public class PokemonFilter {
         lengContainer.setPadding(new Insets(15));
         lengContainer.setSpacing(7);
         lengContainer.setStyle("-fx-background-color: orange");
-        textContainer.setPadding(new Insets(5));
-        textContainer.setSpacing(5);
 
 
-        textContainer.getChildren().addAll(textLen1,new Label(" ' "),textLen2,new Label(" '' "));
-        lengContainer.getChildren().addAll(new Label("Length:"), textContainer);
+
+        lengContainer.getChildren().addAll(new Label("Length:"),textLen1,new Label(" ' "),textLen2,new Label(" '' "));
 
 
 

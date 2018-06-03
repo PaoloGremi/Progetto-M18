@@ -19,7 +19,6 @@ public class SearchCardScene {
     static HBox hBoxInner;
     //filtri
     static VBox vBoxFilter;
-    static HBox hBoxFilterTop;
     static ComboBox comboCardType;
 
 
@@ -44,6 +43,8 @@ public class SearchCardScene {
 
         vBoxTop.getChildren().addAll(searchText,hBoxInner);
         hBoxTop.getChildren().addAll(vBoxTop);
+        /**action Searc**/
+        buttFilter.setOnAction(new FilterHandler());
 
         /**filtri**/
 

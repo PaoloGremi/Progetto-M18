@@ -28,8 +28,43 @@ public class YugiohFilter {
         comboType.setPromptText("Type of Card");
 
 
-        comboMonster.getItems().addAll("1","2","3","4");
-        comboType.getItems().addAll("1","2","3","4");
+        comboMonster.getItems().addAll("--Type of Monster--",
+                "1,Aqua",
+                "2,Beast",
+                "3,Beast-Warrior",
+                "4,Dinosaur",
+                "5,Dragon",
+                "6,Fairy",
+                "7,Fiend",
+                "8,Fish",
+                "9,Insect",
+                "10,Machine",
+                "11,Plant",
+                "12,Pyro",
+                "13,Reptile",
+                "14,Rock",
+                "15,Sea Serpent",
+                "16,Spellcaster",
+                "17,Thunder",
+                "18,Warrior",
+                "19,Winged Beast",
+                "20,Zombie",
+                "21,Psychic");
+        comboType.getItems().addAll("--Type of Cards--",
+                "1,Normal monster",
+                "2,Effect monster",
+                "3,Fusion monster",
+                "4,Ritual monster",
+                "5,Normal spell",
+                "6,Continuous spell",
+                "7,Equip spell",
+                "8,Field spell",
+                "9,Quick-Play spell",
+                "10,Ritual spell",
+                "11,Normal trap",
+                "12,Continuous trap",
+                "13,Counter trap",
+                "14,Synchro monster");
         //ATK e DEF
         atkContainer=new VBox();
         defContainer=new VBox();
@@ -61,26 +96,33 @@ public class YugiohFilter {
         defSlider.setMinorTickCount(250);
         defSlider.setBlockIncrement(500);
 
-        Label atkLabel=new Label("Non modificato");
+        Label atkLabel=new Label("--");
+        Label defLabel=new Label("--");
         atkContainer.getChildren().addAll(new Label("ATK:"),atkSlider,atkLabel);
-        defContainer.getChildren().addAll(new Label("DEF:") ,defSlider);
+        defContainer.getChildren().addAll(new Label("DEF:") ,defSlider,defLabel);
+
+
+
 
         atkSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            double valueAtk = 0;
             atkLabel.setText(Integer.toString(newValue.intValue()   ));
+            valueAtk=newValue.doubleValue();
 
         });
-        /*double valatk;
-        String valAtk=new String();
-        if(atkSlider.valueCh){
-            atkContainer.getChildren().remove(atkPrint);
-            valatk=atkSlider.getValue();
-            valAtk=Double.toString(valatk);
-            atkPrint.setText(valAtk);
-            atkContainer.getChildren().add(atkPrint);
-        }*/
+        /*
+        if(atkSlider.is)
+        Label valueLabel=new Label("value atk current?");
+        valueLabel.setText(Integer.toString((int) valueAtk));*/
+
+        defSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            defLabel.setText(Integer.toString(newValue.intValue()   ));
+
+        });
 
 
-        vBoxMain.getChildren().addAll(comboMonster,comboType,atkContainer,defContainer);
+
+        vBoxMain.getChildren().addAll(comboType,comboMonster,atkContainer,defContainer/*,valueLabel*/);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
     }
