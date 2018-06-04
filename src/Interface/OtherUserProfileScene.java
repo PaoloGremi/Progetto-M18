@@ -23,6 +23,7 @@ public class OtherUserProfileScene {
     static StackPane cardList;
     static BorderPane borderPane;
     static ScrollPane cardGrid;
+    static HBox buttons;
     static HBox hBox;
     static boolean watchingWishlist = false;
 
@@ -34,15 +35,17 @@ public class OtherUserProfileScene {
         borderPane = new BorderPane();
         cardList = new StackPane();
 
-        hBox = new HBox();
-        hBox.setPadding(new Insets(15, 20, 10, 20));
-        hBox.setSpacing(10);
-        hBox.setStyle("-fx-background-color: #aa12ff");
+        buttons = new HBox();
+        buttons.setPadding(new Insets(15, 20, 10, 20));
+        buttons.setSpacing(10);
+        buttons.setStyle("-fx-background-color: #aa12ff");
         Button collection = new Button("Collection");
         Button wishlist = new Button("Wishlist");
         Button trade = new Button("Trade");
+        buttons.getChildren().addAll(collection, wishlist, trade);
         Text title = new Text(otherUser.getUsername() + "'s" + displayed);
-        hBox.getChildren().addAll(collection, wishlist, trade, title);
+        hBox = new HBox();
+        hBox.getChildren().addAll(buttons, title);
 
         borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
@@ -62,8 +65,6 @@ public class OtherUserProfileScene {
             borderPane.setCenter(cardList);
             MainWindow.refreshDynamicContent(borderPane);
         });
-        //todo mettere listener sul bottone
-
         trade.setOnAction(event -> {
             MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, otherCustomer));// todo mettere i parametri, della fuznione
         });
