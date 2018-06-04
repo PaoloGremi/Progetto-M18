@@ -39,9 +39,14 @@ public class MultiThreadServer implements Runnable {
 
             switch (m.getMessage()){
                 case ADDCUSTOMER:
-                    tradeCenter.addCustomer(m.getString1(), m.getString2());
-                    Customer c = tradeCenter.searchCustomer(m.getString1());
-                    os.writeObject(c);
+                    try {
+                        tradeCenter.addCustomer(m.getString1(), m.getString2());
+                        Customer c = tradeCenter.searchCustomer(m.getString1());
+                        os.writeObject(c);
+                    }
+                    catch (CheckPasswordConditionsException e){
+                        os.writeObject(e);
+                    }
                     csocket.close();
                     break;
                 case SEARCHCUSTOMER:
