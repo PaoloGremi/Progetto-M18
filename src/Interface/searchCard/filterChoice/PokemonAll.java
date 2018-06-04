@@ -20,9 +20,9 @@ public class PokemonAll implements Serializable {
         this.hp = hp;
         this.lev = lev;
         this.weigth = weigth;
-        this.len1 = len1;
-        this.len2 = len2;
-        //todo controllo se 0 diventar null
+        this.len1 = addCaseNull(len1);
+        this.len2 = addCaseNull(len2);
+
     }
 
     public String getType() {
@@ -45,6 +45,17 @@ public class PokemonAll implements Serializable {
         return len1;
     }
 
+    /**
+     * todo ggiungi
+     * @param len
+     * @return
+     */
+    public String addCaseNull(String len){
+        if(len.equals(""))
+            return null;
+        else return len;
+
+    }
     public String getLen2() {
         return len2;
     }

@@ -1,13 +1,14 @@
 package Interface.searchCard;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+
 
 public class PokemonFilter {
     static Pane mainPane;
@@ -22,6 +23,7 @@ public class PokemonFilter {
     static HBox lengContainer;
     static TextField textLen1;
     static TextField textLen2;
+    static HBox checkContainer;
 
     static Pane display(){
         mainPane=new Pane();
@@ -33,13 +35,13 @@ public class PokemonFilter {
         hpContainer=new VBox();
         levContainer=new VBox();
         weigthContainer=new VBox();
-
+        checkContainer=new HBox();
 
         vBoxMain.setPadding(new Insets(15,0,5,0));
         vBoxMain.setSpacing(10);
 
         comboType.setPromptText("Type of Pokèmon");
-        comboType.getItems().addAll("--Type of",
+        comboType.getItems().addAll("--Type of Card--",
                 "Psychic",
                 "Water",
                 "Fairy",
@@ -49,8 +51,8 @@ public class PokemonFilter {
                 "Grass",
                 "TRAINER",
                 "ENERGY"
-
         );
+
         //Slider:
         hpContainer.setPadding(new Insets(15));
         hpContainer.setSpacing(7);
@@ -63,6 +65,7 @@ public class PokemonFilter {
         weigthContainer.setPadding(new Insets(15));
         weigthContainer.setSpacing(7);
         weigthContainer.setStyle("-fx-background-color: orange");
+
 
         hpSlider.setMin(0);
         hpSlider.setMax(200);
@@ -95,6 +98,59 @@ public class PokemonFilter {
         levContainer.getChildren().addAll(new Label("Level: "), levSlider,levLabel);
         weigthContainer.getChildren().addAll(new Label("Weigth: "), weightSlider,weightLabel);
 
+        //Length:
+        lengContainer= new HBox();
+        textLen1=new TextField();
+        textLen2=new TextField();
+        textLen1.setPrefSize(0.8,0.8); //capire come settarli giusti
+        textLen2.setPrefSize(5,3);
+        lengContainer.setPadding(new Insets(15));
+        lengContainer.setSpacing(7);
+        lengContainer.setStyle("-fx-background-color: orange");
+
+
+
+        lengContainer.getChildren().addAll(new Label("Length:"),textLen1,new Label(" ' "),textLen2,new Label(" '' "));
+
+        //check boxes
+        CheckBox cbHp=new CheckBox("HP");
+        CheckBox cbLev=new CheckBox("Level");
+        CheckBox cbWeigth=new CheckBox("Weight");
+        CheckBox cbLenght=new CheckBox("Lenght");
+        checkContainer.getChildren().addAll(cbHp,cbLev,cbWeigth,cbLenght);
+
+
+        //Action check
+        CheckBox cbList[]={cbHp,cbLev,cbWeigth,cbLenght};
+        Pane container[]={hpContainer,levContainer,weigthContainer,lengContainer};
+        for (int i=0;i<cbList.length;i++) {
+            Pane containerCurr=container[i];
+            cbList[i].selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(newValue){
+                        vBoxMain.getChildren().add(containerCurr);
+                    }
+                    else if (vBoxMain.getChildren().contains(containerCurr)){
+                            vBoxMain.getChildren().remove(containerCurr);
+                        }
+                    }
+            });
+        }
+        //Action Combo
+        comboType.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(((String)newValue).equals("TRAINER")||((String)newValue).equals("ENERGY")){
+                if(vBoxMain.getChildren().contains(checkContainer)) {
+                    int lengthMain=vBoxMain.getChildren().size();
+                    vBoxMain.getChildren().remove(1,lengthMain);
+                    setChecksBoxFalse(cbList);
+                }
+            }
+            else if(vBoxMain.getChildren().contains(checkContainer)==false){
+                vBoxMain.getChildren().add(checkContainer);
+
+            }
+        });
         //Action Slider
         hpSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             hpLabel.setText(Integer.toString(newValue.intValue()   ));
@@ -105,34 +161,17 @@ public class PokemonFilter {
         weightSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             weightLabel.setText(Integer.toString(newValue.intValue()   ));
         });
-        //Length:
 
 
-        lengContainer= new HBox();
-        textLen1=new TextField();
-        textLen2=new TextField();
-        textLen1.setPrefSize(0.8,0.8); //capire come settarli giusti
-        textLen2.setPrefSize(5,3);
-        /*.setMinSize(7,7);
-        textLen2.setMinSize(7,7);
-        textLen1.setMaxSize(10,10);
-        textLen2.setMaxSize(10,10);*/
-        lengContainer.setPadding(new Insets(15));
-        lengContainer.setSpacing(7);
-        lengContainer.setStyle("-fx-background-color: orange");
-
-
-
-        lengContainer.getChildren().addAll(new Label("Length:"),textLen1,new Label(" ' "),textLen2,new Label(" '' "));
-
-
-
-
-
-
-        vBoxMain.getChildren().addAll(comboType,hpContainer,levContainer,weigthContainer,lengContainer);
+        vBoxMain.getChildren().addAll(comboType,checkContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
+    }
+
+    public static void setChecksBoxFalse(CheckBox[] list) {
+        for (CheckBox cb:list) {
+            cb.setSelected(false);
+        }
     }
 
 

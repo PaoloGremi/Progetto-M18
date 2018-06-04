@@ -46,13 +46,14 @@ public class FilterHandler implements EventHandler<ActionEvent> {
             switch ((String)((ComboBox)vBoxFilterLeft.getChildren().get(0)).getValue()){
 
                 case "Pokèmon":
+
                     String comboTypePo= (String) PokemonFilter.getComboType().getValue();
                     int hpValue=(int) PokemonFilter.getHpSlider().getValue();
                     int levValue=(int)PokemonFilter.getLevSlider().getValue();
                     int weightValue=(int)PokemonFilter.getWeightSlider().getValue();
-                    String len1=PokemonFilter.getTextLen1().getText();
+                    String len1=PokemonFilter.getTextLen1().getText(); //TODO se non digitato niente non è null.. faccio controllo nell'oggeto PokemonAll
                     String len2=PokemonFilter.getTextLen2().getText();
-                    //mainBorder.setCenter(new Label(comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
+                    mainBorder.setBottom(new Label(comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
                     Socket socket;
                     try {
                         socket = new Socket("localhost", 8889);
