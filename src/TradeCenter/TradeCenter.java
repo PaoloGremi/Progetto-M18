@@ -55,10 +55,10 @@ public class TradeCenter {
      * Create an account for a new user
      */
     public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
-        String id = customerID();
         if(usernameTaken(username)){
             throw new UsernameAlreadyTakenException();
         }else{
+            String id = customerID();
             Customer temporaryCustomer = new Customer(id, username, password);
             customers.put(id, temporaryCustomer);
             proxy.insertCustomer(temporaryCustomer);
