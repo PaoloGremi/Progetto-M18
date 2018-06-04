@@ -3,6 +3,7 @@ import ClientServer.MessageType;
 import Interface.MainWindow;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
+import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -102,14 +103,13 @@ public class LogIn extends Application{
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
                                 Object object = is.readObject();
-                                if (object instanceof CheckPasswordConditionsException) {
-                                    throw new  CheckPasswordConditionsException();
-                                }
+                                if (object instanceof CheckPasswordConditionsException) throw new  CheckPasswordConditionsException();
+                                else if(object instanceof UsernameAlreadyTakenException) throw new UsernameAlreadyTakenException();
                                 Customer returnMessage = (Customer) object ;
                                 MainWindow.display(returnMessage);
                                 socket2.close();
 
-                            } catch (CheckPasswordConditionsException e) {
+                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e) {
                                 Text errorText = new Text(e.getMessage());
 
                                 TextFlow error = new TextFlow();
@@ -120,7 +120,8 @@ public class LogIn extends Application{
                                 stack.getChildren().add(error);
                                 socket2.close();
 
-                            } catch (IOException e) {
+                            }
+                            catch (IOException e) {
                                 e.printStackTrace();
                             } catch (ClassNotFoundException e) {
                                 e.printStackTrace();
