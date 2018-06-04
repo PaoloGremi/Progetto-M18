@@ -135,7 +135,10 @@ public class LogIn extends Application{
                         TextFlow error = new TextFlow();
                         error.setPadding(new Insets(0,5,5,5));
 
+                        error.setPadding(new Insets(0,5,5,5));
+                        error.setTextAlignment(TextAlignment.CENTER);
                         error.getChildren().add(errorTextMatch);
+
                         stack.getChildren().removeAll(stack.getChildren());
                         stack.getChildren().add(error);
                     }

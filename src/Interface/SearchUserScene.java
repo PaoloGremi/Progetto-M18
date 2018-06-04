@@ -6,9 +6,11 @@ import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,8 +24,11 @@ public class SearchUserScene {
     static BorderPane scene;
     static TextField searchString;
     static Button search;
-    static FlowPane results;
+    static VBox results;
     static ScrollPane resultsArea;
+    static FlowPane flow;
+    static Pane pane;
+
 
     static Customer myProfile;
 
@@ -33,11 +38,18 @@ public class SearchUserScene {
         searchString = new TextField();
         searchString.setPrefWidth(800);
         search = new Button("Search");
-        results = new FlowPane();
+        results = new VBox();
         resultsArea = new ScrollPane();
+        flow = new FlowPane();
+        pane = new Pane();
 
+        flow.setStyle("-fx-background-color: #beff8e;");
+        results.setStyle("-fx-background-color: green;");
+        pane.setStyle("-fx-background-color: #beff8e;");
 
         search.setOnAction(event -> {
+            int count = 1;
+            results.getChildren().removeAll(results.getChildren());
             String searchText = searchString.getText();
             if(searchText == null) searchText = "";     //handling null string
 
@@ -50,7 +62,25 @@ public class SearchUserScene {
                 socket.close();
                 if(users != null){
                     for(Customer customer : users){
-                        Label user = new Label(customer.getUsername());
+                        TextField user = new TextField();
+                        HBox hBox = new HBox();
+                        //Text useraname = new Text();
+                        if(count % 2 == 0){
+                            //useraname.setText(customer.getUsername());
+                            user.setText(customer.getUsername());
+                            user.setStyle("-fx-background-color: DAE6A2;");
+                            hBox.getChildren().add(user);
+                            hBox.setStyle("-fx-background-color: DAE6A2;");
+                            count++;
+                        }
+                        else {
+                            user.setText(customer.getUsername());
+                            user.setStyle("-fx-background-color: orange;");
+                            hBox.getChildren().add(user);
+                            hBox.setStyle("-fx-background-color: orange;");
+                            count++;
+                        }
+
 
                         EventHandler<MouseEvent> eventHandlerBox =
                                 new EventHandler<javafx.scene.input.MouseEvent>() {
@@ -62,10 +92,23 @@ public class SearchUserScene {
                                 };
 
                         user.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
-
-                        results.getChildren().add(user);
+                        user.setAlignment(Pos.CENTER);
+                        user.setPrefSize(100,10);
+                        //hBox.setFillHeight(true);
+                        hBox.setPadding(new Insets(5,400,5,397));
+                        results.getChildren().add(hBox);
                     }
-                    resultsArea.setContent(results);
+                    results.setAlignment(Pos.CENTER);
+                    results.setPadding(new Insets(5));
+                    results.setFillWidth(true);
+                    flow.getChildren().removeAll(flow.getChildren());
+                    flow.getChildren().add(results);
+                    resultsArea.setFitToHeight(true);
+                    resultsArea.setFitToWidth(true);
+                    resultsArea.setPadding(new Insets(5));
+                    resultsArea.setStyle("-fx-background-color: #beff8e;");
+                    resultsArea.setContent(flow);
+                    scene.setCenter(flow);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,14 +116,14 @@ public class SearchUserScene {
                 e.printStackTrace();
             }
             });
+
         HBox topScene = new HBox();
         topScene.setStyle("-fx-background-color: #aa12ff");
         topScene.setSpacing(5.0);
         topScene.setPadding(new Insets(5));
         topScene.getChildren().addAll(searchString, search);
-
         scene.setTop(topScene);
-        scene.setCenter(resultsArea);
+        scene.setCenter(pane);
         return scene;
     }
 

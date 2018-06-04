@@ -108,9 +108,10 @@ public class TradeCenter {
     //todo add javadocs
     public ArrayList<Customer> searchUsers(String username){
         ArrayList<Customer> results = new ArrayList<>();
+        String usernameLow = username.toLowerCase();
         for(String key: customers.keySet()){
-            String name = customers.get(key).getUsername();
-            if(possibleSearch(name)){
+            String name = customers.get(key).getUsername().toLowerCase();
+            if(name.contains(usernameLow)){
                 results.add(customers.get(key));
             }
         }
@@ -140,9 +141,9 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    private boolean possibleSearch(String search){
-        return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
-    }
+    //private boolean possibleSearch(String search){
+      ///  return true;        //todo mettere ricerca vera , per ora fa vedere il nome di tutti  i customer
+    //}
 
     /**
      * Method that search if the card is in the database or not
