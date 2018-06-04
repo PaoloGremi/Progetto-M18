@@ -25,7 +25,7 @@ public class DBProxy {
     private void connectToDB(String database) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "root", "federico");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "tradecenter", "Password1!");
             connection.setAutoCommit(false);
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getMessage());

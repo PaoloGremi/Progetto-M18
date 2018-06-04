@@ -11,9 +11,9 @@ import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
 import TradeCenter.Card.Description;
+import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
-
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,10 +55,30 @@ public class TradeCenter {
      * Create an account for a new user
      */
     public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
-        String id = customerID();
-        Customer temporaryCustomer = new Customer(id, username, password);
-        customers.put(id, temporaryCustomer);
-        proxy.insertCustomer(temporaryCustomer);
+        if(usernameTaken(username)){
+            throw new UsernameAlreadyTakenException();
+        }else{
+            String id = customerID();
+            Customer temporaryCustomer = new Customer(id, username, password);
+            customers.put(id, temporaryCustomer);
+            proxy.insertCustomer(temporaryCustomer);
+        }
+    }
+
+    /**
+     * A method that check if the username is already in use
+     *
+     * @param username
+     * @return a boolean value
+     */
+    private boolean usernameTaken(String username){
+        for(String key : customers.keySet()){
+            if(customers.get(key).getUsername().equals(username)){
+                return true;
+            }
+
+        }
+        return false;
     }
 
     /**
@@ -285,13 +305,5 @@ public class TradeCenter {
         for (Trade trade : doneTrades){
             System.out.println(trade);
         }
-    }
-
-    /**
-     * A method that return alla the customers
-     * @return the customers map
-     */
-    public HashMap<String, Customer> getCustomers() {
-        return customers;
     }
 }

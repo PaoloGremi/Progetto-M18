@@ -3,6 +3,7 @@ import ClientServer.MessageType;
 import Interface.MainWindow;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
+import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -31,6 +32,7 @@ public class LogIn extends Application{
     Text info;
     BorderPane border;
     StackPane stack;
+    Scene scene;
 
 
     public static void main(String[] args) {
@@ -93,16 +95,21 @@ public class LogIn extends Application{
                 try {
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
+                            Socket socket2;
+                            socket2 = new Socket("localhost", 8889);
                             try {
-                                Socket socket2 = new Socket("localhost", 8889);
+
                                 ObjectOutputStream os1 = new ObjectOutputStream(socket2.getOutputStream());
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
-                                Customer returnMessage = (Customer) is.readObject();
+                                Object object = is.readObject();
+                                if (object instanceof CheckPasswordConditionsException) throw new  CheckPasswordConditionsException();
+                                else if(object instanceof UsernameAlreadyTakenException) throw new UsernameAlreadyTakenException();
+                                Customer returnMessage = (Customer) object ;
                                 MainWindow.display(returnMessage);
                                 socket2.close();
 
-                            } catch (CheckPasswordConditionsException e) {
+                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e) {
                                 Text errorText = new Text(e.getMessage());
 
                                 TextFlow error = new TextFlow();
@@ -111,12 +118,15 @@ public class LogIn extends Application{
                                 error.getChildren().add(errorText);
                                 stack.getChildren().removeAll(stack.getChildren());
                                 stack.getChildren().add(error);
+                                socket2.close();
 
-                            } catch (IOException e) {
+                            }
+                            catch (IOException e) {
                                 e.printStackTrace();
                             } catch (ClassNotFoundException e) {
                                 e.printStackTrace();
                             }
+
                         }
                     }
                     else {
@@ -136,7 +146,21 @@ public class LogIn extends Application{
                 }
             });
 
-            logIn_Register.getChildren().add(confirm);
+            Button goBack = new Button("Log In");
+
+            goBack.setOnAction(event1 -> {
+                credentialBox.getChildren().removeAll(credentialBox.getChildren());
+                stack.getChildren().removeAll(stack.getChildren());
+                logIn_Register.getChildren().removeAll(logIn_Register.getChildren());
+                credentialBox.getChildren().addAll(credFlow, username, password,infoFlow);
+                logIn_Register.getChildren().addAll(logIn, signUp);
+            });
+
+            HBox signBox = new HBox();
+            signBox.setSpacing(20);
+            signBox.getChildren().addAll(confirm, goBack);
+
+            logIn_Register.getChildren().add(signBox);
             logIn_Register.getChildren().removeAll(signUp, logIn);
         });
         logIn.setOnAction(event -> {
@@ -148,9 +172,6 @@ public class LogIn extends Application{
                 System.out.println("connected");
                 if((boolean) is.readObject()){
                     System.out.println("closed");
-
-                    //os.reset();
-                    //socket.close();
                     socket3.close();
                     Socket socket1 = new Socket("localhost", 8889);
                     ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
@@ -185,7 +206,7 @@ public class LogIn extends Application{
         BorderPane layout = new BorderPane();
         layout.setCenter(border);
         layout.setBottom(logIn_Register);
-        Scene scene = new Scene(layout, 300, 335);
+        scene = new Scene(layout, 300, 335);
         window.setScene(scene);
         window.show();
     }

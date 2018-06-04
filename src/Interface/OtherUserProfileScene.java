@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 
 public class OtherUserProfileScene {
@@ -22,25 +23,29 @@ public class OtherUserProfileScene {
     static StackPane cardList;
     static BorderPane borderPane;
     static ScrollPane cardGrid;
+    static HBox buttons;
     static HBox hBox;
     static boolean watchingWishlist = false;
 
     static Customer otherCustomer;
-
+    static String displayed = "Collection";
 
     static BorderPane display(Customer myCustomer, Customer otherUser) {
         final Customer otherCustomer = otherUser;
         borderPane = new BorderPane();
         cardList = new StackPane();
 
-        hBox = new HBox();
-        hBox.setPadding(new Insets(15, 20, 10, 20));
-        hBox.setSpacing(10);
-        hBox.setStyle("-fx-background-color: #aa12ff");
+        buttons = new HBox();
+        buttons.setPadding(new Insets(15, 20, 10, 20));
+        buttons.setSpacing(10);
+        buttons.setStyle("-fx-background-color: #aa12ff");
         Button collection = new Button("Collection");
         Button wishlist = new Button("Wishlist");
         Button trade = new Button("Trade");
-        hBox.getChildren().addAll(collection, wishlist, trade);
+        buttons.getChildren().addAll(collection, wishlist, trade);
+        Text title = new Text(otherUser.getUsername() + "'s" + displayed);
+        hBox = new HBox();
+        hBox.getChildren().addAll(buttons, title);
 
         borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
@@ -60,8 +65,6 @@ public class OtherUserProfileScene {
             borderPane.setCenter(cardList);
             MainWindow.refreshDynamicContent(borderPane);
         });
-        //todo mettere listener sul bottone
-
         trade.setOnAction(event -> {
             MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, otherCustomer));// todo mettere i parametri, della fuznione
         });
@@ -139,8 +142,10 @@ public class OtherUserProfileScene {
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){
             //return to whishlist
+            displayed = "Wishlist";
             cardList.getChildren().add(displayWishlist(otherCustomer));
         }else{
+            displayed = "Collection";
             cardList.getChildren().add(displayCollection(otherCustomer));
         }
         borderPane.setCenter(cardList);

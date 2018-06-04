@@ -4,6 +4,7 @@ import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
+import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
 
 import java.io.*;
@@ -30,7 +31,7 @@ public class MultiThreadServer implements Runnable {
             new Thread(new MultiThreadServer(sock, tradeCenter)).start();
         }
     }
-    public void run() throws CheckPasswordConditionsException {
+    public void run() throws CheckPasswordConditionsException, UsernameAlreadyTakenException {
         try {
             ObjectInputStream in = new ObjectInputStream(csocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(csocket.getOutputStream());
@@ -39,9 +40,14 @@ public class MultiThreadServer implements Runnable {
 
             switch (m.getMessage()){
                 case ADDCUSTOMER:
-                    tradeCenter.addCustomer(m.getString1(), m.getString2());
-                    Customer c = tradeCenter.searchCustomer(m.getString1());
-                    os.writeObject(c);
+                    try {
+                        tradeCenter.addCustomer(m.getString1(), m.getString2());
+                        Customer c = tradeCenter.searchCustomer(m.getString1());
+                        os.writeObject(c);
+                    }
+                    catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e){
+                        os.writeObject(e);
+                    }
                     csocket.close();
                     break;
                 case SEARCHCUSTOMER:
