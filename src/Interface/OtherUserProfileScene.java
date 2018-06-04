@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 
 
 public class OtherUserProfileScene {
@@ -26,7 +27,7 @@ public class OtherUserProfileScene {
     static boolean watchingWishlist = false;
 
     static Customer otherCustomer;
-
+    static String displayed = "Collection";
 
     static BorderPane display(Customer myCustomer, Customer otherUser) {
         final Customer otherCustomer = otherUser;
@@ -40,7 +41,8 @@ public class OtherUserProfileScene {
         Button collection = new Button("Collection");
         Button wishlist = new Button("Wishlist");
         Button trade = new Button("Trade");
-        hBox.getChildren().addAll(collection, wishlist, trade);
+        Text title = new Text(otherUser.getUsername() + "'s" + displayed);
+        hBox.getChildren().addAll(collection, wishlist, trade, title);
 
         borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
@@ -139,8 +141,10 @@ public class OtherUserProfileScene {
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){
             //return to whishlist
+            displayed = "Wishlist";
             cardList.getChildren().add(displayWishlist(otherCustomer));
         }else{
+            displayed = "Collection";
             cardList.getChildren().add(displayCollection(otherCustomer));
         }
         borderPane.setCenter(cardList);
