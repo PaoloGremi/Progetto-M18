@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class PokemonDescription extends Description {
 
+    private static final long serialVersionUID = 411009573434955301L;
 
     private int cardID;
     private String type;

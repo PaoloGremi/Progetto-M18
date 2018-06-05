@@ -7,6 +7,8 @@ import java.util.HashSet;
 
 public abstract class Description implements Serializable {
 
+    private static final long serialVersionUID = -7217318823889023675L;
+
     /**
      * Class Description
      * @param name: Descr's name
