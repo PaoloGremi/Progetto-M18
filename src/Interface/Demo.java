@@ -38,10 +38,15 @@ public  class Demo {
                 case"searchDescription":{
                     try {
                         MainWindow.refreshDynamicContent(SearchDescriptionScene.refresh());
+                        break;
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
+
                 }
+                case "other":
+                    MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
+                    break;
             }
         });
 
