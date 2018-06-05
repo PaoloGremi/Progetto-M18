@@ -57,7 +57,7 @@ public class SearchUserScene {
                 Socket socket = new Socket("localhost", 8889);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText));
+                outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText, mySelf));
                 ArrayList<Customer> users = (ArrayList<Customer>)(inputStream.readObject());
                 socket.close();
                 if(users != null){

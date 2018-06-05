@@ -74,7 +74,7 @@ public class MultiThreadServer implements Runnable {
                     break;
 
                 case SEARCHUSER:
-                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1());
+                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer().getUsername());
                     os.writeObject(users);
                     csocket.close();
                     break;

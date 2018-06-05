@@ -106,12 +106,12 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    public ArrayList<Customer> searchUsers(String username){
+    public ArrayList<Customer> searchUsers(String username, String myUsername){
         ArrayList<Customer> results = new ArrayList<>();
         String usernameLow = username.toLowerCase();
         for(String key: customers.keySet()){
             String name = customers.get(key).getUsername().toLowerCase();
-            if(name.contains(usernameLow)){
+            if(name.contains(usernameLow) && !customers.get(key).getUsername().equals(myUsername)){
                 results.add(customers.get(key));
             }
         }
