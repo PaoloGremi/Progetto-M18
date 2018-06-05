@@ -11,6 +11,8 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -62,19 +64,21 @@ public class SearchUserScene {
                 socket.close();
                 if(users != null){
                     for(Customer customer : users){
-                        TextField user = new TextField();
+                        TextFlow user = new TextFlow();
                         HBox hBox = new HBox();
-                        //Text useraname = new Text();
+                        Text username = new Text();
                         if(count % 2 == 0){
                             //useraname.setText(customer.getUsername());
-                            user.setText(customer.getUsername());
+                            username.setText(customer.getUsername());
+                            user.getChildren().add(username);
                             user.setStyle("-fx-background-color: DAE6A2;");
                             hBox.getChildren().add(user);
                             hBox.setStyle("-fx-background-color: DAE6A2;");
                             count++;
                         }
                         else {
-                            user.setText(customer.getUsername());
+                            username.setText(customer.getUsername());
+                            user.getChildren().add(username);
                             user.setStyle("-fx-background-color: orange;");
                             hBox.getChildren().add(user);
                             hBox.setStyle("-fx-background-color: orange;");
@@ -92,7 +96,7 @@ public class SearchUserScene {
                                 };
 
                         user.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
-                        user.setAlignment(Pos.CENTER);
+                        user.setTextAlignment(TextAlignment.CENTER);
                         user.setPrefSize(100,10);
                         //hBox.setFillHeight(true);
                         hBox.setPadding(new Insets(5,400,5,397));
