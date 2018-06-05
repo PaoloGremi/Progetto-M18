@@ -11,7 +11,6 @@ import TradeCenter.Exceptions.UserExceptions.NoTradesExeption;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Customer implements Serializable {
 
@@ -46,11 +45,24 @@ public class Customer implements Serializable {
      * Method to add a Card to the Customer's collection.
      *
      * @param card New Card to add
-     * @return boolean to check wheter or not the method ran fine
      */
     public void addCard(Card card) {
         try {
             collection.addCardToCollection(card);
+        } catch (AddCardException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
+
+    /**
+     * Method to add a Card to the Customer's wishlist.
+     *
+     * @param card New Card to add
+     */
+    public void addCardToWishlist(Description card) {
+        try {
+            wishList.add(card);
         } catch (AddCardException e) {
             System.err.println(e.getMessage());
         }
@@ -68,22 +80,21 @@ public class Customer implements Serializable {
         } catch (RemoveCardException e) {
             System.err.println(e.getMessage());
         }
-
-
     }
 
     /**
-     * The customer create a new card that wasn't in the system before.
+     * Remove a Card from the wishlist of the Customers who calls this method.
      *
-     * @param description Description of the new card
-     * @param id          ID of the new card
+     * @param card Card to remove
      */
-    public void createCard(Description description, int id) {
-        Card newCard = new Card(id, description);
-
-        addCard(newCard);
-
+    public void removeCardFromWishlist(Card card) {
+        try {
+            wishList.remove(card);
+        } catch (RemoveCardException e) {
+            System.err.println(e.getMessage());
+        }
     }
+
 
     /**
      * Search a Card in the collections of the customers by tags.
@@ -203,7 +214,6 @@ public class Customer implements Serializable {
         }
 
         return null;
-
     }
 
     /**
@@ -225,11 +235,18 @@ public class Customer implements Serializable {
         return tradeList;
     }
 
-
+    /**
+     *
+     * @return the collection of the customer
+     */
     public Collection getCollection() {
         return collection;
     }
 
+    /**
+     *
+     * @return the wishlist of the customer
+     */
     public ArrayList<Description> getWishList() {
         return wishList;
     }
@@ -252,4 +269,8 @@ public class Customer implements Serializable {
         return username;
     }
 
+    @Override
+    public String toString() {
+        return this.id + ": " + this.username + "\n";
+    }
 }
