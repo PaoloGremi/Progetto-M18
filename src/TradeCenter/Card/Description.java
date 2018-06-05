@@ -16,12 +16,11 @@ public abstract class Description implements Serializable {
      * @param descrType: Descr's type
       */
     private String name;
-    private String text; //cambiare UML
+    private String text;
     transient private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
     private HashSet<String> listTag;
     private CardType descrType;
 
-    // Initialize a TradeCenter.Card description with the name, a text and a picture of the TradeCenter.Card.
     /**
      * Constructor method
      * @param name  name: Descr's name
@@ -29,7 +28,7 @@ public abstract class Description implements Serializable {
      * @param descrType: Descr's type
      * @param pic: descr's picture
      * */
-    public Description(String name,String text,CardType descrType,BufferedImage pic) throws IOException {
+    public Description(String name,String text,CardType descrType,BufferedImage pic) {
         this.name=name;
         this.text=text;
         this.descrType=descrType;
@@ -39,28 +38,15 @@ public abstract class Description implements Serializable {
         autoSubstringTag();
     }
 
-
-    /**
-     * Load an image by its url, set pic
-     * @param url url of the pic
-     * */
-    /*private void loadImage(String url) throws IOException {
-        File picFile= new File(url);
-        pic= ImageIO.read(picFile);
-    }*/
-
-
     /**
      *Generate a tags splitting text, doesn't consider worlds shorter than two letters (e.g. articles)
      *
      * */
     private void autoSplittedTag(){
         String[] textSplitted=text.split(" ");
-        int length=textSplitted.length;
-
-        for (int i=0;i<length;i++){
+        for (int i=0; i<textSplitted.length; i++){
             if(textSplitted[i].length()>2)
-            this.addTag(textSplitted[i]);  //aggiungere eccezione
+                this.addTag(textSplitted[i]);
         }
     }
 
@@ -70,94 +56,106 @@ public abstract class Description implements Serializable {
      * */
     private void autoSubstringTag(){
         String[] textSplitted=text.split(" ");
-        int length=textSplitted.length;
-        for(int i=0;i<length;i++){
+        for(int i=0;i<textSplitted.length;i++){
             String substring=textSplitted[i];
-            for (int j = i+1; j<length-i; j++){
+            for (int j = i+1; j<textSplitted.length-i; j++){
                 substring=substring+" "+textSplitted[j];
-                this.addTag(substring); //eccezione
+                this.addTag(substring);
             }
         }
     }
 
     /**
-     * Print the TradeCenter.Card tags.
+     * Add a tag for the card.
+     * @param tag the tag that will be added
+     * @return boolean if the operatinons is done correctly
      * */
-    public void printTag(){
-        for (String tag:
-             listTag) {
-            System.out.println(tag);
-        }
+    public boolean addTag(String tag){
+        return listTag.add(tag.toLowerCase()); //all tags are lowercase
     }
-    
-    // Add a tag for the TradeCenter.Card.
-    /**
-     * Add a tag for the TradeCenter.Card.
-     * @param tag
-     * @return boolean todo: vedi cosa scrivere
-     * */
-    public boolean addTag(String tag ){
-        String tagLower=tag.toLowerCase(); // tutti tag lowerCase
-        return listTag.add(tagLower);
-    }
-    /**
-     * Getter for text
-     * @return text
-     * */
 
+    /**
+     * @return the name of the card
+     * */
+    public String getName() {
+        return name;
+    }
+    /**
+     * @return the description of the card
+     * */
     public String getText() {
         return text;
     }
 
     /**
-     * Getter of pic
+     * @return the image
+     *
      * */
     public BufferedImage getPic() {
         return pic;
     }
 
     /**
-     * Getter of name
-     * */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Getter of listTag
+     * @return the list of the card's tags
      * */
     public HashSet<String> getListTag() {
         return listTag;
     }
 
     /**
-     * Getter of descrType
-     * */
+     *
+     * @return the type of the card
+     */
     public CardType getDescrType() {
         return descrType;
     }
 
-    
+    /**
+     *temporary method for serializable
+     *
+     * @param output
+     * @throws IOException
+     */
+    private void writeObject(ObjectOutputStream output) throws IOException {
+        output.defaultWriteObject();
+        output.writeInt(1);
+        ImageIO.write(pic, "jpg", output);
+    }
+
+    /**
+     *
+     *temporary method for serializable
+     * @param input
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
+        input.defaultReadObject();
+        pic = ImageIO.read(input);
+    }
+
+    /**
+     *
+     * @return the name of the card
+     */
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    /**
+     *
+     * @param obj the object to check equality
+     * @return if the object are equals
+     */
     @Override
     public boolean equals(Object obj) {
-        Description descr1=(Description)obj;
-        boolean condition=this.getName().equals(descr1.getName()) && this.getText().equals(descr1.getText()) && this.getDescrType().equals(descr1.getDescrType());
-        if(condition){
+        Description descr=(Description)obj;
+        if(this.getName().equals(descr.getName()) && this.getText().equals(descr.getText()) && this.getDescrType().equals(descr.getDescrType())){
             return true;
         }
         else return false;
     }
 
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-        out.writeInt(1);
-        ImageIO.write(pic, "jpg", out);
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        final int imageCount = in.readInt();
-        pic = ImageIO.read(in);
-    }
 
 }

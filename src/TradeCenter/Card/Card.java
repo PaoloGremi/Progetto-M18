@@ -9,9 +9,8 @@ public class Card implements Serializable {
      * @param id: Card's unique id number
      * @param description: Card's description
      */
-
     private int id;
-    private Description description; //todo CHANGE TO YUGIOHDESCRITPION
+    private Description description;
 
     public Card(int id, Description description) {
         this.id = id;
@@ -28,14 +27,13 @@ public class Card implements Serializable {
     @Override
     public boolean equals(Object obj) {
         Card c=(Card)obj;
-        boolean condition=(this.id==c.id);
-        if(condition)
+        if(this.id==c.id)
             return true;
         else return false;
     }
 
     @Override
     public String toString() {
-        return "ID: "+id+""+description;
+        return "ID: " + id + " Name: " + description;
     }
 }
