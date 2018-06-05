@@ -6,8 +6,8 @@ import TradeCenter.Customers.Customer;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -36,16 +36,28 @@ public class OtherUserProfileScene {
         cardList = new StackPane();
 
         buttons = new HBox();
-        buttons.setPadding(new Insets(15, 20, 10, 20));
+        buttons.setPadding(new Insets(10));
         buttons.setSpacing(10);
-        buttons.setStyle("-fx-background-color: #aa12ff");
         Button collection = new Button("Collection");
         Button wishlist = new Button("Wishlist");
         Button trade = new Button("Trade");
         buttons.getChildren().addAll(collection, wishlist, trade);
-        Text title = new Text(otherUser.getUsername() + "'s" + displayed);
+        HBox titleBox = new HBox();
+        Label title = new Label(otherUser.getUsername() + "'s" + displayed);
+        titleBox.setAlignment(Pos.CENTER);
+        title.setStyle("-fx-font-weight: bold");
+        title.setScaleX(1.35);
+        title.setScaleY(1.35);
+        titleBox.getChildren().add(title);
+        titleBox.setPadding(new Insets(10));
+        title.setAlignment(Pos.CENTER);
+
+
         hBox = new HBox();
-        hBox.getChildren().addAll(buttons, title);
+        hBox.getChildren().addAll(buttons, titleBox);
+        hBox.setPadding(new Insets(10));
+        hBox.setSpacing(400);
+        hBox.setStyle("-fx-background-color: #cc003a");
 
         borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
@@ -83,14 +95,14 @@ public class OtherUserProfileScene {
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
-            imageView.setFitHeight(300);
+            imageView.setFitHeight(285);
             cardPane.setCenter(imageView);
             EventHandler<MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
+                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other"));
                         }
                     };
 

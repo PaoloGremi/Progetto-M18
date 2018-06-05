@@ -31,8 +31,14 @@ public class TradeScene {
     private static BorderPane myOfferPane;
     private static BorderPane otherOfferPane;
     private static BorderPane mainPane;
+    private static Customer myC;
+    private static Customer otherC;
 
     static BorderPane display(Customer myCustomer, Customer otherCustomer){
+
+        myC = myCustomer;
+        otherC = otherCustomer;
+
         mainPane = new BorderPane();
         //griglia
         mainGrid = new GridPane();
@@ -44,12 +50,16 @@ public class TradeScene {
 
         Text myCollection = new Text("myCollection");       //todo abbellire i titoli
         TextFlow myCollectionTitle = new TextFlow(myCollection);
+        myCollectionTitle.setPadding(new Insets(5));
         Text otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
         TextFlow otherCollectionTitle = new TextFlow(otherCollection);
+        otherCollectionTitle.setPadding(new Insets(5));
         Text myOffer = new Text("myOffer");
         TextFlow myOfferTitle = new TextFlow(myOffer);
+        myOfferTitle.setPadding(new Insets(5));
         Text otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
         TextFlow otherOfferTitle = new TextFlow(otherOffer);
+        otherOfferTitle.setPadding(new Insets(5));
 
         //griglie
         myCollectionGrid = new ScrollPane();
@@ -111,14 +121,14 @@ public class TradeScene {
             ImageView imageView = new ImageView();
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
-            imageView.setFitHeight(300);
+            imageView.setFitHeight(161);
             cardPane.setCenter(imageView);
             EventHandler<MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
+                            MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
                         }
                     };
 
@@ -135,5 +145,9 @@ public class TradeScene {
         pane.setCenter(grid);
         //todo vedere se si possono settare spazi ecc...
         return pane;
+    }
+
+    static BorderPane refresh(){
+        return display(myC,otherC);
     }
 }
