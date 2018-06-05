@@ -56,20 +56,6 @@ public class Customer implements Serializable {
     }
 
     /**
-     * Method to add a Card to the Customer's wishlist.
-     *
-     * @param card New Card to add
-     */
-    public void addCardToWishlist(Description card) {
-        try {
-            wishList.add(card);
-        } catch (AddCardException e) {
-            System.err.println(e.getMessage());
-        }
-
-    }
-
-    /**
      * Remove a Card from the collection of the Customers who calls this method.
      *
      * @param card Card to remove
@@ -81,20 +67,6 @@ public class Customer implements Serializable {
             System.err.println(e.getMessage());
         }
     }
-
-    /**
-     * Remove a Card from the wishlist of the Customers who calls this method.
-     *
-     * @param card Card to remove
-     */
-    public void removeCardFromWishlist(Card card) {
-        try {
-            wishList.remove(card);
-        } catch (RemoveCardException e) {
-            System.err.println(e.getMessage());
-        }
-    }
-
 
     /**
      * Search a Card in the collections of the customers by tags.
