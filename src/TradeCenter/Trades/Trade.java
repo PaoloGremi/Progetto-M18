@@ -70,6 +70,7 @@ public class Trade extends ATrade {
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
+        /*
         tmp.append("Offer from ");
         tmp.append(getCustomer1().getUsername());
         tmp.append(" to ");
@@ -78,6 +79,11 @@ public class Trade extends ATrade {
             tmp.append(history.get(i).toString());
         }
 
+        */
+
+        tmp.append(getCustomer1().getUsername());
+        tmp.append(" - ");
+        tmp.append(getCustomer2().getUsername());
         return tmp.toString();
     }
 

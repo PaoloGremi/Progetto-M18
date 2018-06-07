@@ -15,9 +15,13 @@ import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
 
+import java.awt.image.BufferedImage;
+import java.awt.image.IndexColorModel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
  * Class representing the trading center.
@@ -306,23 +310,52 @@ public class TradeCenter {
     }
 
     /**
-     * A method that shows the trades of a customer
+     * A method that shows the trades still active of a customer
      *
      * @param customer the customer that wants to see his trades
-     * @return the list of the customer's trades, first the still active ones
+     * @return the list of the customer's trades
      */
-    public ArrayList<Trade> showUserTrades(Customer customer){
-        ArrayList<Trade> result = new ArrayList<>();
+    public ArrayList<Trade> showUserActiveTrades(Customer customer){
+        ArrayList<Trade> activeTradeList = new ArrayList<>();
         for(Trade trade : activeTrades){
-            if(trade.betweenUsers(customer.getUsername())){     //return firste the active trades
-                result.add(trade);
+            if(trade.betweenUsers(customer.getUsername())){
+                activeTradeList.add(trade);
             }
         }
+        return activeTradeList;
+    }
+
+    /**
+     * A method that shows the finished trades of a customer
+     *
+     * @param customer the customer that wants to see his trades
+     * @return the list of the customer's trades
+     */
+    public ArrayList<Trade> showUserDoneTrades(Customer customer){
+        ArrayList<Trade> doneTradesList = new ArrayList<>();
         for(Trade trade : doneTrades){
             if(trade.betweenUsers(customer.getUsername())){
-                result.add(trade);
+                doneTradesList.add(trade);
             }
         }
-        return result;
+        return doneTradesList;
+    }
+
+    //todo controllare che uno user non puo fare trade con se stesso
+
+    /**
+     *
+     * temporary method to test mytrades interface, will be removed as soon as we corrrect the C/S login bug
+     */
+    public void fakeTrades(Customer mycustomer){
+        for(String key: customers.keySet()){
+            if(customers.get(key).equals(mycustomer)){
+                continue;
+            }
+            Collection collection = new Collection();
+            BufferedImage img = new BufferedImage(30, 30, TYPE_INT_ARGB);
+            collection.addCardToCollection(new Card(3, new PokemonDescription("drago", "bianco occhi blu",img,2, "drago", 300, 20, "long", 777)));
+            activeTrades.add(new Trade(new Offer(mycustomer, customers.get(key), collection, collection)));doneTrades.add(new Trade(new Offer(mycustomer, customers.get(key), collection, collection)));
+        }
     }
 }
