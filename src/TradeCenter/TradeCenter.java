@@ -32,9 +32,9 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 public class TradeCenter {
 
     private int contUsers;
-    public CardCatalog pokemonCatalog;
+    private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
-    public HashMap<String, Customer> customers;
+    private HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
     private DBProxy proxy;

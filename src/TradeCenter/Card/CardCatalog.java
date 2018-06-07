@@ -13,11 +13,4 @@ public class CardCatalog {
     public void addDescription(Description description){
         this.catalog.add(description);
     }
-
-    public Description getCard(){
-        for(Description card : catalog){
-            return card;
-        }
-        return null;
-    }
 }
