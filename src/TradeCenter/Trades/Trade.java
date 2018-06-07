@@ -57,7 +57,7 @@ public class Trade extends ATrade {
     }
 
     public boolean betweenUsers(String username) {
-        if(super.getCustomer1().getUsername().equals(username) || super.getCustomer1().getUsername().equals(username)) {
+        if(super.getCustomer1().getUsername().equals(username) || super.getCustomer2().getUsername().equals(username)) {
             return true;
         }
         else return false;

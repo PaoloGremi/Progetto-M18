@@ -304,4 +304,25 @@ public class TradeCenter {
             System.out.println(trade);
         }
     }
+
+    /**
+     * A method that shows the trades of a customer
+     *
+     * @param customer the customer that wants to see his trades
+     * @return the list of the customer's trades, first the still active ones
+     */
+    public ArrayList<Trade> showUserTrades(Customer customer){
+        ArrayList<Trade> result = new ArrayList<>();
+        for(Trade trade : activeTrades){
+            if(trade.betweenUsers(customer.getUsername())){     //return firste the active trades
+                result.add(trade);
+            }
+        }
+        for(Trade trade : doneTrades){
+            if(trade.betweenUsers(customer.getUsername())){
+                result.add(trade);
+            }
+        }
+        return result;
+    }
 }
