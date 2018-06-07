@@ -2,13 +2,18 @@ package Interface;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
+import javafx.beans.binding.Bindings;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -16,6 +21,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+
+import java.io.IOException;
 
 
 public class TradeScene {
@@ -51,15 +58,19 @@ public class TradeScene {
         Text myCollection = new Text("myCollection");       //todo abbellire i titoli
         TextFlow myCollectionTitle = new TextFlow(myCollection);
         myCollectionTitle.setPadding(new Insets(5));
+        myCollectionTitle.setStyle("-fx-background-color: #aa12ff");
         Text otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
         TextFlow otherCollectionTitle = new TextFlow(otherCollection);
         otherCollectionTitle.setPadding(new Insets(5));
+        otherCollectionTitle.setStyle("-fx-background-color: #aa12ff");
         Text myOffer = new Text("myOffer");
         TextFlow myOfferTitle = new TextFlow(myOffer);
         myOfferTitle.setPadding(new Insets(5));
+        myOfferTitle.setStyle("-fx-background-color: #aa12ff");
         Text otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
         TextFlow otherOfferTitle = new TextFlow(otherOffer);
         otherOfferTitle.setPadding(new Insets(5));
+        otherOfferTitle.setStyle("-fx-background-color: #aa12ff");
 
         //griglie
         myCollectionGrid = new ScrollPane();
@@ -78,6 +89,8 @@ public class TradeScene {
         mainGrid.add(otherCollectionPane,1,2);
         mainGrid.add(myOfferPane,2,1);
         mainGrid.add(otherOfferPane,2,2);
+        mainGrid.setStyle("-fx-background-color: #55ff44");
+        mainGrid.setAlignment(Pos.CENTER);
 
         //bottoni
         buttonsBox = new HBox();
@@ -123,16 +136,30 @@ public class TradeScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(161);
             cardPane.setCenter(imageView);
-            EventHandler<MouseEvent> eventHandlerBox =
-                    new EventHandler<javafx.scene.input.MouseEvent>() {
 
-                        @Override
-                        public void handle(javafx.scene.input.MouseEvent e) {
+            Tooltip tooltip = new Tooltip();
+
+            Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
+
+
+            imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+                public void handle(MouseEvent mouseEvent) {
+                    if(mouseEvent.getButton().equals(MouseButton.SECONDARY)){
+                        if(mouseEvent.getClickCount() == 1){
                             MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
                         }
-                    };
+                    }
 
-            imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
+                        if(mouseEvent.getClickCount() == 1){
+                            System.out.println("Double clicked");
+                        }
+                    }
+                }
+
+            });
+
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
         }
