@@ -24,14 +24,17 @@ public class ListTradesScene {
 
         TradeCenter tradeCenter = new TradeCenter();
         ArrayList<Trade> userTrades = tradeCenter.showUserTrades(myCustomer);   //todo porcata poi far cambiare
+
+//todo vedere come mettere nome ai bottoni che si creano
         ObservableList<Trade> trades = FXCollections.observableArrayList();
         trades.addAll(userTrades);
 
+        //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
         ListView<Trade> tradeList = new ListView<Trade>(trades);
         tradeList.setPrefSize(200, 250);
         tradeList.setEditable(true);
 
-
+        //todo addare dei trade e vedere se funziona
 
         scrollArea.setContent(tradeList);
         mainPane.setCenter(scrollArea);

@@ -115,7 +115,7 @@ public class MainWindow {
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            //dynamicContent.getChildren().add(OtherUserProfileScene.display(tempUser));
+            dynamicContent.getChildren().add(ListTradesScene.display(customer));
         });
         logOut.setOnAction(event -> {
             window.close();
