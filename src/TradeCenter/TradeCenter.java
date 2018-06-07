@@ -32,9 +32,9 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 public class TradeCenter {
 
     private int contUsers;
-    private CardCatalog pokemonCatalog;
+    public CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
-    private HashMap<String, Customer> customers;
+    public HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
     private DBProxy proxy;
@@ -130,6 +130,13 @@ public class TradeCenter {
             return false;
         }
 
+    }
+
+
+    //todo add javadocs, check if the customer exist,
+    public void addCardtoCustomer(Customer customer, Card card){
+        customer.addCard(card);
+        proxy.updateCustomer(customer);
     }
 
     /**
@@ -345,7 +352,7 @@ public class TradeCenter {
 
     /**
      *
-     * temporary method to test mytrades interface, will be removed as soon as we corrrect the C/S login bug
+     * temporary method to test mytrades interface
      */
     public void fakeTrades(Customer mycustomer){
         for(String key: customers.keySet()){

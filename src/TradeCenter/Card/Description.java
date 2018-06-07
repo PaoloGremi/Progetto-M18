@@ -133,6 +133,7 @@ public abstract class Description implements Serializable {
      */
     private void readObject(ObjectInputStream input) throws IOException, ClassNotFoundException {
         input.defaultReadObject();
+        final int imageCount = input.readInt();
         pic = ImageIO.read(input);
     }
 

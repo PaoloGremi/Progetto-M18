@@ -15,11 +15,11 @@ import java.util.ArrayList;
 
 public class ListTradesScene {
 
-    static BorderPane mainPane;
-    static Text title;
+    private static BorderPane mainPane;
+    private static Text title;
     //static Text activeTitle;
     //static Text doneTitle;
-    static ScrollPane scrollableList;
+    private static ScrollPane scrollableList;
 
 
 
