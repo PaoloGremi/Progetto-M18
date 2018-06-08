@@ -23,6 +23,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class TradeScene {
@@ -40,6 +41,7 @@ public class TradeScene {
     private static BorderPane mainPane;
     private static Customer myC;
     private static Customer otherC;
+    private static ArrayList<ImageView> imageList = new ArrayList<ImageView>();
 
     static BorderPane display(Customer myCustomer, Customer otherCustomer){
 
@@ -79,10 +81,10 @@ public class TradeScene {
         otherOfferGrid = new ScrollPane();
 
         //costruisco le singole griglie
-        myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid);
-        otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid);
-        myOfferPane = displayCards(null, myOfferTitle, myOfferGrid);
-        otherOfferPane = displayCards(null, otherOfferTitle, otherOfferGrid);
+        myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid,true);
+        otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid, false);
+        myOfferPane = displayCards(null, myOfferTitle, myOfferGrid,false);
+        otherOfferPane = displayCards(null, otherOfferTitle, otherOfferGrid, false);
 
         //costruisco la griglia principale, aggiungendoci le singole
         mainGrid.add(myCollectionPane,1,1);
@@ -108,8 +110,8 @@ public class TradeScene {
         return mainPane;
     }
 
-    static BorderPane displayCards(Customer customer, TextFlow title, ScrollPane grid){
-
+    static BorderPane displayCards(Customer customer, TextFlow title, ScrollPane grid, boolean flag){
+        boolean flagO = flag;
         BorderPane pane = new BorderPane();
         pane.setTop(title);                 //titolo
         FlowPane flowPane = new FlowPane();
@@ -145,15 +147,28 @@ public class TradeScene {
             imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
 
                 public void handle(MouseEvent mouseEvent) {
+
+
+
                     if(mouseEvent.getButton().equals(MouseButton.SECONDARY)){
                         if(mouseEvent.getClickCount() == 1){
                             MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
                         }
                     }
-
-                    if(mouseEvent.getButton().equals(MouseButton.PRIMARY)){
-                        if(mouseEvent.getClickCount() == 1){
-                            System.out.println("Double clicked");
+                    if(flagO) {
+                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                            if (mouseEvent.getClickCount() == 1) {
+                                addToOffer(imageView, myOfferGrid);
+                                myOfferPane.setCenter(myOfferGrid);
+                            }
+                        }
+                    }
+                    else{
+                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                            if (mouseEvent.getClickCount() == 1) {
+                                addToOffer(imageView, otherOfferGrid);
+                                myOfferPane.setCenter(otherOfferGrid);
+                            }
                         }
                     }
                 }
@@ -172,6 +187,17 @@ public class TradeScene {
         pane.setCenter(grid);
         //todo vedere se si possono settare spazi ecc...
         return pane;
+    }
+
+    static ScrollPane addToOffer(ImageView imageView, ScrollPane scrollPane){
+        imageList.add(imageView);
+        FlowPane flow = new FlowPane();
+        flow.setStyle("-fx-background-color: #fff910");
+        for (ImageView image: imageList) {
+            flow.getChildren().add(image);
+        }
+        scrollPane.setContent(flow);
+        return scrollPane;
     }
 
     static BorderPane refresh(){

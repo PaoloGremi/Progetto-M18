@@ -31,19 +31,19 @@ public class ListTradesScene {
         scrollableList = new ScrollPane();
 
 
-        TradeCenter tradeCenter = new TradeCenter();
+        /*TradeCenter tradeCenter = new TradeCenter();
         tradeCenter.fakeTrades(myCustomer);
-        ArrayList<Trade> userActiveTrades = tradeCenter.showUserActiveTrades(myCustomer);   //todo porcata poi far cambiare
+        ArrayList<Trade> userActiveTrades = tradeCenter.showUserActiveTrades(myCustomer);   //todo porcata togliere i TradeCenter abusivi
         ArrayList<Trade> userDoneTrades = tradeCenter.showUserDoneTrades(myCustomer);
         ArrayList<Trade> userTrades = new ArrayList<>();
         userTrades.addAll(userActiveTrades);
-        userTrades.addAll(userDoneTrades);
+        userTrades.addAll(userDoneTrades);*/
 
 
 
         //todo allargare le label che si creano
         ObservableList<Trade> trades = FXCollections.observableArrayList();
-        trades.addAll(userTrades);
+        //trades.addAll(userTrades);
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
         ListView<Trade> tradeList = new ListView<>(trades);
