@@ -47,6 +47,14 @@ public class TradeScene {
     private static FlowPane otherOfferFlow;
     private static ArrayList<Card> myCollectionList = new ArrayList<Card>();
     private static ArrayList<Card> otheCollectionList = new ArrayList<Card>();
+    static Text myCollection;
+    static Text otherCollection;
+    static Text myOffer;
+    static Text otherOffer;
+    static TextFlow myCollectionTitle;
+    static TextFlow otherCollectionTitle;
+    static TextFlow myOfferTitle;
+    static TextFlow otherOfferTitle;
 
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
@@ -69,20 +77,20 @@ public class TradeScene {
         //todo mettere le griglie ecc...
         //titoli
 
-        Text myCollection = new Text("myCollection");       //todo abbellire i titoli
-        TextFlow myCollectionTitle = new TextFlow(myCollection);
+        myCollection = new Text("myCollection");       //todo abbellire i titoli
+        myCollectionTitle = new TextFlow(myCollection);
         myCollectionTitle.setPadding(new Insets(5));
         myCollectionTitle.setStyle("-fx-background-color: #aa12ff");
-        Text otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
-        TextFlow otherCollectionTitle = new TextFlow(otherCollection);
+        otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
+        otherCollectionTitle = new TextFlow(otherCollection);
         otherCollectionTitle.setPadding(new Insets(5));
         otherCollectionTitle.setStyle("-fx-background-color: #aa12ff");
-        Text myOffer = new Text("myOffer");
-        TextFlow myOfferTitle = new TextFlow(myOffer);
+        myOffer = new Text("myOffer");
+        myOfferTitle = new TextFlow(myOffer);
         myOfferTitle.setPadding(new Insets(5));
         myOfferTitle.setStyle("-fx-background-color: #aa12ff");
-        Text otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
-        TextFlow otherOfferTitle = new TextFlow(otherOffer);
+        otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
+        otherOfferTitle = new TextFlow(otherOffer);
         otherOfferTitle.setPadding(new Insets(5));
         otherOfferTitle.setStyle("-fx-background-color: #aa12ff");
 
@@ -385,12 +393,17 @@ public class TradeScene {
         restoreCollection(null, true, myCollFlow, myCollectionList);
         restoreCollection(null, false, otherCollFlow, otheCollectionList);
 
-
-
         myCollectionPane.setCenter(myCollectionGrid);
+        myCollectionPane.setTop(myCollectionTitle);
         myOfferPane.setCenter(myOfferGrid);
+        myOfferPane.setTop(myOfferTitle);
         otherCollectionPane.setCenter(otherCollectionGrid);
+        otherCollectionPane.setTop(otherCollectionTitle);
         otherOfferPane.setCenter(otherOfferGrid);
+        otherOfferPane.setTop(otherOfferTitle);
+
+        mainGrid1.setHgap(10);
+        mainGrid1.setVgap(10);
 
         mainGrid1.add(myCollectionPane,1,1);
         mainGrid1.add(otherCollectionPane,1,2);
@@ -408,6 +421,10 @@ public class TradeScene {
 
     static void restoreScroll(BorderPane borderPane,ScrollPane scrollPane, FlowPane flowPane){
         borderPane.setStyle("-fx-background-color: #fff910");
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
+        scrollPane.setContent(flowPane);
+        scrollPane.setStyle("-fx-background-color: #fffb48");
         flowPane.setStyle("-fx-background-color: #fff910");
         scrollPane.setStyle("-fx-background-color: #fff910");
         scrollPane.setContent(flowPane);
