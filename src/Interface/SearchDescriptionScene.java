@@ -140,7 +140,7 @@ public class SearchDescriptionScene {
                             os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
                             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                             Customer returnMessage = (Customer) is.readObject();
-                            MainWindow.refreshDynamicContent(TradeScene.display(customerThis,returnMessage));
+                            MainWindow.refreshDynamicContent(TradeScene.display(null,customerThis,returnMessage,false));
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();

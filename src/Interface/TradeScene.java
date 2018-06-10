@@ -2,6 +2,7 @@ package Interface;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.ATrade;
 import javafx.beans.binding.Bindings;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
@@ -47,7 +48,7 @@ public class TradeScene {
     private static ArrayList<Card> myCollectionList = new ArrayList<Card>();
     private static ArrayList<Card> otheCollectionList = new ArrayList<Card>();
 
-    static BorderPane display(Customer myCustomer, Customer otherCustomer){
+    static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
         myC = myCustomer;
         otherC = otherCustomer;
@@ -86,6 +87,7 @@ public class TradeScene {
         otherOfferTitle.setStyle("-fx-background-color: #aa12ff");
 
         //griglie
+
         myCollectionGrid = new ScrollPane();
         otherCollectionGrid = new ScrollPane();
         myOfferGrid = new ScrollPane();
@@ -99,23 +101,28 @@ public class TradeScene {
         myOfferGrid.setMaxSize(405,240);
         otherOfferGrid.setMinSize(405,240);
         otherOfferGrid.setMaxSize(405,240);
+        myCollectionPane = new BorderPane();
+        otherCollectionPane = new BorderPane();
+        myOfferPane = new BorderPane();
+        otherOfferPane = new BorderPane();
 
-        //costruisco le singole griglie
-        myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid,myCollFlow,true, myCollectionList);
-        otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid,otherCollFlow, false, otheCollectionList);
-        myOfferPane = displayCards(null, myOfferTitle, myOfferGrid,myOfferFlow,false, null);
-        otherOfferPane = displayCards(null, otherOfferTitle, otherOfferGrid,otherOfferFlow, false, null);
+        if(!flagStarted) {
+            //costruisco le singole griglie
+            myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid, myCollFlow, true, myCollectionList);
+            otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid, otherCollFlow, false, otheCollectionList);
+            myOfferPane = displayCards(null, myOfferTitle, myOfferGrid, myOfferFlow, false, null);
+            otherOfferPane = displayCards(null, otherOfferTitle, otherOfferGrid, otherOfferFlow, false, null);
 
-        //myCollectionPane.setMaxHeight(50);
-        //myCollectionPane.setMaxWidth(60);
-        //costruisco la griglia principale, aggiungendoci le singole
-        mainGrid.add(myCollectionPane,1,1);
-        mainGrid.add(otherCollectionPane,1,2);
-        mainGrid.add(myOfferPane,2,1);
-        mainGrid.add(otherOfferPane,2,2);
-        mainGrid.setStyle("-fx-background-color: #55ff44");
-        mainGrid.setAlignment(Pos.CENTER);
-
+            //myCollectionPane.setMaxHeight(50);
+            //myCollectionPane.setMaxWidth(60);
+            //costruisco la griglia principale, aggiungendoci le singole
+            mainGrid.add(myCollectionPane, 1, 1);
+            mainGrid.add(otherCollectionPane, 1, 2);
+            mainGrid.add(myOfferPane, 2, 1);
+            mainGrid.add(otherOfferPane, 2, 2);
+            mainGrid.setStyle("-fx-background-color: #55ff44");
+            mainGrid.setAlignment(Pos.CENTER);
+        }
         //bottoni
         buttonsBox = new HBox();
         buttonsBox.setPadding(new Insets(15, 20, 10, 20));
@@ -126,9 +133,15 @@ public class TradeScene {
         Button accept = new Button("Accept");
         buttonsBox.getChildren().addAll(refuse, raise, accept);
 
-        mainPane.setCenter(mainGrid);
-        mainPane.setBottom(buttonsBox);
-
+        if(!flagStarted) {
+            mainPane.setCenter(mainGrid);
+            mainPane.setBottom(buttonsBox);
+        }
+        else{
+            if(trade!=null) {
+                restoreFromPreviousTrade(trade);
+            }
+        }
         return mainPane;
     }
 
@@ -185,7 +198,7 @@ public class TradeScene {
                             if (mouseEvent.getClickCount() == 1) {
 
                                 //myCollFlow.getChildren().remove(imageView);
-                                addToOffer(imageView, myOfferGrid, card,flagO);
+                                addToOffer(myOfferGrid, card,flagO);
                                 myOfferPane.setCenter(myOfferGrid);
                                 myCollectionList.remove(card);
                                 restoreCollection(null,flagO,myCollFlow, myCollectionList);
@@ -199,7 +212,7 @@ public class TradeScene {
 
 
                                 //otherCollFlow.getChildren().remove(imageView);
-                                addToOffer(imageView, otherOfferGrid,card,flagO);
+                                addToOffer(otherOfferGrid,card,flagO);
                                 otherOfferPane.setCenter(otherOfferGrid);
                                 otheCollectionList.remove(card);
                                 restoreCollection(null,flagO, otherCollFlow, otheCollectionList );
@@ -225,7 +238,7 @@ public class TradeScene {
         return pane;
     }
 
-    static ScrollPane addToOffer(ImageView imageView, ScrollPane scrollPane, Card card, boolean flag){
+    static ScrollPane addToOffer(ScrollPane scrollPane, Card card, boolean flag){
         ArrayList<Card> imageList;
 
         if(flag) {
@@ -312,7 +325,7 @@ public class TradeScene {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
                                     myCollectionList.remove(c);
-                                    addToOffer(imageView, myOfferGrid, c, flag);
+                                    addToOffer(myOfferGrid, c, flag);
                                     myOfferPane.setCenter(myOfferGrid);
                                     restoreCollection(null,flag,myCollFlow, myCollectionList);
 
@@ -323,7 +336,7 @@ public class TradeScene {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
                                     otheCollectionList.remove(c);
-                                    addToOffer(imageView, otherOfferGrid, c, flag);
+                                    addToOffer(otherOfferGrid, c, flag);
                                     otherOfferPane.setCenter(otherOfferGrid);
                                     restoreCollection(null,flag, otherCollFlow, otheCollectionList );
                                 }
@@ -339,7 +352,67 @@ public class TradeScene {
 
     }
 
+    static void restoreFromPreviousTrade(ATrade trade){
+         GridPane mainGrid1 = new GridPane();
+        myImageList.removeAll(myImageList);
+        otherImageList.removeAll(otherImageList);
+        myCollectionList.removeAll(myCollectionList);
+        otheCollectionList.removeAll(otheCollectionList);
 
+        restoreScroll(myCollectionPane, myCollectionGrid, myCollFlow);
+        restoreScroll(myOfferPane, myOfferGrid, myOfferFlow);
+        restoreScroll(otherCollectionPane, otherCollectionGrid,otherCollFlow);
+        restoreScroll(otherOfferPane, otherOfferGrid,otherOfferFlow);
+
+        for (Card card : trade.getCustomer1().getCollection()) {
+            myCollectionList.add(card);
+        }
+
+        for (Card card : trade.getCustomer1().getCollection()) {
+            otheCollectionList.add(card);
+        }
+
+        for(Card card : trade.getOffer1()){
+            addToOffer(myOfferGrid, card ,true);
+        }
+
+        for (Card card : trade.getOffer2()){
+            addToOffer(otherOfferGrid,card,false);
+        }
+
+        myCollectionList.removeAll(myImageList);
+        otheCollectionList.removeAll(otherImageList);
+        restoreCollection(null, true, myCollFlow, myCollectionList);
+        restoreCollection(null, false, otherCollFlow, otheCollectionList);
+
+
+
+        myCollectionPane.setCenter(myCollectionGrid);
+        myOfferPane.setCenter(myOfferGrid);
+        otherCollectionPane.setCenter(otherCollectionGrid);
+        otherOfferPane.setCenter(otherOfferGrid);
+
+        mainGrid1.add(myCollectionPane,1,1);
+        mainGrid1.add(otherCollectionPane,1,2);
+        mainGrid1.add(myOfferPane,2,1);
+        mainGrid1.add(otherOfferPane,2,2);
+        mainGrid1.setStyle("-fx-background-color: #55ff44");
+        mainGrid1.setAlignment(Pos.CENTER);
+
+
+        mainPane.setCenter(mainGrid1);
+        mainPane.setBottom(buttonsBox);
+
+
+    }
+
+    static void restoreScroll(BorderPane borderPane,ScrollPane scrollPane, FlowPane flowPane){
+        borderPane.setStyle("-fx-background-color: #fff910");
+        flowPane.setStyle("-fx-background-color: #fff910");
+        scrollPane.setStyle("-fx-background-color: #fff910");
+        scrollPane.setContent(flowPane);
+
+    }
 
     static BorderPane refresh(){
 

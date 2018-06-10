@@ -78,7 +78,7 @@ public class OtherUserProfileScene {
             MainWindow.refreshDynamicContent(borderPane);
         });
         trade.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(TradeScene.display(myCustomer, otherCustomer));// todo mettere i parametri, della fuznione
+            MainWindow.refreshDynamicContent(TradeScene.display(null,myCustomer, otherCustomer,false));// todo mettere i parametri, della fuznione
         });
 
         return borderPane;
