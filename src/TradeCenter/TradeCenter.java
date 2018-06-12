@@ -6,6 +6,8 @@ import TradeCenter.Card.CardCatalog;
 
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
+import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
+import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchDescriptionFoundedException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
@@ -257,13 +259,16 @@ public class TradeCenter {
         return searched;
     }
 
-    /**
-     * This method starts a new trade between two customers
-     * @param offer the first offer
-     */
-    void createTrade(Offer offer){
-        Trade Trade = new Trade(offer);      //todo mi aspetto che l'offerta si crei dall'interfaccia grafica, o desicedere di istanziarla qua
-        activeTrades.add(Trade);
+//todo add javadocs
+    void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
+        try {
+            Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
+            activeTrades.add(Trade);
+        }catch (MyselfTradeException e){
+            System.err.println(e.getMessage());
+        }catch(EmptyCollectionException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     /**

@@ -3,11 +3,8 @@ package TradeCenter.Trades;
 import java.util.Date;
 import TradeCenter.Customers.*;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
+import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 
-/**
- * Abstract class for Offer and Trade.
- * @author Roberto Gallotta
- */
 public abstract class ATrade {
 
     /**
@@ -21,7 +18,7 @@ public abstract class ATrade {
     private Customer customer2;
     private Collection offer1;
     private Collection offer2;
-    private Date date;
+    protected Date date;
 
     /**
      * Constructor method
@@ -31,6 +28,9 @@ public abstract class ATrade {
      * @param offer2 Second Customers's collection to be exchanged
      */
     protected ATrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
+        if(customer1.getId().equals(customer2.getId())){
+            throw new MyselfTradeException();
+        }
         this.customer1 = customer1;
         this.customer2 = customer2;
         if (offer1.collectionIsEmpty() || offer2.collectionIsEmpty()) throw new EmptyCollectionException();
@@ -71,14 +71,6 @@ public abstract class ATrade {
      */
     public Collection getOffer2() {
         return offer2;
-    }
-
-    /**
-     * Getter for current date
-     * @return current date
-     */
-    protected Date getDate() {
-        return date;
     }
 
     /**

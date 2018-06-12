@@ -51,21 +51,15 @@ public class ListTradesScene {
                 new EventHandler<javafx.scene.input.MouseEvent>() {
                     @Override
                     public void handle(javafx.scene.input.MouseEvent e) {
-                        MainWindow.refreshDynamicContent(TradeScene.refresh());
+                        Trade trade = tradeList.getSelectionModel().getSelectedItem();
+                        MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(),true));
                     }
                 };
 
         //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
-        //tradeList.setFixedCellSize(70.0);
-        //tradeList.setStyle("-fx-control-inner-background: #feff2e;");
-
-        //todo trovare come fare colore diverso dei bordi della label, o fare spaziatura in modo da colorare il fondo con setBackground
 
         //tradeList.setOnMousePressed(eventHandlerBox);
         tradeList.setOnMouseClicked(eventHandlerBox);
-        //todo la nullpointer exception probabilmente è perche non esiste il secondo customer, vedere con marco come fixare
-        //TODO infatti se prima si apre il trade con l'utente l'eccezione non si genera, ma Altro PROBLEMA
-        //todo fixare che qualunque item schiaccio fa vedere la trade con l'ultimo utente e non con quello schiacciato--->Modificare TradeScene
         tradeList.setEditable(true);
 
         scrollableList.setContent(tradeList);
@@ -74,7 +68,8 @@ public class ListTradesScene {
 
         mainPane.setTop(title);
         mainPane.setCenter(scrollableList);
-        //todo mettere a posto css
+
+        //todo mettere a posto stile del css
         mainPane.getStylesheets().add("Interface/ListTradesCSS.css"); //nei css usare i percorsi relativi
         return mainPane;
     }

@@ -2,10 +2,6 @@ package TradeCenter.Trades;
 
 import java.util.ArrayList;
 
-/**
- * Trade class
- * @author Roberto Gallotta
- */
 public class Trade extends ATrade {
 
     /**
@@ -33,7 +29,7 @@ public class Trade extends ATrade {
      */
     public void update(Offer offer) {
         this.history.add(offer);
-        super.updateParameters(offer.getOffer1(), offer.getOffer2(), offer.getDate());
+        super.updateParameters(offer.getOffer1(), offer.getOffer2(), offer.date);
         this.checkDeal(offer);
     }
 
@@ -84,6 +80,7 @@ public class Trade extends ATrade {
         tmp.append(getCustomer1().getUsername());
         tmp.append(" - ");
         tmp.append(getCustomer2().getUsername());
+        tmp.append("\n" + date);
         return tmp.toString();
     }
 

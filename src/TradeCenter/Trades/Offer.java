@@ -4,10 +4,6 @@ import TradeCenter.Customers.*;
 import TradeCenter.Card.Card;
 import TradeCenter.Exceptions.CardExceptions.*;
 
-/**
- * Class for the Offer between two Customers. Extends ATrade class.
- * @author Roberto Gallotta
- */
 public class Offer extends ATrade {
 
     // Set to True if this offer approves the previously received offer (can't be set True for the first offer in a trade)
@@ -86,7 +82,7 @@ public class Offer extends ATrade {
     public String toString() {
         StringBuilder tmp = new StringBuilder();
         tmp.append("\nOn the ");
-        tmp.append(getDate());
+        tmp.append(date);
         tmp.append("\n");
         tmp.append(super.getCustomer1().getUsername());
         tmp.append(" offers: ");
