@@ -33,22 +33,18 @@ import java.util.HashMap;
 import static javafx.scene.input.KeyCode.U;
 
 public class WishListScene{
-    static boolean flag = true;
-    static ArrayList<File> files1;
-    static ScrollPane scroll;
+
     static ArrayList<Description> wish;
-    static BorderPane border;
     static Customer user;
-    static HBox hBox2;
 
     static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
 
         user=customer;
         wish=wishList;
 
-        border = new BorderPane();
+        BorderPane border = new BorderPane();
         FlowPane flow = new FlowPane();
-        hBox2 = new HBox();
+        HBox hBox2 = new HBox();
         hBox2.setPadding(new Insets(10));
         hBox2.setSpacing(10);
         hBox2.setStyle("-fx-background-color: orange");
@@ -65,7 +61,7 @@ public class WishListScene{
         flow.setHgap(4);
         flow.setStyle("-fx-background-color: DAE6A2;");
 
-        scroll = new ScrollPane();
+        ScrollPane scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
         scroll.setContent(flow);

@@ -27,11 +27,10 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class CollectionScene{
-    static ScrollPane scroll;
     static Customer cust;
     static String user;
 
-    static HBox hbox;
+    //static HBox hbox;
 
     static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException {
 
@@ -44,6 +43,8 @@ public class CollectionScene{
 
         cust=customer1;
         user=username;
+        ScrollPane scroll = new ScrollPane();
+        HBox hbox = new HBox();
         BorderPane border = new BorderPane();
         Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();

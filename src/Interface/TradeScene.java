@@ -308,7 +308,7 @@ public class TradeScene {
                     if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
                         if(flag) {
-                            myCardOffer.removeCardFromCollection(card);
+                            myCardOffer.removeCardFromCollection(c);
                             myCollFlow.getChildren().add(pane);
                             restoreCollection(c, flag, myCollFlow, myCollectionList);
                             myImageList.remove(c);
@@ -316,7 +316,7 @@ public class TradeScene {
 
                         }
                         else{
-                            otherCardOffer.removeCardFromCollection(card);
+                            otherCardOffer.removeCardFromCollection(c);
                             otherCollFlow.getChildren().add(pane);
                             restoreCollection(c, flag, otherCollFlow, otheCollectionList);
                             otherImageList.remove(c);

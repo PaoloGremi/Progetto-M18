@@ -30,11 +30,11 @@ import java.util.HashMap;
 
 public class SearchDescriptionScene {
 
-    static BorderPane border;
-    static FlowPane flow1;
+
+
     static ArrayList<HashMap<Customer, Collection>> array;
     static Customer user;
-    static ScrollPane scroll;
+
 
     public static BorderPane display(ArrayList<HashMap<Customer, Collection>> cards, Customer customerThis){
 
@@ -43,9 +43,9 @@ public class SearchDescriptionScene {
         }
         array = cards;
         user=customerThis;
-        flow1 = new FlowPane();
+        FlowPane flow1 = new FlowPane();
         flow1.setStyle("-fx-background-color: DAE6A2;");
-        border = new BorderPane();
+        BorderPane border = new BorderPane();
         HBox hbox = new HBox();
         Button bBack = new Button("\u2B8C");
         Button bSearch = new Button("Global Search");
@@ -62,7 +62,7 @@ public class SearchDescriptionScene {
             MainWindow.refreshDynamicContent(WishListScene.refresh());
         });
 
-        scroll = new ScrollPane();
+        ScrollPane scroll = new ScrollPane();
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
         scroll.setContent(flow1);

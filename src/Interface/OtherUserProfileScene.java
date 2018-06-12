@@ -23,8 +23,8 @@ public class OtherUserProfileScene {
     static StackPane cardList;
     static BorderPane borderPane;
     static ScrollPane cardGrid;
-    static HBox buttons;
-    static HBox hBox;
+
+
     static boolean watchingWishlist = false;
 
     static Customer otherCustomer;
@@ -35,7 +35,7 @@ public class OtherUserProfileScene {
         borderPane = new BorderPane();
         cardList = new StackPane();
 
-        buttons = new HBox();
+        HBox buttons= new HBox();
         buttons.setPadding(new Insets(10));
         buttons.setSpacing(10);
         Button collection = new Button("Collection");
@@ -53,7 +53,7 @@ public class OtherUserProfileScene {
         title.setAlignment(Pos.CENTER);
 
 
-        hBox = new HBox();
+        HBox hBox= new HBox();
         hBox.getChildren().addAll(buttons, titleBox);
         hBox.setPadding(new Insets(10));
         hBox.setSpacing(300);
@@ -78,7 +78,7 @@ public class OtherUserProfileScene {
             MainWindow.refreshDynamicContent(borderPane);
         });
         trade.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
+            MainWindow.refreshDynamicContent(TradeScene.display(null,myCustomer, otherCustomer,false));// todo mettere i parametri, della fuznione
         });
 
         return borderPane;

@@ -23,27 +23,18 @@ import java.util.ArrayList;
 
 public class SearchUserScene {
 
-    static BorderPane scene;
-    static TextField searchString;
-    static Button search;
-    static VBox results;
-    static ScrollPane resultsArea;
-    static FlowPane flow;
-    static Pane pane;
-
-
     static Customer myProfile;
 
     static BorderPane display(Customer mySelf){
         myProfile = mySelf;
-        scene = new BorderPane();
-        searchString = new TextField();
+        BorderPane scene = new BorderPane();
+        TextField searchString = new TextField();
         searchString.setPrefWidth(800);
-        search = new Button("Search");
-        results = new VBox();
-        resultsArea = new ScrollPane();
-        flow = new FlowPane();
-        pane = new Pane();
+        Button search = new Button("Search");
+        VBox results = new VBox();
+        ScrollPane resultsArea = new ScrollPane();
+        FlowPane flow = new FlowPane();
+        Pane pane = new Pane();
 
         flow.setStyle("-fx-background-color: #beff8e;");
         results.setStyle("-fx-background-color: green;");
