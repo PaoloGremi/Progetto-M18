@@ -1,5 +1,7 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
 import TradeCenter.TradeCenter;
 import TradeCenter.Trades.Trade;
@@ -12,6 +14,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 
@@ -32,34 +38,44 @@ public class ListTradesScene {
         //doneTitle = new Text("Done Trades");
         scrollableList = new ScrollPane();
 
-
-        TradeCenter tradeCenter = new TradeCenter();
-        tradeCenter.fakeTrades(myCustomer);
-        ArrayList<Trade> userActiveTrades = tradeCenter.showUserActiveTrades(myCustomer);   //todo porcata togliere i TradeCenter abusivi
-        ArrayList<Trade> userDoneTrades = tradeCenter.showUserDoneTrades(myCustomer);
-        ArrayList<Trade> userTrades = new ArrayList<>();
-        userTrades.addAll(userActiveTrades);
-        userTrades.addAll(userDoneTrades);
-
-
         ObservableList<Trade> trades = FXCollections.observableArrayList();
-        trades.addAll(userTrades);
+        try {
+            Socket socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            ArrayList<Trade> userTrades = (ArrayList<Trade>) (is.readObject());
+            socket.close();
+            trades.addAll(userTrades);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
         ListView<Trade> tradeList = new ListView<>(trades);
-        EventHandler<MouseEvent> eventHandlerBox =
-                new EventHandler<javafx.scene.input.MouseEvent>() {
-                    @Override
-                    public void handle(javafx.scene.input.MouseEvent e) {
-                        Trade trade = tradeList.getSelectionModel().getSelectedItem();
-                        MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(),true));
-                    }
-                };
+        if(!trades.isEmpty()){
+            EventHandler<MouseEvent> eventHandlerBox =
+                    new EventHandler<javafx.scene.input.MouseEvent>() {
+                        @Override
+                        public void handle(javafx.scene.input.MouseEvent e) {
+                            Trade trade = tradeList.getSelectionModel().getSelectedItem();
+                            if (trade.isDoneDeal()) {
 
-        //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
+                            } else {
+                                MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(), true));
+                            }
+                        }
+                    };
 
-        //tradeList.setOnMousePressed(eventHandlerBox);
-        tradeList.setOnMouseClicked(eventHandlerBox);
+            //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
+
+            tradeList.setOnMouseClicked(eventHandlerBox);
+        }
+
         tradeList.setEditable(true);
 
         scrollableList.setContent(tradeList);

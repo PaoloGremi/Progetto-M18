@@ -260,10 +260,12 @@ public class TradeCenter {
     }
 
 //todo add javadocs
-    void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
+    public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
         try {
             Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
             activeTrades.add(Trade);
+
+            //todo vedere se si deve fare update con il db
         }catch (MyselfTradeException e){
             System.err.println(e.getMessage());
         }catch(EmptyCollectionException e){
@@ -327,7 +329,7 @@ public class TradeCenter {
      * @param customer the customer that wants to see his trades
      * @return the list of the customer's trades
      */
-    public ArrayList<Trade> showUserActiveTrades(Customer customer){
+    private ArrayList<Trade> showUserActiveTrades(Customer customer){
         ArrayList<Trade> activeTradeList = new ArrayList<>();
         for(Trade trade : activeTrades){
             if(trade.betweenUsers(customer.getUsername())){
@@ -343,7 +345,7 @@ public class TradeCenter {
      * @param customer the customer that wants to see his trades
      * @return the list of the customer's trades
      */
-    public ArrayList<Trade> showUserDoneTrades(Customer customer){
+    private ArrayList<Trade> showUserDoneTrades(Customer customer){
         ArrayList<Trade> doneTradesList = new ArrayList<>();
         for(Trade trade : doneTrades){
             if(trade.betweenUsers(customer.getUsername())){
@@ -353,21 +355,16 @@ public class TradeCenter {
         return doneTradesList;
     }
 
-    //todo controllare che uno user non puo fare trade con se stesso
-
     /**
+     * A method that shows all the trades of a user
      *
-     * temporary method to test mytrades interface
+     * @param customer the user
+     * @return the list of trades of the user, first the active ones
      */
-    public void fakeTrades(Customer mycustomer){
-        for(String key: customers.keySet()){
-            if(customers.get(key).equals(mycustomer)){
-                continue;
-            }
-            Collection collection = new Collection();
-            BufferedImage img = new BufferedImage(30, 30, TYPE_INT_ARGB);
-            collection.addCardToCollection(new Card(3, new PokemonDescription("drago", "bianco occhi blu",img,2, "drago", 300, 20, "long", 777)));
-            activeTrades.add(new Trade(new Offer(mycustomer, customers.get(key), collection, collection)));doneTrades.add(new Trade(new Offer(mycustomer, customers.get(key), collection, collection)));
-        }
+    public ArrayList<Trade> showUserTrades(Customer customer){
+        ArrayList<Trade> tradesList = new ArrayList<>();
+        tradesList.addAll(showUserActiveTrades(customer));
+        tradesList.addAll(showUserDoneTrades(customer));
+        return tradesList;
     }
 }

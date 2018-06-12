@@ -1,12 +1,15 @@
 package ClientServer;
 
 import Interface.searchCard.filterChoice.PokemonAll;
+import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MessageServer implements Serializable {
 
@@ -15,8 +18,11 @@ public class MessageServer implements Serializable {
     private String string2;
     private Offer offer;
     private Trade trade;
-    private Customer customer;
+    private Customer customer1;
+    private Customer customer2;
     private Description description;
+    private Collection offer1;
+    private Collection offer2;
 
     private PokemonAll pokemonAll;
 
@@ -26,16 +32,15 @@ public class MessageServer implements Serializable {
         this.string2 = string2;
     }
 
-
     public MessageServer(MessageType message, String string1, Customer customer) {
         this.message = message;
         this.string1 = string1;
-        this.customer = customer;
+        this.customer1 = customer;
     }
 
     public MessageServer(MessageType message, Customer customer) {
         this.message = message;
-        this.customer = customer;
+        this.customer1 = customer;
     }
 
     public MessageServer(MessageType message, String username) {
@@ -64,6 +69,14 @@ public class MessageServer implements Serializable {
         this.description = description;
     }
 
+    public MessageServer(MessageType message, Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
+        this.message = message;
+        this.customer1 = customer1;
+        this.customer2 = customer2;
+        this.offer1 = offer1;
+        this.offer2 = offer2;
+    }
+
     public MessageServer(MessageType message, PokemonAll pokemonAll) {
         this.message=message;
         this.pokemonAll=pokemonAll;
@@ -77,8 +90,20 @@ public class MessageServer implements Serializable {
         return description;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomer1() {
+        return customer1;
+    }
+
+    public Customer getCustomer2() {
+        return customer2;
+    }
+
+    public Collection getOffer1() {
+        return offer1;
+    }
+
+    public Collection getOffer2() {
+        return offer2;
     }
 
     public MessageType getMessage() {

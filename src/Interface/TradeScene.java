@@ -1,6 +1,9 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Card.Card;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.ATrade;
 import javafx.embed.swing.SwingFXUtils;
@@ -18,6 +21,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 
 
@@ -53,8 +60,13 @@ public class TradeScene {
     static TextFlow myOfferTitle;
     static TextFlow otherOfferTitle;
 
+    static Collection myCardOffer;
+    static Collection otherCardOffer;
+
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
+        myCardOffer = new Collection();
+        otherCardOffer = new Collection();
         myC = myCustomer;
         otherC = otherCustomer;
         myImageList.removeAll(myImageList);
@@ -137,6 +149,33 @@ public class TradeScene {
 
         Button raise = new Button("Raise");
         Button accept = new Button("Accept");
+
+        //listener bottoni
+        raise.setOnAction(event -> {
+            try {
+                Socket socket = new Socket("localhost", 8889);
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                boolean flag = (boolean)(is.readObject());
+                if(flag){
+                    System.out.println("raised new offer");
+                }
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            //todo quando si fa il raise poi fare il display di una infobox con switch case che controlla cosa scrivere
+            //todo mettere il serializable in a trade poi capiamo per cosa (forse list trade scene)
+        });
+        refuse.setOnAction(event -> {
+
+        });
+        accept.setOnAction(event -> {
+
+        });
         buttonsBox.getChildren().addAll(refuse, raise, accept);
         if(!flagStarted) {
             mainPane.setCenter(mainGrid);
@@ -202,7 +241,7 @@ public class TradeScene {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 1) {
 
-                                //myCollFlow.getChildren().remove(imageView);
+                                myCardOffer.addCardToCollection(card);
                                 addToOffer(myOfferGrid, card,flag);
                                 myOfferPane.setCenter(myOfferGrid);
                                 myCollectionList.remove(card);
@@ -215,8 +254,7 @@ public class TradeScene {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 1) {
 
-
-                                //otherCollFlow.getChildren().remove(imageView);
+                                otherCardOffer.addCardToCollection(card);
                                 addToOffer(otherOfferGrid,card,flag);
                                 otherOfferPane.setCenter(otherOfferGrid);
                                 otheCollectionList.remove(card);
@@ -270,15 +308,15 @@ public class TradeScene {
                     if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
                         if(flag) {
+                            myCardOffer.removeCardFromCollection(card);
                             myCollFlow.getChildren().add(pane);
-                           // myCollectionList.add(c);
                             restoreCollection(c, flag, myCollFlow, myCollectionList);
                             myImageList.remove(c);
                             flow.getChildren().remove(pane);
 
                         }
                         else{
-                            //otheCollectionList.add(c);
+                            otherCardOffer.removeCardFromCollection(card);
                             otherCollFlow.getChildren().add(pane);
                             restoreCollection(c, flag, otherCollFlow, otheCollectionList);
                             otherImageList.remove(c);
@@ -329,6 +367,7 @@ public class TradeScene {
                         if (flag) {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
+                                    myCardOffer.addCardToCollection(c);
                                     myCollectionList.remove(c);
                                     addToOffer(myOfferGrid, c, flag);
                                     myOfferPane.setCenter(myOfferGrid);
@@ -340,6 +379,7 @@ public class TradeScene {
                         } else {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
+                                    otherCardOffer.addCardToCollection(c);
                                     otheCollectionList.remove(c);
                                     addToOffer(otherOfferGrid, c, flag);
                                     otherOfferPane.setCenter(otherOfferGrid);

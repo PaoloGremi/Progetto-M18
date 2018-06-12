@@ -56,12 +56,16 @@ public class MultiThreadServer implements Runnable {
                     os.writeObject(customer);
                     csocket.close();
                     break;
-                //case CREATEOFFER:
-                //case SWITCHCARDS:
                 case CREATEOFFER:
+                    tradeCenter.createTrade(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2());
+                    os.writeObject(Boolean.TRUE);
+                    csocket.close();
                     break;
-                case SWITCHCARDS:
+                case SEARCHOFFER:
+                    os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
+                    csocket.close();
                     break;
+                //case SWITCHCARDS:
                 case VERIFYPASSWORD:
                     boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
@@ -74,7 +78,7 @@ public class MultiThreadServer implements Runnable {
                     break;
 
                 case SEARCHUSER:
-                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer().getUsername());
+                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer1().getUsername());
                     os.writeObject(users);
                     csocket.close();
                     break;
