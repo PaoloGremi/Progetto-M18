@@ -3,7 +3,6 @@ package Interface;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.ATrade;
-import javafx.beans.binding.Bindings;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -20,7 +18,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -154,7 +151,6 @@ public class TradeScene {
     }
 
     static BorderPane displayCards(Customer customer, TextFlow title, ScrollPane grid, FlowPane flowPane, boolean flag, ArrayList<Card> collection){
-        boolean flagO = flag;
         BorderPane pane = new BorderPane();
         pane.setTop(title);                 //titolo
         //FlowPane flowPane = new FlowPane();
@@ -201,15 +197,15 @@ public class TradeScene {
                             MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
                         }
                     }
-                    if(flagO) {
+                    if(flag) {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 1) {
 
                                 //myCollFlow.getChildren().remove(imageView);
-                                addToOffer(myOfferGrid, card,flagO);
+                                addToOffer(myOfferGrid, card,flag);
                                 myOfferPane.setCenter(myOfferGrid);
                                 myCollectionList.remove(card);
-                                restoreCollection(null,flagO,myCollFlow, myCollectionList);
+                                restoreCollection(null,flag,myCollFlow, myCollectionList);
 
                             }
                         }
@@ -220,10 +216,10 @@ public class TradeScene {
 
 
                                 //otherCollFlow.getChildren().remove(imageView);
-                                addToOffer(otherOfferGrid,card,flagO);
+                                addToOffer(otherOfferGrid,card,flag);
                                 otherOfferPane.setCenter(otherOfferGrid);
                                 otheCollectionList.remove(card);
-                                restoreCollection(null,flagO, otherCollFlow, otheCollectionList );
+                                restoreCollection(null,flag, otherCollFlow, otheCollectionList );
 
                             }
                         }

@@ -3,8 +3,6 @@ package Interface;
 import TradeCenter.Customers.Customer;
 import TradeCenter.TradeCenter;
 import TradeCenter.Trades.Trade;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -58,11 +56,12 @@ public class ListTradesScene {
                 };
 
         //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
-        tradeList.setFixedCellSize(80.0);
-        tradeList.setStyle("-fx-control-inner-background: #feff2e;");
-        //todo trovare come fare colore diverso dei bordi della label, o fare spaziatura in modo da colorare il fondo con setBackground
-        //todo vedi: https://stackoverflow.com/questions/29602718/insert-space-between-cells-in-list-view-javafx?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+        //tradeList.setFixedCellSize(70.0);
+        //tradeList.setStyle("-fx-control-inner-background: #feff2e;");
 
+        //todo trovare come fare colore diverso dei bordi della label, o fare spaziatura in modo da colorare il fondo con setBackground
+
+        //tradeList.setOnMousePressed(eventHandlerBox);
         tradeList.setOnMouseClicked(eventHandlerBox);
         //todo la nullpointer exception probabilmente è perche non esiste il secondo customer, vedere con marco come fixare
         //TODO infatti se prima si apre il trade con l'utente l'eccezione non si genera, ma Altro PROBLEMA
@@ -75,6 +74,8 @@ public class ListTradesScene {
 
         mainPane.setTop(title);
         mainPane.setCenter(scrollableList);
+        //todo mettere a posto css
+        mainPane.getStylesheets().add("Interface/ListTradesCSS.css"); //nei css usare i percorsi relativi
         return mainPane;
     }
 }
