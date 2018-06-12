@@ -134,10 +134,10 @@ public class TradeScene {
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
         Button refuse = new Button("Refuse");
+
         Button raise = new Button("Raise");
         Button accept = new Button("Accept");
         buttonsBox.getChildren().addAll(refuse, raise, accept);
-
         if(!flagStarted) {
             mainPane.setCenter(mainGrid);
             mainPane.setBottom(buttonsBox);
@@ -147,6 +147,7 @@ public class TradeScene {
                 restoreFromPreviousTrade(trade);
             }
         }
+        mainPane.getStylesheets().add("Interface/ButtonsCSS.css");
         return mainPane;
     }
 

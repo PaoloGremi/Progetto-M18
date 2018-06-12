@@ -56,7 +56,7 @@ public class OtherUserProfileScene {
         hBox = new HBox();
         hBox.getChildren().addAll(buttons, titleBox);
         hBox.setPadding(new Insets(10));
-        hBox.setSpacing(400);
+        hBox.setSpacing(300);
         hBox.setStyle("-fx-background-color: #cc003a");
 
         borderPane.setCenter(displayCollection(otherCustomer));

@@ -61,18 +61,19 @@ public class MainWindow {
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_LEFT);
         vbox.setPadding(new Insets(20, 10, 20, 20));
-        vbox.setSpacing(200);
+        vbox.setSpacing(190);
         // Username label
         Label username = new Label(customer.getUsername());
         username.setTextFill(Color.web("#ffffff"));
         username.setStyle("-fx-font-weight: bold");
         // Tile of buttons for main navigation
-        TilePane tileButtons = new TilePane(Orientation.VERTICAL);
-        tileButtons.setTileAlignment(Pos.CENTER_LEFT);
-        tileButtons.setPrefRows(5);
+        VBox tileButtons = new VBox();
+        tileButtons.setAlignment(Pos.CENTER_LEFT);
+        //tileButtons.setPrefRows(5);
         tileButtons.setPadding(new Insets(20, 10, 20, 10));
-        tileButtons.setHgap(10.0);
-        tileButtons.setVgap(8.0);
+        tileButtons.setSpacing(8);
+        //tileButtons.setHgap(10.0);
+        //tileButtons.setVgap(8.0);
         // Action buttons
         Button myCollection = new Button("My Collection");
         Button myWishlist = new Button("My Wishlist");
@@ -127,6 +128,7 @@ public class MainWindow {
 
         // Prepare scene and dispay it
         Scene scene = new Scene(layout, 1200, 700);
+        scene.getStylesheets().add("Interface/ButtonsCSS.css");
         window.setScene(scene);
         window.setResizable(false);
         window.show();
