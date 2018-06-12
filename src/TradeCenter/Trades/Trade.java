@@ -1,5 +1,6 @@
 package TradeCenter.Trades;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Trade extends ATrade {

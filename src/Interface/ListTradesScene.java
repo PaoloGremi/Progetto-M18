@@ -66,7 +66,7 @@ public class ListTradesScene {
                             if (trade.isDoneDeal()) {
 
                             } else {
-                                MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(), true));
+                                MainWindow.refreshDynamicContent(TradeScene.display(trade, trade.getCustomer1(), trade.getCustomer2(), true));
                             }
                         }
                     };

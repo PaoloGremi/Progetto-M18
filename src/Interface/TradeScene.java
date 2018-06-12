@@ -241,7 +241,7 @@ public class TradeScene {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 1) {
 
-                                myCardOffer.addCardToCollection(card);
+
                                 addToOffer(myOfferGrid, card,flag);
                                 myOfferPane.setCenter(myOfferGrid);
                                 myCollectionList.remove(card);
@@ -254,7 +254,7 @@ public class TradeScene {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 1) {
 
-                                otherCardOffer.addCardToCollection(card);
+
                                 addToOffer(otherOfferGrid,card,flag);
                                 otherOfferPane.setCenter(otherOfferGrid);
                                 otheCollectionList.remove(card);
@@ -283,6 +283,13 @@ public class TradeScene {
 
     static ScrollPane addToOffer(ScrollPane scrollPane, Card card, boolean flag){
         ArrayList<Card> imageList;
+
+        if(flag){
+            myCardOffer.addCardToCollection(card);
+        }
+        else{
+            otherCardOffer.addCardToCollection(card);
+        }
 
         if(flag) {
             myImageList.add(card);
@@ -367,7 +374,7 @@ public class TradeScene {
                         if (flag) {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
-                                    myCardOffer.addCardToCollection(c);
+                                    //myCardOffer.addCardToCollection(c);
                                     myCollectionList.remove(c);
                                     addToOffer(myOfferGrid, c, flag);
                                     myOfferPane.setCenter(myOfferGrid);
@@ -379,7 +386,7 @@ public class TradeScene {
                         } else {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
-                                    otherCardOffer.addCardToCollection(c);
+                                   // otherCardOffer.addCardToCollection(c);
                                     otheCollectionList.remove(c);
                                     addToOffer(otherOfferGrid, c, flag);
                                     otherOfferPane.setCenter(otherOfferGrid);
@@ -398,7 +405,7 @@ public class TradeScene {
     }
 
     static void restoreFromPreviousTrade(ATrade trade){
-         GridPane mainGrid1 = new GridPane();
+        GridPane mainGrid1 = new GridPane();
         myImageList.removeAll(myImageList);
         otherImageList.removeAll(otherImageList);
         myCollectionList.removeAll(myCollectionList);
@@ -413,7 +420,7 @@ public class TradeScene {
             myCollectionList.add(card);
         }
 
-        for (Card card : trade.getCustomer1().getCollection()) {
+        for (Card card : trade.getCustomer2().getCollection()) {
             otheCollectionList.add(card);
         }
 

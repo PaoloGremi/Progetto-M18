@@ -1,11 +1,12 @@
 package TradeCenter.Trades;
 
+import java.io.Serializable;
 import java.util.Date;
 import TradeCenter.Customers.*;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 
-public abstract class ATrade {
+public abstract class ATrade implements Serializable {
 
     /**
      *@param customer1 Customer 1
@@ -35,7 +36,7 @@ public abstract class ATrade {
         this.customer2 = customer2;
         if (offer1.collectionIsEmpty() || offer2.collectionIsEmpty()) throw new EmptyCollectionException();
         else {
-            this.offer1 = offer2;
+            this.offer1 = offer1;
             this.offer2 = offer2;
         }
         this.date = new Date();
