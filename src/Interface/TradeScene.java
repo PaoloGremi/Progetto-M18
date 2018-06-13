@@ -147,7 +147,6 @@ public class TradeScene {
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
         Button refuse = new Button("Refuse");
-
         Button raise = new Button("Raise");
         Button accept = new Button("Accept");
 
@@ -156,7 +155,12 @@ public class TradeScene {
             try {
                 Socket socket = new Socket("localhost", 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                if(!flagStarted){
+                    //todo al primo scambio tira null pointer perche le collezioni sono vuote
+                    os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                }else{
+                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                }
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                 boolean flag = (boolean)(is.readObject());
                 if(flag){
@@ -171,21 +175,54 @@ public class TradeScene {
             //todo quando si fa il raise poi fare il display di una infobox con switch case che controlla cosa scrivere
             //todo mettere il serializable in a trade poi capiamo per cosa (forse list trade scene)
         });
+        //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
+        //es: quando faccio proposta non posso riproporre
         refuse.setOnAction(event -> {
-            //todo cambiare logica dei trade. i trade possono finire sia con esito positivo che negativo!!! (quando isDoneDeal è true)
-            //serve capire come riconoscere un trade da un altro dato che permettiamo che 2 utenti facciano piu trade in contemporanea.
-            //se le loro carte sono sempre le stesse e le possono scambiare come vogliono a che serve fare in modo che facciano piu trade diversi
+            try {
+                Socket socket = new Socket("localhost", 8889);
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                os.writeObject(new MessageServer(MessageType.ENDTRADE, (Trade)(trade)));
+                socket.close();
+                System.out.println("refused offer");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //todo appena se offerte dicverse da caso precedente non si puo fare accept
 
         });
         accept.setOnAction(event -> {
+            boolean condition = myCardOffer.equals(trade.getOffer1()) && otherCardOffer.equals(trade.getOffer2());
+            if(true){//todo controllare condizione
+
+                //todo fare in modo che una volta accettato non si puo piu schiacciare
+                try {
+                    Socket socket = new Socket("localhost", 8889);
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    os.writeObject(new MessageServer(MessageType.SWITCHCARDS, (Trade)(trade)));
+                    socket.close();
+                    System.out.println("accepted offer");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                Text errorText = new Text("You cannot accept if you change the offers!");
+                TextFlow error = new TextFlow();
+                error.setStyle("-fx-background-color: #ff1e36");
+                error.getChildren().removeAll(error.getChildren());
+                error.getChildren().add(errorText);
+            }
+
 
         });
-        buttonsBox.getChildren().addAll(refuse, raise, accept);
+        //buttonsBox.getChildren().addAll(refuse, raise, accept);
         if(!flagStarted) {
+            raise.setText("New Trade");
+            buttonsBox.getChildren().addAll(raise);
             mainPane.setCenter(mainGrid);
             mainPane.setBottom(buttonsBox);
-        }
-        else{
+        }else{
+            buttonsBox.getChildren().addAll(refuse, raise, accept);
             if(trade!=null) {
                 restoreFromPreviousTrade(trade);
             }

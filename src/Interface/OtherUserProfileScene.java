@@ -91,12 +91,13 @@ public class OtherUserProfileScene {
             try {
                 socket = new Socket("localhost", 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.CREATEOFFER, myCustomer, otherCustomer, null, null));
+                os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer, otherCustomer));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                 flag = (boolean)(is.readObject());
                 if(flag){
                     MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
                 }else{
+                    //todo trade gia esistente, fare infobox, poi rimandare a trade
                     os.writeObject(new MessageServer(MessageType.SEARCHTRADE, myCustomer, otherCustomer));
                     Trade searchTrade = (Trade)(is.readObject());
                     MainWindow.refreshDynamicContent(TradeScene.display(searchTrade, myCustomer, otherCustomer,true));

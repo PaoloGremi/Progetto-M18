@@ -12,6 +12,7 @@ public class Trade extends ATrade {
      */
     private ArrayList<Offer> history = new ArrayList<>();
     private boolean doneDeal;
+    private boolean positiveEnd;
 
     /**
      * Start a trade from an offer
@@ -21,6 +22,7 @@ public class Trade extends ATrade {
         super(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2());
         this.history.add(offer);
         this.doneDeal = false;
+        this.positiveEnd = false;
     }
 
     /**
@@ -51,6 +53,18 @@ public class Trade extends ATrade {
      */
     public boolean isDoneDeal() {
         return doneDeal;
+    }
+
+    //todo add javadocs
+    public void doneDeal(boolean result) {
+        //todo cosi il metono checkdeal è inutile
+        this.doneDeal = true;
+        this.positiveEnd = result;
+    }
+
+    //todo add javadocs
+    public boolean isPositiveEnd() {
+        return positiveEnd;
     }
 
     public boolean betweenUsers(String username) {

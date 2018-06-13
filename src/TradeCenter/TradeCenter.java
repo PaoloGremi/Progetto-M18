@@ -280,6 +280,12 @@ public class TradeCenter {
         }
     }
 
+    //todo add javadocs
+    public void updateTrade(Offer offer){
+        Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
+        trade.update(offer);
+    }
+
     /**
      * A method that checks if two users are already trading
      *
@@ -287,10 +293,11 @@ public class TradeCenter {
      * @param otherCustomer customer2
      * @return if the user are already trading
      */
-    private boolean notAlreadyTradingWith(Customer myCustomer, Customer otherCustomer){
+    public boolean notAlreadyTradingWith(Customer myCustomer, Customer otherCustomer){
         boolean flag = true;
         for(Trade trade: activeTrades){
             if(trade.betweenUsers(myCustomer.getUsername()) && trade.betweenUsers(otherCustomer.getUsername())){
+                //todo vedere quando passa se stesso con se stesso, non si puo creare a monte
                 flag = false;
             }
         }
@@ -313,9 +320,8 @@ public class TradeCenter {
      *
      * @param trade a card exchange
      */
-    private void switchCards(ATrade trade){
+    private void switchCards(Trade trade){
         if(activeTrades.contains(trade)) {
-
             Customer customer1 = trade.getCustomer1();
             Customer customer2 = trade.getCustomer2();
 
@@ -329,16 +335,26 @@ public class TradeCenter {
             }
             proxy.updateCustomer(customer1);
             proxy.updateCustomer(customer2);
-
+            //todo vedere se serve fare update proxy
         }else{
             throw new NoSuchTradeException();
         }
+    }
+
+    public void endTrade(Trade trade, boolean result){
+        if(result){
+            switchCards(trade);
+        }
+        activeTrades.remove(trade);     //deve essere cosi l'ordine altrimenti trade != trade negli active trade
+        trade.doneDeal(result);
+        doneTrades.add(trade);
     }
 
     /**
      * Check for deals that are over, if so it updates the list of active and done deals
      * Also if a deal it's over, the exchange is done
      */
+    /*per ora inutile viene tutto fatto nel metodo switchcards
     public void checkDoneDeals(){
         for(Trade trade : activeTrades){        //todo togliere ciclo, ricontrollare per sincronia con interfaccia grafica e db
             if(trade.isDoneDeal()){
@@ -348,6 +364,8 @@ public class TradeCenter {
             }
         }
     }
+
+    */
 
     /**
      * A method that shows a log of all the trades that ended

@@ -7,6 +7,7 @@ import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
+import TradeCenter.Trades.Offer;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -55,6 +56,8 @@ public class MultiThreadServer implements Runnable {
                     Customer customer = tradeCenter.searchCustomer(m.getString1());
                     os.writeObject(customer);
                     break;
+                case POSSIBLETRADE:
+                    os.writeObject(tradeCenter.notAlreadyTradingWith(m.getCustomer1(), m.getCustomer2()));
                 case CREATEOFFER:
                     try{
                         tradeCenter.createTrade(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2());
@@ -63,13 +66,22 @@ public class MultiThreadServer implements Runnable {
                         os.writeObject(Boolean.FALSE);
                     }
                     break;
+                case RAISEOFFER:
+                    tradeCenter.updateTrade(new Offer(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2()));
+                    os.writeObject(Boolean.TRUE);       //per avere la stampa
+                    break;
                 case SEARCHOFFER:
                     os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
                     break;
                 case SEARCHTRADE:
                     os.writeObject(tradeCenter.takeStartedTrade(m.getCustomer1(), m.getCustomer2()));
                     break;
-                //case SWITCHCARDS:
+                case SWITCHCARDS:
+                    tradeCenter.endTrade(m.getTrade(), true);
+                    break;
+                case ENDTRADE:
+                    tradeCenter.endTrade(m.getTrade(), false);
+                    break;
                 case VERIFYPASSWORD:
                     boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
