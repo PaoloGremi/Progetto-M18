@@ -5,6 +5,7 @@ import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.Trade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -93,16 +94,20 @@ public class OtherUserProfileScene {
                 os.writeObject(new MessageServer(MessageType.CREATEOFFER, myCustomer, otherCustomer, null, null));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                 flag = (boolean)(is.readObject());
+                if(flag){
+                    MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
+                }else{
+                    os.writeObject(new MessageServer(MessageType.SEARCHTRADE, myCustomer, otherCustomer));
+                    Trade searchTrade = (Trade)(is.readObject());
+                    MainWindow.refreshDynamicContent(TradeScene.display(searchTrade, myCustomer, otherCustomer,true));
+                }
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            if(flag){
-                MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
-            }else{
-                MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,true));
-            }
+
         });
 
         return borderPane;

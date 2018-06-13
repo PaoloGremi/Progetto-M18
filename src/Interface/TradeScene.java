@@ -66,22 +66,6 @@ public class TradeScene {
 
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
-        if(flagStarted){
-            Socket socket = null;
-            try {
-                socket = new Socket("localhost", 8889);
-                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.SEARCHTRADE, myCustomer, otherCustomer));
-                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                Trade trade1 = (Trade) (is.readObject());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
         myCardOffer = new Collection();
         otherCardOffer = new Collection();
         myC = myCustomer;
