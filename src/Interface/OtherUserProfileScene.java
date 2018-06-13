@@ -1,5 +1,7 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
@@ -16,6 +18,11 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
 
 public class OtherUserProfileScene {
@@ -78,7 +85,24 @@ public class OtherUserProfileScene {
             MainWindow.refreshDynamicContent(borderPane);
         });
         trade.setOnAction(event -> {
-            MainWindow.refreshDynamicContent(TradeScene.display(null,myCustomer, otherCustomer,false));// todo mettere i parametri, della fuznione
+            Socket socket = null;
+            boolean flag = false;
+            try {
+                socket = new Socket("localhost", 8889);
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                os.writeObject(new MessageServer(MessageType.CREATEOFFER, myCustomer, otherCustomer, null, null));
+                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                flag = (boolean)(is.readObject());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+            if(flag){
+                MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
+            }else{
+                MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,true));
+            }
         });
 
         return borderPane;

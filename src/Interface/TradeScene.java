@@ -6,6 +6,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.ATrade;
+import TradeCenter.Trades.Trade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -50,7 +51,7 @@ public class TradeScene {
     private static FlowPane myOfferFlow;
     private static FlowPane otherOfferFlow;
     private static ArrayList<Card> myCollectionList = new ArrayList<Card>();
-    private static ArrayList<Card> otheCollectionList = new ArrayList<Card>();
+    private static ArrayList<Card> otherCollectionList = new ArrayList<Card>();
     static Text myCollection;
     static Text otherCollection;
     static Text myOffer;
@@ -65,6 +66,22 @@ public class TradeScene {
 
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
+        if(flagStarted){
+            Socket socket = null;
+            try {
+                socket = new Socket("localhost", 8889);
+                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                os.writeObject(new MessageServer(MessageType.SEARCHTRADE, myCustomer, otherCustomer));
+                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                Trade trade1 = (Trade) (is.readObject());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
         myCardOffer = new Collection();
         otherCardOffer = new Collection();
         myC = myCustomer;
@@ -72,7 +89,7 @@ public class TradeScene {
         myImageList.removeAll(myImageList);
         otherImageList.removeAll(otherImageList);
         myCollectionList.removeAll(myCollectionList);
-        otheCollectionList.removeAll(otheCollectionList);
+        otherCollectionList.removeAll(otherCollectionList);
         mainPane = new BorderPane();
         myCollFlow = new FlowPane();
         otherCollFlow = new FlowPane();
@@ -126,7 +143,7 @@ public class TradeScene {
         if(!flagStarted) {
             //costruisco le singole griglie
             myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid, myCollFlow, true, myCollectionList);
-            otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid, otherCollFlow, false, otheCollectionList);
+            otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid, otherCollFlow, false, otherCollectionList);
             myOfferPane = displayCards(null, myOfferTitle, myOfferGrid, myOfferFlow, false, null);
             otherOfferPane = displayCards(null, otherOfferTitle, otherOfferGrid, otherOfferFlow, false, null);
 
@@ -171,6 +188,9 @@ public class TradeScene {
             //todo mettere il serializable in a trade poi capiamo per cosa (forse list trade scene)
         });
         refuse.setOnAction(event -> {
+            //todo cambiare logica dei trade. i trade possono finire sia con esito positivo che negativo!!! (quando isDoneDeal è true)
+            //serve capire come riconoscere un trade da un altro dato che permettiamo che 2 utenti facciano piu trade in contemporanea.
+            //se le loro carte sono sempre le stesse e le possono scambiare come vogliono a che serve fare in modo che facciano piu trade diversi
 
         });
         accept.setOnAction(event -> {
@@ -257,8 +277,8 @@ public class TradeScene {
 
                                 addToOffer(otherOfferGrid,card,flag);
                                 otherOfferPane.setCenter(otherOfferGrid);
-                                otheCollectionList.remove(card);
-                                restoreCollection(null,flag, otherCollFlow, otheCollectionList );
+                                otherCollectionList.remove(card);
+                                restoreCollection(null,flag, otherCollFlow, otherCollectionList );
 
                             }
                         }
@@ -325,7 +345,7 @@ public class TradeScene {
                         else{
                             otherCardOffer.removeCardFromCollection(c);
                             otherCollFlow.getChildren().add(pane);
-                            restoreCollection(c, flag, otherCollFlow, otheCollectionList);
+                            restoreCollection(c, flag, otherCollFlow, otherCollectionList);
                             otherImageList.remove(c);
                             flow.getChildren().remove(pane);
 
@@ -387,10 +407,10 @@ public class TradeScene {
                             if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
                                 if (mouseEvent1.getClickCount() == 1) {
                                    // otherCardOffer.addCardToCollection(c);
-                                    otheCollectionList.remove(c);
+                                    otherCollectionList.remove(c);
                                     addToOffer(otherOfferGrid, c, flag);
                                     otherOfferPane.setCenter(otherOfferGrid);
-                                    restoreCollection(null,flag, otherCollFlow, otheCollectionList );
+                                    restoreCollection(null,flag, otherCollFlow, otherCollectionList );
                                 }
                             }
                         }
@@ -409,7 +429,7 @@ public class TradeScene {
         myImageList.removeAll(myImageList);
         otherImageList.removeAll(otherImageList);
         myCollectionList.removeAll(myCollectionList);
-        otheCollectionList.removeAll(otheCollectionList);
+        otherCollectionList.removeAll(otherCollectionList);
 
         restoreScroll(myCollectionPane, myCollectionGrid, myCollFlow);
         restoreScroll(myOfferPane, myOfferGrid, myOfferFlow);
@@ -421,7 +441,7 @@ public class TradeScene {
         }
 
         for (Card card : trade.getCustomer2().getCollection()) {
-            otheCollectionList.add(card);
+            otherCollectionList.add(card);
         }
 
         for(Card card : trade.getOffer1()){
@@ -433,9 +453,9 @@ public class TradeScene {
         }
 
         myCollectionList.removeAll(myImageList);
-        otheCollectionList.removeAll(otherImageList);
+        otherCollectionList.removeAll(otherImageList);
         restoreCollection(null, true, myCollFlow, myCollectionList);
-        restoreCollection(null, false, otherCollFlow, otheCollectionList);
+        restoreCollection(null, false, otherCollFlow, otherCollectionList);
 
         myCollectionPane.setCenter(myCollectionGrid);
         myCollectionPane.setTop(myCollectionTitle);
@@ -483,7 +503,7 @@ public class TradeScene {
         mainGrid1.setVgap(10);
 
         restoreCollection(null, true, myCollFlow, myCollectionList);
-        restoreCollection(null, false, otherCollFlow, otheCollectionList);
+        restoreCollection(null, false, otherCollFlow, otherCollectionList);
 
         mainGrid1.add(myCollectionPane,1,1);
         mainGrid1.add(otherCollectionPane,1,2);

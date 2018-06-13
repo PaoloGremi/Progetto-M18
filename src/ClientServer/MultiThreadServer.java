@@ -3,6 +3,7 @@ package ClientServer;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
@@ -48,50 +49,48 @@ public class MultiThreadServer implements Runnable {
                     catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e){
                         os.writeObject(e);
                     }
-                    csocket.close();
                     break;
                 case SEARCHCUSTOMER:
                     tradeCenter.searchCustomer(m.getString1());
                     Customer customer = tradeCenter.searchCustomer(m.getString1());
                     os.writeObject(customer);
-                    csocket.close();
                     break;
                 case CREATEOFFER:
-                    tradeCenter.createTrade(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2());
-                    os.writeObject(Boolean.TRUE);
-                    csocket.close();
+                    try{
+                        tradeCenter.createTrade(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2());
+                        os.writeObject(Boolean.TRUE);
+                    }catch (AlreadyStartedTradeException e){
+                        os.writeObject(Boolean.FALSE);
+                    }
                     break;
                 case SEARCHOFFER:
                     os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
-                    csocket.close();
+                    break;
+                case SEARCHTRADE:
+                    os.writeObject(tradeCenter.takeStartedTrade(m.getCustomer1(), m.getCustomer2()));
                     break;
                 //case SWITCHCARDS:
                 case VERIFYPASSWORD:
                     boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
                     os.writeObject(flagPass);
-                    csocket.close();
                     break;
                 case LOGDIN:
                     boolean flagLog = tradeCenter.loggedIn(m.getString1(),m.getString2());
                     os.writeObject(flagLog);
-                    csocket.close();
                     break;
 
                 case SEARCHUSER:
                     ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer1().getUsername());
                     os.writeObject(users);
-                    csocket.close();
                     break;
 
                 case SEARCHDESCRIPTION:
                     ArrayList<HashMap<Customer, Collection>> descriptions = tradeCenter.searchByDescription(m.getDescription());
                     os.writeObject(descriptions);
-                    csocket.close();
                     break;
                 case REMOVEWISH:
                     Customer customer2 = tradeCenter.searchCustomer(m.getString1());
                     tradeCenter.removeFromWishList(m.getDescription(),customer2);
-                    csocket.close();
                     break;
                 case FILTERPOKEMONDESCR:
                     HashSet<PokemonDescription> descrMatched = tradeCenter.searchDescrInPokemonDb(m.getPokemonAll());
@@ -103,14 +102,10 @@ public class MultiThreadServer implements Runnable {
                         ArrayList<HashMap<Customer, Collection>> listVuota=new ArrayList<>();
                         os.writeObject(listVuota);
                         System.err.println("Piu descrizioni trovate o nessuna, ancora da implementare");}
-                    csocket.close();
-
-
-
-                    csocket.close();
                     break;
 
             }
+            csocket.close();
 
         } catch (IOException e) {
             System.out.println(e);

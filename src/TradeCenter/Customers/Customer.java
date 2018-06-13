@@ -26,7 +26,6 @@ public class Customer implements Serializable {
     private String password;
     private Collection collection;
     private ArrayList<Description> wishList;
-    private ArrayList<String> tradeList;
 
     private static final long serialVersionUID = 1977347776266038746L;
 
@@ -37,8 +36,6 @@ public class Customer implements Serializable {
         this.password = checkPasswordConditions(password);
         this.collection = new Collection();
         this.wishList = new ArrayList<>();
-        this.tradeList = new ArrayList<>();
-
     }
 
     /**
@@ -186,25 +183,6 @@ public class Customer implements Serializable {
         }
 
         return null;
-    }
-
-    /**
-     * Add a trade to the list if the customer is involved.
-     *
-     * @param trade Trade to add
-     */
-    public void addToTradeList(String trade) {
-        tradeList.add(trade);
-    }
-
-    /**
-     * Method to return the list with all the trades of the customer
-     *
-     * @return The list with the trades
-     */
-    public ArrayList<String> getTradeList() {
-        if (tradeList.isEmpty()) throw new NoTradesExeption();
-        return tradeList;
     }
 
     /**

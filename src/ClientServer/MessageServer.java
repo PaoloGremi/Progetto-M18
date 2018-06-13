@@ -43,6 +43,12 @@ public class MessageServer implements Serializable {
         this.customer1 = customer;
     }
 
+    public MessageServer(MessageType message, Customer customer1, Customer customer2) {
+        this.message = message;
+        this.customer1 = customer1;
+        this.customer2 = customer2;
+    }
+
     public MessageServer(MessageType message, String username) {
         this.message = message;
         this.string1 = username;

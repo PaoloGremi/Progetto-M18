@@ -7,6 +7,7 @@ import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
+import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchDescriptionFoundedException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
@@ -259,18 +260,52 @@ public class TradeCenter {
         return searched;
     }
 
-//todo add javadocs
+    //todo add javadocs
     public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
-        try {
-            Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
-            activeTrades.add(Trade);
+        if(notAlreadyTradingWith(customer1, customer2)){
+            try {
+                Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
+                activeTrades.add(Trade);
 
-            //todo vedere se si deve fare update con il db
-        }catch (MyselfTradeException e){
-            System.err.println(e.getMessage());
-        }catch(EmptyCollectionException e){
-            System.err.println(e.getMessage());
+                //todo vedere se si deve fare update con il db
+            }catch (MyselfTradeException e){
+                System.err.println(e.getMessage());
+            }catch(EmptyCollectionException e){
+                System.err.println(e.getMessage());
+            }
+        }else{
+            throw new AlreadyStartedTradeException(customer2.getUsername());
+
+            //todo propagar eccezione all'interfaccia tramite socket
         }
+    }
+
+    /**
+     * A method that checks if two users are already trading
+     *
+     * @param myCustomer customer1
+     * @param otherCustomer customer2
+     * @return if the user are already trading
+     */
+    private boolean notAlreadyTradingWith(Customer myCustomer, Customer otherCustomer){
+        boolean flag = true;
+        for(Trade trade: activeTrades){
+            if(trade.betweenUsers(myCustomer.getUsername()) && trade.betweenUsers(otherCustomer.getUsername())){
+                flag = false;
+            }
+        }
+        return flag;
+    }
+
+    //todo add javadocs
+    public Trade takeStartedTrade(Customer myCustomer, Customer otherCustomer){
+        Trade searchTrade = null;
+        for(Trade trade : activeTrades){
+            if(trade.betweenUsers(myCustomer.getUsername()) && trade.betweenUsers(otherCustomer.getUsername())){
+                searchTrade = trade;
+            }
+        }
+        return searchTrade;
     }
 
     /**
