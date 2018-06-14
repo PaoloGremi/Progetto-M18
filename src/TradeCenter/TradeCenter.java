@@ -138,8 +138,20 @@ public class TradeCenter {
 
     //todo add javadocs, check if the customer exist,
     public void addCardtoCustomer(Customer customer, Card card){
-        customer.addCard(card);
+        customers.get(customer.getId()).addCard(card);
         proxy.updateCustomer(customer);
+    }
+
+    //todo add javadocs, check if the customer exist,
+    public void removeCardFromCustomer(Customer customer, Card card){
+        customers.get(customer.getId()).removeCard(card);
+        proxy.updateCustomer(customers.get(customer.getId()));
+    }
+
+    //todo add javadocs
+    public void addToWishList(Description cardDescription, Customer customer){
+        customers.get(customer.getId()).addCardToWishList(cardDescription);
+        proxy.updateCustomer(customers.get(customer.getId()));
     }
 
     /**
@@ -148,9 +160,8 @@ public class TradeCenter {
      * @param customer the customer that wants to remove the card
      */
     public void removeFromWishList(Description cardDescription, Customer customer) {
-
-        customer.removeFromWishList(cardDescription);
-        //todo fare update con proxy
+        customers.get(customer.getId()).removeFromWishList(cardDescription);
+        proxy.updateCustomer(customers.get(customer.getId()));
     }
 
     /**
@@ -330,7 +341,7 @@ public class TradeCenter {
      *
      * @param trade a card exchange
      */
-    private void switchCards(Trade trade){
+    private synchronized void switchCards(Trade trade){
         if(contains(trade)) {
 
             for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2

@@ -200,6 +200,11 @@ public class TradeScene {
                     Socket socket = new Socket("localhost", 8889);
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     os.writeObject(new MessageServer(MessageType.SWITCHCARDS, trade));
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     socket.close();
                     System.out.println("accepted offer");
                 } catch (IOException e) {

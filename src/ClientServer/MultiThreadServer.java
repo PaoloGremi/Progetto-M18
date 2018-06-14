@@ -20,6 +20,7 @@ import java.util.HashSet;
 public class MultiThreadServer implements Runnable {
     private Socket csocket;
     private static TradeCenter tradeCenter = new TradeCenter();
+
     MultiThreadServer(Socket csocket, TradeCenter tradeCenter) {
         this.csocket = csocket;
         this.tradeCenter = tradeCenter;
@@ -42,6 +43,14 @@ public class MultiThreadServer implements Runnable {
             MessageServer m = (MessageServer) in.readObject();
 
             switch (m.getMessage()){
+                case VERIFYPASSWORD:
+                    boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
+                    os.writeObject(flagPass);
+                    break;
+                case LOGDIN:
+                    boolean flagLog = tradeCenter.loggedIn(m.getString1(),m.getString2());
+                    os.writeObject(flagLog);
+                    break;
                 case ADDCUSTOMER:
                     try {
                         tradeCenter.addCustomer(m.getString1(), m.getString2());
@@ -52,10 +61,18 @@ public class MultiThreadServer implements Runnable {
                         os.writeObject(e);
                     }
                     break;
+                case SEARCHUSER:
+                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer1().getUsername());
+                    os.writeObject(users);
+                    break;
                 case SEARCHCUSTOMER:
                     tradeCenter.searchCustomer(m.getString1());
                     Customer customer = tradeCenter.searchCustomer(m.getString1());
                     os.writeObject(customer);
+                    break;
+                case REMOVEWISH:
+                    Customer customer2 = tradeCenter.searchCustomer(m.getString1());
+                    tradeCenter.removeFromWishList(m.getDescription(),customer2);
                     break;
                 case POSSIBLETRADE:
                     os.writeObject(tradeCenter.notAlreadyTradingWith(m.getCustomer1(), m.getCustomer2()));
@@ -71,9 +88,6 @@ public class MultiThreadServer implements Runnable {
                     tradeCenter.updateTrade(new Offer(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2()));
                     os.writeObject(Boolean.TRUE);       //per avere la stampa
                     break;
-                case SEARCHOFFER:
-                    os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
-                    break;
                 case SEARCHTRADE:
                     os.writeObject(tradeCenter.takeStartedTrade(m.getCustomer1(), m.getCustomer2()));
                     break;
@@ -83,27 +97,12 @@ public class MultiThreadServer implements Runnable {
                 case ENDTRADE:
                     tradeCenter.endTrade((Trade) m.getTrade(), false);
                     break;
-                case VERIFYPASSWORD:
-                    boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
-                    os.writeObject(flagPass);
+                case SEARCHOFFER:
+                    os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
                     break;
-                case LOGDIN:
-                    boolean flagLog = tradeCenter.loggedIn(m.getString1(),m.getString2());
-                    os.writeObject(flagLog);
-                    break;
-
-                case SEARCHUSER:
-                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer1().getUsername());
-                    os.writeObject(users);
-                    break;
-
                 case SEARCHDESCRIPTION:
                     ArrayList<HashMap<Customer, Collection>> descriptions = tradeCenter.searchByDescription(m.getDescription());
                     os.writeObject(descriptions);
-                    break;
-                case REMOVEWISH:
-                    Customer customer2 = tradeCenter.searchCustomer(m.getString1());
-                    tradeCenter.removeFromWishList(m.getDescription(),customer2);
                     break;
                 case FILTERPOKEMONDESCR:
                     HashSet<PokemonDescription> descrMatched = tradeCenter.searchDescrInPokemonDb(m.getPokemonAll());

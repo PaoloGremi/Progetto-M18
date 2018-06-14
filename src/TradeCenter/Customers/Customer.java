@@ -6,7 +6,6 @@ import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
-import TradeCenter.Exceptions.UserExceptions.NoTradesExeption;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -1,10 +1,11 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import Interface.searchCard.SearchCardScene;
 import TradeCenter.Customers.Customer;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -16,11 +17,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 
-/**
- * Main GUI Window
- * @author Roberto Gallotta
- */
 public class MainWindow {
 
     /**
@@ -97,7 +97,7 @@ public class MainWindow {
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
             try {
-                dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
+                dynamicContent.getChildren().add(CollectionScene.display(retriveCustomer(customer), retriveCustomer(customer).getUsername(), false));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -106,19 +106,19 @@ public class MainWindow {
         });
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(customer.getWishList(), customer));
+            dynamicContent.getChildren().add(WishListScene.display(retriveCustomer(customer).getWishList(), retriveCustomer(customer)));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchCardScene.display(customer));
+            dynamicContent.getChildren().add(SearchCardScene.display(retriveCustomer(customer)));
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchUserScene.display(customer));
+            dynamicContent.getChildren().add(SearchUserScene.display(retriveCustomer(customer)));
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(ListTradesScene.display(customer));
+            dynamicContent.getChildren().add(ListTradesScene.display(retriveCustomer(customer)));
         });
         logOut.setOnAction(event -> {
             window.close();
@@ -144,6 +144,25 @@ public class MainWindow {
         dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
         dynamicContent.getChildren().add(node);
 
+    }
+
+    //todo add javadocs
+    private static Customer retriveCustomer(Customer customer){
+        Customer updatedCustomer = null;
+        Socket socket = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            updatedCustomer = (Customer)is.readObject();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return updatedCustomer;
     }
 
 }

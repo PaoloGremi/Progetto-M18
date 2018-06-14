@@ -1,3 +1,5 @@
+package ClientServer;
+
 import javafx.application.Application;
 
 class Client extends Thread{

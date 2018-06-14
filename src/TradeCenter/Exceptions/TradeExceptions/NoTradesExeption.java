@@ -1,4 +1,4 @@
-package TradeCenter.Exceptions.UserExceptions;
+package TradeCenter.Exceptions.TradeExceptions;
 
 public class NoTradesExeption extends RuntimeException {
     public NoTradesExeption() {

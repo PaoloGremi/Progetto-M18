@@ -1,5 +1,5 @@
-import ClientServer.MessageServer;
-import ClientServer.MessageType;
+package ClientServer;
+
 import Interface.MainWindow;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
@@ -40,13 +40,10 @@ public class LogIn extends Application{
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
 
         System.out.println("welcome client");
-
-
         System.out.println("Client connected");
-
         System.out.println("Ok");
 
 

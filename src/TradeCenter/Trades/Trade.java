@@ -1,8 +1,6 @@
 package TradeCenter.Trades;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class Trade extends ATrade {
 
@@ -67,6 +65,7 @@ public class Trade extends ATrade {
     public boolean isPositiveEnd() {
         return positiveEnd;
     }
+    //todo vedere perchè c'è in offer una cosa simile
 
     public boolean betweenUsers(String username) {
         if(super.getCustomer1().getUsername().equals(username) || super.getCustomer2().getUsername().equals(username)) {
@@ -82,25 +81,10 @@ public class Trade extends ATrade {
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
-        /*
-        tmp.append("Offer from ");
-        tmp.append(getCustomer1().getUsername());
-        tmp.append(" to ");
-        tmp.append(getCustomer2().getUsername());
-        for (int i=0; i<history.size(); i++) {
-            tmp.append(history.get(i).toString());
-        }
-
-        */
-
         tmp.append(getCustomer1().getUsername());
         tmp.append(" - ");
         tmp.append(getCustomer2().getUsername());
         tmp.append("\n" + date);
         return tmp.toString();
     }
-
-
-
-
 }
