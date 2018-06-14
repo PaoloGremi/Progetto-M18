@@ -5,6 +5,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
@@ -17,7 +18,7 @@ public class MessageServer implements Serializable {
     private String string1;
     private String string2;
     private Offer offer;
-    private Trade trade;
+    private ATrade trade;
     private Customer customer1;
     private Customer customer2;
     private Description description;
@@ -59,7 +60,7 @@ public class MessageServer implements Serializable {
         this.offer = offer;
     }
 
-    public MessageServer(MessageType message, Trade trade) {
+    public MessageServer(MessageType message, ATrade trade) {
         this.message = message;
         this.trade = trade;
     }
@@ -128,7 +129,7 @@ public class MessageServer implements Serializable {
         return offer;
     }
 
-    public Trade getTrade() {
+    public ATrade getTrade() {
         return trade;
     }
 }

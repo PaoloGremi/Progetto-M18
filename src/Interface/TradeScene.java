@@ -199,7 +199,7 @@ public class TradeScene {
                 try {
                     Socket socket = new Socket("localhost", 8889);
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    os.writeObject(new MessageServer(MessageType.SWITCHCARDS, (Trade)(trade)));
+                    os.writeObject(new MessageServer(MessageType.SWITCHCARDS, trade));
                     socket.close();
                     System.out.println("accepted offer");
                 } catch (IOException e) {

@@ -315,26 +315,38 @@ public class TradeCenter {
         return searchTrade;
     }
 
+    private boolean contains(Trade trade){
+        for (Trade trade1 : activeTrades){
+            if(trade1.betweenUsers(trade.getCustomer1().getUsername()) || trade1.betweenUsers(trade.getCustomer2().getUsername())){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Do the exchange, users collection are update, and so the trade
      *
      * @param trade a card exchange
      */
     private void switchCards(Trade trade){
-        if(activeTrades.contains(trade)) {
-            Customer customer1 = trade.getCustomer1();
-            Customer customer2 = trade.getCustomer2();
+        if(contains(trade)) {
 
             for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2
-                customer2.addCard(card);
-                customer1.removeCard(card);
+                customers.get(trade.getCustomer2().getId()).addCard(card);
             }
             for (Card card : trade.getOffer2()) {       //take card offered from customer2, add to customer1
-                customer1.addCard(card);
-                customer2.removeCard(card);
+                customers.get(trade.getCustomer1().getId()).addCard(card);
             }
-            proxy.updateCustomer(customer1);
-            proxy.updateCustomer(customer2);
+            for(Card card : trade.getOffer1()){
+                customers.get(trade.getCustomer1().getId()).removeCard(card);
+            }
+            for(Card card : trade.getOffer2()){
+                customers.get(trade.getCustomer2().getId()).removeCard(card);
+            }
+            proxy.updateCustomer(customers.get(trade.getCustomer1().getId()));
+            proxy.updateCustomer(customers.get(trade.getCustomer2().getId()));
             //todo vedere se serve fare update proxy
         }else{
             throw new NoSuchTradeException();
@@ -420,4 +432,5 @@ public class TradeCenter {
         tradesList.addAll(showUserDoneTrades(customer));
         return tradesList;
     }
+
 }

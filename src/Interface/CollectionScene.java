@@ -32,7 +32,7 @@ public class CollectionScene{
 
     //static HBox hbox;
 
-    static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException {
+    static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException, ClassNotFoundException {
 
         System.out.println("welcome client");
         Socket socket = new Socket("localhost", 8889);
@@ -40,8 +40,13 @@ public class CollectionScene{
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         System.out.println("Ok");
+        os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username));
+        ObjectInputStream is1 = new ObjectInputStream(socket.getInputStream());
+        Customer returnMessage1 = (Customer) is1.readObject();
+        socket.close();
 
-        cust=customer1;
+
+        cust=returnMessage1;
         user=username;
         ScrollPane scroll = new ScrollPane();
         HBox hbox = new HBox();
@@ -140,7 +145,7 @@ public class CollectionScene{
         return border;
     }
 
-    static BorderPane refresh() throws IOException {
+    static BorderPane refresh() throws IOException, ClassNotFoundException {
         return display(cust ,user,false);
     }
 

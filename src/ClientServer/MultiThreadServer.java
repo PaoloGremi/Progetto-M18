@@ -8,6 +8,7 @@ import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
 import TradeCenter.Trades.Offer;
+import TradeCenter.Trades.Trade;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -77,10 +78,10 @@ public class MultiThreadServer implements Runnable {
                     os.writeObject(tradeCenter.takeStartedTrade(m.getCustomer1(), m.getCustomer2()));
                     break;
                 case SWITCHCARDS:
-                    tradeCenter.endTrade(m.getTrade(), true);
+                    tradeCenter.endTrade((Trade) m.getTrade(), true);
                     break;
                 case ENDTRADE:
-                    tradeCenter.endTrade(m.getTrade(), false);
+                    tradeCenter.endTrade((Trade) m.getTrade(), false);
                     break;
                 case VERIFYPASSWORD:
                     boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());

@@ -12,6 +12,8 @@ public class Card implements Serializable {
     private int id;
     private Description description;
 
+    private static final long serialVersionUID = -8262822988735054829L;
+
     public Card(int id, Description description) {
         this.id = id;
         this.description = description;
@@ -30,6 +32,12 @@ public class Card implements Serializable {
         if(this.id==c.id)
             return true;
         else return false;
+    }
+
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * this.id;
+        return hash;
     }
 
     @Override

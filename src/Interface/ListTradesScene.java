@@ -64,7 +64,7 @@ public class ListTradesScene {
                         public void handle(javafx.scene.input.MouseEvent e) {
                             Trade trade = tradeList.getSelectionModel().getSelectedItem();
                             if (trade.isDoneDeal()) {
-
+                                System.out.println("done");
                             } else {
                                 MainWindow.refreshDynamicContent(TradeScene.display(trade, trade.getCustomer1(), trade.getCustomer2(), true));
                             }

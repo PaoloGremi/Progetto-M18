@@ -32,7 +32,7 @@ public class MainWindow {
      * Display the window
      * @param customer //todo complete javadocs
      */
-    public static void display(Customer customer) throws IOException {
+    public static void display(Customer customer) throws IOException, ClassNotFoundException {
 
         // values for testing purpose
         /*Customer tempUser = new Customer("01", login_username, "APassword123");
@@ -99,6 +99,8 @@ public class MainWindow {
             try {
                 dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });

@@ -37,6 +37,8 @@ public  class Demo {
                         MainWindow.refreshDynamicContent(CollectionScene.refresh());
                     } catch (IOException e1) {
                         e1.printStackTrace();
+                    } catch (ClassNotFoundException e1) {
+                        e1.printStackTrace();
                     }
                     break;}
                 case "other_user": {MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());

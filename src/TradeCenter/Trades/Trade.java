@@ -2,6 +2,7 @@ package TradeCenter.Trades;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Trade extends ATrade {
 
@@ -98,5 +99,8 @@ public class Trade extends ATrade {
         tmp.append("\n" + date);
         return tmp.toString();
     }
+
+
+
 
 }
