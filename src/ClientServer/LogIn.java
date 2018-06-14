@@ -207,6 +207,7 @@ public class LogIn extends Application{
         layout.setCenter(border);
         layout.setBottom(logIn_Register);
         scene = new Scene(layout, 300, 335);
+        scene.getStylesheets().add("ClientServer/LogIn.css");
         window.setScene(scene);
         window.show();
     }
