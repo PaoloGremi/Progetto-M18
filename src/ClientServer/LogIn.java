@@ -42,9 +42,8 @@ public class LogIn extends Application{
     @Override
     public void start(Stage primaryStage) {
 
-        System.out.println("welcome client");
-        System.out.println("Client connected");
-        System.out.println("Ok");
+        //todo fix bug: quando si fa sing up e si torna al log non cambia la scritta sopra
+        //todo fix bug: fare handling sia log in sia sign up se tutti i campi vuoti tira eccezione
 
 
         window = primaryStage;
@@ -146,7 +145,7 @@ public class LogIn extends Application{
                 }
             });
 
-            Button goBack = new Button("Log In");
+            Button goBack = new Button("LogIn");
 
             goBack.setOnAction(event1 -> {
                 credentialBox.getChildren().removeAll(credentialBox.getChildren());
@@ -214,22 +213,12 @@ public class LogIn extends Application{
 
     private boolean verifyPassword(String password1, String password2) throws IOException, ClassNotFoundException {
 
-        System.out.println("welcome client");
         Socket socket = new Socket("localhost", 8889);
-
-        System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-        System.out.println("Ok");
-
         os.writeObject(new MessageServer(MessageType.VERIFYPASSWORD, password1, password2));
         ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
         boolean returnMessage = (boolean) is.readObject();
         socket.close();
-
-        if(returnMessage){
-            return true;
-        }
-
-        return false;
+        return  returnMessage;
     }
 }
