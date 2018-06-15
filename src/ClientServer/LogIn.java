@@ -24,15 +24,15 @@ import java.net.Socket;
 
 public class LogIn extends Application{
 
-    Stage window;
-    Button logIn, signUp;
-    TextField username;
-    PasswordField password;
-    Text credentials;
-    Text info;
-    BorderPane border;
-    StackPane stack;
-    Scene scene;
+    private Stage window;
+    private Button logIn, signUp;
+    private TextField username;
+    private PasswordField password;
+    private Text credentials;
+    private Text info;
+    private BorderPane border;
+    private StackPane stack;
+    private Scene scene;
 
 
     public static void main(String[] args) {
@@ -44,37 +44,80 @@ public class LogIn extends Application{
 
         //todo fix bug: quando si fa sing up e si torna al log non cambia la scritta sopra
         //todo fix bug: fare handling sia log in sia sign up se tutti i campi vuoti tira eccezione
-
-
         window = primaryStage;
         window.setTitle("LogIn interface");
-        signUp = new Button("SignUp");
 
-        logIn = new Button("LogIn");
+//area inserimenti
 
-        credentials = new Text("Log in your account");
-        TextFlow credFlow = new TextFlow();
+        //credentials = new Text("Log in your account");
+        TextFlow credFlow = new TextFlow(new Text("Log in your account"));
+
         credFlow.setPadding(new Insets(5, 5,0,5));
         credFlow.setTextAlignment(TextAlignment.CENTER);
-        credFlow.getChildren().add(credentials);
-        TextFlow infoFlow= new TextFlow();
+//        credFlow.getChildren().add(credentials);      todo variabile ridondante, cercare di togliere in giro
+
+
         username = new TextField("Username");
         password = new PasswordField();
         password.setPromptText("Password");
+        TextFlow infoFlow= new TextFlow();
         VBox credentialBox = new VBox();
-        stack = new StackPane();
-        stack.setPadding(new Insets(5,0,20,0));
-        border = new BorderPane();
         credentialBox.getChildren().addAll(credFlow, username, password,infoFlow);
+        //todo  queste andrebbero messe nei css, che dovrebbero sostituire tutto lo stile della GUI
         credentialBox.setSpacing(20);
         credentialBox.setPadding(new Insets(5));
 
+
+//bottoni sotto
+
         HBox logIn_Register = new HBox();
+        logIn = new Button("LogIn");
+        signUp = new Button("SignUp");
+        //todo css
         logIn_Register.setPadding(new Insets(0,0,30,0));
-        logIn_Register.getChildren().addAll(logIn, signUp);
         logIn_Register.setSpacing(20);
         logIn_Register.setAlignment(Pos.CENTER);
 
+
+        //listener bottoni
+        logIn.setOnAction(event -> {
+            try {
+                Socket socket3 = new Socket("localhost", 8889);
+                ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
+                os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
+                ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
+                System.out.println("connected");
+                if((boolean) is.readObject()){
+                    System.out.println("closed");
+                    socket3.close();
+                    Socket socket1 = new Socket("localhost", 8889);
+                    ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
+                    ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
+                    System.out.println("connected");
+                    os2.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
+                    Customer customer = (Customer) is1.readObject();
+                    System.out.println(customer);
+                    MainWindow.display(customer);
+                    socket1.close();
+                }
+                else{
+                    info = new Text("Invalid Username or Password");
+                    infoFlow.setPadding(new Insets(5));
+                    infoFlow.setTextAlignment(TextAlignment.CENTER);
+                    infoFlow.getChildren().removeAll(infoFlow.getChildren());
+                    infoFlow.getChildren().add(info);
+
+                    socket3.close();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+        });
         signUp.setOnAction(event -> {
             credFlow.setPadding(new Insets(5, 5,0,5));
             credentials.setText("Please enter username and password the password must have at least 8 characters an uppercase a lowercase and a number.");
@@ -162,53 +205,41 @@ public class LogIn extends Application{
             logIn_Register.getChildren().add(signBox);
             logIn_Register.getChildren().removeAll(signUp, logIn);
         });
-        logIn.setOnAction(event -> {
-            try {
-                Socket socket3 = new Socket("localhost", 8889);
-                ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
-                ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
-                System.out.println("connected");
-                if((boolean) is.readObject()){
-                    System.out.println("closed");
-                    socket3.close();
-                    Socket socket1 = new Socket("localhost", 8889);
-                    ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
-                    ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
-                    System.out.println("connected");
-                    os2.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username.getText()));
-                    Customer customer = (Customer) is1.readObject();
-                    System.out.println(customer);
-                    MainWindow.display(customer);
-                    socket1.close();
-                }
-                else{
-                    info = new Text("Invalid Username or Password");
-                    infoFlow.setPadding(new Insets(5));
-                    infoFlow.setTextAlignment(TextAlignment.CENTER);
-                    infoFlow.getChildren().removeAll(infoFlow.getChildren());
-                    infoFlow.getChildren().add(info);
-
-                    socket3.close();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
 
 
-        });
+        logIn_Register.getChildren().addAll(logIn, signUp);
+
+
+
+
+        stack = new StackPane();
+        stack.setPadding(new Insets(5,0,20,0));
+        border = new BorderPane();
+
         border.setCenter(credentialBox);
         border.setBottom(stack);
+
+
         BorderPane layout = new BorderPane();
         layout.setCenter(border);
         layout.setBottom(logIn_Register);
+
+
         scene = new Scene(layout, 300, 335);
         scene.getStylesheets().add("ClientServer/LogIn.css");
         window.setScene(scene);
         window.show();
+
+
+    }
+
+    private BorderPane displayLogin(){
+        BorderPane mainPane = new BorderPane();
+//metodo che in pratica ritorna cio che è layout, l'idea è di fare 2 metodi da associare ai bottoni di singin e login per far cambiare la grafica
+        //poi fare in modo che la prima volta (all'apertura chiama il metodo displaylogin), le volte dopo  in base al bottone chiama il metodo giusto
+        //todo vedere come implementare
+
+        return mainPane;
     }
 
     private boolean verifyPassword(String password1, String password2) throws IOException, ClassNotFoundException {
@@ -221,4 +252,5 @@ public class LogIn extends Application{
         socket.close();
         return  returnMessage;
     }
+
 }
