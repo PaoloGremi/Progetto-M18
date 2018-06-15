@@ -26,7 +26,7 @@ public class MainWindow {
     /**
      * Pane for dynamic/changing content
      */
-    static StackPane dynamicContent;
+    private static StackPane dynamicContent;
 
     /**
      * Display the window
@@ -34,22 +34,6 @@ public class MainWindow {
      */
     public static void display(Customer customer) throws IOException, ClassNotFoundException {
 
-        // values for testing purpose
-        /*Customer tempUser = new Customer("01", login_username, "APassword123");
-        try {
-            tempUser.addCardToWishList(new YuGiOhDescription("Ancient Dragon", "an ancient dragon", "./database/DB_yugioh/yugioh_pics/AncientDragon-YS15-EU-C-1E.png", "cos",0,0,0,0,0)); {
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            tempUser.addCard(new Card(0, new PokemonDescription("Blastoise", "A better squirtle", "./database/DB_pokemon/pokemon_pics/BS_002.jpg", 002,"Water",100,189,"5'3''",52 )));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-        // actual MainWindow stuff
         Stage window = new Stage();
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("MAIN MENU");
@@ -60,7 +44,7 @@ public class MainWindow {
         // Box for buttons on the left
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_LEFT);
-        vbox.setPadding(new Insets(20, 10, 20, 20));
+        vbox.setPadding(new Insets(20, 10, 20, 10));
         vbox.setSpacing(190);
         // Username label
         Label username = new Label(customer.getUsername());
@@ -69,11 +53,8 @@ public class MainWindow {
         // Tile of buttons for main navigation
         VBox tileButtons = new VBox();
         tileButtons.setAlignment(Pos.CENTER_LEFT);
-        //tileButtons.setPrefRows(5);
-        tileButtons.setPadding(new Insets(20, 10, 20, 10));
+        tileButtons.setPadding(new Insets(20, 5, 20, 5));
         tileButtons.setSpacing(8);
-        //tileButtons.setHgap(10.0);
-        //tileButtons.setVgap(8.0);
         // Action buttons
         Button myCollection = new Button("My Collection");
         Button myWishlist = new Button("My Wishlist");
@@ -97,28 +78,26 @@ public class MainWindow {
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
             try {
-                dynamicContent.getChildren().add(CollectionScene.display(retriveCustomer(customer), retriveCustomer(customer).getUsername(), false));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+                dynamicContent.getChildren().add(CollectionScene.display(retrieveCustomer(customer), retrieveCustomer(customer).getUsername(), false));
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
         myWishlist.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(retriveCustomer(customer).getWishList(), retriveCustomer(customer)));
+            dynamicContent.getChildren().add(WishListScene.display(retrieveCustomer(customer).getWishList(), retrieveCustomer(customer)));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchCardScene.display(retriveCustomer(customer)));
+            dynamicContent.getChildren().add(SearchCardScene.display(retrieveCustomer(customer)));
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchUserScene.display(retriveCustomer(customer)));
+            dynamicContent.getChildren().add(SearchUserScene.display(retrieveCustomer(customer)));
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(ListTradesScene.display(retriveCustomer(customer)));
+            dynamicContent.getChildren().add(ListTradesScene.display(retrieveCustomer(customer)));
         });
         logOut.setOnAction(event -> {
             window.close();
@@ -147,7 +126,7 @@ public class MainWindow {
     }
 
     //todo add javadocs
-    private static Customer retriveCustomer(Customer customer){
+    private static Customer retrieveCustomer(Customer customer){
         Customer updatedCustomer = null;
         Socket socket = null;
         try {
@@ -157,9 +136,7 @@ public class MainWindow {
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             updatedCustomer = (Customer)is.readObject();
             socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return updatedCustomer;
