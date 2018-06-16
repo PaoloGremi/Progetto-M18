@@ -181,7 +181,7 @@ public class TradeScene {
             try {
                 Socket socket = new Socket("localhost", 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.ENDTRADE, (Trade)(trade)));
+                os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
                 socket.close();
                 System.out.println("refused offer");
             } catch (IOException e) {
@@ -199,7 +199,7 @@ public class TradeScene {
                 try {
                     Socket socket = new Socket("localhost", 8889);
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    os.writeObject(new MessageServer(MessageType.SWITCHCARDS, trade));
+                    os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {

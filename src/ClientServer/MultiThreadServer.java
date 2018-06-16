@@ -11,19 +11,40 @@ import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 public class MultiThreadServer implements Runnable {
     private Socket csocket;
     private static TradeCenter tradeCenter = new TradeCenter();
-
-    MultiThreadServer(Socket csocket, TradeCenter tradeCenter) {
+    private ServerProxy proxy;
+    Map<MessageType, Method> methodMap = new HashMap<>();
+    MultiThreadServer(Socket csocket, TradeCenter tradeCenter) throws NoSuchMethodException {
         this.csocket = csocket;
         this.tradeCenter = tradeCenter;
+        proxy = new ServerProxy(tradeCenter);
+
+        methodMap.put(MessageType.VERIFYPASSWORD, ServerProxy.class.getMethod("verifyPassword", MessageServer.class));
+        methodMap.put(MessageType.LOGDIN, ServerProxy.class.getMethod("loggedIn", MessageServer.class));
+        methodMap.put(MessageType.ADDCUSTOMER, ServerProxy.class.getMethod("addCustomer", MessageServer.class));
+        methodMap.put(MessageType.SEARCHCUSTOMER, ServerProxy.class.getMethod("searchCustomer", MessageServer.class));
+        methodMap.put(MessageType.POSSIBLETRADE, ServerProxy.class.getMethod("possibleTrade", MessageServer.class));
+        methodMap.put(MessageType.CREATEOFFER, ServerProxy.class.getMethod("createTrade", MessageServer.class));
+        methodMap.put(MessageType.RAISEOFFER, ServerProxy.class.getMethod("updateOffer", MessageServer.class));
+        methodMap.put(MessageType.SEARCHOFFER, ServerProxy.class.getMethod("searchOffer", MessageServer.class));
+        methodMap.put(MessageType.SEARCHTRADE, ServerProxy.class.getMethod("searchTrade", MessageServer.class));
+        methodMap.put(MessageType.ENDTRADE, ServerProxy.class.getMethod("endTrades", MessageServer.class));
+        methodMap.put(MessageType.SEARCHDESCRIPTION, ServerProxy.class.getMethod("searchDescription", MessageServer.class));
+        methodMap.put(MessageType.SEARCHUSER, ServerProxy.class.getMethod("searchUsers", MessageServer.class));
+        methodMap.put(MessageType.REMOVEWISH, ServerProxy.class.getMethod("removeFromWishList", MessageServer.class));
+
+
     }
     public static void main(String args[]) throws Exception {
         ServerSocket ssock = new ServerSocket(8889);
@@ -39,90 +60,34 @@ public class MultiThreadServer implements Runnable {
         try {
             ObjectInputStream in = new ObjectInputStream(csocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(csocket.getOutputStream());
-
             MessageServer m = (MessageServer) in.readObject();
-
-            switch (m.getMessage()){
-                case VERIFYPASSWORD:
-                    boolean flagPass = tradeCenter.verifyPassword(m.getString1(),m.getString2());
-                    os.writeObject(flagPass);
-                    break;
-                case LOGDIN:
-                    boolean flagLog = tradeCenter.loggedIn(m.getString1(),m.getString2());
-                    os.writeObject(flagLog);
-                    break;
-                case ADDCUSTOMER:
-                    try {
-                        tradeCenter.addCustomer(m.getString1(), m.getString2());
-                        Customer c = tradeCenter.searchCustomer(m.getString1());
-                        os.writeObject(c);
-                    }
-                    catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e){
-                        os.writeObject(e);
-                    }
-                    break;
-                case SEARCHUSER:
-                    ArrayList<Customer> users = tradeCenter.searchUsers(m.getString1(), m.getCustomer1().getUsername());
-                    os.writeObject(users);
-                    break;
-                case SEARCHCUSTOMER:
-                    tradeCenter.searchCustomer(m.getString1());
-                    Customer customer = tradeCenter.searchCustomer(m.getString1());
-                    os.writeObject(customer);
-                    break;
-                case REMOVEWISH:
-                    Customer customer2 = tradeCenter.searchCustomer(m.getString1());
-                    tradeCenter.removeFromWishList(m.getDescription(),customer2);
-                    break;
-                case POSSIBLETRADE:
-                    os.writeObject(tradeCenter.notAlreadyTradingWith(m.getCustomer1(), m.getCustomer2()));
-                case CREATEOFFER:
-                    try{
-                        tradeCenter.createTrade(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2());
-                        os.writeObject(Boolean.TRUE);
-                    }catch (AlreadyStartedTradeException e){
-                        os.writeObject(Boolean.FALSE);
-                    }
-                    break;
-                case RAISEOFFER:
-                    tradeCenter.updateTrade(new Offer(m.getCustomer1(), m.getCustomer2(), m.getOffer1(), m.getOffer2()));
-                    os.writeObject(Boolean.TRUE);       //per avere la stampa
-                    break;
-                case SEARCHTRADE:
-                    os.writeObject(tradeCenter.takeStartedTrade(m.getCustomer1(), m.getCustomer2()));
-                    break;
-                case SWITCHCARDS:
-                    tradeCenter.endTrade((Trade) m.getTrade(), true);
-                    break;
-                case ENDTRADE:
-                    tradeCenter.endTrade((Trade) m.getTrade(), false);
-                    break;
-                case SEARCHOFFER:
-                    os.writeObject(tradeCenter.showUserTrades(m.getCustomer1()));
-                    break;
-                case SEARCHDESCRIPTION:
-                    ArrayList<HashMap<Customer, Collection>> descriptions = tradeCenter.searchByDescription(m.getDescription());
-                    os.writeObject(descriptions);
-                    break;
-                case FILTERPOKEMONDESCR:
-                    HashSet<PokemonDescription> descrMatched = tradeCenter.searchDescrInPokemonDb(m.getPokemonAll());
-                    if(descrMatched.size()==1) {
-                        ArrayList<HashMap<Customer, Collection>> list = tradeCenter.searchByDescription(descrMatched.iterator().next());
-                        os.writeObject(list);
-                    }
-                    else{
-                        ArrayList<HashMap<Customer, Collection>> listVuota=new ArrayList<>();
-                        os.writeObject(listVuota);
-                        System.err.println("Piu descrizioni trovate o nessuna, ancora da implementare");}
-                    break;
-
-            }
+            Object result = returnMessage(m.getMessage(),m);
+            os.writeObject(result);
             csocket.close();
 
         } catch (IOException e) {
             System.out.println(e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException {
+        Object result = null;
+        try {
+            result = methodMap.get(tag).invoke(proxy ,messageServer);
+        }
+        catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e){
+            result = e;
+        }
+        catch (AlreadyStartedTradeException e){
+            result = false;
+        }
+
+        return result;
     }
 }

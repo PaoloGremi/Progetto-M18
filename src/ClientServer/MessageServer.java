@@ -24,6 +24,8 @@ public class MessageServer implements Serializable {
     private Description description;
     private Collection offer1;
     private Collection offer2;
+    private Trade trade1;
+    private boolean flag;
 
     private PokemonAll pokemonAll;
 
@@ -87,6 +89,31 @@ public class MessageServer implements Serializable {
     public MessageServer(MessageType message, PokemonAll pokemonAll) {
         this.message=message;
         this.pokemonAll=pokemonAll;
+    }
+
+    public MessageServer(MessageType message, Trade trade1) {
+        this.message = message;
+        this.trade1 = trade1;
+    }
+
+    public MessageServer(MessageType message, ATrade trade, boolean flag) {
+        this.message = message;
+        this.trade = trade;
+        this.flag = flag;
+    }
+
+    public MessageServer(MessageType message, Customer customer1, Description description) {
+        this.message = message;
+        this.customer1 = customer1;
+        this.description = description;
+    }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public Trade getTrade1() {
+        return trade1;
     }
 
     public PokemonAll getPokemonAll() {
