@@ -76,17 +76,19 @@ public class MultiThreadServer implements Runnable {
         }
     }
 
-    public Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException {
+    public Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException {
         Object result = null;
         try {
             result = methodMap.get(tag).invoke(proxy ,messageServer);
         }
-        catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e){
-            result = e;
+        catch (InvocationTargetException e){
+            if(e.getCause() instanceof AlreadyStartedTradeException){
+                result = false;
+            }else {
+                result = e.getCause();
+            }
         }
-        catch (AlreadyStartedTradeException e){
-            result = false;
-        }
+
 
         return result;
     }
