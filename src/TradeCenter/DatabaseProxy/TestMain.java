@@ -2,10 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
-import TradeCenter.DatabaseProxy.DBAtomicRetriever;
-import TradeCenter.DatabaseProxy.DBProxy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TestMain {
@@ -43,5 +40,25 @@ public class TestMain {
                 System.out.println(des);
             }
         }
+
+        System.out.println("\nAdding 'Dark Hole' to TeoGore...");
+
+        Description d = customers.get("USER-2").getWishList().get(0);
+        Card card = new Card(db.getNextCardID(), d);
+        db.addCardToDatabase(card, customers.get("USER-1"));
+
+        HashMap<String, Customer> customers2 = new HashMap<>();
+        db.retrieveCustomers(customers2);
+
+        for(Customer customer2 : customers2.values()) {
+            System.out.println("\n"+customer2.getId()+" - "+customer2.getUsername());
+            System.out.println("COLLECTION:");
+            System.out.println(customer2.getCollection().toString());
+            System.out.println("WISHLIST:");
+            for(Description des:customer2.getWishList()) {
+                System.out.println(des);
+            }
+        }
+
     }
 }

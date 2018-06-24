@@ -68,6 +68,41 @@ public class DBAtomicRetriever {
     }
 
     /**
+     * Get the size of the selected table
+     * @param connection: database connection
+     * @param tablename: table name
+     * @return table size
+     */
+    public int getTableSize(Connection connection, String tablename) {
+        int size = 0;
+        try {
+            PreparedStatement ps = null;
+            switch (tablename) {
+                case "customers":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM customers;");
+                    break;
+                case "cards":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
+                    break;
+                case "trades":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
+                    break;
+                case "pokemon_card":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
+                    break;
+            }
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                size = rs.getInt(1);
+                return size;
+            }
+        }catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
+    /**
      * Retrieve a single Pokémon description given its id
      * @param connection: database connection
      * @param id: Pokémon description id
@@ -172,41 +207,6 @@ public class DBAtomicRetriever {
             e.printStackTrace();
         }
         return yuGiOhDescription;
-    }
-
-    /**
-     * Get the size of the selected table
-     * @param connection: database connection
-     * @param tablename: table name
-     * @return table size
-     */
-    public int getTableSize(Connection connection, String tablename) {
-        int size = 0;
-        try {
-            PreparedStatement ps = null;
-            switch (tablename) {
-                case "customers":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM customers;");
-                    break;
-                case "cards":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
-                    break;
-                case "trades":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
-                    break;
-                case "pokemon_card":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
-                    break;
-            }
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                size = rs.getInt(1);
-                return size;
-            }
-        }catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-        }
-        return size;
     }
 
     /**

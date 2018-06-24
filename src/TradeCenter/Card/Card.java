@@ -40,6 +40,10 @@ public class Card implements Serializable {
         return hash;
     }
 
+    public int getId() {
+        return id;
+    }
+
     @Override
     public String toString() {
         return "ID: " + id + " Name: " + description;

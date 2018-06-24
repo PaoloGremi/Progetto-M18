@@ -6,6 +6,9 @@ import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -16,6 +19,7 @@ public class DBProxy {
 
     private Connection connection;
     private DBAtomicRetriever dbAtom = new DBAtomicRetriever();
+    private DBAtomicInserter dbIns = new DBAtomicInserter();
     private DBConnectionManager dbConn = new DBConnectionManager();
 
     /**
@@ -65,6 +69,28 @@ public class DBProxy {
             customers.put(customer.getId(), customer);
         }
         connection = dbConn.disconnectFromDB(connection);
+    }
+
+    /**
+     * Adds a card in the database
+     * @param card: card to add in database
+     * @param customer: owner of the card
+     */
+    public void addCardToDatabase(Card card, Customer customer) {
+        connection = dbConn.connectToDB(connection, "CARDS");
+        dbIns.insertCard(connection, card, customer);
+        connection = dbConn.disconnectFromDB(connection);
+    }
+
+    /**
+     * Quick method to get next card ID
+     * @return: next card ID
+     */
+    public int getNextCardID() {
+        connection = dbConn.connectToDB(connection, "CARDS");
+        int n = dbAtom.getTableSize(connection, "cards") + 1;
+        connection = dbConn.disconnectFromDB(connection);
+        return n;
     }
 
 }
