@@ -218,6 +218,7 @@ public class DBProxy {
                                 rs.getString("Name"),
                                 rs.getString("Description"),
                                 picture,
+                                rs.getInt("yugioh_description_id"),
                                 rs.getString("Reference"),
                                 level,
                                 atk,

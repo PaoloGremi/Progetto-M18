@@ -218,6 +218,8 @@ public class Customer implements Serializable {
         return username;
     }
 
+    public String getPassword() { return this.password; }
+
     @Override
     public String toString() {
         return this.id + ": " + this.username + "\n";

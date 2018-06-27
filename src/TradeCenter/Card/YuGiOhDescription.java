@@ -5,10 +5,11 @@ import java.awt.image.BufferedImage;
 public class YuGiOhDescription extends Description{
 
 
-    private String cardID;
+    private int cardID;
     private int level;
     private int atk;
     private int def;
+    private String reference;
     private String monster_type_id;
     private String card_type_id;
 
@@ -26,9 +27,10 @@ public class YuGiOhDescription extends Description{
      * @param monster_type_id   The type of a monster
      * @param card_type_id           Type of the card: monster, magical or trap
      */
-    public YuGiOhDescription(String name, String text, BufferedImage pic, String cardID, int level, int atk, int def, String monster_type_id, String card_type_id) {
+    public YuGiOhDescription(String name, String text, BufferedImage pic, int cardID, String reference, int level, int atk, int def, String monster_type_id, String card_type_id) {
         super(name, text, CardType.YUGIOH, pic);
         this.cardID = cardID;
+        this.reference = reference;
         this.level = level;     //if not a monster, everthing already handled while taking the object
         this.atk = atk;
         this.def = def;
@@ -40,7 +42,7 @@ public class YuGiOhDescription extends Description{
      *
      * @return the description of the card
      */
-    public String getCardID() {
+    public int getCardID() {
         return cardID;
     }
 

@@ -292,9 +292,10 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    public void updateTrade(Offer offer){
+    public boolean updateTrade(Offer offer){
         Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
         trade.update(offer);
+        return true;
     }
 
     /**

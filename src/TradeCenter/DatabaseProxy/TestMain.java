@@ -41,7 +41,7 @@ public class TestMain {
             }
         }
 
-        System.out.println("\nAdding 'Dark Hole' to TeoGore...");
+        /*System.out.println("\nAdding 'Dark Hole' to TeoGore...");
 
         Description d = customers.get("USER-2").getWishList().get(0);
         Card card = new Card(db.getNextCardID(), d);
@@ -58,7 +58,7 @@ public class TestMain {
             for(Description des:customer2.getWishList()) {
                 System.out.println(des);
             }
-        }
+        }*/
 
     }
 }

@@ -15,7 +15,7 @@ import java.util.HashMap;
  * Proxy for database management
  * @author Roberto Gallotta
  */
-public class DBProxy {
+public class DBProxy implements IProxy{
 
     private Connection connection;
     private DBAtomicRetriever dbAtom = new DBAtomicRetriever();
@@ -72,13 +72,21 @@ public class DBProxy {
     }
 
     /**
-     * Adds a card in the database
-     * @param card: card to add in database
-     * @param customer: owner of the card
+     * Adds a customer in the database
+     * @param customer: customer to be added
      */
-    public void addCardToDatabase(Card card, Customer customer) {
+    public void addCustomerToDatabase(Customer customer) {
         connection = dbConn.connectToDB(connection, "CARDS");
-        dbIns.insertCard(connection, card, customer);
+        // add customer
+        dbIns.insertCustomer(connection, customer);
+        // add customer's wishlist
+        for (Description description : customer.getWishList()) {
+            dbIns.insertWishlist(connection, description, customer);
+        }
+        // add customer's collection
+        for (Card card : customer.getCollection()) {
+            dbIns.insertCard(connection, card, customer);
+        }
         connection = dbConn.disconnectFromDB(connection);
     }
 
@@ -93,4 +101,15 @@ public class DBProxy {
         return n;
     }
 
+    /**
+     * Quick method to get next customer ID
+     * @return: next customer ID
+     */
+    @Override
+    public int getNextCustomerID() {
+        connection = dbConn.connectToDB(connection, "CARDS");
+        int n = dbAtom.getTableSize(connection, "customers") + 1;
+        connection = dbConn.disconnectFromDB(connection);
+        return n;
+    }
 }

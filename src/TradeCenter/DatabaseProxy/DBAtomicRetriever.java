@@ -90,6 +90,9 @@ public class DBAtomicRetriever {
                 case "pokemon_card":
                     ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
                     break;
+                case "yugioh_card":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM yugioh_card;");
+                    break;
             }
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
@@ -195,6 +198,7 @@ public class DBAtomicRetriever {
                         rs.getString("Name"),
                         rs.getString("Description"),
                         picture,
+                        rs.getInt("yugioh_description_id"),
                         rs.getString("Reference"),
                         level,
                         atk,
