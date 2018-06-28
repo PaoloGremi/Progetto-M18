@@ -99,6 +99,7 @@ public class WishListScene{
             pane.setBottom(hbox1);
 
             button1.setOnAction(event -> {
+                flow.getChildren().remove(pane);
                 Socket socket;
                 try {
                     socket = new Socket("localhost", 8889);
@@ -106,15 +107,15 @@ public class WishListScene{
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
                     os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer, file2));
+                    try {
+                        Thread.sleep(35);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
-                flow.getChildren().remove(pane);
-
-
             });
 
             EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =

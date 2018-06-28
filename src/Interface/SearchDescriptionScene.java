@@ -121,7 +121,7 @@ public class SearchDescriptionScene {
                             os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
                             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                             Customer returnMessage = (Customer) is.readObject();
-                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(customer, returnMessage));
+                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(user, returnMessage));
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();

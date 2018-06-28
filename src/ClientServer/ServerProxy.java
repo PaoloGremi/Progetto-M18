@@ -1,5 +1,6 @@
 package ClientServer;
 
+import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
@@ -28,8 +29,8 @@ public class ServerProxy {
         return tradeCenter.loggedIn(messageServer.getString1(), messageServer.getString2());
     }
 
-    public void addCustomer(MessageServer messageServer) throws CheckPasswordConditionsException,UsernameAlreadyTakenException {
-        tradeCenter.addCustomer(messageServer.getString1(), messageServer.getString2());
+    public Customer addCustomer(MessageServer messageServer) throws CheckPasswordConditionsException,UsernameAlreadyTakenException {
+       return tradeCenter.addCustomer(messageServer.getString1(), messageServer.getString2());
     }
 
     public ArrayList<Customer> searchUsers(MessageServer messageServer){
@@ -70,5 +71,9 @@ public class ServerProxy {
 
     public ArrayList<HashMap<Customer, Collection>> searchDescription(MessageServer messageServer){
         return tradeCenter.searchByDescription(messageServer.getDescription());
+    }
+
+    public ArrayList<Card> addRandom(MessageServer messageServer){
+        return tradeCenter.randomCards(messageServer.getCustomer1());
     }
 }

@@ -5,6 +5,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 
 import TradeCenter.Card.PokemonDescription;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
@@ -20,9 +21,7 @@ import TradeCenter.Customers.*;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
@@ -60,15 +59,18 @@ public class TradeCenter {
     /**
      * Create an account for a new user
      */
-    public void addCustomer(String username, String password) throws CheckPasswordConditionsException{
+    public Customer addCustomer(String username, String password) throws CheckPasswordConditionsException{
+        Customer temporaryCustomer;
         if(usernameTaken(username)){
             throw new UsernameAlreadyTakenException();
         }else{
             String id = customerID();
-            Customer temporaryCustomer = new Customer(id, username, password);
+            temporaryCustomer = new Customer(id, username, password);
             customers.put(id, temporaryCustomer);
             proxy.insertCustomer(temporaryCustomer);
         }
+
+        return temporaryCustomer;
     }
 
 
@@ -135,10 +137,23 @@ public class TradeCenter {
 
     }
 
+    public ArrayList<Card> randomCards(Customer customer){
+        ArrayList<Card> cards = new ArrayList();
+        int i = 0;
+        while (i < 7){
+            Random rand = new Random();
+            int j = rand.nextInt(pokemonCatalog.getCatalog().size());
+            cards.add(new Card(j, (Description) pokemonCatalog.getCatalog().toArray()[j]));
+            i++;
+        }
+        addCardtoCustomer(customer,cards);
+        return cards;
+    }
+
 
     //todo add javadocs, check if the customer exist,
-    public void addCardtoCustomer(Customer customer, Card card){
-        customers.get(customer.getId()).addCard(card);
+    public void addCardtoCustomer(Customer customer, ArrayList<Card> cards){
+        customers.get(customer.getId()).addCard(cards);
         proxy.updateCustomer(customer);
     }
 

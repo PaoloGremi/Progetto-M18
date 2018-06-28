@@ -127,14 +127,16 @@ public class MainWindow {
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
             try {
-                dynamicContent.getChildren().add(CollectionScene.display(retrieveCustomer(customer), retrieveCustomer(customer).getUsername(), false));
+                Customer updatedCustomer = retrieveCustomer(customer);
+                dynamicContent.getChildren().add(CollectionScene.display(updatedCustomer, updatedCustomer.getUsername(), false));
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
         myWishlist.setOnAction(event -> {
+            Customer updatedCustomer = retrieveCustomer(customer);
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(WishListScene.display(retrieveCustomer(customer).getWishList(), retrieveCustomer(customer)));
+            dynamicContent.getChildren().add(WishListScene.display(updatedCustomer.getWishList(), updatedCustomer));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());

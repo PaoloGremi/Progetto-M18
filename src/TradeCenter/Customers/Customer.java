@@ -51,6 +51,17 @@ public class Customer implements Serializable {
 
     }
 
+    public void addCard(ArrayList<Card> cards) {
+        try {
+            for(Card card : cards) {
+                collection.addCardToCollection(card);
+            }
+        } catch (AddCardException e) {
+            System.err.println(e.getMessage());
+        }
+
+    }
+
     /**
      * Remove a Card from the collection of the Customers who calls this method.
      *

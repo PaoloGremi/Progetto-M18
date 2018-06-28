@@ -14,4 +14,8 @@ public class CardCatalog {
     public void addDescription(Description description){
         this.catalog.add(description);
     }
+
+    public HashSet<Description> getCatalog() {
+        return catalog;
+    }
 }
