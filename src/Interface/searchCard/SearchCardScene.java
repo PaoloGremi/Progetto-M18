@@ -4,6 +4,7 @@ package Interface.searchCard;
 import Interface.searchCard.PokemonFilter;
 import Interface.searchCard.YugiohFilter;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -20,7 +21,7 @@ public class SearchCardScene {
     static HBox hBoxInner;
     //filtri
     static VBox vBoxFilter;
-    static ComboBox comboCardType;
+    static JFXComboBox comboCardType;
 
 
     public static BorderPane display(Customer customer){
@@ -52,7 +53,7 @@ public class SearchCardScene {
 
         vBoxFilter=new VBox();
         //hBoxFilterTop=new HBox();
-        comboCardType=new ComboBox();
+        comboCardType=new JFXComboBox();
         comboCardType.setPromptText("Choose type of Card");
 
         vBoxFilter.setPadding(new Insets(5));

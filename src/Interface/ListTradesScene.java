@@ -5,6 +5,7 @@ import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
 import TradeCenter.TradeCenter;
 import TradeCenter.Trades.Trade;
+import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -37,6 +38,7 @@ public class ListTradesScene {
         //activeTitle = new Text("Active Trades");
         //doneTitle = new Text("Done Trades");
         scrollableList = new ScrollPane();
+        ArrayList<Trade> userTrades = new ArrayList<>();
 
         ObservableList<Trade> trades = FXCollections.observableArrayList();
         try {
@@ -44,7 +46,7 @@ public class ListTradesScene {
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-            ArrayList<Trade> userTrades = (ArrayList<Trade>) (is.readObject());
+            userTrades = (ArrayList<Trade>) (is.readObject());
             socket.close();
             trades.addAll(userTrades);
         } catch (IOException e) {
@@ -56,7 +58,8 @@ public class ListTradesScene {
 
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
-        ListView<Trade> tradeList = new ListView<>(trades);
+        JFXListView<Trade> tradeList = new JFXListView<>();
+        tradeList.getItems().addAll(userTrades);
         if(!trades.isEmpty()){
             EventHandler<MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {

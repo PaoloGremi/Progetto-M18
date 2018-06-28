@@ -4,6 +4,10 @@ import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import Interface.searchCard.SearchCardScene;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDrawer;
+import com.jfoenix.controls.JFXHamburger;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,10 +15,12 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.Effect;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -38,33 +44,72 @@ public class MainWindow {
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("MAIN MENU");
         // Background
-        StackPane layout = new StackPane();
-        layout.setAlignment(Pos.CENTER);
+        BorderPane layout = new BorderPane();
+
         layout.setStyle(" -fx-background-color: linear-gradient(from 35% 55% to 100% 100%, #1f45da, #abb5ff)");
         // Box for buttons on the left
+        JFXDrawer drawer = new JFXDrawer();
+        drawer.setPrefWidth(150);
+        drawer.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
+        JFXHamburger hamburger = new JFXHamburger();
+        HBox pane = new HBox();
+        pane.setPadding(new Insets(20));
+        pane.setAlignment(Pos.BASELINE_LEFT);
+        pane.getChildren().add(hamburger);
+        //pane.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
+        hamburger.visibleProperty().set(true);
+        hamburger.setOnMouseClicked(event -> {
+            if(drawer.isOpened()) {
+                drawer.close();
+            }
+            else {
+                drawer.open();
+            }
+        });
+
         VBox vbox = new VBox();
+        //vbox.setPrefWidth();
+        vbox.setStyle("-fx-background-color: rgba(19,0,255,0.65);");
+
+        //drawer.setOverLayVisible(true);
         vbox.setAlignment(Pos.TOP_LEFT);
         vbox.setPadding(new Insets(20, 10, 20, 10));
-        vbox.setSpacing(190);
+        vbox.setSpacing(130);
         // Username label
         Label username = new Label(customer.getUsername());
+        username.setAlignment(Pos.CENTER);
         username.setTextFill(Color.web("#ffffff"));
         username.setStyle("-fx-font-weight: bold");
         // Tile of buttons for main navigation
         VBox tileButtons = new VBox();
-        tileButtons.setAlignment(Pos.CENTER_LEFT);
+        tileButtons.setAlignment(Pos.CENTER);
         tileButtons.setPadding(new Insets(20, 5, 20, 5));
         tileButtons.setSpacing(8);
         // Action buttons
-        Button myCollection = new Button("My Collection");
-        Button myWishlist = new Button("My Wishlist");
-        Button searchCard = new Button("Search a card");
-        Button searchUser = new Button("Search a user");
-        Button myTrades = new Button("My Trades");
-        Button logOut = new Button("LOG OUT");
+        JFXButton myCollection = new JFXButton("My Collection");
+        JFXButton myWishlist = new JFXButton("My Wishlist");
+        JFXButton searchCard = new JFXButton("Search a card");
+        JFXButton searchUser = new JFXButton("Search a user");
+        JFXButton myTrades = new JFXButton("My Trades");
+        JFXButton logOut = new JFXButton("LOG OUT");
+        myCollection.setButtonType(JFXButton.ButtonType.RAISED);
+        myWishlist.setButtonType(JFXButton.ButtonType.RAISED);
+        searchCard.setButtonType(JFXButton.ButtonType.RAISED);
+        searchUser.setButtonType(JFXButton.ButtonType.RAISED);
+        myTrades.setButtonType(JFXButton.ButtonType.RAISED);
+        logOut.setButtonType(JFXButton.ButtonType.RAISED);
         // Populate tileButtons and vbox
         tileButtons.getChildren().addAll(myCollection, myWishlist, myTrades, searchCard, searchUser);
-        vbox.getChildren().addAll(username, tileButtons, logOut);
+        VBox sidepaneBox = new VBox();
+        sidepaneBox.setAlignment(Pos.CENTER);
+        sidepaneBox.setSpacing(500);
+        sidepaneBox.getChildren().addAll(username,logOut);
+        vbox.getChildren().add(sidepaneBox);
+        drawer.setContent(tileButtons);
+        drawer.setAlignment(Pos.CENTER);
+        drawer.setDefaultDrawerSize(600);
+        drawer.setSidePane(vbox);
+        //drawer.getSidePane().add(logOut);
         // Dynamic Content pane
         dynamicContent = new StackPane();
         dynamicContent.setAlignment(Pos.TOP_RIGHT);
@@ -72,7 +117,11 @@ public class MainWindow {
         dynamicContent.setMinSize(900,600);
         dynamicContent.setMaxSize(900,600);
         // Populate layout
-        layout.getChildren().addAll(vbox, dynamicContent);
+        //layout.getChildren().addAll(pane,drawer , dynamicContent);
+        layout.setTop(pane);
+        //mainBox.getChildren().addAll(pane, drawer);
+        layout.setLeft(drawer);
+        layout.setCenter(dynamicContent);
 
         // Action events for the buttons
         myCollection.setOnAction(event -> {
@@ -122,6 +171,7 @@ public class MainWindow {
     public static void refreshDynamicContent(Node node) {
         dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
         dynamicContent.getChildren().add(node);
+
 
     }
 

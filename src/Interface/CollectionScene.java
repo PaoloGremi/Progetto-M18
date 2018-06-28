@@ -7,6 +7,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXScrollPane;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -48,8 +49,8 @@ public class CollectionScene{
 
         cust=returnMessage1;
         user=username;
-        ScrollPane scroll = new ScrollPane();
-        HBox hbox = new HBox();
+        ScrollPane scroll;
+        HBox hbox;
         BorderPane border = new BorderPane();
         Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
         hbox = new HBox();

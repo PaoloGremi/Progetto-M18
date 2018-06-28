@@ -4,6 +4,8 @@ package Interface;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -28,9 +30,10 @@ public class SearchUserScene {
     static BorderPane display(Customer mySelf){
         myProfile = mySelf;
         BorderPane scene = new BorderPane();
-        TextField searchString = new TextField();
+        JFXTextField searchString = new JFXTextField();
         searchString.setPrefWidth(800);
-        Button search = new Button("Search");
+        JFXButton search = new JFXButton("Search");
+        searchString.setStyle("-fx-background-color: white;");
         VBox results = new VBox();
         ScrollPane resultsArea = new ScrollPane();
         FlowPane flow = new FlowPane();
@@ -113,6 +116,7 @@ public class SearchUserScene {
             });
 
         HBox topScene = new HBox();
+        topScene.setAlignment(Pos.CENTER);
         topScene.setStyle("-fx-background-color: #aa12ff");
         topScene.setSpacing(5.0);
         topScene.setPadding(new Insets(5));

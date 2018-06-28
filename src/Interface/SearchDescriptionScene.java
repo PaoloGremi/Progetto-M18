@@ -71,6 +71,8 @@ public class SearchDescriptionScene {
 
             for(Customer customer : collection.keySet()){
 
+                if(customer.getUsername().equals(user.getUsername())) continue;
+
                 Collection coll = collection.get(customer);
 
                 for(Card card : coll){
@@ -140,7 +142,7 @@ public class SearchDescriptionScene {
                             os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
                             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                             Customer returnMessage = (Customer) is.readObject();
-                            MainWindow.refreshDynamicContent(TradeScene.display(null,customerThis,returnMessage,false));
+                            MainWindow.refreshDynamicContent(TradeScene.display(null,user,returnMessage,false));
                             socket.close();
                         } catch (IOException e) {
                             e.printStackTrace();
