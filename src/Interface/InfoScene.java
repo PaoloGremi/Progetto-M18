@@ -14,7 +14,8 @@ public class InfoScene {
         pane.setOnMouseClicked(event -> {
             MainWindow.removeDynamicContent(pane);
         });
-        pane.setStyle("-fx-background-color: rgba(176,176,178,0.67)");
+        //todo centrare scritta, mettere blur sotto, fare in  modo che fitta tutto lo schermo(vedi in basso)
+        pane.setStyle("-fx-background-color: rgba(176,176,178,0.81)");
         return pane;
     }
 }

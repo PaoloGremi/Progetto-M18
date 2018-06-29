@@ -67,6 +67,8 @@ public class TradeScene {
 
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
 
+        //todo il problema è che nel trade non viene fatto lo switch dei customer quindi quando lo usiamo per
+        //todo passarli (passasimao trade, trade.customer) a myCustomer ecc.., vengono passati sbagliati vedi listener accept
         myCardOffer = new Collection();
         otherCardOffer = new Collection();
         myC = myCustomer;
@@ -178,7 +180,6 @@ public class TradeScene {
             //todo mettere il serializable in a trade poi capiamo per cosa (forse list trade scene)
         });
         //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
-        //es: quando faccio proposta non posso riproporre
         refuse.setOnAction(event -> {
             try {
                 Socket socket = new Socket("localhost", 8889);
@@ -193,7 +194,11 @@ public class TradeScene {
 
 
         accept.setOnAction(event -> {
-            if(myCustomer.equals(trade.getCustomer2())){
+            //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
+            boolean condition = myCustomer.getUsername().equals(trade.getCustomer1().getUsername());
+
+            //todo ovvio che la condizione è vera, vedi come li passiamo
+            if(condition){
                 try {
                     Socket socket = new Socket("localhost", 8889);
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

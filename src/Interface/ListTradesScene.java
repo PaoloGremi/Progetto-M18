@@ -3,13 +3,11 @@ package Interface;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import TradeCenter.Customers.Customer;
-import TradeCenter.TradeCenter;
 import TradeCenter.Trades.Trade;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -26,8 +24,6 @@ public class ListTradesScene {
 
     private static BorderPane mainPane;
     private static Text title;
-    //static Text activeTitle;
-    //static Text doneTitle;
     private static ScrollPane scrollableList;
 
 
@@ -35,8 +31,6 @@ public class ListTradesScene {
     static BorderPane display(Customer myCustomer){
         mainPane = new BorderPane();
         title = new Text(myCustomer.getUsername() + "'s Trades");
-        //activeTitle = new Text("Active Trades");
-        //doneTitle = new Text("Done Trades");
         scrollableList = new ScrollPane();
         ArrayList<Trade> userTrades = new ArrayList<>();
 
@@ -49,12 +43,9 @@ public class ListTradesScene {
             userTrades = (ArrayList<Trade>) (is.readObject());
             socket.close();
             trades.addAll(userTrades);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
 
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
@@ -69,6 +60,8 @@ public class ListTradesScene {
                             if (trade.isDoneDeal()) {
                                 System.out.println("done");
                             } else {
+
+                                //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
                                 MainWindow.refreshDynamicContent(TradeScene.display(trade, trade.getCustomer1(), trade.getCustomer2(), true));
                             }
                         }
