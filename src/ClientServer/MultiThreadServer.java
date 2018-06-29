@@ -1,23 +1,16 @@
 package ClientServer;
 
-import TradeCenter.Card.PokemonDescription;
-import TradeCenter.Customers.Collection;
-import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
-import TradeCenter.Trades.Offer;
-import TradeCenter.Trades.Trade;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class MultiThreadServer implements Runnable {
@@ -25,6 +18,7 @@ public class MultiThreadServer implements Runnable {
     private static TradeCenter tradeCenter = new TradeCenter();
     private ServerProxy proxy;
     Map<MessageType, Method> methodMap = new HashMap<>();
+
     MultiThreadServer(Socket csocket, TradeCenter tradeCenter) throws NoSuchMethodException {
         this.csocket = csocket;
         this.tradeCenter = tradeCenter;

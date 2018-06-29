@@ -31,7 +31,7 @@ public class Trade extends ATrade {
      */
     public void update(Offer offer) {
         this.history.add(offer);
-        super.updateParameters(offer.getOffer1(), offer.getOffer2(), offer.date);
+        super.updateParameters(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2(), offer.date);
         this.checkDeal(offer);
     }
 

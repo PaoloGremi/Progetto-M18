@@ -173,8 +173,16 @@ public class MainWindow {
     public static void refreshDynamicContent(Node node) {
         dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
         dynamicContent.getChildren().add(node);
+    }
 
+    //todo add javadocs
+    public static void addDynamicContent(Node node){
+        dynamicContent.getChildren().add(node);
+    }
 
+    //todo add javadocs
+    public static void removeDynamicContent(Node node){
+        dynamicContent.getChildren().removeAll(node);
     }
 
     //todo add javadocs

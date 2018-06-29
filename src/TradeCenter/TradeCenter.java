@@ -292,16 +292,12 @@ public class TradeCenter {
             try {
                 Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
                 activeTrades.add(Trade);
-
                 //todo vedere se si deve fare update con il db
-            }catch (MyselfTradeException e){
-                System.err.println(e.getMessage());
-            }catch(EmptyCollectionException e){
+            }catch (MyselfTradeException | EmptyCollectionException e){
                 System.err.println(e.getMessage());
             }
         }else{
             throw new AlreadyStartedTradeException(customer2.getUsername());
-
             //todo propagar eccezione all'interfaccia tramite socket
         }
     }

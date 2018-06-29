@@ -5,6 +5,7 @@ import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Trade;
 import javafx.embed.swing.SwingFXUtils;
@@ -162,14 +163,15 @@ public class TradeScene {
                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
                 }
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                boolean flag = (boolean)(is.readObject());
-                if(flag){
+                Object read = is.readObject();
+                boolean flag = read instanceof AlreadyStartedTradeException;
+                if(!flag){
                     System.out.println("raised new offer");
+                }else{
+                    throw new AlreadyStartedTradeException(otherC.getUsername());
                 }
                 socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException | AlreadyStartedTradeException e) {
                 e.printStackTrace();
             }
             //todo quando si fa il raise poi fare il display di una infobox con switch case che controlla cosa scrivere
@@ -187,38 +189,30 @@ public class TradeScene {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            //todo appena se offerte dicverse da caso precedente non si puo fare accept
-
         });
-        accept.setOnAction(event -> {
-            boolean condition = myCardOffer.equals(trade.getOffer1()) && otherCardOffer.equals(trade.getOffer2());
-            if(true){//todo controllare condizione
 
-                //todo fare in modo che una volta accettato non si puo piu schiacciare
+
+        accept.setOnAction(event -> {
+            if(myCustomer.equals(trade.getCustomer2())){
                 try {
                     Socket socket = new Socket("localhost", 8889);
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
                     try {
+                        //todo fix sleep
                         Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    socket.close();
-                    System.out.println("accepted offer");
+                        socket.close();
+                        System.out.println("accepted offer");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }else{
-                Text errorText = new Text("You cannot accept if you change the offers!");
-                TextFlow error = new TextFlow();
-                error.setStyle("-fx-background-color: #ff1e36");
-                error.getChildren().removeAll(error.getChildren());
-                error.getChildren().add(errorText);
+                MainWindow.addDynamicContent(InfoScene.display("Non puoi accettare la tua stessa offerta"));
+                System.err.println("You cannot accept your own offer Cugghiuna!");
             }
-
-
         });
         //buttonsBox.getChildren().addAll(refuse, raise, accept);
         if(!flagStarted) {
