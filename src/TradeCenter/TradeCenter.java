@@ -140,10 +140,10 @@ public class TradeCenter {
     public ArrayList<Card> randomCards(Customer customer){
         ArrayList<Card> cards = new ArrayList();
         int i = 0;
+        Random rand = new Random();
+        Random random = new Random();
         while (i < 7){
-            Random rand = new Random();
-            int j = rand.nextInt(pokemonCatalog.getCatalog().size());
-            cards.add(new Card(j, (Description) pokemonCatalog.getCatalog().toArray()[j]));
+            cards.add(new Card(random.nextInt(2000), (Description) pokemonCatalog.getCatalog().toArray()[rand.nextInt(pokemonCatalog.getCatalog().size())]));
             i++;
         }
         addCardtoCustomer(customer,cards);
@@ -154,7 +154,7 @@ public class TradeCenter {
     //todo add javadocs, check if the customer exist,
     public void addCardtoCustomer(Customer customer, ArrayList<Card> cards){
         customers.get(customer.getId()).addCard(cards);
-        proxy.updateCustomer(customer);
+        proxy.updateCustomer(customers.get(customer.getId()));
     }
 
     //todo add javadocs, check if the customer exist,
