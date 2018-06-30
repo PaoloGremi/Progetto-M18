@@ -62,7 +62,11 @@ public class ListTradesScene {
                             } else {
 
                                 //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
-                                MainWindow.refreshDynamicContent(TradeScene.display(trade, trade.getCustomer1(), trade.getCustomer2(), true));
+                                if(myCustomer.equals(trade.getCustomer1())) {
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(), true));
+                                }else{
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer1(), true));
+                                }
                             }
                         }
                     };

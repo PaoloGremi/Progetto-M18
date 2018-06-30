@@ -1,21 +1,48 @@
 package Interface;
 
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
+
+
 
 public class InfoScene {
 
     public static BorderPane display(String infoString){
         BorderPane pane = new BorderPane();
-        TextFlow text = new TextFlow(new Text(infoString));
+        VBox vBox = new VBox();
+        Label text = new Label("\n"+ infoString);
+        Text alert = new Text("\u26A0");
+        alert.setStyle("-fx-text-fill: red");
+        alert.setStyle("-fx-font-weight: bold");
+        Image image = new Image("Interface/2000px-Simple_Alert.svg.png");
+        ImageView imageView = new ImageView();
+        imageView.setImage(image);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(100);
+        //text.setText(alert.getText()+"\n"+text.getText());
+        text.setAlignment(Pos.CENTER);
+        text.setTextAlignment(TextAlignment.CENTER);
         text.setStyle("-fx-font-size: 30 -fx-font");
-        pane.setCenter(text);
+        text.setScaleX(text.getScaleX()*3);
+        text.setScaleY(text.getScaleY()*3);
+        //text.setTextFill(Color.web("#ffffff"));
+        text.setStyle("-fx-font-weight: bold");
+        vBox.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(imageView, text);
+        pane.setCenter(vBox);
         pane.setOnMouseClicked(event -> {
             MainWindow.removeDynamicContent(pane);
         });
         //todo centrare scritta, mettere blur sotto, fare in  modo che fitta tutto lo schermo(vedi in basso)
-        pane.setStyle("-fx-background-color: rgba(176,176,178,0.81)");
+        pane.setStyle("-fx-background-color: rgba(235,255,235,0.62);");
         return pane;
     }
 }

@@ -146,7 +146,7 @@ public class TradeScene {
         }
         //bottoni
         buttonsBox = new HBox();
-        buttonsBox.setPadding(new Insets(15, 20, 10, 20));
+        buttonsBox.setPadding(new Insets(8, 20, 8, 20));
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
         Button refuse = new Button("Refuse");
@@ -195,7 +195,7 @@ public class TradeScene {
 
         accept.setOnAction(event -> {
             //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
-            boolean condition = myCustomer.getUsername().equals(trade.getCustomer1().getUsername());
+            boolean condition = myCustomer.getUsername().equals(trade.getCustomer2().getUsername());
 
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
@@ -223,7 +223,7 @@ public class TradeScene {
         if(!flagStarted) {
             raise.setText("New Trade");
             buttonsBox.getChildren().addAll(raise);
-            mainPane.setCenter(mainGrid);
+            mainPane.setTop(mainGrid);
             mainPane.setBottom(buttonsBox);
         }else{
             buttonsBox.getChildren().addAll(refuse, raise, accept);
