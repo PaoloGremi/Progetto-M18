@@ -118,10 +118,10 @@ public class TradeScene {
         myCollectionGrid.setMaxSize(405,240);
         otherCollectionGrid.setMinSize(405,240);
         otherCollectionGrid.setMaxSize(405,240);
-        myOfferGrid.setMinSize(405,240);
-        myOfferGrid.setMaxSize(405,240);
-        otherOfferGrid.setMinSize(405,240);
-        otherOfferGrid.setMaxSize(405,240);
+        myOfferGrid.setMinSize(405,233);
+        myOfferGrid.setMaxSize(405,233);
+        otherOfferGrid.setMinSize(405,233);
+        otherOfferGrid.setMaxSize(405,233);
         myCollectionPane = new BorderPane();
         otherCollectionPane = new BorderPane();
         myOfferPane = new BorderPane();
@@ -146,7 +146,7 @@ public class TradeScene {
         }
         //bottoni
         buttonsBox = new HBox();
-        buttonsBox.setPadding(new Insets(8, 20, 8, 20));
+        buttonsBox.setPadding(new Insets(6, 20, 6, 20));
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
         Button refuse = new Button("Refuse");
