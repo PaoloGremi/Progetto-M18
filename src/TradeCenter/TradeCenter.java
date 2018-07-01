@@ -137,16 +137,26 @@ public class TradeCenter {
 
     }
 
-    public ArrayList<Card> randomCards(Customer customer){
+    private ArrayList<Card> randomCards(Customer customer, CardCatalog catalog){
         ArrayList<Card> cards = new ArrayList();
         int i = 0;
         Random rand = new Random();
         Random random = new Random();
         while (i < 7){
-            cards.add(new Card(random.nextInt(2000), (Description) pokemonCatalog.getCatalog().toArray()[rand.nextInt(pokemonCatalog.getCatalog().size())]));
+            cards.add(new Card(random.nextInt(2000), (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
             i++;
         }
         addCardtoCustomer(customer,cards);
+        return cards;
+    }
+
+    public ArrayList<Card> fromPokemonCatalog(Customer customer){
+        ArrayList<Card> cards = randomCards(customer, pokemonCatalog);
+        return cards;
+    }
+
+    public ArrayList<Card> fromYuGiOhCatalog(Customer customer){
+        ArrayList<Card> cards = randomCards(customer, yugiohCatalog);
         return cards;
     }
 

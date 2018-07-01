@@ -73,7 +73,11 @@ public class ServerProxy {
         return tradeCenter.searchByDescription(messageServer.getDescription());
     }
 
-    public ArrayList<Card> addRandom(MessageServer messageServer){
-        return tradeCenter.randomCards(messageServer.getCustomer1());
+    public ArrayList<Card> addPokemonRandom(MessageServer messageServer){
+        return tradeCenter.fromPokemonCatalog(messageServer.getCustomer1());
+    }
+
+    public ArrayList<Card> addYuGiOhRandom(MessageServer messageServer){
+        return tradeCenter.fromYuGiOhCatalog(messageServer.getCustomer1());
     }
 }

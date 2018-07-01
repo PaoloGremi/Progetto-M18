@@ -5,6 +5,8 @@ import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -29,7 +31,17 @@ public class AddCardScene {
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: DAE6A2;");
         JFXButton open = new JFXButton("Open Pack");
-        borderPane.setCenter(open);
+        ImageView pokePack = new ImageView(new Image("Interface/PokemonPack.JPG"));
+        pokePack.setPreserveRatio(true);
+        pokePack.setFitHeight(350);
+        ImageView yugiPack = new ImageView(new Image("Interface/YuGiOhPack.jpg"));
+        yugiPack.setPreserveRatio(true);
+        yugiPack.setFitHeight(350);
+        HBox packBox = new HBox();
+        packBox.setAlignment(Pos.CENTER);
+        packBox.setSpacing(50);
+        packBox.getChildren().addAll(pokePack,yugiPack);
+        borderPane.setCenter(packBox);
         ScrollPane scroll= new ScrollPane();
         FlowPane flow = new FlowPane();
 
@@ -37,22 +49,37 @@ public class AddCardScene {
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
-        open.setOnAction(event -> {
 
-
-                ProgressIndicator pi = new ProgressIndicator();
-                VBox vBox = new VBox(pi);
-                vBox.setAlignment(Pos.CENTER);
-                borderPane.setCenter(vBox);
+        pokePack.setOnMouseClicked(event -> {
             try {
-                scroll.setContent(populateFlow(customer));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+                scroll.setContent(populateFlow(customer, MessageType.ADDCARDPOKEMON));
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
+
+            borderPane.setCenter(scroll);
+            borderPane.setBottom(backButton(customer));
+        });
+
+        yugiPack.setOnMouseClicked(event -> {
+            try {
+                scroll.setContent(populateFlow(customer, MessageType.ADDCARDYUGI));
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            borderPane.setCenter(scroll);
+            borderPane.setBottom(backButton(customer));
+        });
+        /*open.setOnAction(event -> {
+
+
+            try {
+                scroll.setContent(populateFlow(customer));
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
             borderPane.setCenter(scroll);
                 JFXButton back = new JFXButton("Back to Collection");
                 back.setOnAction(event1 -> {
@@ -71,10 +98,13 @@ public class AddCardScene {
                 hBox.setPadding(new Insets(5));
                 borderPane.setBottom(hBox);
 
-        });
+        });*/
         return borderPane;
     }
-    static FlowPane populateFlow(Customer customer) throws IOException, ClassNotFoundException, InterruptedException {
+
+
+
+    static FlowPane populateFlow(Customer customer, MessageType type) throws IOException, ClassNotFoundException {
         FlowPane flow = new FlowPane();
         flow.setPadding(new Insets(5, 5, 5, 5));
         flow.setVgap(4);
@@ -84,9 +114,8 @@ public class AddCardScene {
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
         System.out.println("Ok");
-        os.writeObject(new MessageServer(MessageType.ADDCARD, customer));
+        os.writeObject(new MessageServer(type, customer));
         ArrayList<Card> cards = (ArrayList<Card>) is.readObject();
-        Thread.sleep(500);
         socket.close();
         for(Card card : cards){
             BorderPane pane = new BorderPane();
@@ -100,6 +129,26 @@ public class AddCardScene {
             flow.getChildren().add(pane);
         }
         return flow;
+    }
+
+    public static HBox backButton(Customer customer){
+        JFXButton back = new JFXButton("Back to Collection");
+        back.setOnAction(event1 -> {
+            try {
+                MainWindow.refreshDynamicContent(CollectionScene.display(customer,customer.getUsername(), false));
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
+        HBox hBox = new HBox();
+        hBox.setStyle("-fx-background-color: #b35e00;");
+        hBox.setAlignment(Pos.BASELINE_RIGHT);
+        hBox.getChildren().add(back);
+        hBox.setPadding(new Insets(5));
+
+        return hBox;
     }
 
 

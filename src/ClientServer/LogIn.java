@@ -2,6 +2,7 @@ package ClientServer;
 
 import Interface.MainWindow;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Exceptions.InterfaceExceptions.EmptyUsernameException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import com.jfoenix.controls.JFXButton;
@@ -154,6 +155,7 @@ public class LogIn extends Application{
             credentials.setText("Please enter username and password the password must have at least 8 characters an uppercase a lowercase and a number.");
             JFXPasswordField passwordVerified = new JFXPasswordField();
             passwordVerified.setPromptText("Repeat the password");
+            passwordVerified.setLabelFloat(true);
             credentialBox.getChildren().remove(infoFlow);
             credentialBox.getChildren().add(passwordVerified);
             Button confirm = new Button("Confirm");
@@ -162,13 +164,15 @@ public class LogIn extends Application{
             confirm.setOnAction(event1 -> {
             //todo fix confirm exceptions
 
+
+
                 try {
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
                             Socket socket2;
                             socket2 = new Socket("localhost", 8889);
                             try {
-
+                                if(username.getText().equals("")) throw new EmptyUsernameException();
                                 ObjectOutputStream os1 = new ObjectOutputStream(socket2.getOutputStream());
                                 os1.writeObject(new MessageServer(MessageType.ADDCUSTOMER, username.getText(),password.getText()));
                                 ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
@@ -179,7 +183,7 @@ public class LogIn extends Application{
                                 MainWindow.display(returnMessage);
                                 socket2.close();
 
-                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException e) {
+                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException | EmptyUsernameException e) {
                                 Text errorText = new Text(e.getMessage());
 
                                 TextFlow error = new TextFlow();
@@ -191,9 +195,7 @@ public class LogIn extends Application{
                                 socket2.close();
 
                             }
-                            catch (IOException e) {
-                                e.printStackTrace();
-                            } catch (ClassNotFoundException e) {
+                            catch (IOException | ClassNotFoundException e) {
                                 e.printStackTrace();
                             }
 
