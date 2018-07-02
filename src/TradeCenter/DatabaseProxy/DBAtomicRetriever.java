@@ -5,6 +5,8 @@ import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.Offer;
+import TradeCenter.Trades.Trade;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -272,6 +274,36 @@ public class DBAtomicRetriever {
             e.printStackTrace();
         }
         return wishlist;
+    }
+
+    public Trade retrieveTrade(Connection connection, int id, boolean doneDeal) {
+        Trade trade = null;
+
+        try {
+            if(doneDeal) {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE donedeal = ? AND trade_id = ?;");
+                ps.setBoolean(1, doneDeal);
+                ps.setInt(2, id);
+                ResultSet rs = ps.executeQuery();
+                Offer offer = null;
+                while(rs.next()) {
+                    //pass
+                }
+            } else {
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE donedeal = ? AND trade_id = ?;");
+                ps.setBoolean(1, doneDeal);
+                ps.setInt(2, id);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()) {
+                    //pass
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return trade;
     }
 
 }

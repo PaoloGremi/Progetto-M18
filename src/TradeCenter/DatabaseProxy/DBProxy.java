@@ -3,12 +3,14 @@ package TradeCenter.DatabaseProxy;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.Description;
+import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -20,6 +22,8 @@ public class DBProxy implements IProxy{
     private Connection connection;
     private DBAtomicRetriever dbAtom = new DBAtomicRetriever();
     private DBAtomicInserter dbIns = new DBAtomicInserter();
+    private DBAtomicUpdater dbUp = new DBAtomicUpdater();
+    private DBAtomicDeleter dbDel = new DBAtomicDeleter();
     private DBConnectionManager dbConn = new DBConnectionManager();
 
     /**
@@ -27,6 +31,7 @@ public class DBProxy implements IProxy{
      * @param cc: catalog to populate
      * @param tablename: type of descriptions to load
      */
+    @Override
     public void populateCatalog(CardCatalog cc, String tablename) {
         connection = dbConn.connectToDB(connection, "CARDS");
         int size;
@@ -52,6 +57,7 @@ public class DBProxy implements IProxy{
      * Adds full customer to customer hashmap
      * @param customers: hashmap to be populated
      */
+    @Override
     public void retrieveCustomers(HashMap<String, Customer> customers) {
         connection = dbConn.connectToDB(connection, "CARDS");
         int n = dbAtom.getTableSize(connection, "customers");
@@ -75,6 +81,7 @@ public class DBProxy implements IProxy{
      * Adds a customer in the database
      * @param customer: customer to be added
      */
+    @Override
     public void addCustomerToDatabase(Customer customer) {
         connection = dbConn.connectToDB(connection, "CARDS");
         // add customer
@@ -87,6 +94,47 @@ public class DBProxy implements IProxy{
         for (Card card : customer.getCollection()) {
             dbIns.insertCard(connection, card, customer);
         }
+        connection = dbConn.disconnectFromDB(connection);
+    }
+
+    /**
+     * Updates a customer (customer's collection and wishlist)
+     * @param customer: customer to be updated
+     */
+    @Override
+    public void updateCustomer(Customer customer) {
+        connection = dbConn.connectToDB(connection, "CARDS");
+        // update customer's cards
+            //get db's customer's collection
+        ArrayList<Card> oldCollection = dbAtom.retrieveCardsInCustomerCollection(connection, customer);
+            //get cards to update
+        ArrayList<Card> toUpdate = new ArrayList<Card>(customer.getCollection().getSet());
+        toUpdate.removeAll(oldCollection);
+        for(Card card:toUpdate) {
+            dbUp.updateCard(connection, card, customer.getId());
+        }
+            //free memory
+        oldCollection.clear();
+        toUpdate.clear();
+        // update customer's wishlist
+            //get db's wishlist
+        ArrayList<Description> oldWishlist = dbAtom.retrieveDescriptionsInCustomerWishlist(connection, customer);
+            //get wishlists to add
+        ArrayList<Description> toAdd = new ArrayList<Description>(customer.getWishList());
+        toAdd.removeAll(oldWishlist);
+            //update db
+        for(Description description:toAdd) {
+            dbIns.insertWishlist(connection, description, customer);
+        }
+            //get wishlists to remove
+        oldWishlist.removeAll(customer.getWishList());
+            //update db
+        for(Description description:oldWishlist) {
+            dbDel.removeWishlist(connection, customer, description);
+        }
+            //free memory
+        toAdd.clear();
+        oldWishlist.clear();
         connection = dbConn.disconnectFromDB(connection);
     }
 

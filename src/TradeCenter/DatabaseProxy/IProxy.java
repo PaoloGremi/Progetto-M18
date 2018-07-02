@@ -17,7 +17,7 @@ public interface IProxy {
 
     public int getNextCustomerID();
 
-    // public int updateCustomer();
+    public void updateCustomer(Customer customer);
 
     // public void retrieveTrades(ArrayList<Trade> trades, boolean doneDeal);
 

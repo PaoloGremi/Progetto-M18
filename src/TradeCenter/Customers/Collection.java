@@ -22,6 +22,12 @@ public class Collection implements Iterable<Card>, Serializable {
     }
 
     /**
+     * Return the cardSet (for DB purposes)
+     * @return this card set
+     */
+    public HashSet<Card> getSet() { return this.cardSet; }
+
+    /**
      * Iterator for the collection.
      *
      * @return the iterator.
