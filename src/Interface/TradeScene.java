@@ -90,7 +90,7 @@ public class TradeScene {
         //todo mettere le griglie ecc...
         //titoli
 
-        myCollection = new Text("myCollection");       //todo abbellire i titoli
+        myCollection = new Text(myCustomer.getUsername());       //todo abbellire i titoli
         myCollectionTitle = new TextFlow(myCollection);
         myCollectionTitle.setPadding(new Insets(5));
         myCollectionTitle.setStyle("-fx-background-color: #aa12ff");

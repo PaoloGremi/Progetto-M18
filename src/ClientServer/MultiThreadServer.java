@@ -10,6 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,8 +20,9 @@ public class MultiThreadServer implements Runnable {
     private ServerProxy proxy;
     Map<MessageType, Method> methodMap = new HashMap<>();
 
-    MultiThreadServer(Socket csocket, TradeCenter tradeCenter) throws NoSuchMethodException {
+    MultiThreadServer(Socket csocket, TradeCenter tradeCenter) throws NoSuchMethodException, SocketException {
         this.csocket = csocket;
+        csocket.setTcpNoDelay(true);
         this.tradeCenter = tradeCenter;
         proxy = new ServerProxy(tradeCenter);
 
@@ -59,6 +61,7 @@ public class MultiThreadServer implements Runnable {
             MessageServer m = (MessageServer) in.readObject();
             Object result = returnMessage(m.getMessage(),m);
             os.writeObject(result);
+            os.flush();
             csocket.close();
 
         } catch (IOException e) {

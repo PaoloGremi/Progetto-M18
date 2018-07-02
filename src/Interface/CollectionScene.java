@@ -37,7 +37,7 @@ public class CollectionScene{
 
         System.out.println("welcome client");
         Socket socket = new Socket("localhost", 8889);
-
+        socket.setTcpNoDelay(true);
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         System.out.println("Ok");

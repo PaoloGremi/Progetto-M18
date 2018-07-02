@@ -138,6 +138,7 @@ public class TradeCenter {
     }
 
     private ArrayList<Card> randomCards(Customer customer, CardCatalog catalog){
+
         ArrayList<Card> cards = new ArrayList();
         int i = 0;
         Random rand = new Random();
@@ -147,6 +148,7 @@ public class TradeCenter {
             i++;
         }
         addCardtoCustomer(customer,cards);
+
         return cards;
     }
 
@@ -163,6 +165,7 @@ public class TradeCenter {
 
     //todo add javadocs, check if the customer exist,
     public void addCardtoCustomer(Customer customer, ArrayList<Card> cards){
+
         customers.get(customer.getId()).addCard(cards);
         proxy.updateCustomer(customers.get(customer.getId()));
     }
@@ -202,10 +205,13 @@ public class TradeCenter {
      * @return
      */
     public Customer searchCustomer(String username){
+        long startTime = System.currentTimeMillis();
         for(String key : customers.keySet()){
             if((customers.get(key)).getUsername().equals(username)){
                 return customers.get(key);
             }
+            long endTime = System.currentTimeMillis();
+            System.out.println("That took " + (endTime - startTime) + " milliseconds");
         }
         //user not found
         throw new UserNotFoundException();
@@ -390,9 +396,15 @@ public class TradeCenter {
         if(result){
             switchCards(trade);
         }
-        activeTrades.remove(trade);     //deve essere cosi l'ordine altrimenti trade != trade negli active trade
-        trade.doneDeal(result);
-        doneTrades.add(trade);
+        for(Trade activeTrade : activeTrades){
+            if(activeTrade.betweenUsers(trade.getCustomer1().getUsername()) && activeTrade.betweenUsers(trade.getCustomer2().getUsername())){
+                activeTrades.remove(activeTrade);
+                trade.doneDeal(result);
+                doneTrades.add(trade);
+            }
+        }
+            //deve essere cosi l'ordine altrimenti trade != trade negli active trade
+
     }
 
     /**

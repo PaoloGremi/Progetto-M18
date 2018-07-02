@@ -122,12 +122,15 @@ public class MainWindow {
         // Action events for the buttons
         myCollection.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
+            long startTime = System.currentTimeMillis();
             try {
                 Customer updatedCustomer = retrieveCustomer(customer);
                 dynamicContent.getChildren().add(CollectionScene.display(updatedCustomer, updatedCustomer.getUsername(), false));
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            long endTime = System.currentTimeMillis();
+            System.out.println("That took " + (endTime - startTime) + " milliseconds");
         });
         myWishlist.setOnAction(event -> {
             Customer updatedCustomer = retrieveCustomer(customer);
@@ -140,7 +143,7 @@ public class MainWindow {
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchUserScene.display(retrieveCustomer(customer)));
+            dynamicContent.getChildren().add(SearchUserScene.display(customer));
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
@@ -185,16 +188,22 @@ public class MainWindow {
     private static Customer retrieveCustomer(Customer customer){
         Customer updatedCustomer = null;
         Socket socket = null;
+        long startTime = System.currentTimeMillis();
         try {
             socket = new Socket("localhost", 8889);
+            socket.setTcpNoDelay(true);
+            //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             updatedCustomer = (Customer)is.readObject();
+            os.flush();
             socket.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        long endTime = System.currentTimeMillis();
+        System.out.println("That took " + (endTime - startTime) + " milliseconds");
         return updatedCustomer;
     }
 
