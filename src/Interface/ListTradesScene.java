@@ -26,9 +26,10 @@ public class ListTradesScene {
     private static Text title;
     private static ScrollPane scrollableList;
 
-
+    private static Customer user;
 
     static BorderPane display(Customer myCustomer){
+        user = myCustomer;
         mainPane = new BorderPane();
         title = new Text(myCustomer.getUsername() + "'s Trades");
         scrollableList = new ScrollPane();
@@ -58,7 +59,7 @@ public class ListTradesScene {
                         public void handle(javafx.scene.input.MouseEvent e) {
                             Trade trade = tradeList.getSelectionModel().getSelectedItem();
                             if (trade.isDoneDeal()) {
-                                System.out.println("done");
+                                MainWindow.refreshDynamicContent(DoneDealScene.display(trade));
                             } else {
 
                                 //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
@@ -88,5 +89,9 @@ public class ListTradesScene {
         //todo mettere a posto stile del css
         mainPane.getStylesheets().add("Interface/ListTradesCSS.css"); //nei css usare i percorsi relativi
         return mainPane;
+    }
+
+    static BorderPane refresh(){
+        return display(user);
     }
 }

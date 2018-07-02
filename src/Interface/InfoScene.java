@@ -15,14 +15,14 @@ import javafx.scene.text.TextFlow;
 
 public class InfoScene {
 
-    public static BorderPane display(String infoString){
+    public static BorderPane display(String infoString, String url, Boolean removable){
         BorderPane pane = new BorderPane();
         VBox vBox = new VBox();
         Label text = new Label("\n"+ infoString);
         Text alert = new Text("\u26A0");
         alert.setStyle("-fx-text-fill: red");
         alert.setStyle("-fx-font-weight: bold");
-        Image image = new Image("Interface/2000px-Simple_Alert.svg.png");
+        Image image = new Image(url);
         ImageView imageView = new ImageView();
         imageView.setImage(image);
         imageView.setPreserveRatio(true);
@@ -38,9 +38,11 @@ public class InfoScene {
         vBox.setAlignment(Pos.CENTER);
         vBox.getChildren().addAll(imageView, text);
         pane.setCenter(vBox);
-        pane.setOnMouseClicked(event -> {
-            MainWindow.removeDynamicContent(pane);
-        });
+        if(removable) {
+            pane.setOnMouseClicked(event -> {
+                MainWindow.removeDynamicContent(pane);
+            });
+        }
         //todo centrare scritta, mettere blur sotto, fare in  modo che fitta tutto lo schermo(vedi in basso)
         pane.setStyle("-fx-background-color: rgba(235,255,235,0.62);");
         return pane;

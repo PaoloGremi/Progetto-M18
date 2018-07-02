@@ -8,13 +8,13 @@ import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Trade;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -22,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -199,23 +200,10 @@ public class TradeScene {
 
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
-                try {
-                    Socket socket = new Socket("localhost", 8889);
-                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
-                    try {
-                        //todo fix sleep
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                        socket.close();
-                        System.out.println("accepted offer");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                Timeline task = loading(trade);
+                task.playFromStart();
             }else{
-                MainWindow.addDynamicContent(InfoScene.display("Non puoi accettare la tua stessa offerta"));
+                MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer","Interface/2000px-Simple_Alert.svg.png", true));
                 System.err.println("You cannot accept your own offer Cugghiuna!");
             }
         });
@@ -542,6 +530,44 @@ public class TradeScene {
         mainPane.setBottom(buttonsBox);
 
         return mainPane;
+    }
+
+    private static Timeline loading(ATrade trade ){
+
+        Timeline task = new Timeline(
+
+                new KeyFrame(
+                        Duration.ZERO,
+                        event -> {
+
+                            MainWindow.addDynamicContent(InfoScene.display("Deal done","Interface/pokeBall.png",false));
+                        }
+                ),
+
+                new KeyFrame(
+                        Duration.millis(5),
+                        event -> {
+
+                            try {
+                                Socket socket = new Socket("localhost", 8889);
+                                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                                os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
+                                try {
+                                    //todo fix sleep
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                socket.close();
+                                System.out.println("accepted offer");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                )
+        );
+
+        return task;
     }
 
 
