@@ -59,12 +59,17 @@ public class ListTradesScene {
                         public void handle(javafx.scene.input.MouseEvent e) {
                             Trade trade = tradeList.getSelectionModel().getSelectedItem();
                             if (trade.isDoneDeal()) {
-                                MainWindow.refreshDynamicContent(DoneDealScene.display(trade));
+                                if(trade.isPositiveEnd()) {
+                                    MainWindow.refreshDynamicContent(DoneDealScene.display(trade));
+                                }else{
+                                    MainWindow.addDynamicContent(InfoScene.display("The offer has been refused", "Interface/infoSign.png",true));
+                                }
                             } else {
 
                                 //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
                                 if(myCustomer.getUsername().equals(trade.getCustomer1().getUsername())) {
                                     MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(), true));
+                                    MainWindow.addDynamicContent(InfoScene.display(trade.getCustomer2().getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
                                 }else{
                                     MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer1(), true));
                                 }
