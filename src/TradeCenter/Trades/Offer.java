@@ -20,6 +20,8 @@ public class Offer extends ATrade {
         super(customer1, customer2, offer1, offer2);
     }
 
+    public Offer() {}
+
     /**
      * Add a Card to one of the Customers's collection (use addCardToCollection(Card, this))
      * @param card Card to be added

@@ -42,6 +42,8 @@ public abstract class ATrade implements Serializable {
         this.date = new Date();
     }
 
+    public ATrade() {}
+
     /**
      * Getter for first Customers
      * @return first Customers

@@ -5,6 +5,7 @@ import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.FakeOffer;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
@@ -19,7 +20,7 @@ import java.util.ArrayList;
  * Single records retriever (database management module)
  * @author Roberto Gallotta
  */
-public class DBAtomicRetriever {
+class DBAtomicRetriever {
 
     /**
      * Retrieve a single customer from the database given its username (used in LogIn procedure)
@@ -27,7 +28,7 @@ public class DBAtomicRetriever {
      * @param username: customer's username
      * @return customer
      */
-    public Customer retrieveSingleCustomerByUsername(Connection connection, String username) {
+    Customer retrieveSingleCustomerByUsername(Connection connection, String username) {
         Customer customer = null;
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM customers where username = ?;");
@@ -51,7 +52,7 @@ public class DBAtomicRetriever {
      * @param id: customer's id
      * @return customer
      */
-    public Customer retrieveSingleCustomerByUserID(Connection connection, int id) {
+    Customer retrieveSingleCustomerByUserID(Connection connection, int id) {
         Customer customer = null;
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM customers where customer_id = ?;");
@@ -75,7 +76,7 @@ public class DBAtomicRetriever {
      * @param tablename: table name
      * @return table size
      */
-    public int getTableSize(Connection connection, String tablename) {
+    int getTableSize(Connection connection, String tablename) {
         int size = 0;
         try {
             PreparedStatement ps = null;
@@ -113,7 +114,7 @@ public class DBAtomicRetriever {
      * @param id: Pokémon description id
      * @return Pokémon description
      */
-    public PokemonDescription retrieveSinglePokemonDescription(Connection connection, int id) {
+    PokemonDescription retrieveSinglePokemonDescription(Connection connection, int id) {
         PokemonDescription pokemonDescription = null;
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM pokemon_card WHERE pokemon_description_id = ?;");
@@ -167,7 +168,7 @@ public class DBAtomicRetriever {
      * @param id: Yu-Gi-Oh description id
      * @return Yu-Gi-Oh description
      */
-    public YuGiOhDescription retrieveSingleYugiohDescription(Connection connection, int id) {
+    YuGiOhDescription retrieveSingleYugiohDescription(Connection connection, int id) {
         YuGiOhDescription yuGiOhDescription = null;
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM yugioh_card AS a LEFT JOIN (SELECT Monster_Type_ID, Name AS MonsterTypeName FROM monster_Type) AS b ON a.Monster_Type_ID = b.Monster_Type_ID LEFT JOIN (SELECT Type_ID, Name AS CardTypeName FROM card_Type) AS c ON a.Type_ID = c.Type_ID WHERE yugioh_description_id = ?;");
@@ -221,7 +222,7 @@ public class DBAtomicRetriever {
      * @param customer: selected customer //TODO change this to customer ID for less visibility?
      * @return array of cards
      */
-    public ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, Customer customer) {
+    ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, Customer customer) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE customer_id = ?");
@@ -251,7 +252,7 @@ public class DBAtomicRetriever {
      * @param customer: selected customer //TODO change this to customer ID for less visibility?
      * @return array of descriptions
      */
-    public ArrayList<Description> retrieveDescriptionsInCustomerWishlist(Connection connection, Customer customer) {
+    ArrayList<Description> retrieveDescriptionsInCustomerWishlist(Connection connection, Customer customer) {
         ArrayList<Description> wishlist = new ArrayList<>();
 
         try {
@@ -276,28 +277,71 @@ public class DBAtomicRetriever {
         return wishlist;
     }
 
-    public Trade retrieveTrade(Connection connection, int id, boolean doneDeal) {
-        Trade trade = null;
-
+    FakeOffer retrieveTrade(Connection connection, int id) {
+        FakeOffer trade = null;
         try {
-            if(doneDeal) {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE donedeal = ? AND trade_id = ?;");
-                ps.setBoolean(1, doneDeal);
-                ps.setInt(2, id);
+                PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE trade_id = ?;");
+                ps.setInt(1, id);
                 ResultSet rs = ps.executeQuery();
-                Offer offer = null;
+                FakeOffer offer = new FakeOffer();
                 while(rs.next()) {
-                    //pass
+                    offer.setCustomer1(rs.getString("user1_id"));
+                    offer.setCustomer2(rs.getString("user2_id"));
+                    offer.setDate(rs.getDate("date"));
+                    Boolean donedeal = rs.getBoolean("donedeal");
+                    PreparedStatement ps1;
+                    PreparedStatement ps2;
+                    Card card;
+                    if (donedeal) {
+                        //first collection
+                        ps1 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
+                        ps1.setInt(1, id);
+                        ps1.setInt(2, 1);
+                        //second collection
+                        ps2 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
+                        ps2.setInt(1, id);
+                        ps2.setInt(2, 2);
+                    } else {
+                        //first collection
+                        ps1 = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col = ?;");
+                        ps1.setInt(1, id);
+                        ps1.setInt(2, 1);
+                        //second collection
+                        ps2 = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col = ?;");
+                        ps2.setInt(1, id);
+                        ps2.setInt(2, 2);
+                    }
+                    ResultSet rs1 = ps1.executeQuery();
+                    while (rs1.next()) {
+                        Description description = null;
+                        switch (rs1.getString("card_Type")) {
+                            case "pokemon":
+                                description = retrieveSinglePokemonDescription(connection, rs1.getInt("description_id"));
+                                break;
+                            case "yugioh":
+                                description = retrieveSingleYugiohDescription(connection, rs1.getInt("description_id"));
+                                break;
+                        }
+                        card = new Card(rs1.getInt("card_id"), description);
+                        offer.addCardOffer1(card);
+                    }
+                    ResultSet rs2 = ps2.executeQuery();
+                    while (rs2.next()) {
+                        Description description = null;
+                        switch (rs2.getString("card_Type")) {
+                            case "pokemon":
+                                description = retrieveSinglePokemonDescription(connection, rs2.getInt("description_id"));
+                                break;
+                            case "yugioh":
+                                description = retrieveSingleYugiohDescription(connection, rs2.getInt("description_id"));
+                                break;
+                        }
+                        card = new Card(rs2.getInt("card_id"), description);
+                        offer.addCardOffer2(card);
+                    }
                 }
-            } else {
-                PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE donedeal = ? AND trade_id = ?;");
-                ps.setBoolean(1, doneDeal);
-                ps.setInt(2, id);
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()) {
-                    //pass
-                }
-            }
+                trade = offer;
+                //set boolean donedeal
 
         } catch (SQLException e) {
             e.printStackTrace();

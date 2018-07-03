@@ -9,7 +9,7 @@ import java.sql.*;
  * Handles INSERT commands for database management
  * @author Roberto Gallotta
  */
-public class DBAtomicInserter {
+class DBAtomicInserter {
 
     /**
      * Insert a card in the database
@@ -17,7 +17,7 @@ public class DBAtomicInserter {
      * @param card: card to insert in database
      * @param customer: owner of the card
      */
-    public void insertCard(Connection connection, Card card, Customer customer) {
+    void insertCard(Connection connection, Card card, Customer customer) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO cards VALUES (?,?,?,?,?,?);");
             ps.setInt(1,card.getId());
@@ -47,7 +47,7 @@ public class DBAtomicInserter {
      * @param description: description to be added
      * @param customer:
      */
-    public void insertWishlist(Connection connection, Description description, Customer customer) {
+    void insertWishlist(Connection connection, Description description, Customer customer) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO wishlist VALUES (?,?,?);");
             ps.setString(1, customer.getId());
@@ -73,7 +73,7 @@ public class DBAtomicInserter {
      * @param connection: database connection
      * @param customer: customer to be added //TODO Maybe pass only ID, Username and Password?
      */
-    public void insertCustomer(Connection connection, Customer customer) {
+    void insertCustomer(Connection connection, Customer customer) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO customers VALUES (?,?,?);");
             ps.setString(1, customer.getId());

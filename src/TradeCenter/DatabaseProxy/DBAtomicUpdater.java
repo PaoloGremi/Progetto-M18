@@ -12,7 +12,7 @@ import java.sql.Types;
  * Handles SET/UPDATE commands for database management
  * @author Roberto Gallotta
  */
-public class DBAtomicUpdater {
+class DBAtomicUpdater {
 
     /**
      * Update a card's owner
@@ -20,7 +20,7 @@ public class DBAtomicUpdater {
      * @param card: card to be updated
      * @param newCustomerID: new customer's id
      */
-    protected void updateCard(Connection connection, Card card, String newCustomerID) {
+    void updateCard(Connection connection, Card card, String newCustomerID) {
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE cards SET customer_id = ? WHERE card_id = ?;");
             ps.setString(1, newCustomerID);
@@ -39,7 +39,7 @@ public class DBAtomicUpdater {
      * @param tradeID: trade id
      * @param offer_col: column offer
      */
-    protected void updateCard(Connection connection, Card card, int tradeID, int offer_col) {
+    void updateCard(Connection connection, Card card, int tradeID, int offer_col) {
         try {
             PreparedStatement ps = connection.prepareStatement("UPDATE cards SET trade_id = ?, offer_col = ? WHERE card_id = ?;");
             ps.setInt(1, tradeID);

@@ -10,14 +10,17 @@ import java.sql.SQLException;
  */
 public class DBConnectionManager {
 
+    private final String DATABASE = "CARDS";
+    private final String USERNAME = "tradecenter";
+    private final String PASSWORD = "Password1!";
+
     /**
      * Connects to database
-     * @param database: database name
      */
-    protected Connection connectToDB(Connection connection, String database) {
+    protected Connection connectToDB(Connection connection) {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + database + "?serverTimezone=UTC&useSSL=false", "tradecenter", "Password1!");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + DATABASE + "?serverTimezone=UTC&useSSL=false", USERNAME, PASSWORD);
             connection.setAutoCommit(false);
         } catch (SQLException | ClassNotFoundException e) {
             System.err.println(e.getMessage());

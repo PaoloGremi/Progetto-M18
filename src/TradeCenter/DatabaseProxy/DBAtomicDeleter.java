@@ -9,9 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DBAtomicDeleter {
+class DBAtomicDeleter {
 
-    public void removeWishlist(Connection connection, Customer customer, Description description) {
+    void removeWishlist(Connection connection, Customer customer, Description description) {
         try {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM wishlist WHERE customer_id = ? AND description_id = ? AND type = ?;");
             ps.setString(1, customer.getId());

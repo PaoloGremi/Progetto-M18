@@ -3,12 +3,10 @@ package TradeCenter.DatabaseProxy;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.Description;
-import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.FakeOffer;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +18,7 @@ import java.util.HashMap;
 public class DBProxy implements IProxy{
 
     private Connection connection;
-    private DBAtomicRetriever dbAtom = new DBAtomicRetriever();
+    private DBAtomicRetriever dbRet = new DBAtomicRetriever();
     private DBAtomicInserter dbIns = new DBAtomicInserter();
     private DBAtomicUpdater dbUp = new DBAtomicUpdater();
     private DBAtomicDeleter dbDel = new DBAtomicDeleter();
@@ -33,19 +31,19 @@ public class DBProxy implements IProxy{
      */
     @Override
     public void populateCatalog(CardCatalog cc, String tablename) {
-        connection = dbConn.connectToDB(connection, "CARDS");
+        connection = dbConn.connectToDB(connection);
         int size;
         switch(tablename) {
             case "pokemon_card":
-                size = dbAtom.getTableSize(connection, tablename);
+                size = dbRet.getTableSize(connection, tablename);
                 for(int i = 0; i<size; i++) {
-                    cc.addDescription(dbAtom.retrieveSinglePokemonDescription(connection, i));
+                    cc.addDescription(dbRet.retrieveSinglePokemonDescription(connection, i));
                 }
                 break;
             case "yugioh_card":
-                size = dbAtom.getTableSize(connection, tablename);
+                size = dbRet.getTableSize(connection, tablename);
                 for(int i = 0; i<size; i++) {
-                    cc.addDescription(dbAtom.retrieveSingleYugiohDescription(connection, i));
+                    cc.addDescription(dbRet.retrieveSingleYugiohDescription(connection, i));
                 }
                 break;
         }
@@ -59,16 +57,16 @@ public class DBProxy implements IProxy{
      */
     @Override
     public void retrieveCustomers(HashMap<String, Customer> customers) {
-        connection = dbConn.connectToDB(connection, "CARDS");
-        int n = dbAtom.getTableSize(connection, "customers");
+        connection = dbConn.connectToDB(connection);
+        int n = dbRet.getTableSize(connection, "customers");
         for(int i=1; i<= n; i++) {
-            Customer customer = dbAtom.retrieveSingleCustomerByUserID(connection, i);
+            Customer customer = dbRet.retrieveSingleCustomerByUserID(connection, i);
             // add card collection
-            for(Card card:dbAtom.retrieveCardsInCustomerCollection(connection, customer)) {
+            for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer)) {
                 customer.addCard(card);
             }
             // add card wishlist
-            for(Description description:dbAtom.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
+            for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
                 customer.addCardToWishList(description);
             }
             // add customer
@@ -78,12 +76,26 @@ public class DBProxy implements IProxy{
     }
 
     /**
+     * Retrieve a single customer from the database given its username (used in LogIn procedure)
+     * @param username: customer's username
+     * @return customer
+     */
+    @Override
+    public Customer retrieveSingleCustomer(String username) {
+        connection = dbConn.connectToDB(connection);
+        Customer customer = null;
+        customer = dbRet.retrieveSingleCustomerByUsername(connection, username);
+        connection = dbConn.disconnectFromDB(connection);
+        return customer;
+    }
+
+    /**
      * Adds a customer in the database
      * @param customer: customer to be added
      */
     @Override
     public void addCustomerToDatabase(Customer customer) {
-        connection = dbConn.connectToDB(connection, "CARDS");
+        connection = dbConn.connectToDB(connection);
         // add customer
         dbIns.insertCustomer(connection, customer);
         // add customer's wishlist
@@ -103,10 +115,10 @@ public class DBProxy implements IProxy{
      */
     @Override
     public void updateCustomer(Customer customer) {
-        connection = dbConn.connectToDB(connection, "CARDS");
+        connection = dbConn.connectToDB(connection);
         // update customer's cards
             //get db's customer's collection
-        ArrayList<Card> oldCollection = dbAtom.retrieveCardsInCustomerCollection(connection, customer);
+        ArrayList<Card> oldCollection = dbRet.retrieveCardsInCustomerCollection(connection, customer);
             //get cards to update
         ArrayList<Card> toUpdate = new ArrayList<Card>(customer.getCollection().getSet());
         toUpdate.removeAll(oldCollection);
@@ -118,7 +130,7 @@ public class DBProxy implements IProxy{
         toUpdate.clear();
         // update customer's wishlist
             //get db's wishlist
-        ArrayList<Description> oldWishlist = dbAtom.retrieveDescriptionsInCustomerWishlist(connection, customer);
+        ArrayList<Description> oldWishlist = dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer);
             //get wishlists to add
         ArrayList<Description> toAdd = new ArrayList<Description>(customer.getWishList());
         toAdd.removeAll(oldWishlist);
@@ -138,13 +150,21 @@ public class DBProxy implements IProxy{
         connection = dbConn.disconnectFromDB(connection);
     }
 
+    public FakeOffer getTrade(int id) {
+        connection = dbConn.connectToDB(connection);
+        FakeOffer trade = dbRet.retrieveTrade(connection, id);
+        connection = dbConn.disconnectFromDB(connection);
+        return trade;
+    }
+
     /**
      * Quick method to get next card ID
      * @return: next card ID
      */
+    @Override
     public int getNextCardID() {
-        connection = dbConn.connectToDB(connection, "CARDS");
-        int n = dbAtom.getTableSize(connection, "cards") + 1;
+        connection = dbConn.connectToDB(connection);
+        int n = dbRet.getTableSize(connection, "cards") + 1;
         connection = dbConn.disconnectFromDB(connection);
         return n;
     }
@@ -155,8 +175,8 @@ public class DBProxy implements IProxy{
      */
     @Override
     public int getNextCustomerID() {
-        connection = dbConn.connectToDB(connection, "CARDS");
-        int n = dbAtom.getTableSize(connection, "customers") + 1;
+        connection = dbConn.connectToDB(connection);
+        int n = dbRet.getTableSize(connection, "customers") + 1;
         connection = dbConn.disconnectFromDB(connection);
         return n;
     }
