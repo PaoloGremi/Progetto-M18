@@ -147,7 +147,7 @@ public class TradeScene {
         }
         //bottoni
         buttonsBox = new HBox();
-        buttonsBox.setPadding(new Insets(6, 20, 6, 20));
+        buttonsBox.setPadding(new Insets(7, 20, 7, 20));
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
         Button refuse = new Button("Refuse");
@@ -161,20 +161,31 @@ public class TradeScene {
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 if(!flagStarted){
                     //todo al primo scambio tira null pointer perche le collezioni sono vuote
-                    os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+
+                    if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
+                        MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/infoSign.png", false));
+                        os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                        Thread.sleep(100);
+                    } else {
+                        MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections","Interface/2000px-Simple_Alert.svg.png", true));
+                    }
                 }else{
                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                    Object read = is.readObject();
+                    boolean flag = read instanceof AlreadyStartedTradeException;
+                    if(!flag){
+                        MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
+                        System.out.println("raised new offer");
+                    }else{
+                        throw new AlreadyStartedTradeException(otherC.getUsername());
+                    }
                 }
-                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                Object read = is.readObject();
-                boolean flag = read instanceof AlreadyStartedTradeException;
-                if(!flag){
-                    System.out.println("raised new offer");
-                }else{
-                    throw new AlreadyStartedTradeException(otherC.getUsername());
-                }
+
                 socket.close();
             } catch (IOException | ClassNotFoundException | AlreadyStartedTradeException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //todo quando si fa il raise poi fare il display di una infobox con switch case che controlla cosa scrivere
@@ -183,12 +194,16 @@ public class TradeScene {
         //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
         refuse.setOnAction(event -> {
             try {
+                MainWindow.addDynamicContent(InfoScene.display("Offer refused", "Interface/infoSign.png", false));
                 Socket socket = new Socket("localhost", 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
+                Thread.sleep(100);
                 socket.close();
                 System.out.println("refused offer");
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });

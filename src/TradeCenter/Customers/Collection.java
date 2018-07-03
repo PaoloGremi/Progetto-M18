@@ -12,6 +12,8 @@ import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
 public class Collection implements Iterable<Card>, Serializable {
 
+    private static final long serialVersionUID = -6729279270235007035L;
+
     /**
      * @param cardSet HashSet that contains the card of the collection.
      */
