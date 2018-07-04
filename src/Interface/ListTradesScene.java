@@ -62,7 +62,7 @@ public class ListTradesScene {
                                 if(trade.isPositiveEnd()) {
                                     MainWindow.refreshDynamicContent(DoneDealScene.display(trade));
                                 }else{
-                                    MainWindow.addDynamicContent(InfoScene.display("The offer has been refused", "Interface/infoSign.png",true));
+                                    MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/infoSign.png",true));
                                 }
                             } else {
 

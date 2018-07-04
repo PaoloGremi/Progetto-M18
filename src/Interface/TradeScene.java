@@ -29,6 +29,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 
 public class TradeScene {
@@ -178,20 +179,26 @@ public class TradeScene {
                     }
                 }else {
                     if (verifyUpdated(currentTrade)) {
-                        os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
-                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                        Object read = is.readObject();
-                        boolean flag = read instanceof AlreadyStartedTradeException;
-                        if (!flag) {
-                            myCardOffer.getSet().remove(myCardOffer.getSet());
-                            otherCardOffer.getSet().remove(otherCardOffer.getSet());
-                            MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
-                            System.out.println("raised new offer");
-                        } else {
-                            throw new AlreadyStartedTradeException(otherC.getUsername());
-                        }
+
+                            os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                            Object read = is.readObject();
+                            boolean flag = read instanceof AlreadyStartedTradeException;
+                            if (!flag) {
+                                myCardOffer.getSet().remove(myCardOffer.getSet());
+                                otherCardOffer.getSet().remove(otherCardOffer.getSet());
+                                MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
+                                System.out.println("raised new offer");
+                            } else {
+                                throw new AlreadyStartedTradeException(otherC.getUsername());
+                            }
+
                     }else{
-                        infoOfferChanged();
+                        if(currentTrade!=null) {
+                            infoOfferChanged();
+                        }else{
+                            MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                        }
                     }
                 }
 
@@ -208,21 +215,26 @@ public class TradeScene {
         //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
         refuse.setOnAction(event -> {
             if(verifyUpdated(currentTrade)) {
-                try {
-                    MainWindow.addDynamicContent(InfoScene.display("Offer refused", "Interface/infoSign.png", false));
-                    Socket socket = new Socket("localhost", 8889);
-                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
-                    Thread.sleep(100);
-                    socket.close();
-                    System.out.println("refused offer");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        MainWindow.addDynamicContent(InfoScene.display("Offer rejected", "Interface/infoSign.png", false));
+                        Socket socket = new Socket("localhost", 8889);
+                        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                        os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
+                        Thread.sleep(100);
+                        socket.close();
+                        System.out.println("refused offer");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
             } else{
-                infoOfferChanged();
+                if(currentTrade!=null) {
+                    infoOfferChanged();
+                }else{
+                    MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                }
             }
         });
 
@@ -234,11 +246,17 @@ public class TradeScene {
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
                 if(verifyUpdated(currentTrade)) {
-                    Timeline task = loading(currentTrade);
-                    task.playFromStart();
+
+                        Timeline task = loading(currentTrade);
+                        task.playFromStart();
+
                 }
                 else {
-                    infoOfferChanged();
+                    if(currentTrade!=null) {
+                        infoOfferChanged();
+                    }else {
+                        MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                    }
                 }
             }else{
                 MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer","Interface/2000px-Simple_Alert.svg.png", true));
@@ -627,10 +645,12 @@ public class TradeScene {
 
     private static boolean verifyUpdated(ATrade trade){
         ATrade actualTrade = retriveActualTrade(trade);
-        if(trade.getOffer1().getSet().size()==actualTrade.getOffer1().getSet().size() && trade.getOffer2().getSet().size()==actualTrade.getOffer2().getSet().size()){
-             if(trade.getOffer1().getSet().equals(actualTrade.getOffer1().getSet()) && trade.getOffer2().getSet().equals(actualTrade.getOffer2().getSet())){
-                 return true;
-             }
+        if(actualTrade!=null) {
+            if (trade.getOffer1().getSet().size() == actualTrade.getOffer1().getSet().size() && trade.getOffer2().getSet().size() == actualTrade.getOffer2().getSet().size()) {
+                if (trade.getOffer1().getSet().equals(actualTrade.getOffer1().getSet()) && trade.getOffer2().getSet().equals(actualTrade.getOffer2().getSet())) {
+                    return true;
+                }
+            }
         }
         currentTrade = actualTrade;
         return false;
