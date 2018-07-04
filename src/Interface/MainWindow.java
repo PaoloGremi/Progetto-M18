@@ -185,7 +185,7 @@ public class MainWindow {
     }
 
     //todo add javadocs
-    private static Customer retrieveCustomer(Customer customer){
+    protected static Customer retrieveCustomer(Customer customer){
         Customer updatedCustomer = null;
         Socket socket = null;
         long startTime = System.currentTimeMillis();

@@ -72,7 +72,7 @@ public class SearchUserScene {
                                     public void handle(javafx.scene.input.MouseEvent e) {
                                         Customer otherCustomer = usersList.getSelectionModel().getSelectedItem();
 
-                                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(mySelf, otherCustomer));
+                                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(MainWindow.retrieveCustomer(mySelf), otherCustomer));
 
                                     }
                                 };

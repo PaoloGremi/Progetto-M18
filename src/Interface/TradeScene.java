@@ -66,7 +66,12 @@ public class TradeScene {
     static Collection myCardOffer;
     static Collection otherCardOffer;
 
+
+    private static ATrade currentTrade = null;
+
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
+
+        currentTrade=trade;
 
         //todo il problema è che nel trade non viene fatto lo switch dei customer quindi quando lo usiamo per
         //todo passarli (passasimao trade, trade.customer) a myCustomer ecc.., vengono passati sbagliati vedi listener accept
@@ -163,26 +168,35 @@ public class TradeScene {
                     //todo al primo scambio tira null pointer perche le collezioni sono vuote
 
                     if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
-                        MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/infoSign.png", false));
-                        os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
-                        Thread.sleep(100);
+
+                            MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/infoSign.png", false));
+                            os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                            Thread.sleep(100);
+
                     } else {
                         MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections","Interface/2000px-Simple_Alert.svg.png", true));
                     }
-                }else{
-                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
-                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                    Object read = is.readObject();
-                    boolean flag = read instanceof AlreadyStartedTradeException;
-                    if(!flag){
-                        MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
-                        System.out.println("raised new offer");
+                }else {
+                    if (verifyUpdated(currentTrade)) {
+                        os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                        Object read = is.readObject();
+                        boolean flag = read instanceof AlreadyStartedTradeException;
+                        if (!flag) {
+                            myCardOffer.getSet().remove(myCardOffer.getSet());
+                            otherCardOffer.getSet().remove(otherCardOffer.getSet());
+                            MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
+                            System.out.println("raised new offer");
+                        } else {
+                            throw new AlreadyStartedTradeException(otherC.getUsername());
+                        }
                     }else{
-                        throw new AlreadyStartedTradeException(otherC.getUsername());
+                        infoOfferChanged();
                     }
                 }
 
-                socket.close();
+                    socket.close();
+
             } catch (IOException | ClassNotFoundException | AlreadyStartedTradeException e) {
                 e.printStackTrace();
             } catch (InterruptedException e) {
@@ -193,30 +207,39 @@ public class TradeScene {
         });
         //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
         refuse.setOnAction(event -> {
-            try {
-                MainWindow.addDynamicContent(InfoScene.display("Offer refused", "Interface/infoSign.png", false));
-                Socket socket = new Socket("localhost", 8889);
-                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
-                Thread.sleep(100);
-                socket.close();
-                System.out.println("refused offer");
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(verifyUpdated(currentTrade)) {
+                try {
+                    MainWindow.addDynamicContent(InfoScene.display("Offer refused", "Interface/infoSign.png", false));
+                    Socket socket = new Socket("localhost", 8889);
+                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
+                    Thread.sleep(100);
+                    socket.close();
+                    System.out.println("refused offer");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } else{
+                infoOfferChanged();
             }
         });
 
 
         accept.setOnAction(event -> {
             //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
-            boolean condition = myCustomer.getUsername().equals(trade.getCustomer2().getUsername());
+            boolean condition = myCustomer.getUsername().equals(currentTrade.getCustomer2().getUsername());
 
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
-                Timeline task = loading(trade);
-                task.playFromStart();
+                if(verifyUpdated(currentTrade)) {
+                    Timeline task = loading(currentTrade);
+                    task.playFromStart();
+                }
+                else {
+                    infoOfferChanged();
+                }
             }else{
                 MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer","Interface/2000px-Simple_Alert.svg.png", true));
                 System.err.println("You cannot accept your own offer Cugghiuna!");
@@ -408,7 +431,6 @@ public class TradeScene {
 
                 Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-
                 imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
 
                     public void handle(MouseEvent mouseEvent1) {
@@ -583,6 +605,40 @@ public class TradeScene {
         );
 
         return task;
+    }
+
+    private static ATrade retriveActualTrade(ATrade trade){
+        ATrade actualTrade = null;
+        try {
+            Socket socket = new Socket("localhost", 8889);
+            socket.setTcpNoDelay(true);
+            //socket.setKeepAlive(true);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHTRADE, trade.getCustomer1(), trade.getCustomer2()));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            actualTrade = (ATrade) is.readObject();
+            os.flush();
+            socket.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return actualTrade;
+    }
+
+    private static boolean verifyUpdated(ATrade trade){
+        ATrade actualTrade = retriveActualTrade(trade);
+        if(trade.getOffer1().getSet().size()==actualTrade.getOffer1().getSet().size() && trade.getOffer2().getSet().size()==actualTrade.getOffer2().getSet().size()){
+             if(trade.getOffer1().getSet().equals(actualTrade.getOffer1().getSet()) && trade.getOffer2().getSet().equals(actualTrade.getOffer2().getSet())){
+                 return true;
+             }
+        }
+        currentTrade = actualTrade;
+        return false;
+    }
+
+    private static void infoOfferChanged(){
+        restoreFromPreviousTrade(currentTrade);
+        MainWindow.addDynamicContent(InfoScene.display("The other customer changed\nthe offer", "Interface/2000px-Simple_Alert.svg.png",true));
     }
 
 
