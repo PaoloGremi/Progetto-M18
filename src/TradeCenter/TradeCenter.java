@@ -163,20 +163,36 @@ public class TradeCenter {
     }
 
 
-    //todo add javadocs, check if the customer exist,
+    //todo check if the customer exist,
+
+    /**
+     * a method that add a card to collection to a customer
+     * @param customer the customer itself
+     * @param cards the cards to add to a collection
+     */
     public void addCardtoCustomer(Customer customer, ArrayList<Card> cards){
 
         customers.get(customer.getId()).addCard(cards);
         proxy.updateCustomer(customers.get(customer.getId()));
     }
 
-    //todo add javadocs, check if the customer exist,
+    //todo check if the customer exist,
+
+    /**
+     * method that remove a card from a customer's collection
+     * @param customer the customer itself
+     * @param card the trade element
+     */
     public void removeCardFromCustomer(Customer customer, Card card){
         customers.get(customer.getId()).removeCard(card);
         proxy.updateCustomer(customers.get(customer.getId()));
     }
 
-    //todo add javadocs
+    /**
+     * Method that add a card to a customer's wishlist
+     * @param cardDescription the card
+     * @param customer the customer itself
+     */
     public void addToWishList(Description cardDescription, Customer customer){
         customers.get(customer.getId()).addCardToWishList(cardDescription);
         proxy.updateCustomer(customers.get(customer.getId()));
@@ -302,7 +318,13 @@ public class TradeCenter {
         return searched;
     }
 
-    //todo add javadocs
+    /**
+     * Method that create a trade between 2 customers
+     * @param customer1 the customer who make the trade
+     * @param customer2 the custumer who recive the trade
+     * @param offer1 the offer of the first customer
+     * @param offer2 the offer of the second customer
+     */
     public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
         if(notAlreadyTradingWith(customer1, customer2)){
             try {
@@ -318,7 +340,11 @@ public class TradeCenter {
         }
     }
 
-    //todo add javadocs
+    /**
+     * Method that give the possibility to update the previus offer
+     * @param offer the offer of a customer
+     * @return
+     */
     public boolean updateTrade(Offer offer){
         Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
         trade.update(offer);
