@@ -7,6 +7,7 @@ import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
+import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
@@ -79,5 +80,9 @@ public class ServerProxy {
 
     public ArrayList<Card> addYuGiOhRandom(MessageServer messageServer){
         return tradeCenter.fromYuGiOhCatalog(messageServer.getCustomer1());
+    }
+
+    public Customer searchCustomerByID(MessageServer messageServer){
+        return tradeCenter.searchCustomerById(messageServer.getString1());
     }
 }

@@ -251,6 +251,17 @@ public class TradeCenter {
         return results;
     }
 
+    public Customer searchCustomerById(String id){
+
+        for(String key : customers.keySet()){
+            if(key.equals(id)){
+                return customers.get(key);
+            }
+        }
+        //user not found
+        throw new UserNotFoundException();
+    }
+
     /**
      *  A method that checks if any of the user has a given card
      * @param description the card that has to be searched
