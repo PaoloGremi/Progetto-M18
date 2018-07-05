@@ -356,9 +356,9 @@ public class TradeCenter {
      * @param offer the offer of a customer
      * @return
      */
-    public boolean updateTrade(Offer offer){
+    public boolean updateTrade(Offer offer, boolean flag){
         Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
-        trade.update(offer);
+        trade.update(offer, flag);
         return true;
     }
 
@@ -479,7 +479,7 @@ public class TradeCenter {
     private ArrayList<Trade> showUserActiveTrades(Customer customer){
         ArrayList<Trade> activeTradeList = new ArrayList<>();
         for(Trade trade : activeTrades){
-            if(trade.betweenUsers(customer.getUsername())){
+            if(trade.betweenUsers(customer.getId())){
                 activeTradeList.add(trade);
             }
         }
@@ -495,7 +495,7 @@ public class TradeCenter {
     private ArrayList<Trade> showUserDoneTrades(Customer customer){
         ArrayList<Trade> doneTradesList = new ArrayList<>();
         for(Trade trade : doneTrades){
-            if(trade.betweenUsers(customer.getUsername())){
+            if(trade.betweenUsers(customer.getId())){
                 doneTradesList.add(trade);
             }
         }

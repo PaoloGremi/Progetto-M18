@@ -57,39 +57,28 @@ public class ListTradesScene {
                     new EventHandler<javafx.scene.input.MouseEvent>() {
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
+
                             Trade trade = tradeList.getSelectionModel().getSelectedItem();
+                            Customer customer1 = retriveCustomerById(trade.getCustomer1());
+                            Customer customer2 = retriveCustomerById(trade.getCustomer2());
                             if (trade.isDoneDeal()) {
                                 if(trade.isPositiveEnd()) {
-                                    MainWindow.refreshDynamicContent(DoneDealScene.display(trade));
+                                    MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
                                 }else{
                                     MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/infoSign.png",true));
                                 }
                             } else {
 
-                                Customer customer1 = null;
-                                Customer customer2 = null;
-                                try {
-                                    Socket socket = new Socket("localhost", 8889);
-                                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                                    os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer1()));
-                                    Thread.sleep(100);
-                                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                                    customer1 = (Customer)is.readObject();
-                                    os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer2()));
-                                    Thread.sleep(100);
-                                    ObjectInputStream is2 = new ObjectInputStream(socket.getInputStream());
-                                    customer2 = (Customer)is2.readObject();
-                                    socket.close();
-                                } catch (IOException | InterruptedException | ClassNotFoundException e2) {
-                                    e2.printStackTrace();
-                                }
+
 
                                 //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
                                 if(myCustomer.getId().equals(trade.getCustomer1())) {
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, customer2, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer1.getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
                                 }else{
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, customer1, true));
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, false));
                                 }
                             }
                         }
@@ -116,5 +105,20 @@ public class ListTradesScene {
 
     static BorderPane refresh(){
         return display(user);
+    }
+
+    static private Customer retriveCustomerById(String id){
+        Socket socket = null;
+        Customer customer = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, id));
+            customer = (Customer)is.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return customer;
     }
 }

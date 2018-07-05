@@ -70,7 +70,7 @@ public class TradeScene {
 
     private static ATrade currentTrade = null;
 
-    static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer, boolean flagStarted){
+    static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer,  boolean flagStarted, boolean changedMind){
 
         currentTrade=trade;
 
@@ -180,9 +180,10 @@ public class TradeScene {
                 }else {
                     if (verifyUpdated(currentTrade)) {
 
-                            os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                            os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
                             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                             Object read = is.readObject();
+                            Thread.sleep(100);
                             boolean flag = read instanceof AlreadyStartedTradeException;
                             if (!flag) {
                                 myCardOffer.getSet().remove(myCardOffer.getSet());
@@ -504,39 +505,29 @@ public class TradeScene {
         restoreScroll(otherCollectionPane, otherCollectionGrid,otherCollFlow);
         restoreScroll(otherOfferPane, otherOfferGrid,otherOfferFlow);
 
-        Customer customer1 = null;
-        Customer customer2 = null;
-
-        try {
-            Socket socket = new Socket("localhost", 8889);
-            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer1()));
-            Thread.sleep(100);
-            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-            customer1 = (Customer)is.readObject();
-            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer2()));
-            Thread.sleep(100);
-            ObjectInputStream is2 = new ObjectInputStream(socket.getInputStream());
-            customer2 = (Customer)is2.readObject();
-            socket.close();
-        } catch (IOException | InterruptedException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        for (Card card : customer1.getCollection()) {
+        for (Card card : myC.getCollection()) {
             myCollectionList.add(card);
         }
 
-        for (Card card : customer2.getCollection()) {
+        for (Card card : otherC.getCollection()) {
             otherCollectionList.add(card);
         }
+        if(myC.getId().equals(trade.getCustomer1())) {
+            for (Card card : trade.getOffer1()) {
+                addToOffer(myOfferGrid, card, true);
+            }
 
-        for(Card card : trade.getOffer1()){
-            addToOffer(myOfferGrid, card ,true);
-        }
+            for (Card card : trade.getOffer2()) {
+                addToOffer(otherOfferGrid, card, false);
+            }
+        }else{
+            for (Card card : trade.getOffer2()) {
+                addToOffer(myOfferGrid, card, true);
+            }
 
-        for (Card card : trade.getOffer2()){
-            addToOffer(otherOfferGrid,card,false);
+            for (Card card : trade.getOffer1()) {
+                addToOffer(otherOfferGrid, card, false);
+            }
         }
 
         myCollectionList.removeAll(myImageList);

@@ -108,6 +108,23 @@ public class MessageServer implements Serializable {
         this.description = description;
     }
 
+    public MessageServer(MessageType message, String string1, String string2, Collection offer1, Collection offer2) {
+        this.message = message;
+        this.string1 = string1;
+        this.string2 = string2;
+        this.offer1 = offer1;
+        this.offer2 = offer2;
+    }
+
+    public MessageServer(MessageType message, String string1, String string2, Collection offer1, Collection offer2, boolean flag) {
+        this.message = message;
+        this.string1 = string1;
+        this.string2 = string2;
+        this.offer1 = offer1;
+        this.offer2 = offer2;
+        this.flag = flag;
+    }
+
     public boolean isFlag() {
         return flag;
     }

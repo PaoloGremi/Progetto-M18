@@ -82,11 +82,19 @@ public abstract class ATrade implements Serializable {
      * @param offer2 Second customer's collection
      * @param date Current date
      */
-    protected void updateParameters(String customer1, String customer2, Collection offer1, Collection offer2, Date date) {
-        this.customer2 = customer2;
-        this.customer1 = customer1;
-        this.offer1 = offer1;
-        this.offer2 = offer2;
-        this.date = date;
+    protected void updateParameters(String customer1, String customer2, Collection offer1, Collection offer2, Date date, boolean flag) {
+        if(flag) {
+            this.customer1 = customer1;
+            this.customer2 = customer2;
+            this.offer1 = offer1;
+            this.offer2 = offer2;
+            this.date = date;
+        }else{
+            this.customer1 = customer2;
+            this.customer2 = customer1;
+            this.offer1 = offer1;
+            this.offer2 = offer2;
+            this.date = date;
+        }
     }
 }

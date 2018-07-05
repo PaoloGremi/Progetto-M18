@@ -95,12 +95,10 @@ public class OtherUserProfileScene {
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                 flag = (boolean)(is.readObject());
                 if(flag){
-                    MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false));
+                    MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false, false));
                 }else{
-                    //todo trade gia esistente, fare infobox, poi rimandare a trade
-                    os.writeObject(new MessageServer(MessageType.SEARCHTRADE, myCustomer, otherCustomer));
-                    Trade searchTrade = (Trade)(is.readObject());
-                    MainWindow.refreshDynamicContent(TradeScene.display(searchTrade, myCustomer, otherCustomer,true));
+
+                    MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +" is already started\nsee it in My Trades","Interface/2000px-Simple_Alert.svg.png", false));
                 }
                 socket.close();
             } catch (IOException e) {

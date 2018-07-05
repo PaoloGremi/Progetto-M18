@@ -37,9 +37,9 @@ public class Trade extends ATrade {
      * @param offer New offer to update current trade and save into history
      * @return boolean to check wheter or not the method ran fine
      */
-    public void update(Offer offer) {
+    public void update(Offer offer, boolean flag) {
         this.history.add(offer);
-        super.updateParameters(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2(), offer.date);
+        super.updateParameters(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2(), offer.date, flag);
         this.checkDeal(offer);
     }
 

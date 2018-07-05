@@ -55,11 +55,11 @@ public class ServerProxy {
     }
 
     public boolean updateOffer(MessageServer messageServer){
-        return tradeCenter.updateTrade(new Offer(messageServer.getCustomer1().getId(), messageServer.getCustomer2().getId(), messageServer.getOffer1(), messageServer.getOffer2()));
+        return tradeCenter.updateTrade(new Offer(messageServer.getString1(), messageServer.getString2(), messageServer.getOffer1(), messageServer.getOffer2()),messageServer.isFlag());
     }
 
     public Trade searchTrade(MessageServer messageServer){
-        return tradeCenter.takeStartedTrade(messageServer.getCustomer1().getId(), messageServer.getCustomer2().getId());
+        return tradeCenter.takeStartedTrade(messageServer.getString1(), messageServer.getString2());
     }
 
     public void endTrades(MessageServer messageServer){
