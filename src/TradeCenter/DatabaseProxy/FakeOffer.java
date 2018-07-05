@@ -1,52 +1,54 @@
-package TradeCenter.Trades;
+package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
+import TradeCenter.Trades.Offer;
 
 import java.util.Date;
 
-public class FakeOffer extends Offer{
+public class FakeOffer {
 
     private String customer1;
     private String customer2;
     private Collection offer1 = new Collection();
     private Collection offer2 = new Collection();
-    protected Date date;
+    private Date date;
+    private boolean doneDeal;
 
-    public void setCustomer1(String customer1) {
+    protected void setCustomer1(String customer1) {
         this.customer1 = customer1;
     }
 
-    public void setCustomer2(String customer2) {
+    protected void setCustomer2(String customer2) {
         this.customer2 = customer2;
     }
 
-    public void setDate(Date date) {
+    protected void setDate(Date date) {
         this.date = date;
     }
 
-    public void addCardOffer1(Card card) {
+    protected void addCardOffer1(Card card) {
         this.offer1.addCardToCollection(card);
     }
 
-    public void addCardOffer2(Card card) {
+    protected void addCardOffer2(Card card) {
         this.offer2.addCardToCollection(card);
     }
 
-    public String getFCustomer1() {
+    protected void setDoneDeal(Boolean doneDeal) { this.doneDeal = doneDeal; }
+
+    public String getCustomer1() {
         return customer1;
     }
 
-    public String getFCustomer2() {
+    public String getCustomer2() {
         return customer2;
     }
 
-    @Override
     public Collection getOffer1() {
         return offer1;
     }
 
-    @Override
     public Collection getOffer2() {
         return offer2;
     }
@@ -54,4 +56,6 @@ public class FakeOffer extends Offer{
     public Date getDate() {
         return date;
     }
+
+    public Boolean getDoneDeal() { return doneDeal; }
 }

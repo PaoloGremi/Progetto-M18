@@ -66,12 +66,30 @@ public class ListTradesScene {
                                 }
                             } else {
 
+                                Customer customer1 = null;
+                                Customer customer2 = null;
+                                try {
+                                    Socket socket = new Socket("localhost", 8889);
+                                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                                    os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer1()));
+                                    Thread.sleep(100);
+                                    ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                                    customer1 = (Customer)is.readObject();
+                                    os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer2()));
+                                    Thread.sleep(100);
+                                    ObjectInputStream is2 = new ObjectInputStream(socket.getInputStream());
+                                    customer2 = (Customer)is2.readObject();
+                                    socket.close();
+                                } catch (IOException | InterruptedException | ClassNotFoundException e2) {
+                                    e2.printStackTrace();
+                                }
+
                                 //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
-                                if(myCustomer.getUsername().equals(trade.getCustomer1().getUsername())) {
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer2(), true));
-                                    MainWindow.addDynamicContent(InfoScene.display(trade.getCustomer2().getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                if(myCustomer.getId().equals(trade.getCustomer1())) {
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, customer2, true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer1.getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
                                 }else{
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, trade.getCustomer1(), true));
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, myCustomer, customer1, true));
                                 }
                             }
                         }

@@ -16,7 +16,7 @@ public class Offer extends ATrade {
      * @param offer1 First Customers's collection to be exchanged
      * @param offer2 Second Customers's collection to be exchanged
      */
-    public Offer(Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
+    public Offer(String customer1, String customer2, Collection offer1, Collection offer2) {
         super(customer1, customer2, offer1, offer2);
     }
 
@@ -58,7 +58,7 @@ public class Offer extends ATrade {
      * @return True if first, False if second
      */
     private boolean isItTheFirstCustomer(Customer customer) {
-        return customer.getId().equals(super.getCustomer1().getId());
+        return customer.getId().equals(super.getCustomer1());
     }
 
     /**
@@ -86,13 +86,13 @@ public class Offer extends ATrade {
         tmp.append("\nOn the ");
         tmp.append(date);
         tmp.append("\n");
-        tmp.append(super.getCustomer1().getUsername());
+        tmp.append(super.getCustomer1());
         tmp.append(" offers: ");
         tmp.append(getOffer1().toString());
         tmp.append("\n For: ");
         tmp.append(getOffer2().toString());
         tmp.append(" from user ");
-        tmp.append(super.getCustomer2().getUsername());
+        tmp.append(super.getCustomer2());
         tmp.append("\n");
 
         return tmp.toString();

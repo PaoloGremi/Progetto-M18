@@ -241,7 +241,7 @@ public class TradeScene {
 
         accept.setOnAction(event -> {
             //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
-            boolean condition = myCustomer.getUsername().equals(currentTrade.getCustomer2().getUsername());
+            boolean condition = myCustomer.getId().equals(currentTrade.getCustomer2());
 
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
@@ -504,11 +504,30 @@ public class TradeScene {
         restoreScroll(otherCollectionPane, otherCollectionGrid,otherCollFlow);
         restoreScroll(otherOfferPane, otherOfferGrid,otherOfferFlow);
 
-        for (Card card : trade.getCustomer1().getCollection()) {
+        Customer customer1 = null;
+        Customer customer2 = null;
+
+        try {
+            Socket socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer1()));
+            Thread.sleep(100);
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            customer1 = (Customer)is.readObject();
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer2()));
+            Thread.sleep(100);
+            ObjectInputStream is2 = new ObjectInputStream(socket.getInputStream());
+            customer2 = (Customer)is2.readObject();
+            socket.close();
+        } catch (IOException | InterruptedException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        for (Card card : customer1.getCollection()) {
             myCollectionList.add(card);
         }
 
-        for (Card card : trade.getCustomer2().getCollection()) {
+        for (Card card : customer2.getCollection()) {
             otherCollectionList.add(card);
         }
 

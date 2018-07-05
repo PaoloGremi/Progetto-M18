@@ -1,5 +1,7 @@
 package TradeCenter.Trades;
 
+import TradeCenter.DatabaseProxy.FakeOffer;
+
 import java.util.ArrayList;
 
 public class Trade extends ATrade {
@@ -22,6 +24,12 @@ public class Trade extends ATrade {
         this.history.add(offer);
         this.doneDeal = false;
         this.positiveEnd = false;
+    }
+
+    public Trade(FakeOffer fakeOffer) {
+        super(fakeOffer.getCustomer1(), fakeOffer.getCustomer2(), fakeOffer.getOffer1(), fakeOffer.getOffer2());
+        this.doneDeal = fakeOffer.getDoneDeal();
+        super.date = fakeOffer.getDate();
     }
 
     /**
@@ -67,8 +75,8 @@ public class Trade extends ATrade {
     }
     //todo vedere perchè c'è in offer una cosa simile
 
-    public boolean betweenUsers(String username) {
-        if(super.getCustomer1().getUsername().equals(username) || super.getCustomer2().getUsername().equals(username)) {
+    public boolean betweenUsers(String id) {
+        if(super.getCustomer1().equals(id) || super.getCustomer2().equals(id)) {
             return true;
         }
         else return false;
@@ -81,10 +89,26 @@ public class Trade extends ATrade {
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
-        tmp.append(getCustomer1().getUsername());
+        tmp.append(getCustomer1());
         tmp.append(" - ");
-        tmp.append(getCustomer2().getUsername());
+        tmp.append(getCustomer2());
         tmp.append("\n" + date);
+        return tmp.toString();
+    }
+
+    public String extensivePrint() {
+        StringBuilder tmp = new StringBuilder();
+        tmp.append("\nTrade between ");
+        tmp.append(getCustomer1());
+        tmp.append(" & ");
+        tmp.append(getCustomer2());
+        tmp.append("\n on the ");
+        tmp.append(date);
+        tmp.append("\nExchanged ");
+        tmp.append(getOffer1().toString());
+        tmp.append(" for ");
+        tmp.append(getOffer2().toString());
+        tmp.append("\n");
         return tmp.toString();
     }
 }

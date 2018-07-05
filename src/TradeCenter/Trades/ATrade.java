@@ -15,8 +15,8 @@ public abstract class ATrade implements Serializable {
      *@param offer2 Collection requested by Customer 1 from Customer 2
      *@param date Latest update date and time
      */
-    private Customer customer1;
-    private Customer customer2;
+    private String customer1;
+    private String customer2;
     private Collection offer1;
     private Collection offer2;
     protected Date date;
@@ -28,8 +28,8 @@ public abstract class ATrade implements Serializable {
      * @param offer1 First Customers's collection to be exchanged
      * @param offer2 Second Customers's collection to be exchanged
      */
-    protected ATrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2) {
-        if(customer1.getId().equals(customer2.getId())){
+    protected ATrade(String customer1, String customer2, Collection offer1, Collection offer2) {
+        if(customer1.equals(customer2)){
             throw new MyselfTradeException();
         }
         this.customer1 = customer1;
@@ -48,7 +48,7 @@ public abstract class ATrade implements Serializable {
      * Getter for first Customers
      * @return first Customers
      */
-    public Customer getCustomer1() {
+    public String getCustomer1() {
         return customer1;
     }
 
@@ -56,7 +56,7 @@ public abstract class ATrade implements Serializable {
      * Getter for second Customers
      * @return second Customers
      */
-    public Customer getCustomer2() {
+    public String getCustomer2() {
         return customer2;
     }
 
@@ -82,7 +82,7 @@ public abstract class ATrade implements Serializable {
      * @param offer2 Second customer's collection
      * @param date Current date
      */
-    protected void updateParameters(Customer customer1, Customer customer2, Collection offer1, Collection offer2, Date date) {
+    protected void updateParameters(String customer1, String customer2, Collection offer1, Collection offer2, Date date) {
         this.customer2 = customer2;
         this.customer1 = customer1;
         this.offer1 = offer1;

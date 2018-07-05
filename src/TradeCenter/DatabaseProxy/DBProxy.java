@@ -4,10 +4,9 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
-import TradeCenter.Trades.FakeOffer;
+import TradeCenter.Trades.Trade;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -150,9 +149,9 @@ public class DBProxy implements IProxy{
         connection = dbConn.disconnectFromDB(connection);
     }
 
-    public FakeOffer getTrade(int id) {
+    public Trade getTrade(int id) {
         connection = dbConn.connectToDB(connection);
-        FakeOffer trade = dbRet.retrieveTrade(connection, id);
+        Trade trade = dbRet.retrieveTrade(connection, id);
         connection = dbConn.disconnectFromDB(connection);
         return trade;
     }

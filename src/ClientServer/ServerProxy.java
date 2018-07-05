@@ -47,7 +47,7 @@ public class ServerProxy {
     }
 
     public boolean possibleTrade(MessageServer messageServer){
-        return tradeCenter.notAlreadyTradingWith(messageServer.getCustomer1(), messageServer.getCustomer2());
+        return tradeCenter.notAlreadyTradingWith(messageServer.getCustomer1().getId(), messageServer.getCustomer2().getId());
     }
 
     public void createTrade(MessageServer messageServer) throws AlreadyStartedTradeException {
@@ -55,11 +55,11 @@ public class ServerProxy {
     }
 
     public boolean updateOffer(MessageServer messageServer){
-        return tradeCenter.updateTrade(new Offer(messageServer.getCustomer1(), messageServer.getCustomer2(), messageServer.getOffer1(), messageServer.getOffer2()));
+        return tradeCenter.updateTrade(new Offer(messageServer.getCustomer1().getId(), messageServer.getCustomer2().getId(), messageServer.getOffer1(), messageServer.getOffer2()));
     }
 
     public Trade searchTrade(MessageServer messageServer){
-        return tradeCenter.takeStartedTrade(messageServer.getCustomer1(), messageServer.getCustomer2());
+        return tradeCenter.takeStartedTrade(messageServer.getCustomer1().getId(), messageServer.getCustomer2().getId());
     }
 
     public void endTrades(MessageServer messageServer){

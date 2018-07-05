@@ -1,7 +1,10 @@
 package Interface;
 
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
+import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 import com.jfoenix.controls.JFXButton;
 import javafx.embed.swing.SwingFXUtils;
@@ -17,10 +20,34 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 
 public class DoneDealScene {
 
     static BorderPane display(Trade trade){
+
+        Customer customer1 = null;
+        Customer customer2 = null;
+        try {
+            Socket socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer1()));
+            Thread.sleep(100);
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            customer1 = (Customer)is.readObject();
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, trade.getCustomer2()));
+            Thread.sleep(100);
+            ObjectInputStream is2 = new ObjectInputStream(socket.getInputStream());
+            customer2 = (Customer)is2.readObject();
+            socket.close();
+        } catch (IOException | InterruptedException | ClassNotFoundException e2) {
+            e2.printStackTrace();
+        }
+
         BorderPane borderPane = new BorderPane();
         borderPane.setStyle("-fx-background-color: #82c460");
         BorderPane myBorder = new BorderPane();
@@ -44,12 +71,12 @@ public class DoneDealScene {
         otherScroll.setFitToHeight(true);
         otherScroll.setFitToWidth(true);
         otherScroll.setStyle("-fx-background-color: #ffe37e");
-        TextFlow myTitle = new TextFlow(new Text(trade.getCustomer1().getUsername()+"'s new cards"));
+        TextFlow myTitle = new TextFlow(new Text(customer1.getUsername()+"'s new cards"));
         HBox myTitleBox = new HBox();
         myTitleBox.setPadding(new Insets(5));
         myTitleBox.getChildren().add(myTitle);
         myTitleBox.setStyle("-fx-background-color: #ffe37e");
-        TextFlow otherTitle = new TextFlow(new Text(trade.getCustomer2().getUsername()+"'s new cards"));
+        TextFlow otherTitle = new TextFlow(new Text(customer2.getUsername()+"'s new cards"));
         HBox otherTitleBox = new HBox();
         otherTitleBox.setPadding(new Insets(5));
         otherTitleBox.getChildren().add(otherTitle);

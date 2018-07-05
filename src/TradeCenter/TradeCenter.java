@@ -337,9 +337,9 @@ public class TradeCenter {
      * @param offer2 the offer of the second customer
      */
     public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
-        if(notAlreadyTradingWith(customer1, customer2)){
+        if(notAlreadyTradingWith(customer1.getId(), customer2.getId())){
             try {
-                Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2));
+                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2));
                 activeTrades.add(Trade);
                 //todo vedere se si deve fare update con il db
             }catch (MyselfTradeException | EmptyCollectionException e){
@@ -369,10 +369,10 @@ public class TradeCenter {
      * @param otherCustomer customer2
      * @return if the user are already trading
      */
-    public boolean notAlreadyTradingWith(Customer myCustomer, Customer otherCustomer){
+    public boolean notAlreadyTradingWith(String myCustomer, String otherCustomer){
         boolean flag = true;
         for(Trade trade: activeTrades){
-            if(trade.betweenUsers(myCustomer.getUsername()) && trade.betweenUsers(otherCustomer.getUsername())){
+            if(trade.betweenUsers(myCustomer) && trade.betweenUsers(otherCustomer)){
                 //todo vedere quando passa se stesso con se stesso, non si puo creare a monte
                 flag = false;
             }
@@ -381,10 +381,10 @@ public class TradeCenter {
     }
 
     //todo add javadocs
-    public Trade takeStartedTrade(Customer myCustomer, Customer otherCustomer){
+    public Trade takeStartedTrade(String myCustomer, String otherCustomer){
         Trade searchTrade = null;
         for(Trade trade : activeTrades){
-            if(trade.betweenUsers(myCustomer.getUsername()) && trade.betweenUsers(otherCustomer.getUsername())){
+            if(trade.betweenUsers(myCustomer) && trade.betweenUsers(otherCustomer)){
                 searchTrade = trade;
             }
         }
@@ -393,7 +393,7 @@ public class TradeCenter {
 
     private boolean contains(Trade trade){
         for (Trade trade1 : activeTrades){
-            if(trade1.betweenUsers(trade.getCustomer1().getUsername()) || trade1.betweenUsers(trade.getCustomer2().getUsername())){
+            if(trade1.betweenUsers(trade.getCustomer1()) || trade1.betweenUsers(trade.getCustomer2())){
                 return true;
             }
         }
@@ -410,19 +410,19 @@ public class TradeCenter {
         if(contains(trade)) {
 
             for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2
-                customers.get(trade.getCustomer2().getId()).addCard(card);
+                customers.get(trade.getCustomer2()).addCard(card);
             }
             for (Card card : trade.getOffer2()) {       //take card offered from customer2, add to customer1
-                customers.get(trade.getCustomer1().getId()).addCard(card);
+                customers.get(trade.getCustomer1()).addCard(card);
             }
             for(Card card : trade.getOffer1()){
-                customers.get(trade.getCustomer1().getId()).removeCard(card);
+                customers.get(trade.getCustomer1()).removeCard(card);
             }
             for(Card card : trade.getOffer2()){
-                customers.get(trade.getCustomer2().getId()).removeCard(card);
+                customers.get(trade.getCustomer2()).removeCard(card);
             }
-            proxy.updateCustomer(customers.get(trade.getCustomer1().getId()));
-            proxy.updateCustomer(customers.get(trade.getCustomer2().getId()));
+            proxy.updateCustomer(customers.get(trade.getCustomer1()));
+            proxy.updateCustomer(customers.get(trade.getCustomer2()));
             //todo vedere se serve fare update proxy
         }else{
             throw new NoSuchTradeException();
@@ -434,7 +434,7 @@ public class TradeCenter {
             switchCards(trade);
         }
         for(Trade activeTrade : activeTrades){
-            if(activeTrade.betweenUsers(trade.getCustomer1().getUsername()) && activeTrade.betweenUsers(trade.getCustomer2().getUsername())){
+            if(activeTrade.betweenUsers(trade.getCustomer1()) && activeTrade.betweenUsers(trade.getCustomer2())){
                 activeTrades.remove(activeTrade);
                 trade.doneDeal(result);
                 doneTrades.add(trade);

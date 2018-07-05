@@ -2,7 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
-import TradeCenter.Trades.FakeOffer;
+import TradeCenter.Trades.Trade;
 
 import java.util.HashMap;
 
@@ -61,14 +61,10 @@ public class TestMain {
             }
         }*/
 
-        FakeOffer trade = db.getTrade(1);
+        Trade trade = db.getTrade(1);
 
         System.out.println("TRADE 1");
-        System.out.println(trade.getFCustomer1());
-        System.out.println(trade.getFCustomer2());
-        System.out.println(trade.getDate());
-        System.out.println(trade.getOffer1().toString());
-        System.out.println(trade.getOffer2().toString());
+        System.out.println(trade.extensivePrint());
 
     }
 }
