@@ -52,6 +52,21 @@ class DBAtomicUpdater {
         }
     }
 
-    //todo similar thing for when a card is no longer in a trade (use setNull on trade_id and offer_col)
-
+    /**
+     * Update a card that is no longer in a trade
+     * @param connection: database connection
+     * @param card: card to be updated
+     */
+    void updateCard(Connection connection, Card card) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE cards SET trade_id = ?, offer_col = ? WHERE card_id = ?;");
+            ps.setNull(1, Types.INTEGER);
+            ps.setNull(2, Types.INTEGER);
+            ps.setInt(3, card.getId());
+            ps.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

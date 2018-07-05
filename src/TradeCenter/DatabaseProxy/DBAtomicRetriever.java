@@ -275,8 +275,13 @@ class DBAtomicRetriever {
         return wishlist;
     }
 
+    /**
+     * Retrieve a trade given its id
+     * @param connection: database connection
+     * @param id: trade id
+     * @return trade
+     */
     Trade retrieveTrade(Connection connection, int id) {
-        FakeOffer fakeOffer = null;
         Trade trade = null;
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE trade_id = ?;");
@@ -284,10 +289,12 @@ class DBAtomicRetriever {
             ResultSet rs = ps.executeQuery();
             FakeOffer offer = new FakeOffer();
             while(rs.next()) {
+                offer.setId(rs.getInt("trade_id"));
                 offer.setCustomer1(rs.getString("user1_id"));
                 offer.setCustomer2(rs.getString("user2_id"));
                 offer.setDate(rs.getDate("date"));
                 Boolean donedeal = rs.getBoolean("donedeal");
+                offer.setDoneDeal(donedeal);
                 PreparedStatement ps1;
                 PreparedStatement ps2;
                 Card card;

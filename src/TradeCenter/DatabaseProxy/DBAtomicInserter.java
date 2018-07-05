@@ -87,6 +87,35 @@ class DBAtomicInserter {
     }
 
     /**
+     * Insert a traded card in the database
+     * @param connection: database connection
+     * @param card: card to be added
+     * @param customer_id: owner of the card
+     * @param trade_id: id of trade
+     * @param offer_col: column offer
+     */
+    void insertTradedCard(Connection connection, Card card, String customer_id, int trade_id, int offer_col) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_old VALUES (?, ?, ?, ?, ?, ?);");
+            ps.setInt(1, card.getId());
+            ps.setString(2, customer_id);
+            if (card.getDescription() instanceof PokemonDescription) {
+                ps.setInt(3, getDescriptionIDByName(connection, card.getDescription().getName(), CardType.POKEMON));
+                ps.setString(4, "pokemon");
+            } else {
+                ps.setInt(3, getDescriptionIDByName(connection, card.getDescription().getName(), CardType.YUGIOH));
+                ps.setString(4, "yugioh");
+            }
+            ps.setInt(5, trade_id);
+            ps.setInt(6, offer_col);
+            ps.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Quick method to get description ID (used when inserting card in database)
      * @param connection: database connection
      * @param descriptionName: description's name

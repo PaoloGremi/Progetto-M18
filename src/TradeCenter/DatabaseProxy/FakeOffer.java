@@ -14,6 +14,7 @@ public class FakeOffer {
     private Collection offer2 = new Collection();
     private Date date;
     private boolean doneDeal;
+    private int id;
 
     protected void setCustomer1(String customer1) {
         this.customer1 = customer1;
@@ -37,6 +38,8 @@ public class FakeOffer {
 
     protected void setDoneDeal(Boolean doneDeal) { this.doneDeal = doneDeal; }
 
+    protected void setId(int id) { this.id = id; }
+
     public String getCustomer1() {
         return customer1;
     }
@@ -58,4 +61,6 @@ public class FakeOffer {
     }
 
     public Boolean getDoneDeal() { return doneDeal; }
+
+    public int getId() { return id; }
 }

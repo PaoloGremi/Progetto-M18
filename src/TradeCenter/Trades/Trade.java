@@ -14,12 +14,13 @@ public class Trade extends ATrade {
     private ArrayList<Offer> history = new ArrayList<>();
     private boolean doneDeal;
     private boolean positiveEnd;
+    private int id;
 
     /**
      * Start a trade from an offer
      * @param offer Starting offer
      */
-    public Trade(Offer offer) {
+    public Trade(Offer offer) { //todo add id in new trades as well (get next trade id from database)
         super(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2());
         this.history.add(offer);
         this.doneDeal = false;
@@ -30,6 +31,7 @@ public class Trade extends ATrade {
         super(fakeOffer.getCustomer1(), fakeOffer.getCustomer2(), fakeOffer.getOffer1(), fakeOffer.getOffer2());
         this.doneDeal = fakeOffer.getDoneDeal();
         super.date = fakeOffer.getDate();
+        this.id = fakeOffer.getId();
     }
 
     /**
@@ -102,6 +104,9 @@ public class Trade extends ATrade {
         tmp.append(getCustomer1());
         tmp.append(" & ");
         tmp.append(getCustomer2());
+        tmp.append(" (trade n. ");
+        tmp.append(id);
+        tmp.append(")");
         tmp.append("\n on the ");
         tmp.append(date);
         tmp.append("\nExchanged ");
