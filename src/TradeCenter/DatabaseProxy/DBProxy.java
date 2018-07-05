@@ -1,20 +1,23 @@
 package TradeCenter.DatabaseProxy;
 
+import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Card.Description;
+import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Proxy for database management
  * @author Roberto Gallotta
  */
-public class DBProxy implements IProxy{
+public class DBProxy implements IProxy,ISearch{
 
     private Connection connection;
     private DBAtomicRetriever dbRet = new DBAtomicRetriever();
@@ -22,7 +25,32 @@ public class DBProxy implements IProxy{
     private DBAtomicUpdater dbUp = new DBAtomicUpdater();
     private DBAtomicDeleter dbDel = new DBAtomicDeleter();
     private DBConnectionManager dbConn = new DBConnectionManager();
+    private DBSearchDescription dbSearch=new DBSearchDescription();
 
+
+    //potrei mettere un altra interfaccia da essere implementata per la riceca
+
+    /**
+     * Found Pokemon Descriptions which match with the filter
+     * @param pokFilter: object pokemonAll
+     * @return Descriptions foundend matched
+     */
+    @Override
+    public HashSet<PokemonDescription> getFoundedDescrPokemon(PokemonAll pokFilter) {
+        String typeInput = pokFilter.getType();
+        String len1 = pokFilter.getLen1();
+        String len2 = pokFilter.getLen2();
+        int hpInput = pokFilter.getHp();
+        int lev = pokFilter.getLev();
+        int weigth = pokFilter.getWeigth();
+
+        connection = dbConn.connectToDB(connection);
+
+        HashSet<PokemonDescription> descrFounded = new HashSet<>();
+        descrFounded = dbSearch.getSearchedDescrPokemon(connection, typeInput, hpInput, lev, weigth, len1, len2);
+        connection = dbConn.disconnectFromDB(connection);
+        return descrFounded;
+    }
     /**
      * Populates catalog with chosen descriptions
      * @param cc: catalog to populate

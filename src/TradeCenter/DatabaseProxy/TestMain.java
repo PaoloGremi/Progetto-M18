@@ -1,10 +1,12 @@
 package TradeCenter.DatabaseProxy;
 
+import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class TestMain {
     public static void main(String[] args) {
@@ -42,6 +44,7 @@ public class TestMain {
             }
         }
 
+
         /*System.out.println("\nAdding 'Dark Hole' to TeoGore...");
 
         Description d = customers.get("USER-2").getWishList().get(0);
@@ -65,6 +68,15 @@ public class TestMain {
 
         System.out.println("TRADE 1");
         System.out.println(trade.extensivePrint());
+
+        //Pokemon filtering example. Print on console description founded
+        HashSet<PokemonDescription> descrFounded=new HashSet<>();
+        PokemonAll pokFilter=new PokemonAll("Water",40,52,189,"","");
+        descrFounded=db.getFoundedDescrPokemon(pokFilter);
+        System.out.println("FILTER:\n"+pokFilter);
+        for (PokemonDescription descr:descrFounded) {
+            System.out.println(descr);
+        }
 
     }
 }
