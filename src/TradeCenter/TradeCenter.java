@@ -380,6 +380,10 @@ public class TradeCenter {
         return flag;
     }
 
+    public void removeTrade(String myCustomer, String otherCustomer){
+        activeTrades.remove(takeStartedTrade(myCustomer,otherCustomer));
+    }
+
     //todo add javadocs
     public Trade takeStartedTrade(String myCustomer, String otherCustomer){
         Trade searchTrade = null;

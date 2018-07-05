@@ -78,7 +78,7 @@ public class ListTradesScene {
                                     MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
                                 }else{
 
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, false));
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
                                 }
                             }
                         }

@@ -42,6 +42,7 @@ public class MultiThreadServer implements Runnable {
         methodMap.put(MessageType.ADDCARDPOKEMON, ServerProxy.class.getMethod("addPokemonRandom", MessageServer.class));
         methodMap.put(MessageType.ADDCARDYUGI, ServerProxy.class.getMethod("addYuGiOhRandom", MessageServer.class));
         methodMap.put(MessageType.SEARCHUSERBYID, ServerProxy.class.getMethod("searchCustomerByID", MessageServer.class));
+        methodMap.put(MessageType.REMOVETRADE, ServerProxy.class.getMethod("removeTrade", MessageServer.class));
 
 
     }

@@ -1,5 +1,6 @@
 package ClientServer;
 
+import Interface.MainWindow;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
@@ -84,5 +85,9 @@ public class ServerProxy {
 
     public Customer searchCustomerByID(MessageServer messageServer){
         return tradeCenter.searchCustomerById(messageServer.getString1());
+    }
+
+    public void removeTrade(MessageServer messageServer){
+        tradeCenter.removeTrade(messageServer.getString1(),messageServer.getString2());
     }
 }
