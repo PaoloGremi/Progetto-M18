@@ -18,6 +18,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ListTradesScene {
@@ -27,6 +28,7 @@ public class ListTradesScene {
     private static ScrollPane scrollableList;
 
     private static Customer user;
+    private static Trade currentTrade;
 
     static BorderPane display(Customer myCustomer){
         user = myCustomer;
@@ -70,15 +72,25 @@ public class ListTradesScene {
                             } else {
 
 
+                                if(sameTrade(trade)) {
+                                    //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
+                                    if (myCustomer.getId().equals(trade.getCustomer1())) {
 
-                                //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
-                                if(myCustomer.getId().equals(trade.getCustomer1())) {
+                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
+                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                    } else {
 
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername()+" has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
+                                    }
                                 }else{
+                                    if (myCustomer.getId().equals(currentTrade.getCustomer1())) {
 
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
+                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
+                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                    } else {
+
+                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                    }
                                 }
                             }
                         }
@@ -120,5 +132,26 @@ public class ListTradesScene {
             e.printStackTrace();
         }
         return customer;
+    }
+
+    static private boolean sameTrade(Trade trade){
+
+        Socket socket = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHTRADE, trade.getCustomer1(), trade.getCustomer2()));
+            currentTrade = (Trade)is.readObject();
+            socket.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        if(currentTrade.getOffer1().getSet().equals(trade.getOffer1().getSet()) && currentTrade.getOffer2().getSet().equals(trade.getOffer2().getSet())){
+            return true;
+        }
+
+        return false;
     }
 }
