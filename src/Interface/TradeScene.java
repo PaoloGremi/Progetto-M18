@@ -194,7 +194,7 @@ public class TradeScene {
                                 if(myC.getId().equals(currentTrade.getCustomer1())) {
                                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
                                 }else{
-                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, otherC.getId(), myC.getId(), myCardOffer, otherCardOffer, false));
+                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, currentmy.getId(), currentOther.getId(), otherCardOffer, myCardOffer, false));
                                 }
                                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                                 Object read = is.readObject();
