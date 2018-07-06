@@ -82,7 +82,7 @@ public class TestMain {
         }
 
         HashSet<YuGiOhDescription> yuGiOhDescriptions;
-        YuGiOhAll yuFilter=new YuGiOhAll("",1,2700,2100,5,2);
+        YuGiOhAll yuFilter=new YuGiOhAll("",0,0,0,"Dragon","Normal Monster");
         yuGiOhDescriptions=db.getFoundedDescrYugioh(yuFilter);
         System.out.println("FILTER:\n \t"+yuFilter);
         for (YuGiOhDescription descr:yuGiOhDescriptions) {

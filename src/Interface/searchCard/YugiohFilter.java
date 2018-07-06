@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -16,6 +17,8 @@ public class YugiohFilter {
     static Slider defSlider;
     static VBox atkContainer;
     static VBox defContainer;
+    static VBox refContainer;
+    static TextField referenceText;
 
     static Pane display(){
         mainPane=new Pane();
@@ -29,42 +32,52 @@ public class YugiohFilter {
 
 
         comboMonster.getItems().addAll("--Type of Monster--",
-                "1,Aqua",
-                "2,Beast",
-                "3,Beast-Warrior",
-                "4,Dinosaur",
-                "5,Dragon",
-                "6,Fairy",
-                "7,Fiend",
-                "8,Fish",
-                "9,Insect",
-                "10,Machine",
-                "11,Plant",
-                "12,Pyro",
-                "13,Reptile",
-                "14,Rock",
-                "15,Sea Serpent",
-                "16,Spellcaster",
-                "17,Thunder",
-                "18,Warrior",
-                "19,Winged Beast",
-                "20,Zombie",
-                "21,Psychic");
+                "Aqua",
+                "Beast",
+                "Beast-Warrior",
+                "Dinosaur",
+                "Dragon",
+                "Fairy",
+                "Fiend",
+                "Fish",
+                "Insect",
+                "Machine",
+                "Plant",
+                "Pyro",
+                "Reptile",
+                "Rock",
+                "Sea Serpent",
+                "Spellcaster",
+                "Thunder",
+                "Warrior",
+                "Winged Beast",
+                "Zombie",
+                "Psychic");
         comboType.getItems().addAll("--Type of Cards--",
-                "1,Normal monster",
-                "2,Effect monster",
-                "3,Fusion monster",
-                "4,Ritual monster",
-                "5,Normal spell",
-                "6,Continuous spell",
-                "7,Equip spell",
-                "8,Field spell",
-                "9,Quick-Play spell",
-                "10,Ritual spell",
-                "11,Normal trap",
-                "12,Continuous trap",
-                "13,Counter trap",
-                "14,Synchro monster");
+                "Normal monster",
+                "Effect monster",
+                "Fusion monster",
+                "Ritual monster",
+                "Normal spell",
+                "Continuous spell",
+                "Equip spell",
+                "Field spell",
+                "Quick-Play spell",
+                "Ritual spell",
+                "Normal trap",
+                "Continuous trap",
+                "Counter trap",
+                "Synchro monster");
+        //Reference
+        refContainer=new VBox();
+        referenceText=new TextField();
+
+        refContainer.setPadding(new Insets(15));
+        refContainer.setSpacing(7);
+        refContainer.setStyle("-fx-background-color: orange");
+        referenceText.setPrefWidth(55);
+        refContainer.getChildren().addAll(new Label("Reference: "),referenceText);
+
         //ATK e DEF
         atkContainer=new VBox();
         defContainer=new VBox();
@@ -122,10 +135,15 @@ public class YugiohFilter {
 
 
 
-        vBoxMain.getChildren().addAll(comboType,comboMonster,atkContainer,defContainer/*,valueLabel*/);
+        vBoxMain.getChildren().addAll(comboType,comboMonster,refContainer,atkContainer,defContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
     }
+
+    public static TextField getReferenceText() {
+        return referenceText;
+    }
+
     public static ComboBox getComboMonster() {
         return comboMonster;
     }

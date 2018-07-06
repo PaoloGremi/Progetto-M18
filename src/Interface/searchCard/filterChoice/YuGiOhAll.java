@@ -9,16 +9,16 @@ public class YuGiOhAll {
     int lev;
     int atk;
     int def;
-    int monsterID;
-    int typeID;
+    String monsterType;
+    String type;
     private static final long serialVersionUID = 2L;
-    public YuGiOhAll(String reference, int lev, int atk, int def, int monsterID, int typeID) {
+    public YuGiOhAll(String reference, int lev, int atk, int def, String monsterType, String type) {
         reference = addCaseNull(reference);
         this.lev = lev;
         this.atk = atk;
         this.def = def;
-        this.monsterID = monsterID;
-        this.typeID = typeID;
+        this.monsterType = addCaseNull(monsterType);
+        this.type = addCaseNull(type);
     }
     public String addCaseNull(String string){
         if(string.equals(""))
@@ -29,7 +29,7 @@ public class YuGiOhAll {
 
     @Override
     public String toString() {
-        return "TYPE: "+typeID+" Reference: "+reference+" ATK:   "+atk+" DEF:  "+def+" Monster_ID: "+monsterID+" LEV: "+lev;
+        return "TYPE: "+type+" Reference: "+reference+" ATK:   "+atk+" DEF:  "+def+" Monster_ID: "+monsterType+" LEV: "+lev;
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
@@ -57,11 +57,11 @@ public class YuGiOhAll {
         return def;
     }
 
-    public int getMonsterID() {
-        return monsterID;
+    public String getMonsterType() {
+        return monsterType;
     }
 
-    public int getTypeID() {
-        return typeID;
+    public String getType() {
+        return type;
     }
 }

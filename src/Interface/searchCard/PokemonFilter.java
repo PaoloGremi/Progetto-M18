@@ -102,13 +102,11 @@ public class PokemonFilter {
         lengContainer= new HBox();
         textLen1=new TextField();
         textLen2=new TextField();
-        textLen1.setPrefSize(0.8,0.8); //capire come settarli giusti
-        textLen2.setPrefSize(5,3);
+        textLen1.setPrefWidth(45); //capire come settarli giusti
+        textLen2.setPrefWidth(45);
         lengContainer.setPadding(new Insets(15));
         lengContainer.setSpacing(7);
         lengContainer.setStyle("-fx-background-color: orange");
-
-
 
         lengContainer.getChildren().addAll(new Label("Length:"),textLen1,new Label(" ' "),textLen2,new Label(" '' "));
 
@@ -162,7 +160,6 @@ public class PokemonFilter {
             weightLabel.setText(Integer.toString(newValue.intValue()   ));
         });
 
-
         vBoxMain.getChildren().addAll(comboType,checkContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
@@ -173,8 +170,6 @@ public class PokemonFilter {
             cb.setSelected(false);
         }
     }
-
-
     public static ComboBox getComboType() {
         return comboType;
     }

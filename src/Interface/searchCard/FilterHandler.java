@@ -5,6 +5,7 @@ import ClientServer.MessageType;
 import Interface.MainWindow;
 import Interface.SearchDescriptionScene;
 import Interface.searchCard.filterChoice.PokemonAll;
+import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import javafx.event.ActionEvent;
@@ -51,22 +52,22 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     int hpValue=(int) PokemonFilter.getHpSlider().getValue();
                     int levValue=(int)PokemonFilter.getLevSlider().getValue();
                     int weightValue=(int)PokemonFilter.getWeightSlider().getValue();
-                    String len1=PokemonFilter.getTextLen1().getText(); //TODO se non digitato niente non è null.. faccio controllo nell'oggeto PokemonAll
+                    String len1=PokemonFilter.getTextLen1().getText();
                     String len2=PokemonFilter.getTextLen2().getText();
                     mainBorder.setBottom(new Label(comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
-                    Socket socket;
+                    Socket socket1;
                     try {
-                        socket = new Socket("localhost", 8889);
+                        socket1 = new Socket("localhost", 8889);
                         System.out.println("Client connected");
-                        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                        ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
                         os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(comboTypePo,hpValue,levValue,weightValue,len1,len2)));
-                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+                        ObjectInputStream is = new ObjectInputStream(socket1.getInputStream());
                         ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
                         if(returnMessage.size()>=1) { //todo provvisorio
                             MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage, customer));
                         }
-                        socket.close();
+                        socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (ClassNotFoundException e) {
@@ -78,7 +79,28 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     String comboTypeYu= (String) YugiohFilter.getComboType().getValue();
                     Double atkValue=YugiohFilter.getAtkSlider().getValue();
                     Double defValue=YugiohFilter.getDefSlider().getValue();
-                    mainBorder.setCenter(new Label(comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue));
+                    String refValue=YugiohFilter.getReferenceText().getText();
+                    //Double levValue=
+                    mainBorder.setBottom(new Label("Type: "+comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue+"   REF: "+refValue));
+                    Socket socket2;
+                   /* try {
+                        socket2 = new Socket("localhost", 8889);
+                        System.out.println("Client connected");
+                        ObjectOutputStream os = new ObjectOutputStream(socket2.getOutputStream());
+                        System.out.println("Ok");
+                        os.writeObject(new MessageServer(MessageType.FILTERYUGIOHDESCR, new YuGiOhAll(refValue,levValue,atkValue,defValue,)));
+                        ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
+                        ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
+                        if(returnMessage.size()>=1) { //todo provvisorio
+                            MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage, customer));
+                        }
+                        socket2.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    */
                     break;
                 //case "NOTHING" todo quando non viene selezionato tipo di carta-->cerco solo stringa
 

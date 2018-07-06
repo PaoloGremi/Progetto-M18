@@ -35,7 +35,7 @@ public class SearchCardScene {
 
         Button buttSearch=new Button("Search  "+ "\uD83D\uDD0D");
         Button buttFilter=new Button("Add Filters");
-        buttFilter.setStyle("-fx-border-color:blue;-fx-border-width:2px;");
+        //buttFilter.setStyle("-fx-border-color:blue;-fx-border-width:2px;");
         TextField searchText=new TextField("    ");
         /***parte alta*/
         hBoxInner.setPadding(new Insets(3));

@@ -76,7 +76,7 @@ public class DBSearchDescription {
      * @param typeID
      * @return
      */
-    public HashSet<YuGiOhDescription> getSearchedDescrYuGiOh(Connection connection, String reference, int lev, int atk, int def, int monsterID, int typeID) {
+    public HashSet<YuGiOhDescription> getSearchedDescrYuGiOh(Connection connection, String reference, int lev, int atk, int def, String monsterID, String typeID) {
         HashSet<YuGiOhDescription> descrFounded = new HashSet<>();
         System.err.println("Searching  YuGiOh descriptions...");
         PreparedStatement ps;
@@ -89,8 +89,9 @@ public class DBSearchDescription {
             whereInt(connection, "YuView1", "YuView2", "Level", lev,2);
             whereInt(connection, "YuView2", "YuView3", "Atk", atk,500);
             whereInt(connection, "YuView3", "YuView4", "Def", def,500);
-            whereInt(connection, "YuView4", "YuView5", "Monster_Type_ID", monsterID,0);
-            whereInt(connection, "YuView5", "YuFinalView", "Type_ID", typeID,0);
+            //String attribute
+            whereString(connection, "YuView4", "YuView5", "Monster_Type_ID", monsterID);
+            whereString(connection, "YuView5", "YuFinalView", "Type_ID", typeID);
 
             int[] listID=getIDDescriptionFromView(connection,"YuFinalView","yugioh_description_id");
             descrFounded=retrieveYugiohDescriptionFromID(connection,listID);
@@ -234,7 +235,8 @@ public class DBSearchDescription {
     }
     private void initYuGiOhView(Connection connection,String nameView) throws SQLException {
         Statement stmt ;
-        String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID,Picture) as select * from cards.yugioh_card";
+        String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID) as SELECT yugioh_description_id,Name,Description,Reference,Level,Atk,Def,MonsterTypeName,CardTypeName\n" +
+                "FROM yugioh_card AS a LEFT JOIN (SELECT Monster_Type_ID, Name AS MonsterTypeName FROM monster_Type) AS b ON a.Monster_Type_ID = b.Monster_Type_ID LEFT JOIN (SELECT Type_ID, Name AS CardTypeName FROM card_Type) AS c ON a.Type_ID = c.Type_ID;";
 
         stmt = connection.createStatement();
         int rs = stmt.executeUpdate(query);

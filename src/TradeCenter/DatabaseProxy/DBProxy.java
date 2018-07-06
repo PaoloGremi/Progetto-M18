@@ -59,8 +59,8 @@ public class DBProxy implements IProxy,ISearch{
         int lev=yugiohFilter.getLev();
         int atk=yugiohFilter.getAtk();
         int def=yugiohFilter.getDef();
-        int monsterID=yugiohFilter.getMonsterID();
-        int typeID=yugiohFilter.getTypeID();
+        String monsterID=yugiohFilter.getMonsterType();
+        String typeID=yugiohFilter.getType();
 
         connection = dbConn.connectToDB(connection);
         HashSet<YuGiOhDescription> descrFounded;
