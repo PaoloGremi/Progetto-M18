@@ -1,10 +1,8 @@
 package TradeCenter.DatabaseProxy;
 
 import Interface.searchCard.filterChoice.PokemonAll;
-import TradeCenter.Card.Card;
-import TradeCenter.Card.CardCatalog;
-import TradeCenter.Card.Description;
-import TradeCenter.Card.PokemonDescription;
+import Interface.searchCard.filterChoice.YuGiOhAll;
+import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
@@ -25,10 +23,8 @@ public class DBProxy implements IProxy,ISearch{
     private DBAtomicUpdater dbUp = new DBAtomicUpdater();
     private DBAtomicDeleter dbDel = new DBAtomicDeleter();
     private DBConnectionManager dbConn = new DBConnectionManager();
-    private DBSearchDescription dbSearch=new DBSearchDescription();
-
-
-    //potrei mettere un altra interfaccia da essere implementata per la riceca
+    //Singleton
+    private DBSearchDescription dbSearch=DBSearchDescription.getInstance();
 
     /**
      * Found Pokemon Descriptions which match with the filter
@@ -46,8 +42,29 @@ public class DBProxy implements IProxy,ISearch{
 
         connection = dbConn.connectToDB(connection);
 
-        HashSet<PokemonDescription> descrFounded = new HashSet<>();
+        HashSet<PokemonDescription> descrFounded;
         descrFounded = dbSearch.getSearchedDescrPokemon(connection, typeInput, hpInput, lev, weigth, len1, len2);
+        connection = dbConn.disconnectFromDB(connection);
+        return descrFounded;
+    }
+
+    /**
+     * Found YuGiOh Descriptions which match with the filter
+     * @param yugiohFilter: To filter     *
+     * @return YuGiOhDescription matched
+     */
+    @Override
+    public HashSet<YuGiOhDescription> getFoundedDescrYugioh(YuGiOhAll yugiohFilter) {
+        String reference=yugiohFilter.getReference();
+        int lev=yugiohFilter.getLev();
+        int atk=yugiohFilter.getAtk();
+        int def=yugiohFilter.getDef();
+        int monsterID=yugiohFilter.getMonsterID();
+        int typeID=yugiohFilter.getTypeID();
+
+        connection = dbConn.connectToDB(connection);
+        HashSet<YuGiOhDescription> descrFounded;
+        descrFounded = dbSearch.getSearchedDescrYuGiOh(connection,reference,lev,atk,def,monsterID,typeID);
         connection = dbConn.disconnectFromDB(connection);
         return descrFounded;
     }

@@ -1,6 +1,7 @@
 package TradeCenter.DatabaseProxy;
 
 import Interface.searchCard.filterChoice.PokemonAll;
+import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
@@ -30,7 +31,7 @@ public class TestMain {
          */
 
         DBProxy db = new DBProxy();
-
+/*
         HashMap<String, Customer> customers = new HashMap<>();
         db.retrieveCustomers(customers);
 
@@ -43,6 +44,7 @@ public class TestMain {
                 System.out.println(des);
             }
         }
+        */
 
 
         /*System.out.println("\nAdding 'Dark Hole' to TeoGore...");
@@ -63,18 +65,27 @@ public class TestMain {
                 System.out.println(des);
             }
         }*/
-
+/*
         Trade trade = db.getTrade(1);
 
         System.out.println("TRADE 1");
         System.out.println(trade.extensivePrint());
+        */
 
         //Pokemon filtering example. Print on console description founded
-        HashSet<PokemonDescription> descrFounded=new HashSet<>();
-        PokemonAll pokFilter=new PokemonAll("Water",40,52,189,"","");
+        HashSet<PokemonDescription> descrFounded;
+        PokemonAll pokFilter=new PokemonAll("Water",99,50,189,"","");
         descrFounded=db.getFoundedDescrPokemon(pokFilter);
-        System.out.println("FILTER:\n"+pokFilter);
+        System.out.println("FILTER:\n \t"+pokFilter);
         for (PokemonDescription descr:descrFounded) {
+            System.out.println(descr);
+        }
+
+        HashSet<YuGiOhDescription> yuGiOhDescriptions;
+        YuGiOhAll yuFilter=new YuGiOhAll("",1,2700,2100,5,2);
+        yuGiOhDescriptions=db.getFoundedDescrYugioh(yuFilter);
+        System.out.println("FILTER:\n \t"+yuFilter);
+        for (YuGiOhDescription descr:yuGiOhDescriptions) {
             System.out.println(descr);
         }
 

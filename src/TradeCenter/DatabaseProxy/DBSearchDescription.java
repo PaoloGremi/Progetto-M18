@@ -1,62 +1,61 @@
 package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.PokemonDescription;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
+import TradeCenter.Card.YuGiOhDescription;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashSet;
 
+/**
+ * Singleton
+ */
 public class DBSearchDescription {
+    static DBSearchDescription instance;
+
+    public static DBSearchDescription getInstance(){
+        if(instance==null)
+            instance=new DBSearchDescription();
+        return instance;
+    }
 
     /**
-     *
      * @param connection: Database connection
-     * @param typeInput: Card Type
-     * @param hpInput: HP
+     * @param typeInput:  Card Type
+     * @param hpInput:    HP
      * @param lev:Level
-     * @param weigth: Weight
-     * @param len1: Length1
-     * @param len2: Length2
+     * @param weigth:     Weight
+     * @param len1:       Length1
+     * @param len2:       Length2
      * @return Pokemon's descriptions founded
      */
     public HashSet<PokemonDescription> getSearchedDescrPokemon(Connection connection, String typeInput, int hpInput, int lev, int weigth, String len1, String len2) {
-
-        //connection = dbConn.connectToDB(connection);
-
         //ckeck on lenght
-        String lenghtComplete=checkLength(len1,len2);
+        String lenghtComplete = checkLength(len1, len2);
 
         HashSet<PokemonDescription> descrFounded = new HashSet<>();
         System.err.println("Searching a Pokemon description...");
         PreparedStatement ps;
         ResultSet rs;
-        BufferedImage picture = null;
         try {
-            initPokemonView(connection,"InitView");
+            initPokemonView(connection, "InitPokemonView");
             //String attribute
-            whereString(connection,"InitView","PoView1","Type",typeInput);
-            whereString(connection,"PoView1","PoView2","Length",lenghtComplete);
+            whereString(connection, "InitPokemonView", "PoView1", "Type", typeInput);
+            whereString(connection, "PoView1", "PoView2", "Length", lenghtComplete);
             //Int attribute
-            whereInt(connection,"PoView2","PoView3","HP",hpInput);
-            whereInt(connection,"PoView3","PoView4","Weigth",weigth);
-            whereInt(connection,"PoView4","PoFinalView","Level",lev);
+            whereInt(connection, "PoView2", "PoView3", "HP", hpInput,30);
+            whereInt(connection, "PoView3", "PoView4", "Weigth", weigth,50);
+            whereInt(connection, "PoView4", "PoFinalView", "Level", lev,15);
 
-            descrFounded=retrieveDescriptionFromFinalView(connection,"PoFinalView");
-            dropPokemonView(connection,"InitView");
-            dropPokemonView(connection,"PoView1");
-            dropPokemonView(connection,"PoView2");
-            dropPokemonView(connection,"PoView3");
-            dropPokemonView(connection,"PoView4");
-            dropPokemonView(connection,"PoFinalView");
+            int[] listID=getIDDescriptionFromView(connection,"PoFinalView","pokemon_description_id");
+            descrFounded=retrievePokemonDescriptionFromID(connection,listID);
+
+            dropView(connection, "InitPokemonView");
+            dropView(connection, "PoView1");
+            dropView(connection, "PoView2");
+            dropView(connection, "PoView3");
+            dropView(connection, "PoView4");
+            dropView(connection, "PoFinalView");
             return descrFounded;
-
-
-
-
-
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -65,77 +64,146 @@ public class DBSearchDescription {
         //finally drop view;
 
         return null;
-
-
     }
 
     /**
-     * Retrieve description from final view filtered
+     * @param connection
+     * @param reference
+     * @param lev
+     * @param atk
+     * @param def
+     * @param monsterID
+     * @param typeID
+     * @return
+     */
+    public HashSet<YuGiOhDescription> getSearchedDescrYuGiOh(Connection connection, String reference, int lev, int atk, int def, int monsterID, int typeID) {
+        HashSet<YuGiOhDescription> descrFounded = new HashSet<>();
+        System.err.println("Searching  YuGiOh descriptions...");
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            initYuGiOhView(connection, "InitYuGiOhView");
+            //String attribute
+            whereString(connection, "InitYuGiOhView", "YuView1", "Reference", reference);
+            //Int attribute
+            whereInt(connection, "YuView1", "YuView2", "Level", lev,2);
+            whereInt(connection, "YuView2", "YuView3", "Atk", atk,500);
+            whereInt(connection, "YuView3", "YuView4", "Def", def,500);
+            whereInt(connection, "YuView4", "YuView5", "Monster_Type_ID", monsterID,0);
+            whereInt(connection, "YuView5", "YuFinalView", "Type_ID", typeID,0);
+
+            int[] listID=getIDDescriptionFromView(connection,"YuFinalView","yugioh_description_id");
+            descrFounded=retrieveYugiohDescriptionFromID(connection,listID);
+            dropView(connection, "InitYuGiOhView");
+            dropView(connection, "YuView1");
+            dropView(connection, "YuView2");
+            dropView(connection, "YuView3");
+            dropView(connection, "YuView4");
+            dropView(connection, "YuView5");
+            dropView(connection, "YuFinalView");
+            return descrFounded;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        //finally drop view;
+
+        return null;
+    }
+
+    /**
+     * Retrieve descriptions from final view filtered
      *
-     * @param connection: connection to db
+     * @param connection:   connection to db
      * @param lastViewName: last filtered view
      * @return HashSet of description
      * @throws SQLException
      * @throws IOException
      */
-    private HashSet<PokemonDescription> retrieveDescriptionFromFinalView(Connection connection,String lastViewName) throws SQLException, IOException {
-        HashSet<PokemonDescription> descrCreated=new HashSet<>();
+    private int[] getIDDescriptionFromView(Connection connection, String lastViewName,String idAttribute) throws SQLException, IOException {
 
         Statement stmt;
         ResultSet rs;
-        String quey="select *\n" + "from "+lastViewName+";";
-        stmt=connection.createStatement();
-        rs=stmt.executeQuery(quey);
+        String quey = "select *\n" + "from " + lastViewName + ";";
+        stmt = connection.createStatement();
+        rs = stmt.executeQuery(quey);
 
-        String name;
-        String description;
-        int card_id;
-        String type;
-        int hp;
-        int weight;
-        String length;
-        int level;
-        BufferedImage picture = null;
-        System.err.println("Retrieving "+" Pokemon description"); //todo implementare count(*)
+        int length = getViewSize(connection, lastViewName);
+        int[] listIDfounded = new int[length];
+        int i = 0;
         while (rs.next()) {
+            int idCurrent = rs.getInt(idAttribute);
+            listIDfounded[i] = idCurrent;
+            i++;
+        }
+        return listIDfounded;
+    }
 
-            byte[] bytes;
-            Blob blob;
-
-            blob = rs.getBlob("Picture");
-            bytes = blob.getBytes(1, (int) blob.length());
-            picture = ImageIO.read(new ByteArrayInputStream(bytes));
-
-            name = rs.getString("Name");
-            description = rs.getString("Description");
-            if (rs.wasNull()) {
-                description = "NO DESCRIPTION AVAILABLE";
-            }
-            card_id = rs.getInt("Cards_ID");
-            type = rs.getString("Type");
-            hp = rs.getInt("Hp");
-            if (rs.wasNull()) {
-                hp = 0;
-            } //could be NULL
-            weight = rs.getInt("Weigth");
-            if (rs.wasNull()) {
-                weight = 0;
-            } //could be NULL
-            length = rs.getString("Length");
-            if (rs.wasNull()) {
-                length = "";
-            } //could be NULL
-            level = rs.getInt("Level");
-            if (rs.wasNull()) {
-                level = 0;
-            } //could be NULL
-            descrCreated.add(new PokemonDescription(name, description, picture, card_id, type, hp, weight, length, level));
+    /**
+     * From a vector of ID of PokemonDescription in DB, returns PokemonDescription
+     * It uses DBAtomicRetriever
+     *
+     * @param connection:connection to db
+     * @param vectID: Vector of ID of Pokemon Card which is searching
+     * @return PokemonDescription matched vectID
+     */
+    private HashSet<PokemonDescription> retrievePokemonDescriptionFromID(Connection connection,int[] vectID){
+        System.err.println("Retrieving " + " Pokemon description");
+        HashSet<PokemonDescription> descrCreated = new HashSet<>();
+        DBAtomicRetriever DBret = new DBAtomicRetriever();
+        for (int i = 0; i < vectID.length; i++) {
+            descrCreated.add(DBret.retrieveSinglePokemonDescription(connection, vectID[i]));
         }
         return descrCreated;
+    }
 
-        }
     /**
-     * Check on length parameters
+     *
+     *  From a vector of ID of YugiohDescription in DB, returns YuGiOhDescription
+     *  It uses DBAtomicRetriever
+     * @param connection: connection to DB
+     * @param vectID: Vector of ID of YuGiOh Card which is searching
+     * @return
+     */
+
+    private HashSet<YuGiOhDescription> retrieveYugiohDescriptionFromID(Connection connection,int[] vectID){
+        HashSet<YuGiOhDescription> descrCreated = new HashSet<>();
+        DBAtomicRetriever DBret = new DBAtomicRetriever();
+        for (int i = 0; i < vectID.length; i++) {
+            descrCreated.add(DBret.retrieveSingleYugiohDescription(connection, vectID[i]));
+        }
+        return descrCreated;
+    }
+
+
+    /**
+     * Size of a View
+     *
+     * @param connection:Connection to DB
+     * @param viewname: View
+     * @return size of View
+     */
+    int getViewSize(Connection connection, String viewname) {
+        int size = 0;
+        try {
+            PreparedStatement ps = null;
+            String query="SELECT COUNT(*) FROM cards."+viewname+";";
+            ps = connection.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                size = rs.getInt(1);
+                return size;
+            }
+        }catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return size;
+    }
+
+    /**
+     * Check on Pokemon's length parameters
      *
      * @param len1:first part of length
      * @param len2:second part of length
@@ -150,20 +218,28 @@ public class DBSearchDescription {
     }
 
     /**
-     * Initialize a View in DB with all Pokemon Description
+     * Initialize a View in DB with all Pokemon or YuGiOh Description
      *
      * @param connection: Connection to DB
-     * @param NameView: Name of View to create
+     * @param nameView: Name of View to create
      */
-    private void initPokemonView(Connection connection,String NameView) throws SQLException {
+    private void initPokemonView(Connection connection,String nameView) throws SQLException {
         Statement stmt ;
-        String query = "create view "+NameView+"(Cards_ID,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as \n" +
-                "\tselect *\n" +
-                "    from pokemon_card;";
+        String query = "create view "+nameView+"(pokemon_description_id,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+                "select *" +
+                "    from cards.pokemon_card;";
 
             stmt = connection.createStatement();
             int rs = stmt.executeUpdate(query);
     }
+    private void initYuGiOhView(Connection connection,String nameView) throws SQLException {
+        Statement stmt ;
+        String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID,Picture) as select * from cards.yugioh_card";
+
+        stmt = connection.createStatement();
+        int rs = stmt.executeUpdate(query);
+    }
+
 
     /**
      * Create a View from an other view with where clause and a string attribute
@@ -181,12 +257,12 @@ public class DBSearchDescription {
         int rs;
         String query;
         if(!(value==(null))) {
-             query = "create view " + NameViewNext + "(Cards_ID,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+             query = "create view " + NameViewNext + " as " +
                     " select * " +
                     "from " + NameViewPrevious + " where " + attribute + "='" + value + "';";
         }
         else {
-            query="create view " + NameViewNext + "(Cards_ID,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+            query="create view " + NameViewNext + " as " +
                     " select *" +
                     "from " + NameViewPrevious+";";
         }
@@ -206,17 +282,22 @@ public class DBSearchDescription {
      * @throws SQLException
      */
 
-    private void whereInt(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,int value) throws  SQLException{
+    private void whereInt(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,int value, int range) throws  SQLException{
+        int rangeMin=value-range;
+        int rangeMax=value+range;
+        if(rangeMin<0) //forse non serve
+            rangeMin=0;
+
         Statement stmt;
         int rs;
         String query;
         if(!(value==0)) {
-            query = "create view " + NameViewNext + "(Cards_ID,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+            query = "create view " + NameViewNext + " as " +
                     "select * " +
-                    "from " + NameViewPrevious + " where " + attribute + "<=" + value + ";";
+                    "from " + NameViewPrevious + " where " + attribute + "<=" + rangeMax + " and "+attribute+">="+rangeMin+";";
         }
         else {
-            query="create view " + NameViewNext + "(Cards_ID,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+            query="create view " + NameViewNext + " as " +
                     "select *" +
                     "from " + NameViewPrevious+";";
         }
@@ -225,20 +306,17 @@ public class DBSearchDescription {
     }
 
     /**
-     * Drop View in Pokemon
+     * Drop a View
      *
      * @param connection: Connection to DB
      * @param NameView: Name of View to be dropped
      *
      */
-    private void dropPokemonView(Connection connection,String NameView) throws SQLException {
+    private void dropView(Connection connection,String NameView) throws SQLException {
         Statement stmt ;
         String query = "DROP VIEW "+NameView+";";
 
             stmt = connection.createStatement();
             int rs = stmt.executeUpdate(query);
-
-
-
     }
 }

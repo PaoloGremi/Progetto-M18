@@ -52,7 +52,7 @@ public class PokemonAll implements Serializable {
     }
 
     /**
-     * todo ggiungi
+     * If len is not be set, becomes null
      * @param len
      * @return
      */
