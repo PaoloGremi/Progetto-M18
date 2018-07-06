@@ -92,8 +92,8 @@ public abstract class ATrade implements Serializable {
         }else{
             this.customer1 = customer2;
             this.customer2 = customer1;
-            this.offer1 = offer1;
-            this.offer2 = offer2;
+            this.offer1 = offer2;
+            this.offer2 = offer1;
             this.date = date;
         }
     }

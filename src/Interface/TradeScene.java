@@ -179,8 +179,23 @@ public class TradeScene {
                     }
                 }else {
                     if (verifyUpdated(currentTrade)) {
-
-                                os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
+                        Customer currentmy = null;
+                        Customer currentOther= null;
+                        updateCustomers();
+                        if(myC.getId().equals(currentTrade.getCustomer1())){
+                            currentmy = myC;
+                            currentOther = otherC;
+                        }
+                        else {
+                            currentmy = otherC;
+                            currentOther = myC;
+                        }
+                        if(stillInTheCollection(currentmy.getCollection(),currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer2())) {
+                                if(myC.getId().equals(currentTrade.getCustomer1())) {
+                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
+                                }else{
+                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, false));
+                                }
                                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                                 Object read = is.readObject();
                                 Thread.sleep(100);
@@ -193,6 +208,11 @@ public class TradeScene {
                                 } else {
                                     throw new AlreadyStartedTradeException(otherC.getUsername());
                                 }
+                        }else{
+                            removeTrade(myC.getId(),otherC.getId());
+                            MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC,false, false));
+                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted","Interface/2000px-Simple_Alert.svg.png", true));
+                        }
 
                     }else{
                         if(currentTrade!=null) {
@@ -242,30 +262,30 @@ public class TradeScene {
 
         accept.setOnAction(event -> {
             //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
-            boolean condition = myCustomer.getId().equals(currentTrade.getCustomer2());
+            Customer currentmy = null;
+            Customer currentOther= null;
+            updateCustomers();
+            boolean condition = myC.getId().equals(currentTrade.getCustomer2());
 
             //todo ovvio che la condizione è vera, vedi come li passiamo
             if(condition){
                 if(verifyUpdated(currentTrade)) {
-                    Customer currentMy = MainWindow.retrieveCustomer(myCustomer);
-                    Customer currentOther = MainWindow.retrieveCustomer(otherCustomer);
-                        if(stillInTheCollection(currentMy.getCollection(),currentTrade.getOffer2()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer1())) {
+                    if(myC.getId().equals(currentTrade.getCustomer1())){
+                        currentmy = myC;
+                        currentOther = otherC;
+                    }
+                    else {
+                        currentmy = otherC;
+                        currentOther = myC;
+                    }
+                    updateCustomers();
+                        if(stillInTheCollection(currentmy.getCollection(),currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer2())) {
                             Timeline task = loading(currentTrade);
                             task.playFromStart();
                        }else{
-                            Socket socket = null;
-                            try {
-                                socket = new Socket("localhost", 8889);
-                                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                                os.writeObject(new MessageServer(MessageType.REMOVETRADE, currentMy.getId(), currentOther.getId()));
-                                Thread.sleep(100);
-                                socket.close();
-                            } catch (IOException | InterruptedException e) {
-                                e.printStackTrace();
-                            }
-
-                            MainWindow.refreshDynamicContent(TradeScene.display(null, currentMy, currentOther,false, false));
-                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or more cards \nwith someone else\nthe trade is restarted","Interface/2000px-Simple_Alert.svg.png", true));
+                            removeTrade(myC.getId(),otherC.getId());
+                            MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC,false, false));
+                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted","Interface/2000px-Simple_Alert.svg.png", true));
                         }
 
                 }
@@ -517,6 +537,7 @@ public class TradeScene {
         myCollectionList.removeAll(myCollectionList);
         otherCollectionList.removeAll(otherCollectionList);
 
+
         restoreScroll(myCollectionPane, myCollectionGrid, myCollFlow);
         restoreScroll(myOfferPane, myOfferGrid, myOfferFlow);
         restoreScroll(otherCollectionPane, otherCollectionGrid,otherCollFlow);
@@ -546,6 +567,8 @@ public class TradeScene {
                 addToOffer(otherOfferGrid, card, false);
             }
         }
+
+
 
         myCollectionList.removeAll(myImageList);
         otherCollectionList.removeAll(otherImageList);
@@ -684,6 +707,7 @@ public class TradeScene {
     }
 
     private static void infoOfferChanged(){
+        updateCustomers();
         restoreFromPreviousTrade(currentTrade);
         MainWindow.addDynamicContent(InfoScene.display("The other customer changed\nthe offer", "Interface/2000px-Simple_Alert.svg.png",true));
     }
@@ -698,4 +722,26 @@ public class TradeScene {
         return true;
     }
 
+    private static void removeTrade(String myid, String otherId){
+        Socket socket = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.REMOVETRADE, myid, otherId));
+            Thread.sleep(100);
+            socket.close();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void updateCustomers(){
+        Customer currentMy = null;
+        Customer currentOther = null;
+        currentMy = MainWindow.retrieveCustomer(myC);
+        currentOther = MainWindow.retrieveCustomer(otherC);
+
+        myC=currentMy;
+        otherC=currentOther;
+    }
 }
