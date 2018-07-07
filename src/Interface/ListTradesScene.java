@@ -8,10 +8,15 @@ import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -23,95 +28,79 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ListTradesScene {
 
-    private static BorderPane mainPane;
-    private static Text title;
-    private static ScrollPane scrollableList;
-
     private static Customer user;
     private static Trade currentTrade;
 
     static BorderPane display(Customer myCustomer){
         user = myCustomer;
-        mainPane = new BorderPane();
-        title = new Text(myCustomer.getUsername() + "'s Trades");
-        scrollableList = new ScrollPane();
+        BorderPane mainPane = new BorderPane();
+        HBox mainHbox = new HBox();
+        mainHbox.setPadding(new Insets(5));
+        mainHbox.setSpacing(10);
+        ScrollPane scrollableActive = new ScrollPane();
+        ScrollPane scrollableDone = new ScrollPane();
+        BorderPane activePane = new BorderPane();
+        BorderPane donePane = new BorderPane();
+        TextFlow activeTitle = new TextFlow(new Text("Active Trades"));
+        HBox activeTitleBox = new HBox();
+        activeTitleBox.setPadding(new Insets(5));
+        activeTitleBox.getChildren().add(activeTitle);
+        activeTitleBox.setStyle("-fx-background-color: #ffe37e");
+        TextFlow doneTitle = new TextFlow(new Text("Done Trades"));
+        HBox doneTitleBox = new HBox();
+        doneTitleBox.setPadding(new Insets(5));
+        doneTitleBox.getChildren().add(doneTitle);
+        doneTitleBox.setStyle("-fx-background-color: #ffe37e");
         ArrayList<Trade> userTrades = new ArrayList<>();
+        ArrayList<Trade> activeTrades = new ArrayList<>();
+        ArrayList<Trade> doneTrades = new ArrayList<>();
 
         ObservableList<Trade> trades = FXCollections.observableArrayList();
-        try {
-            Socket socket = new Socket("localhost", 8889);
-            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-            os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
-            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-            userTrades = (ArrayList<Trade>) (is.readObject());
-            socket.close();
-            trades.addAll(userTrades);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
+        userTrades = retriveTrades(trades, myCustomer);
+        activeOrDone(userTrades,activeTrades,doneTrades);
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
-        JFXListView<Trade> tradeList = new JFXListView<>();
-        tradeList.getItems().addAll(userTrades);
+        JFXListView<Trade> activeList = new JFXListView<>();
+        activeList.minHeight(200);
+        activeList.maxWidth(200);
+        JFXListView<Trade> doneList = new JFXListView<>();
+        activeList.getItems().addAll(activeTrades);
+        doneList.getItems().addAll(doneTrades);
         if(!trades.isEmpty()){
-            EventHandler<MouseEvent> eventHandlerBox =
-                    new EventHandler<javafx.scene.input.MouseEvent>() {
-                        @Override
-                        public void handle(javafx.scene.input.MouseEvent e) {
-
-                            Trade trade = tradeList.getSelectionModel().getSelectedItem();
-                            Customer customer1 = retriveCustomerById(trade.getCustomer1());
-                            Customer customer2 = retriveCustomerById(trade.getCustomer2());
-                            if (trade.isDoneDeal()) {
-                                if(trade.isPositiveEnd()) {
-                                    MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
-                                }else{
-                                    MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/infoSign.png",true));
-                                }
-                            } else {
-
-
-                                if(sameTrade(trade)) {
-                                    //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
-                                    if (myCustomer.getId().equals(trade.getCustomer1())) {
-
-                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
-                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
-                                    } else {
-
-                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
-                                    }
-                                }else{
-                                    if (myCustomer.getId().equals(currentTrade.getCustomer1())) {
-
-                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
-                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
-                                    } else {
-
-                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
-                                    }
-                                }
-                            }
-                        }
-                    };
-
-            //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
-
-            tradeList.setOnMouseClicked(eventHandlerBox);
+            activeList.setOnMouseClicked(addMouseEvent(activeList));
+            doneList.setOnMouseClicked(addMouseEvent(doneList));
         }
 
-        tradeList.setEditable(true);
+        activeList.setEditable(true);
+        doneList.setEditable(true);
 
-        scrollableList.setContent(tradeList);
-        scrollableList.setFitToHeight(true);
-        scrollableList.setFitToWidth(true);
+        scrollableActive.setContent(activeList);
+        scrollableActive.setMinSize(400,500);
+        scrollableActive.setFitToHeight(true);
+        scrollableActive.setFitToWidth(true);
 
-        mainPane.setTop(title);
-        mainPane.setCenter(scrollableList);
+        scrollableDone.setContent(doneList);
+        scrollableDone.setMinSize(400,500);
+        scrollableDone.setFitToHeight(true);
+        scrollableDone.setFitToWidth(true);
+
+        activePane.setCenter(scrollableActive);
+        activePane.setTop(activeTitleBox);
+
+        donePane.setCenter(scrollableDone);
+        donePane.setTop(doneTitleBox);
+
+        mainHbox.getChildren().addAll(activePane, donePane);
+        mainHbox.setFillHeight(true);
+        mainHbox.setAlignment(Pos.CENTER);
+        //mainHbox.setStyle("-fx-background-color: #ffe37e");
+
+        mainPane.setCenter(mainHbox);
 
         //todo mettere a posto stile del css
-        mainPane.getStylesheets().add("Interface/ListTradesCSS.css"); //nei css usare i percorsi relativi
+        mainPane.getStylesheets().add("Interface/ListTradesCSS.css");
+        mainPane.setStyle("-fx-background-color: #afff4f");
         return mainPane;
     }
 
@@ -154,4 +143,75 @@ public class ListTradesScene {
 
         return false;
     }
+
+    private static ArrayList<Trade> retriveTrades(ObservableList<Trade> trades, Customer myCustomer){
+        ArrayList<Trade> userTrades = new ArrayList<>();
+        try {
+            Socket socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            userTrades = (ArrayList<Trade>) (is.readObject());
+            socket.close();
+            trades.addAll(userTrades);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return userTrades;
+    }
+
+    private static void activeOrDone(ArrayList<Trade> all, ArrayList<Trade> active, ArrayList<Trade> done){
+        for(Trade trade : all){
+            if(trade.isDoneDeal()){
+                done.add(trade);
+            }else{
+                active.add(trade);
+            }
+        }
+    }
+
+    private static EventHandler<MouseEvent> addMouseEvent(JFXListView<Trade> tradeList){
+        EventHandler<MouseEvent> eventHandlerBox =
+                new EventHandler<javafx.scene.input.MouseEvent>() {
+                    @Override
+                    public void handle(javafx.scene.input.MouseEvent e) {
+
+                        Trade trade = tradeList.getSelectionModel().getSelectedItem();
+                        Customer customer1 = retriveCustomerById(trade.getCustomer1());
+                        Customer customer2 = retriveCustomerById(trade.getCustomer2());
+                        if (trade.isDoneDeal()) {
+                            if(trade.isPositiveEnd()) {
+                                MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
+                            }else{
+                                MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/infoSign.png",true));
+                            }
+                        } else {
+
+
+                            if(sameTrade(trade)) {
+                                //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
+                                if (user.getId().equals(trade.getCustomer1())) {
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                } else {
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
+                                }
+                            }else{
+                                if (user.getId().equals(currentTrade.getCustomer1())) {
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                } else {
+
+                                    MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                }
+                            }
+                        }
+                    }
+                };
+        return eventHandlerBox;
+    }
+
 }
