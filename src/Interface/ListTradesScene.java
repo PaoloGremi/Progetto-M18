@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +23,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class ListTradesScene {
@@ -64,7 +66,9 @@ public class ListTradesScene {
         activeList.maxWidth(200);
         JFXListView<Trade> doneList = new JFXListView<>();
         activeList.getItems().addAll(activeTrades);
+        changTextCell(activeList);
         doneList.getItems().addAll(doneTrades);
+        changTextCell(doneList);
         if(!trades.isEmpty()){
             activeList.setOnMouseClicked(addMouseEvent(activeList));
             doneList.setOnMouseClicked(addMouseEvent(doneList));
@@ -211,4 +215,39 @@ public class ListTradesScene {
         return eventHandlerBox;
     }
 
+    private static String cellText(String id1, String id2, Date date){
+        String username1 = usernameFromId(id1);
+        String username2 = usernameFromId(id2);
+        return username1 + " - " + username2 + "\n" + date;
+    }
+
+    private static String usernameFromId(String id){
+        Socket socket = null;
+        String username = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHUSERNAME, id));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            username = (String) (is.readObject());
+            socket.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return username;
+    }
+
+    private static void changTextCell(JFXListView listView){
+        listView.setCellFactory(lv -> new ListCell<Trade>() {
+            @Override
+            public void updateItem(Trade item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(cellText(item.getCustomer1(), item.getCustomer2(), item.getDate()));
+                }
+            }
+        });
+    }
 }

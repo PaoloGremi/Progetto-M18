@@ -87,6 +87,10 @@ public class ServerProxy {
         return tradeCenter.searchCustomerById(messageServer.getString1());
     }
 
+    public String searchUsernameById(MessageServer messageServer){
+        return tradeCenter.searchUsernameById(messageServer.getString1());
+    }
+
     public void removeTrade(MessageServer messageServer){
         tradeCenter.removeTrade(messageServer.getString1(),messageServer.getString2());
     }

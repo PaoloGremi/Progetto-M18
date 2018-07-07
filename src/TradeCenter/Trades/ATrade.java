@@ -76,6 +76,10 @@ public abstract class ATrade implements Serializable {
         return offer2;
     }
 
+    public Date getDate() {
+        return date;
+    }
+
     /**
      * Updater for first customer's collection, second customer's collection and current date
      * @param offer1 Firs customer's collection

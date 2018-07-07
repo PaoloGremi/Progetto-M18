@@ -262,6 +262,17 @@ public class TradeCenter {
         throw new UserNotFoundException();
     }
 
+    public String searchUsernameById(String id){
+
+        for(String key : customers.keySet()){
+            if(key.equals(id)){
+                return customers.get(key).getUsername();
+            }
+        }
+        //user not found
+        throw new UserNotFoundException();
+    }
+
     /**
      *  A method that checks if any of the user has a given card
      * @param description the card that has to be searched
