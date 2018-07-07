@@ -7,7 +7,6 @@ import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
-import TradeCenter.Trades.Trade;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -29,7 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 
 public class TradeScene {
@@ -675,7 +673,7 @@ public class TradeScene {
         return task;
     }
 
-    private static ATrade retriveActualTrade(ATrade trade){
+    private static ATrade retrieveActualTrade(ATrade trade){
         ATrade actualTrade = null;
         try {
             Socket socket = new Socket("localhost", 8889);
@@ -694,7 +692,7 @@ public class TradeScene {
     }
 
     private static boolean verifyUpdated(ATrade trade){
-        ATrade actualTrade = retriveActualTrade(trade);
+        ATrade actualTrade = retrieveActualTrade(trade);
         if(actualTrade!=null) {
             if (trade.getOffer1().getSet().size() == actualTrade.getOffer1().getSet().size() && trade.getOffer2().getSet().size() == actualTrade.getOffer2().getSet().size()) {
                 if (trade.getOffer1().getSet().equals(actualTrade.getOffer1().getSet()) && trade.getOffer2().getSet().equals(actualTrade.getOffer2().getSet())) {

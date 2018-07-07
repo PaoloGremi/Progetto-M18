@@ -14,7 +14,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -23,7 +22,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 
 public class ListTradesScene {
@@ -57,7 +55,7 @@ public class ListTradesScene {
 
         ObservableList<Trade> trades = FXCollections.observableArrayList();
 
-        userTrades = retriveTrades(trades, myCustomer);
+        userTrades = retrieveTrades(trades, myCustomer);
         activeOrDone(userTrades,activeTrades,doneTrades);
 
         //todo mettere listener che quando schiaccio un trade mi fa vedere o il trade (se attivo), o altro se finito--> fare relativa scena
@@ -108,7 +106,7 @@ public class ListTradesScene {
         return display(user);
     }
 
-    static private Customer retriveCustomerById(String id){
+    static private Customer retrieveCustomerById(String id){
         Socket socket = null;
         Customer customer = null;
         try {
@@ -144,7 +142,7 @@ public class ListTradesScene {
         return false;
     }
 
-    private static ArrayList<Trade> retriveTrades(ObservableList<Trade> trades, Customer myCustomer){
+    private static ArrayList<Trade> retrieveTrades(ObservableList<Trade> trades, Customer myCustomer){
         ArrayList<Trade> userTrades = new ArrayList<>();
         try {
             Socket socket = new Socket("localhost", 8889);
@@ -175,10 +173,9 @@ public class ListTradesScene {
                 new EventHandler<javafx.scene.input.MouseEvent>() {
                     @Override
                     public void handle(javafx.scene.input.MouseEvent e) {
-
                         Trade trade = tradeList.getSelectionModel().getSelectedItem();
-                        Customer customer1 = retriveCustomerById(trade.getCustomer1());
-                        Customer customer2 = retriveCustomerById(trade.getCustomer2());
+                        Customer customer1 = retrieveCustomerById(trade.getCustomer1());
+                        Customer customer2 = retrieveCustomerById(trade.getCustomer2());
                         if (trade.isDoneDeal()) {
                             if(trade.isPositiveEnd()) {
                                 MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));

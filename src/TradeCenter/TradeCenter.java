@@ -239,13 +239,13 @@ public class TradeCenter {
      * @param myUsername a string to exclude myself from the research
      * @return the list of customers that corresponds to the search
      */
-    public ArrayList<Customer> searchUsers(String username, String myUsername){
-        ArrayList<Customer> results = new ArrayList<>();
+    public ArrayList<String> searchUsers(String username, String myUsername){
+        ArrayList<String> results = new ArrayList<>();
         String usernameLow = username.toLowerCase();
         for(String key: customers.keySet()){
             String name = customers.get(key).getUsername().toLowerCase();
             if(name.contains(usernameLow) && !customers.get(key).getUsername().equals(myUsername)){
-                results.add(customers.get(key));
+                results.add(customers.get(key).getUsername());
             }
         }
         return results;

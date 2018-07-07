@@ -58,21 +58,21 @@ public class SearchUserScene {
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText, mySelf.getUsername()));
-                ArrayList<Customer> users = (ArrayList<Customer>)(inputStream.readObject());
+                ArrayList<String> users = (ArrayList<String>)(inputStream.readObject());
                 socket.close();
                 if(users != null){
-                    ObservableList<Customer> customers = FXCollections.observableArrayList();
+                    ObservableList<String> customers = FXCollections.observableArrayList();
                     customers.addAll(users);
-                    JFXListView<Customer> usersList = new JFXListView<>();
+                    JFXListView<String> usersList = new JFXListView<>();
                     usersList.getItems().addAll(users);
                     if(!customers.isEmpty()){
                         EventHandler<MouseEvent> eventHandlerBox =
                                 new EventHandler<javafx.scene.input.MouseEvent>() {
                                     @Override
                                     public void handle(javafx.scene.input.MouseEvent e) {
-                                        Customer otherCustomer = usersList.getSelectionModel().getSelectedItem();
+                                        String otherCustomer = usersList.getSelectionModel().getSelectedItem();
 
-                                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(MainWindow.retrieveCustomer(mySelf), otherCustomer));
+                                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(mySelf.getUsername()), retrieveCustomer(otherCustomer)));
 
                                     }
                                 };
@@ -110,6 +110,26 @@ public class SearchUserScene {
         scene.setTop(topScene);
         scene.setCenter(pane);
         return scene;
+    }
+
+    private static Customer retrieveCustomer(String customer){
+        Customer updatedCustomer = null;
+        Socket socket = null;
+        try {
+            socket = new Socket("localhost", 8889);
+            socket.setTcpNoDelay(true);
+            //socket.setKeepAlive(true);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer));
+            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+            updatedCustomer = (Customer)is.readObject();
+            os.flush();
+            socket.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return updatedCustomer;
     }
 
 }

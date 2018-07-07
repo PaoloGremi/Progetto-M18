@@ -35,7 +35,7 @@ public class ServerProxy {
        return tradeCenter.addCustomer(messageServer.getString1(), messageServer.getString2());
     }
 
-    public ArrayList<Customer> searchUsers(MessageServer messageServer){
+    public ArrayList<String> searchUsers(MessageServer messageServer){
         return tradeCenter.searchUsers(messageServer.getString1(), messageServer.getString2());
     }
 
