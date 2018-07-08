@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import Interface.searchCard.SearchCardScene;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
@@ -190,7 +191,7 @@ public class MainWindow {
         Socket socket = null;
         long startTime = System.currentTimeMillis();
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

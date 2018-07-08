@@ -3,6 +3,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
@@ -30,7 +31,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static javafx.scene.input.KeyCode.U;
 
 public class WishListScene{
 
@@ -102,7 +102,7 @@ public class WishListScene{
                 flow.getChildren().remove(pane);
                 Socket socket;
                 try {
-                    socket = new Socket("localhost", 8889);
+                    socket = new Socket(ServerIP.ip, 8889);
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
@@ -133,7 +133,7 @@ public class WishListScene{
                 System.out.println("welcome client");
                 Socket socket = null;
                 try {
-                    socket = new Socket("localhost", 8889);
+                    socket = new Socket(ServerIP.ip, 8889);
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");

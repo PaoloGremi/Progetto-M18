@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import Interface.searchCard.SearchCardScene;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
@@ -113,7 +114,7 @@ public class SearchDescriptionScene {
                     buUser.setOnAction(event -> {
                         try {
                             System.out.println("welcome client");
-                            Socket socket = new Socket("localhost", 8889);
+                            Socket socket = new Socket(ServerIP.ip, 8889);
 
                             System.out.println("Client connected");
                             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
@@ -135,7 +136,7 @@ public class SearchDescriptionScene {
                         System.out.println("welcome client");
                         Socket socket = null;
                         try {
-                            socket = new Socket("localhost", 8889);
+                            socket = new Socket(ServerIP.ip, 8889);
                             System.out.println("Client connected");
                             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                             System.out.println("Ok");

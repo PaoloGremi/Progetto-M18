@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
@@ -81,7 +82,7 @@ public class AddCardScene {
         flow.setVgap(4);
         flow.setHgap(4);
         flow.setStyle("-fx-background-color: DAE6A2;");
-        Socket socket = new Socket("localhost", 8889);
+        Socket socket = new Socket(ServerIP.ip, 8889);
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
         System.out.println("Ok");

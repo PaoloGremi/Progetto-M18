@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
@@ -161,7 +162,7 @@ public class TradeScene {
         //listener bottoni
         raise.setOnAction(event -> {
             try {
-                Socket socket = new Socket("localhost", 8889);
+                Socket socket = new Socket(ServerIP.ip, 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 if(!flagStarted){
                     //todo al primo scambio tira null pointer perche le collezioni sono vuote
@@ -177,22 +178,22 @@ public class TradeScene {
                     }
                 }else {
                     if (verifyUpdated(currentTrade)) {
-                        Customer currentmy = null;
+                        Customer currentMy = null;
                         Customer currentOther= null;
                         updateCustomers();
                         if(myC.getId().equals(currentTrade.getCustomer1())){
-                            currentmy = myC;
+                            currentMy = myC;
                             currentOther = otherC;
                         }
                         else {
-                            currentmy = otherC;
+                            currentMy = otherC;
                             currentOther = myC;
                         }
-                        if(stillInTheCollection(currentmy.getCollection(),currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer2())) {
+                        if(stillInTheCollection(currentMy.getCollection(),currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer2())) {
                                 if(myC.getId().equals(currentTrade.getCustomer1())) {
                                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
                                 }else{
-                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, currentmy.getId(), currentOther.getId(), otherCardOffer, myCardOffer, false));
+                                    os.writeObject(new MessageServer(MessageType.RAISEOFFER, currentMy.getId(), currentOther.getId(), otherCardOffer, myCardOffer, false));
                                 }
                                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                                 Object read = is.readObject();
@@ -236,7 +237,7 @@ public class TradeScene {
             if(verifyUpdated(currentTrade)) {
                     try {
                         MainWindow.addDynamicContent(InfoScene.display("Offer rejected", "Interface/infoSign.png", false));
-                        Socket socket = new Socket("localhost", 8889);
+                        Socket socket = new Socket(ServerIP.ip, 8889);
                         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                         os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
                         Thread.sleep(100);
@@ -652,7 +653,7 @@ public class TradeScene {
                         event -> {
 
                             try {
-                                Socket socket = new Socket("localhost", 8889);
+                                Socket socket = new Socket(ServerIP.ip, 8889);
                                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                                 os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
                                 try {
@@ -676,7 +677,7 @@ public class TradeScene {
     private static ATrade retrieveActualTrade(ATrade trade){
         ATrade actualTrade = null;
         try {
-            Socket socket = new Socket("localhost", 8889);
+            Socket socket = new Socket(ServerIP.ip, 8889);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
@@ -723,7 +724,7 @@ public class TradeScene {
     private static void removeTrade(String myid, String otherId){
         Socket socket = null;
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.REMOVETRADE, myid, otherId));
             Thread.sleep(100);

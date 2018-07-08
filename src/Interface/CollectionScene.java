@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import Interface.searchCard.SearchCardScene;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.YuGiOhDescription;
@@ -36,7 +37,7 @@ public class CollectionScene{
     static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException, ClassNotFoundException {
 
         System.out.println("welcome client");
-        Socket socket = new Socket("localhost", 8889);
+        Socket socket = new Socket(ServerIP.ip, 8889);
         socket.setTcpNoDelay(true);
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

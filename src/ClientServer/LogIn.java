@@ -108,7 +108,7 @@ public class LogIn extends Application{
         //listener bottoni
         logIn.setOnAction(event -> {
             try {
-                Socket socket3 = new Socket("localhost", 8889);
+                Socket socket3 = new Socket(ServerIP.ip, 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
                 ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
@@ -116,7 +116,7 @@ public class LogIn extends Application{
                 if((boolean) is.readObject()){
                     System.out.println("closed");
                     socket3.close();
-                    Socket socket1 = new Socket("localhost", 8889);
+                    Socket socket1 = new Socket(ServerIP.ip, 8889);
                     ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
                     ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
                     System.out.println("connected");
@@ -170,7 +170,7 @@ public class LogIn extends Application{
                     if(verifyPassword(password.getText(), passwordVerified.getText())) {
                         {
                             Socket socket2;
-                            socket2 = new Socket("localhost", 8889);
+                            socket2 = new Socket(ServerIP.ip, 8889);
                             try {
                                 if(username.getText().equals("")) throw new EmptyUsernameException();
                                 ObjectOutputStream os1 = new ObjectOutputStream(socket2.getOutputStream());
@@ -278,7 +278,7 @@ public class LogIn extends Application{
 
     private boolean verifyPassword(String password1, String password2) throws IOException, ClassNotFoundException {
 
-        Socket socket = new Socket("localhost", 8889);
+        Socket socket = new Socket(ServerIP.ip, 8889);
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         os.writeObject(new MessageServer(MessageType.VERIFYPASSWORD, password1, password2));
         ObjectInputStream is = new ObjectInputStream(socket.getInputStream());

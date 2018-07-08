@@ -29,6 +29,8 @@ public class MessageServer implements Serializable {
 
     private PokemonAll pokemonAll;
 
+    private static final long serialVersionUID = 4415426162143895504L;
+
     public MessageServer(MessageType message, String string1, String string2) {
         this.message = message;
         this.string1 = string1;

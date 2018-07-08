@@ -3,6 +3,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
@@ -116,7 +117,7 @@ public class SearchUserScene {
         Customer updatedCustomer = null;
         Socket socket = null;
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

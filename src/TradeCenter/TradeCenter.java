@@ -253,24 +253,14 @@ public class TradeCenter {
 
     public Customer searchCustomerById(String id){
 
-        for(String key : customers.keySet()){
-            if(key.equals(id)){
-                return customers.get(key);
-            }
-        }
-        //user not found
-        throw new UserNotFoundException();
+        return customers.get(id);
+
     }
 
     public String searchUsernameById(String id){
 
-        for(String key : customers.keySet()){
-            if(key.equals(id)){
-                return customers.get(key).getUsername();
-            }
-        }
-        //user not found
-        throw new UserNotFoundException();
+        return customers.get(id).getUsername();
+
     }
 
     /**

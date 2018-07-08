@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
@@ -89,7 +90,7 @@ public class OtherUserProfileScene {
             Socket socket = null;
             boolean flag = false;
             try {
-                socket = new Socket("localhost", 8889);
+                socket = new Socket(ServerIP.ip, 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer, otherCustomer));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());

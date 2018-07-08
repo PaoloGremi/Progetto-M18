@@ -2,6 +2,7 @@ package Interface;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 import com.jfoenix.controls.JFXListView;
@@ -114,7 +115,7 @@ public class ListTradesScene {
         Socket socket = null;
         Customer customer = null;
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, id));
@@ -129,7 +130,7 @@ public class ListTradesScene {
 
         Socket socket = null;
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHTRADE, trade.getCustomer1(), trade.getCustomer2()));
@@ -149,7 +150,7 @@ public class ListTradesScene {
     private static ArrayList<Trade> retrieveTrades(ObservableList<Trade> trades, Customer myCustomer){
         ArrayList<Trade> userTrades = new ArrayList<>();
         try {
-            Socket socket = new Socket("localhost", 8889);
+            Socket socket = new Socket(ServerIP.ip, 8889);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
@@ -225,7 +226,7 @@ public class ListTradesScene {
         Socket socket = null;
         String username = null;
         try {
-            socket = new Socket("localhost", 8889);
+            socket = new Socket(ServerIP.ip, 8889);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHUSERNAME, id));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
