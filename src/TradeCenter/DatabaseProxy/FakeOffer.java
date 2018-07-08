@@ -4,7 +4,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Trades.Offer;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class FakeOffer {
 

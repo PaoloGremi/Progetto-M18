@@ -2,6 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.CardCatalog;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.Trade;
 
 import java.util.HashMap;
 
@@ -20,9 +21,9 @@ public interface IProxy {
     public void updateCustomer(Customer customer);
 
     // trades methods
-    // public void retrieveTrades(ArrayList<Trade> trades, boolean doneDeal);
+    public Trade getTrade(int id);
 
-    // public void addTrade(Trade trade);
+    public void InsertTrade(Trade trade);
 
     // public void updateTrade(Trade trade);
 
@@ -30,5 +31,7 @@ public interface IProxy {
     public int getNextCardID();
 
     public int getNextCustomerID();
+
+    public int getNextTradeID();
 
 }

@@ -340,7 +340,7 @@ public class TradeCenter {
     public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
         if(notAlreadyTradingWith(customer1.getId(), customer2.getId())){
             try {
-                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2));
+                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2), 0); //todo get id from db
                 activeTrades.add(Trade);
                 //todo vedere se si deve fare update con il db
             }catch (MyselfTradeException | EmptyCollectionException e){

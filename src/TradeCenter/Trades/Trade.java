@@ -4,7 +4,7 @@ import TradeCenter.DatabaseProxy.FakeOffer;
 
 import java.util.ArrayList;
 
-public class Trade extends ATrade {
+public class Trade extends ATrade { //todo change check donedeal method
 
     /**
      * @param history List of all past offers in the current trade
@@ -20,7 +20,7 @@ public class Trade extends ATrade {
      * Start a trade from an offer
      * @param offer Starting offer
      */
-    public Trade(Offer offer) { //todo add id in new trades as well (get next trade id from database)
+    public Trade(Offer offer, int id) {
         super(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2());
         this.history.add(offer);
         this.doneDeal = false;
@@ -85,6 +85,14 @@ public class Trade extends ATrade {
     }
 
     /**
+     * Get the trade's id
+     * @return trade's id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
      * Improved printing method
      * @return improved listing of trade properties and offers' history
      */
@@ -94,7 +102,7 @@ public class Trade extends ATrade {
         tmp.append(getCustomer1());
         tmp.append(" - ");
         tmp.append(getCustomer2());
-        tmp.append("\n" + date);
+        tmp.append("\n" + date.toString());
         return tmp.toString();
     }
 
@@ -108,7 +116,7 @@ public class Trade extends ATrade {
         tmp.append(id);
         tmp.append(")");
         tmp.append("\n on the ");
-        tmp.append(date);
+        tmp.append(date.toString());
         tmp.append("\nExchanged ");
         tmp.append(getOffer1().toString());
         tmp.append(" for ");

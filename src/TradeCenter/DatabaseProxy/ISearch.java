@@ -14,7 +14,7 @@ public interface ISearch {
      * @param pokFilter: To filter
      * @return PokemonDescription matched
      */
-    public HashSet<PokemonDescription> getFoundedDescrPokemon(PokemonAll pokFilter) ;
+    public HashSet<PokemonDescription> getFoundDescrPokemon(PokemonAll pokFilter) ;
 
     /**
      * Search a YuGiOh card from filter in db
@@ -22,5 +22,5 @@ public interface ISearch {
      * @param yugiohFilter: To filter     *
      * @return YuGiOhDescription matched
      */
-    public HashSet<YuGiOhDescription> getFoundedDescrYugioh(YuGiOhAll yugiohFilter) ;
+    public HashSet<YuGiOhDescription> getFoundDescrYugioh(YuGiOhAll yugiohFilter) ;
 }

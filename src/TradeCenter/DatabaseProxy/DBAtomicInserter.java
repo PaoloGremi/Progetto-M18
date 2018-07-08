@@ -2,6 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Trades.Trade;
 
 import java.sql.*;
 
@@ -116,11 +117,31 @@ class DBAtomicInserter {
     }
 
     /**
+     * Insert a new trade in the database
+     * @param connection: database connection
+     * @param trade: trade to be added
+     */
+    void insertTrade(Connection connection, Trade trade) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO trades VALUES (?, ?, ?, ?, ?)");
+            ps.setInt(1, trade.getId());
+            ps.setDate(2, trade.getDate());
+            ps.setString(3, trade.getCustomer1());
+            ps.setString(4, trade.getCustomer2());
+            ps.setBoolean(5, trade.isDoneDeal());
+            ps.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Quick method to get description ID (used when inserting card in database)
      * @param connection: database connection
      * @param descriptionName: description's name
      * @param type: description's type
-     * @return
+     * @return ID
      */
     private int getDescriptionIDByName(Connection connection, String descriptionName, CardType type) {
         int id = 0;

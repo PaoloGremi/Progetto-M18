@@ -1,7 +1,9 @@
 package TradeCenter.Trades;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
+import java.util.Calendar;
+
 import TradeCenter.Customers.*;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
@@ -39,7 +41,7 @@ public abstract class ATrade implements Serializable {
             this.offer1 = offer1;
             this.offer2 = offer2;
         }
-        this.date = new Date();
+        this.date = new Date(Calendar.getInstance().getTime().getTime());
     }
 
     public ATrade() {}

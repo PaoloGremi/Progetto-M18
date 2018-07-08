@@ -32,7 +32,7 @@ public class DBProxy implements IProxy,ISearch{
      * @return Descriptions foundend matched
      */
     @Override
-    public HashSet<PokemonDescription> getFoundedDescrPokemon(PokemonAll pokFilter) {
+    public HashSet<PokemonDescription> getFoundDescrPokemon(PokemonAll pokFilter) {
         String typeInput = pokFilter.getType();
         String len1 = pokFilter.getLen1();
         String len2 = pokFilter.getLen2();
@@ -42,10 +42,10 @@ public class DBProxy implements IProxy,ISearch{
 
         connection = dbConn.connectToDB(connection);
 
-        HashSet<PokemonDescription> descrFounded;
-        descrFounded = dbSearch.getSearchedDescrPokemon(connection, typeInput, hpInput, lev, weigth, len1, len2);
+        HashSet<PokemonDescription> descrFound;
+        descrFound = dbSearch.getSearchedDescrPokemon(connection, typeInput, hpInput, lev, weigth, len1, len2);
         connection = dbConn.disconnectFromDB(connection);
-        return descrFounded;
+        return descrFound;
     }
 
     /**
@@ -54,7 +54,7 @@ public class DBProxy implements IProxy,ISearch{
      * @return YuGiOhDescription matched
      */
     @Override
-    public HashSet<YuGiOhDescription> getFoundedDescrYugioh(YuGiOhAll yugiohFilter) {
+    public HashSet<YuGiOhDescription> getFoundDescrYugioh(YuGiOhAll yugiohFilter) {
         String reference=yugiohFilter.getReference();
         int lev=yugiohFilter.getLev();
         int atk=yugiohFilter.getAtk();
@@ -63,10 +63,10 @@ public class DBProxy implements IProxy,ISearch{
         String typeID=yugiohFilter.getType();
 
         connection = dbConn.connectToDB(connection);
-        HashSet<YuGiOhDescription> descrFounded;
-        descrFounded = dbSearch.getSearchedDescrYuGiOh(connection,reference,lev,atk,def,monsterID,typeID);
+        HashSet<YuGiOhDescription> descrFound;
+        descrFound = dbSearch.getSearchedDescrYuGiOh(connection,reference,lev,atk,def,monsterID,typeID);
         connection = dbConn.disconnectFromDB(connection);
-        return descrFounded;
+        return descrFound;
     }
     /**
      * Populates catalog with chosen descriptions
@@ -194,11 +194,35 @@ public class DBProxy implements IProxy,ISearch{
         connection = dbConn.disconnectFromDB(connection);
     }
 
+    /**
+     * Get a trade given its id
+     * @param id: trade id
+     * @return: trade
+     */
+    @Override
     public Trade getTrade(int id) {
         connection = dbConn.connectToDB(connection);
         Trade trade = dbRet.retrieveTrade(connection, id);
         connection = dbConn.disconnectFromDB(connection);
         return trade;
+    }
+
+    /**
+     * Insert a new trade in the database
+     * @param trade: trade to be added
+     */
+    @Override
+    public void InsertTrade(Trade trade) {
+        connection = dbConn.connectToDB(connection);
+        // insert trade data
+        dbIns.insertTrade(connection, trade);
+        // update cards in the offers
+        for (Card card : trade.getOffer1()) {
+            dbUp.updateCard(connection, card, trade.getId(), 1);
+        }
+        for (Card card : trade.getOffer2()) {
+            dbUp.updateCard(connection, card, trade.getId(), 2);
+        }
     }
 
     /**
@@ -221,6 +245,14 @@ public class DBProxy implements IProxy,ISearch{
     public int getNextCustomerID() {
         connection = dbConn.connectToDB(connection);
         int n = dbRet.getTableSize(connection, "customers") + 1;
+        connection = dbConn.disconnectFromDB(connection);
+        return n;
+    }
+
+    @Override
+    public int getNextTradeID() {
+        connection = dbConn.connectToDB(connection);
+        int n = dbRet.getTableSize(connection, "trades") + 1;
         connection = dbConn.disconnectFromDB(connection);
         return n;
     }
