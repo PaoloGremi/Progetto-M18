@@ -55,7 +55,7 @@ public class SearchUserScene {
             if(searchText == null) searchText = "";     //handling null string
 
             try {
-                Socket socket = new Socket("localhost", 8889);
+                Socket socket = new Socket(ServerIP.ip, 8889);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText, mySelf.getUsername()));
