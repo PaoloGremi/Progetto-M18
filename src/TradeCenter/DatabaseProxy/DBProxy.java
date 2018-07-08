@@ -6,6 +6,7 @@ import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -205,6 +206,91 @@ public class DBProxy implements IProxy,ISearch{
         Trade trade = dbRet.retrieveTrade(connection, id);
         connection = dbConn.disconnectFromDB(connection);
         return trade;
+    }
+
+    @Override
+    public void updateTrade(Trade trade) {
+        connection = dbConn.connectToDB(connection);
+        // update trade's data
+        dbUp.updateTrade(connection, trade);
+        if(trade.isDoneDeal()) {
+            // update cards in offer1
+                // get db's offer1
+            ArrayList<Card> oldOffer1 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
+                // get cards to add
+            ArrayList<Card> toAdd = new ArrayList<Card>(trade.getOffer1().getSet());
+            toAdd.removeAll(oldOffer1);
+            for(Card card : toAdd) {
+                dbUp.updateCard(connection, card, trade.getId(), 1);
+            }
+                // get cards to remove
+            ArrayList<Card> toRemove = new ArrayList<Card>(trade.getOffer1().getSet());
+            oldOffer1.removeAll(toRemove);
+            for(Card card : oldOffer1) {
+                dbUp.updateCard(connection, card);
+            }
+            // update cards in offer2
+            // get db's offer2
+            ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 2);
+            // get cards to add
+            ArrayList<Card> toAdd2 = new ArrayList<Card>(trade.getOffer1().getSet());
+            toAdd.removeAll(oldOffer2);
+            for(Card card : toAdd) {
+                dbUp.updateCard(connection, card, trade.getId(), 2);
+            }
+            // get cards to remove
+            ArrayList<Card> toRemove2 = new ArrayList<Card>(trade.getOffer1().getSet());
+            oldOffer1.removeAll(toRemove2);
+            for(Card card : oldOffer2) {
+                dbUp.updateCard(connection, card);
+            }
+            // free memory
+            oldOffer1.clear();
+            toAdd.clear();
+            toRemove.clear();
+            toAdd2.clear();
+            toRemove2.clear();
+        } else {
+            // update cards in offer1
+                // get db's offer1
+            ArrayList<Card> oldOffer1 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
+                // get new cards
+            ArrayList<Card> newCards = new ArrayList<Card>(trade.getOffer1().getSet());
+            newCards.removeAll(oldOffer1);
+                // set to null all these cards
+            for (Card card: oldOffer1) {
+                dbUp.updateCard(connection, card);
+            }
+            for (Card card : newCards) {
+                dbUp.updateCard(connection, card);
+            }
+                // save new cards to db (old_cards)
+            for (Card card : trade.getOffer1()) {
+                dbIns.insertTradedCard(connection, card, trade.getCustomer1(), trade.getId(), 1);
+            }
+            // get db's offer2
+            ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 2);
+            // get new cards
+            ArrayList<Card> newCards2 = new ArrayList<Card>(trade.getOffer2().getSet());
+            newCards.removeAll(oldOffer2);
+            // set to null all these cards
+            for (Card card: oldOffer2) {
+                dbUp.updateCard(connection, card);
+            }
+            for (Card card : newCards2) {
+                dbUp.updateCard(connection, card);
+            }
+            // save new cards to db (old_cards)
+            for (Card card : trade.getOffer2()) {
+                dbIns.insertTradedCard(connection, card, trade.getCustomer2(), trade.getId(), 2);
+            }
+            // free memory
+            oldOffer1.clear();
+            oldOffer2.clear();
+            newCards.clear();
+            newCards2.clear();
+        }
+        connection = dbConn.disconnectFromDB(connection);
     }
 
     /**

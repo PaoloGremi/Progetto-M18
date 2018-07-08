@@ -123,7 +123,7 @@ class DBAtomicInserter {
      */
     void insertTrade(Connection connection, Trade trade) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO trades VALUES (?, ?, ?, ?, ?)");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO trades VALUES (?, ?, ?, ?, ?);");
             ps.setInt(1, trade.getId());
             ps.setDate(2, trade.getDate());
             ps.setString(3, trade.getCustomer1());

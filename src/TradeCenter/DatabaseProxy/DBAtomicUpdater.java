@@ -2,6 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
+import TradeCenter.Trades.Trade;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -63,6 +64,20 @@ class DBAtomicUpdater {
             ps.setNull(1, Types.INTEGER);
             ps.setNull(2, Types.INTEGER);
             ps.setInt(3, card.getId());
+            ps.execute();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    void updateTrade(Connection connection, Trade trade) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("UPDATE trades SET date = ?, user1_id = ?, user2_id = ?, donedeal = ? WHERE trade_id = ?;");
+            ps.setDate(1, trade.getDate());
+            ps.setString(2, trade.getCustomer1());
+            ps.setString(3, trade.getCustomer2());
+            ps.setBoolean(4, trade.isDoneDeal());
             ps.execute();
             connection.commit();
         } catch (SQLException e) {

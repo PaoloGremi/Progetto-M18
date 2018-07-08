@@ -223,8 +223,33 @@ class DBAtomicRetriever {
     ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, Customer customer) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE customer_id = ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE customer_id = ?;");
             ps.setString(1, customer.getId());
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                Description description = null;
+                switch (rs.getString("card_Type")) {
+                    case "pokemon":
+                        description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
+                        break;
+                    case "yugioh":
+                        description = retrieveSingleYugiohDescription(connection, rs.getInt("description_id"));
+                        break;
+                }
+                cards.add(new Card(rs.getInt("card_id"), description));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cards;
+    }
+
+    ArrayList<Card> retrieveCardsInTradeOffer(Connection connection, int trade_id, int offer_col) {
+        ArrayList<Card> cards = new ArrayList<>();
+        try {
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col= ?");
+            ps.setInt(1, trade_id);
+            ps.setInt(2, offer_col);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 Description description = null;

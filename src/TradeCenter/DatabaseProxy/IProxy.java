@@ -25,7 +25,7 @@ public interface IProxy {
 
     public void InsertTrade(Trade trade);
 
-    // public void updateTrade(Trade trade);
+    public void updateTrade(Trade trade);
 
     // random methods
     public int getNextCardID();
