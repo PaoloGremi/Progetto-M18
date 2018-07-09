@@ -99,9 +99,10 @@ public class DBProxy implements IProxy,ISearch{
     /**
      * Adds full customer to customer hashmap
      * @param customers: hashmap to be populated
+     * @return number of customers
      */
     @Override
-    public void retrieveCustomers(HashMap<String, Customer> customers) {
+    public int retrieveCustomers(HashMap<String, Customer> customers) {
         connection = dbConn.connectToDB(connection);
         int n = dbRet.getTableSize(connection, "customers");
         for(int i=1; i<= n; i++) {
@@ -118,6 +119,7 @@ public class DBProxy implements IProxy,ISearch{
             customers.put(customer.getId(), customer);
         }
         connection = dbConn.disconnectFromDB(connection);
+        return n;
     }
 
     /**
@@ -213,34 +215,34 @@ public class DBProxy implements IProxy,ISearch{
         connection = dbConn.connectToDB(connection);
         // update trade's data
         dbUp.updateTrade(connection, trade);
-        if(trade.isDoneDeal()) {
+        if(!trade.isDoneDeal()) {
             // update cards in offer1
                 // get db's offer1
             ArrayList<Card> oldOffer1 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
                 // get cards to add
-            ArrayList<Card> toAdd = new ArrayList<Card>(trade.getOffer1().getSet());
+            ArrayList<Card> toAdd = new ArrayList<Card>(trade.getOffer2().getSet());
             toAdd.removeAll(oldOffer1);
             for(Card card : toAdd) {
                 dbUp.updateCard(connection, card, trade.getId(), 1);
             }
                 // get cards to remove
-            ArrayList<Card> toRemove = new ArrayList<Card>(trade.getOffer1().getSet());
+            ArrayList<Card> toRemove = new ArrayList<Card>(trade.getOffer2().getSet());
             oldOffer1.removeAll(toRemove);
             for(Card card : oldOffer1) {
                 dbUp.updateCard(connection, card);
             }
             // update cards in offer2
-            // get db's offer2
+                // get db's offer2
             ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 2);
-            // get cards to add
+                // get cards to add
             ArrayList<Card> toAdd2 = new ArrayList<Card>(trade.getOffer1().getSet());
-            toAdd.removeAll(oldOffer2);
-            for(Card card : toAdd) {
+            toAdd2.removeAll(oldOffer2);
+            for(Card card : toAdd2) {
                 dbUp.updateCard(connection, card, trade.getId(), 2);
             }
-            // get cards to remove
+                // get cards to remove
             ArrayList<Card> toRemove2 = new ArrayList<Card>(trade.getOffer1().getSet());
-            oldOffer1.removeAll(toRemove2);
+            oldOffer2.removeAll(toRemove2);
             for(Card card : oldOffer2) {
                 dbUp.updateCard(connection, card);
             }
@@ -255,7 +257,7 @@ public class DBProxy implements IProxy,ISearch{
                 // get db's offer1
             ArrayList<Card> oldOffer1 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
                 // get new cards
-            ArrayList<Card> newCards = new ArrayList<Card>(trade.getOffer1().getSet());
+            ArrayList<Card> newCards = new ArrayList<Card>(trade.getOffer2().getSet());
             newCards.removeAll(oldOffer1);
                 // set to null all these cards
             for (Card card: oldOffer1) {
@@ -265,13 +267,13 @@ public class DBProxy implements IProxy,ISearch{
                 dbUp.updateCard(connection, card);
             }
                 // save new cards to db (old_cards)
-            for (Card card : trade.getOffer1()) {
-                dbIns.insertTradedCard(connection, card, trade.getCustomer1(), trade.getId(), 1);
+            for (Card card : trade.getOffer2()) {
+                dbIns.insertTradedCard(connection, card, trade.getCustomer2(), trade.getId(), 1);
             }
             // get db's offer2
             ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 2);
             // get new cards
-            ArrayList<Card> newCards2 = new ArrayList<Card>(trade.getOffer2().getSet());
+            ArrayList<Card> newCards2 = new ArrayList<Card>(trade.getOffer1().getSet());
             newCards.removeAll(oldOffer2);
             // set to null all these cards
             for (Card card: oldOffer2) {
@@ -281,8 +283,8 @@ public class DBProxy implements IProxy,ISearch{
                 dbUp.updateCard(connection, card);
             }
             // save new cards to db (old_cards)
-            for (Card card : trade.getOffer2()) {
-                dbIns.insertTradedCard(connection, card, trade.getCustomer2(), trade.getId(), 2);
+            for (Card card : trade.getOffer1()) {
+                dbIns.insertTradedCard(connection, card, trade.getCustomer1(), trade.getId(), 2);
             }
             // free memory
             oldOffer1.clear();

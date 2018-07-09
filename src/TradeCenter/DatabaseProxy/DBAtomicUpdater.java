@@ -78,6 +78,7 @@ class DBAtomicUpdater {
             ps.setString(2, trade.getCustomer1());
             ps.setString(3, trade.getCustomer2());
             ps.setBoolean(4, trade.isDoneDeal());
+            ps.setInt(5, trade.getId());
             ps.execute();
             connection.commit();
         } catch (SQLException e) {

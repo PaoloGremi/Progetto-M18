@@ -18,6 +18,7 @@ import TradeCenter.Card.Description;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
+import TradeCenter.DatabaseProxy.DBProxy;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.IndexColorModel;
@@ -49,12 +50,17 @@ public class TradeCenter {
         this.proxy = new DBProxy();
         this.pokemonCatalog = new CardCatalog();
         this.yugiohCatalog = new CardCatalog();
-        proxy.populateCatalog("pokemon_card", pokemonCatalog);
-        proxy.populateCatalog("yugioh_card", yugiohCatalog);
+        proxy.populateCatalog(pokemonCatalog, "pokemon_card");
+        proxy.populateCatalog(yugiohCatalog, "yugioh_card");
         this.customers = new HashMap<String, Customer>();
         contUsers = proxy.retrieveCustomers(customers);
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
+        for(int i=1; i<proxy.getNextTradeID(); i++) {
+            Trade trade = proxy.getTrade(i);
+            if(trade.isDoneDeal()) doneTrades.add(trade);
+            else activeTrades.add(trade);
+        }
     }
     /**
      * Create an account for a new user
@@ -67,7 +73,7 @@ public class TradeCenter {
             String id = customerID();
             temporaryCustomer = new Customer(id, username, password);
             customers.put(id, temporaryCustomer);
-            proxy.insertCustomer(temporaryCustomer);
+            proxy.addCustomerToDatabase(temporaryCustomer);
         }
 
         return temporaryCustomer;
@@ -296,7 +302,7 @@ public class TradeCenter {
         String len1=pokemonAll.getLen1();
         String len2=pokemonAll.getLen2();
         HashSet<PokemonDescription> descrMatched=new HashSet<>();
-        descrMatched=proxy.getSearchedDescrPokemon(type,hp,lev,weigth,len1,len2);
+        //descrMatched=proxy.getFoundDescrPokemon(type,hp,lev,weigth,len1,len2);
         /*if(descrMatched.size()==0)
             throw new NoSuchDescriptionFoundedException();
             */
@@ -340,9 +346,9 @@ public class TradeCenter {
     public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
         if(notAlreadyTradingWith(customer1.getId(), customer2.getId())){
             try {
-                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2), 0); //todo get id from db
+                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2), proxy.getNextTradeID());
                 activeTrades.add(Trade);
-                //todo vedere se si deve fare update con il db
+                proxy.InsertTrade(Trade);
             }catch (MyselfTradeException | EmptyCollectionException e){
                 System.err.println(e.getMessage());
             }
@@ -360,6 +366,7 @@ public class TradeCenter {
     public boolean updateTrade(Offer offer, boolean flag){
         Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
         trade.update(offer, flag);
+        proxy.updateTrade(trade);
         return true;
     }
 
@@ -428,7 +435,6 @@ public class TradeCenter {
             }
             proxy.updateCustomer(customers.get(trade.getCustomer1()));
             proxy.updateCustomer(customers.get(trade.getCustomer2()));
-            //todo vedere se serve fare update proxy
         }else{
             throw new NoSuchTradeException();
         }
@@ -443,9 +449,11 @@ public class TradeCenter {
                 activeTrades.remove(activeTrade);
                 trade.doneDeal(result);
                 doneTrades.add(trade);
+                proxy.updateTrade(trade);
             }
         }
             //deve essere cosi l'ordine altrimenti trade != trade negli active trade
+
 
     }
 

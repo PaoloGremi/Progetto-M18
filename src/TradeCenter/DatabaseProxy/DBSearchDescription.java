@@ -189,7 +189,7 @@ public class DBSearchDescription {
         int size = 0;
         try {
             PreparedStatement ps = null;
-            String query="SELECT COUNT(*) FROM cards."+viewname+";";
+            String query="SELECT COUNT(*) FROM "+viewname+";";
             ps = connection.prepareStatement(query);
 
             ResultSet rs = ps.executeQuery();
@@ -228,7 +228,7 @@ public class DBSearchDescription {
         Statement stmt ;
         String query = "create view "+nameView+"(pokemon_description_id,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
                 "select *" +
-                "    from cards.pokemon_card;";
+                "    from pokemon_card;";
 
             stmt = connection.createStatement();
             int rs = stmt.executeUpdate(query);

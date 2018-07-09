@@ -73,7 +73,7 @@ public class TestMain {
         */
 
         //Pokemon filtering example. Print on console description founded
-        /*HashSet<PokemonDescription> descrFounded;
+        HashSet<PokemonDescription> descrFounded;
         PokemonAll pokFilter=new PokemonAll("Water",99,50,189,"","");
         descrFounded=db.getFoundDescrPokemon(pokFilter);
         System.out.println("FILTER:\n \t"+pokFilter);
@@ -87,7 +87,7 @@ public class TestMain {
         System.out.println("FILTER:\n \t"+yuFilter);
         for (YuGiOhDescription descr:yuGiOhDescriptions) {
             System.out.println(descr);
-        }*/
+        }
 
 
 

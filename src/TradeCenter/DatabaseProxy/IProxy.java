@@ -12,7 +12,7 @@ public interface IProxy {
     public void populateCatalog(CardCatalog cc, String tablename);
 
     // customers methods
-    public void retrieveCustomers(HashMap<String, Customer> customers);
+    public int retrieveCustomers(HashMap<String, Customer> customers);
 
     public Customer retrieveSingleCustomer(String username);
 

@@ -102,7 +102,7 @@ public class Trade extends ATrade { //todo change check donedeal method
         tmp.append(getCustomer1());
         tmp.append(" - ");
         tmp.append(getCustomer2());
-        tmp.append("\n" + date.toString());
+        //tmp.append("\n" + date.toString());
         return tmp.toString();
     }
 

@@ -86,7 +86,7 @@ class DBAtomicRetriever {
                     ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
                     break;
                 case "trades":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM cards;");
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM trades;");
                     break;
                 case "pokemon_card":
                     ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
@@ -375,7 +375,6 @@ class DBAtomicRetriever {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return trade;
     }
 
