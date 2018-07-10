@@ -46,13 +46,7 @@ public class Collection implements Iterable<Card>, Serializable {
      * @return boolean to check wheter or not the method ran fine
      */
     public boolean addCardToCollection(Card card) {
-        if(true) {                          //todo Al posto del "true" va messo il metodo che verifichi la presenza della carta nel database
-            cardSet.add(card);
-        }
-        else {
-            throw  new AddCardException();
-        }
-        return true;
+        return cardSet.add(card);
     }
 
     /**
@@ -80,12 +74,7 @@ public class Collection implements Iterable<Card>, Serializable {
      * @param card Card to remove
      */
     public void removeCardFromCollection(Card card) {
-        if(isInTheCollection(card)) {
-            cardSet.remove(card);
-        }
-        else{
-            throw new RemoveCardException();
-        }
+        if(!cardSet.remove(card)) throw new CardNotFoundException();
 
     }
 
@@ -95,12 +84,8 @@ public class Collection implements Iterable<Card>, Serializable {
      * @param card Card to search in the collection.
      * @return boolean to check wheter or not the method ran fine'
      */
-    public boolean isInTheCollection(Card card){
-        for(Card cardInThecollection : cardSet){
-            if(cardInThecollection.equals(card)) return true;
-        }
-
-        return false;
+    public boolean isInTheCollection(Card card) {
+        return cardSet.contains(card);
     }
 
     /**
@@ -118,15 +103,15 @@ public class Collection implements Iterable<Card>, Serializable {
      * @param description Description to search in the HashSet of the tags for every single card in the collection.
      * @return HashSet of cards that match.
      */
-    public Collection searchByDescription(Description description) {
+    public Collection searchByDescription(Description description) { //todo check if really *really* necessary (could return empty set if nothing found)
         Collection cards = new Collection();
         for (Card card : cardSet){
             Description cardDescription = card.getDescription();
-                if(description.equals(cardDescription)){
-                    cards.addCardToCollection(card);
-                    }
+            if(description.equals(cardDescription)) {
+                cards.addCardToCollection(card);
+            }
         }
-        if(cards.collectionIsEmpty()) throw  new CardNotFoundException();
+        if(cards.collectionIsEmpty()) throw new CardNotFoundException();
         return cards;
     }
 
@@ -135,15 +120,16 @@ public class Collection implements Iterable<Card>, Serializable {
      * @param description
      * @return
      */
-     public boolean containsDescription(Description description){
-         for (Card card : cardSet){
-             Description cardDescription = card.getDescription();
-             if(description.equals(cardDescription)){
-                 return true;
-             }
-         }
-         return false;
+     public boolean containsDescription(Description description){ //todo check if really necessary
+        for (Card card : cardSet){
+            Description cardDescription = card.getDescription();
+            if(description.equals(cardDescription)){
+                return true;
+            }
+        }
+        return false;
      }
+
 
     /**
      * Override toString method
@@ -154,15 +140,13 @@ public class Collection implements Iterable<Card>, Serializable {
     @Override
     public String toString() {
         StringBuilder tmp = new StringBuilder();
-        int index = 1;
         for(Card card :cardSet){
-            tmp.append(card.toString());
-            if(index != cardSet.size()){
-                tmp.append(", ");
-            }
-
+            tmp.append(card.toString()).append(", ");
         }
-
+        // if last characters are " ,", remove them
+        if(tmp.charAt(tmp.length() - 2) == ',') {
+            tmp.substring(0, tmp.length() - 2);
+        }
         return tmp.toString();
     }
 }
