@@ -14,6 +14,7 @@ public class FakeOffer {
     private Collection offer2 = new Collection();
     private Date date;
     private boolean doneDeal;
+    private boolean positiveEnd;
     private int id;
 
     protected void setCustomer1(String customer1) {
@@ -38,6 +39,8 @@ public class FakeOffer {
 
     protected void setDoneDeal(Boolean doneDeal) { this.doneDeal = doneDeal; }
 
+    protected void setPositiveEnd(Boolean positiveEnd) { this.positiveEnd = positiveEnd; }
+
     protected void setId(int id) { this.id = id; }
 
     public String getCustomer1() {
@@ -61,6 +64,8 @@ public class FakeOffer {
     }
 
     public Boolean getDoneDeal() { return doneDeal; }
+
+    public boolean isPositiveEnd() { return positiveEnd; }
 
     public int getId() { return id; }
 }

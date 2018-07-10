@@ -32,6 +32,7 @@ public class Trade extends ATrade {
         super(fakeOffer.getCustomer1(), fakeOffer.getCustomer2(), fakeOffer.getOffer1(), fakeOffer.getOffer2());
         this.doneDeal = fakeOffer.getDoneDeal();
         super.setDate(fakeOffer.getDate());
+        this.positiveEnd = fakeOffer.isPositiveEnd();
         this.id = fakeOffer.getId();
     }
 

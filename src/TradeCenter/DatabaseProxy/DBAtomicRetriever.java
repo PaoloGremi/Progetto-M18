@@ -320,6 +320,7 @@ class DBAtomicRetriever {
                 offer.setDate(rs.getDate("date"));
                 Boolean donedeal = rs.getBoolean("donedeal");
                 offer.setDoneDeal(donedeal);
+                offer.setPositiveEnd(rs.getBoolean("positive_end"));
                 PreparedStatement ps1;
                 PreparedStatement ps2;
                 Card card;

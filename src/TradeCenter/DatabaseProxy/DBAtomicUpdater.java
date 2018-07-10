@@ -73,12 +73,13 @@ class DBAtomicUpdater {
 
     void updateTrade(Connection connection, Trade trade) {
         try {
-            PreparedStatement ps = connection.prepareStatement("UPDATE trades SET date = ?, user1_id = ?, user2_id = ?, donedeal = ? WHERE trade_id = ?;");
+            PreparedStatement ps = connection.prepareStatement("UPDATE trades SET date = ?, user1_id = ?, user2_id = ?, donedeal = ? , positive_end = ? WHERE trade_id = ?;");
             ps.setDate(1, trade.getDate());
             ps.setString(2, trade.getCustomer1());
             ps.setString(3, trade.getCustomer2());
             ps.setBoolean(4, trade.isDoneDeal());
-            ps.setInt(5, trade.getId());
+            ps.setBoolean(5, trade.isPositiveEnd());
+            ps.setInt(6, trade.getId());
             ps.execute();
             connection.commit();
         } catch (SQLException e) {
