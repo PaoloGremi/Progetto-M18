@@ -74,7 +74,6 @@ public class SearchUserScene {
                                         String otherCustomer = usersList.getSelectionModel().getSelectedItem();
 
                                             MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(mySelf.getUsername()), retrieveCustomer(otherCustomer)));
-
                                     }
                                 };
 
@@ -113,7 +112,7 @@ public class SearchUserScene {
         return scene;
     }
 
-    private static Customer retrieveCustomer(String customer){
+    public static Customer retrieveCustomer(String customer){
         Customer updatedCustomer = null;
         Socket socket = null;
         try {

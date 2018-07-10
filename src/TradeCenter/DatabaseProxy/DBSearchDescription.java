@@ -42,7 +42,7 @@ public class DBSearchDescription {
             whereString(connection, "InitPokemonView", "PoView1", "Type", typeInput);
             whereString(connection, "PoView1", "PoView2", "Length", lenghtComplete);
             //Int attribute
-            whereInt(connection, "PoView2", "PoView3", "HP", hpInput,30);
+            whereInt(connection, "PoView2", "PoView3", "HP", hpInput,10);
             whereInt(connection, "PoView3", "PoView4", "Weigth", weigth,50);
             whereInt(connection, "PoView4", "PoFinalView", "Level", lev,15);
 

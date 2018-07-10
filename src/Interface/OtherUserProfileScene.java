@@ -39,7 +39,7 @@ public class OtherUserProfileScene {
     static Customer otherCustomer;
     static String displayed = "Collection";
 
-    static BorderPane display(Customer myCustomer, Customer otherUser) {
+    public static BorderPane display(Customer myCustomer, Customer otherUser) {
         otherCustomer = otherUser;
         borderPane = new BorderPane();
         cardList = new StackPane();

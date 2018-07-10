@@ -73,7 +73,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
 
                         //todo provvisorio
                         if(returnMessage.size()>=1)
-                            MainWindow.refreshDynamicContent(DescriptionFounded.display(customer, returnMessage));
+                            mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
