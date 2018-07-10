@@ -289,24 +289,26 @@ public class TradeCenter {
     }
 
     /**
+     * Return Description foundend in DB filtered
      *
-     * @param pokemonAll
-     * @return
+     * @param pokemonAll: Pokemon All
+     * @return PokemonDescription matched
      */
-    public HashSet<PokemonDescription> searchDescrInPokemonDb(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
+    public HashSet<PokemonDescription> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
+        HashSet<PokemonDescription> descrMatched;
+        descrMatched=proxy.getFoundDescrPokemon(pokemonAll);
 
-        String type=pokemonAll.getType();
-        int hp=pokemonAll.getHp();
-        int lev=pokemonAll.getLev();
-        int weigth=pokemonAll.getWeigth();
-        String len1=pokemonAll.getLen1();
-        String len2=pokemonAll.getLen2();
-        HashSet<PokemonDescription> descrMatched=new HashSet<>();
-        //descrMatched=proxy.getFoundDescrPokemon(type,hp,lev,weigth,len1,len2);
         /*if(descrMatched.size()==0)
             throw new NoSuchDescriptionFoundedException();
             */
         return descrMatched;
+    }
+
+    public ArrayList<HashMap<Customer, Collection>> forInterfaceProva(HashSet<PokemonDescription> pokemonDescriptions){
+            for (Description descr:pokemonDescriptions ) {
+                return searchByDescription(descr);
+        }
+        return null;
     }
 
     /**
@@ -334,6 +336,24 @@ public class TradeCenter {
             throw new CardNotFoundException();          //todo eccezione da risolvere, se nessuno ha la carta il software deve continuare
         }                                               //todo PARLARE CON FEDE
         return searched;
+    }
+
+    /**
+     * Hasmap with k=Description, V=ArrayList<Customer> thats have the description
+     * @param hashDescr: Descriptions
+     * @return HashMap<Description,ArrayList<Customer>>
+     */
+    public HashMap<PokemonDescription,ArrayList<String>> getCustomersFromDescriptions(HashSet<PokemonDescription> hashDescr){
+        HashMap<PokemonDescription,ArrayList<String>> map=new HashMap<>();
+        for (PokemonDescription descr:hashDescr) {
+            ArrayList<String> listCustomer=new ArrayList<>();
+            for (String key : customers.keySet()) {
+                if(customers.get(key).containDescription(descr))
+                    listCustomer.add(customers.get(key).getUsername());
+            }
+            map.put(descr,listCustomer);
+        }
+        return map;
     }
 
     /**

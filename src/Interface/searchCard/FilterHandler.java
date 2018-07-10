@@ -6,6 +6,7 @@ import Interface.MainWindow;
 import Interface.SearchDescriptionScene;
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
+import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class FilterHandler implements EventHandler<ActionEvent> {
 
@@ -49,12 +51,15 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                 case "Pokèmon":
 
                     String comboTypePo= (String) PokemonFilter.getComboType().getValue();
+                    //check if null(non modificato)--> ""
+                    if(comboTypePo==null)
+                        comboTypePo="";
                     int hpValue=(int) PokemonFilter.getHpSlider().getValue();
                     int levValue=(int)PokemonFilter.getLevSlider().getValue();
                     int weightValue=(int)PokemonFilter.getWeightSlider().getValue();
                     String len1=PokemonFilter.getTextLen1().getText();
                     String len2=PokemonFilter.getTextLen2().getText();
-                    mainBorder.setBottom(new Label(comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
+                    mainBorder.setBottom(new Label("Type"+comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
                     Socket socket1;
                     try {
                         socket1 = new Socket("localhost", 8889);
@@ -63,10 +68,12 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         System.out.println("Ok");
                         os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(comboTypePo,hpValue,levValue,weightValue,len1,len2)));
                         ObjectInputStream is = new ObjectInputStream(socket1.getInputStream());
-                        ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
-                        if(returnMessage.size()>=1) { //todo provvisorio
-                            MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage, customer));
-                        }
+
+                        HashMap<PokemonDescription,ArrayList<String>> returnMessage = (HashMap<PokemonDescription, ArrayList<String>>) is.readObject();
+
+                        //todo provvisorio
+                        if(returnMessage.size()>=1)
+                            MainWindow.refreshDynamicContent(DescriptionFounded.display(customer, returnMessage));
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();

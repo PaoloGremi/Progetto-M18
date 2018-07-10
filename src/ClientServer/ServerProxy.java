@@ -1,19 +1,19 @@
 package ClientServer;
 
-import Interface.MainWindow;
 import TradeCenter.Card.Card;
+import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
-import TradeCenter.Trades.ATrade;
 import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class ServerProxy {
 
@@ -94,4 +94,10 @@ public class ServerProxy {
     public void removeTrade(MessageServer messageServer){
         tradeCenter.removeTrade(messageServer.getString1(),messageServer.getString2());
     }
+
+    public HashMap<PokemonDescription, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
+        HashSet<PokemonDescription> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
+        return tradeCenter.getCustomersFromDescriptions(descriptions);
+    }
+
 }

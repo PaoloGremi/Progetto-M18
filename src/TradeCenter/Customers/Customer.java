@@ -196,6 +196,16 @@ public class Customer implements Serializable {
     }
 
     /**
+     * Says if Customer's Collection contains a description
+     *
+     * @param description: Description interested.
+     * @return true if contains, false if doesn't
+     */
+    public boolean containDescription(Description description){
+        return collection.containsDescription(description);
+    }
+
+    /**
      *
      * @return the collection of the customer
      */

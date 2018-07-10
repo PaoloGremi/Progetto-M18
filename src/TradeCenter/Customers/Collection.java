@@ -131,6 +131,21 @@ public class Collection implements Iterable<Card>, Serializable {
     }
 
     /**
+     * Says if Collection contains a description
+     * @param description
+     * @return
+     */
+     public boolean containsDescription(Description description){
+         for (Card card : cardSet){
+             Description cardDescription = card.getDescription();
+             if(description.equals(cardDescription)){
+                 return true;
+             }
+         }
+         return false;
+     }
+
+    /**
      * Override toString method
      *
      * @return New String for the collection class
