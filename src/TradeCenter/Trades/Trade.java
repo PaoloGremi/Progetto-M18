@@ -22,6 +22,7 @@ public class Trade extends ATrade {
         super(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2());
         this.doneDeal = false;
         this.positiveEnd = false;
+        this.id = id;
     }
 
     /**
