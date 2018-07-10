@@ -21,7 +21,7 @@ public abstract class ATrade implements Serializable {
     private String customer2;
     private Collection offer1;
     private Collection offer2;
-    protected Date date;
+    private Date date;
 
     /**
      * Constructor method
@@ -43,8 +43,6 @@ public abstract class ATrade implements Serializable {
         }
         this.date = new Date(Calendar.getInstance().getTime().getTime());
     }
-
-    public ATrade() {}
 
     /**
      * Getter for first Customers
@@ -82,25 +80,28 @@ public abstract class ATrade implements Serializable {
         return date;
     }
 
+    void setDate(Date date) {
+        this.date = date;
+    }
+
     /**
      * Updater for first customer's collection, second customer's collection and current date
      * @param offer1 Firs customer's collection
      * @param offer2 Second customer's collection
      * @param date Current date
      */
-    protected void updateParameters(String customer1, String customer2, Collection offer1, Collection offer2, Date date, boolean flag) {
+    void updateParameters(String customer1, String customer2, Collection offer1, Collection offer2, Date date, boolean flag) {
         if(flag) {
             this.customer1 = customer1;
             this.customer2 = customer2;
             this.offer1 = offer1;
             this.offer2 = offer2;
-            this.date = date;
-        }else{
+        } else {
             this.customer1 = customer2;
             this.customer2 = customer1;
             this.offer1 = offer2;
             this.offer2 = offer1;
-            this.date = date;
         }
+        this.date = date;
     }
 }
