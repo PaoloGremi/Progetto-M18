@@ -20,6 +20,7 @@ class DBAtomicInserter {
      */
     void insertCard(Connection connection, Card card, Customer customer) {
         try {
+            System.err.println("[DBAtomicInserter] - Adding card number " + card.getId() + " to database...\n");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO cards VALUES (?,?,?,?,?,?);");
             ps.setInt(1,card.getId());
             ps.setString(2, customer.getId());
@@ -37,8 +38,9 @@ class DBAtomicInserter {
             ps.setNull(6, Types.INTEGER);
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicInserter] - Card " + card.getId() + " added to database.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertCard.\n");
         }
     }
 
@@ -50,6 +52,7 @@ class DBAtomicInserter {
      */
     void insertWishlist(Connection connection, Description description, Customer customer) {
         try {
+            System.err.println("[DBAtomicInserter] - Adding wishlist element " + description.getName() + " to customer " + customer.getId() + "...\n");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO wishlist VALUES (?,?,?);");
             ps.setString(1, customer.getId());
             switch (description.getDescrType()) {
@@ -64,8 +67,9 @@ class DBAtomicInserter {
             }
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicInserter] - Wishlist element " + description.getName() + " added to customer " + customer.getId() + ".\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertWishlist.\n");
         }
     }
 
@@ -76,14 +80,16 @@ class DBAtomicInserter {
      */
     void insertCustomer(Connection connection, Customer customer) {
         try {
+            System.err.println("[DBAtomicInserter] - Adding customer " + customer.getId() + " to database...\n");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO customers VALUES (?,?,?);");
             ps.setString(1, customer.getId());
             ps.setString(2, customer.getUsername());
             ps.setString(3, customer.getPassword());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicInserter] - Customer " + customer.getId() + " added to database.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertCustomer.\n");
         }
     }
 
@@ -97,6 +103,7 @@ class DBAtomicInserter {
      */
     void insertTradedCard(Connection connection, Card card, String customer_id, int trade_id, int offer_col) {
         try {
+            System.err.println("[DBAtomicInserter] - Adding traded card " + card.getId() +  " to database...\n");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_old VALUES (?, ?, ?, ?, ?, ?);");
             ps.setInt(1, card.getId());
             ps.setString(2, customer_id);
@@ -111,8 +118,9 @@ class DBAtomicInserter {
             ps.setInt(6, offer_col);
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicInserter] - Traded card " + card.getId() +  " added to database.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertTradedCard.\n");
         }
     }
 
@@ -123,6 +131,7 @@ class DBAtomicInserter {
      */
     void insertTrade(Connection connection, Trade trade) {
         try {
+            System.err.println("[DBAtomicInserter] - Adding trade number " + trade.getId() +  " to database...\n");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO trades VALUES (?, ?, ?, ?, ?, ?);");
             ps.setInt(1, trade.getId());
             ps.setDate(2, trade.getDate());
@@ -132,8 +141,9 @@ class DBAtomicInserter {
             ps.setBoolean(6, trade.isPositiveEnd());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicInserter] - Trade number " + trade.getId() +  " added to database.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertTrade.\n");
         }
     }
 
@@ -162,7 +172,7 @@ class DBAtomicInserter {
                 return rs.getInt(1);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in private method getDescriptionIDByName.\n");
         }
         return id;
     }

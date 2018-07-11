@@ -4,6 +4,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Trades.Trade;
 
+import javax.sql.rowset.serial.SerialRef;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -23,13 +24,15 @@ class DBAtomicUpdater {
      */
     void updateCard(Connection connection, Card card, String newCustomerID) {
         try {
+            System.err.println("[DBAtomicUpdater] - Updating card " + card.getId() + " with new customer " + newCustomerID + "...\n");
             PreparedStatement ps = connection.prepareStatement("UPDATE cards SET customer_id = ? WHERE card_id = ?;");
             ps.setString(1, newCustomerID);
             ps.setInt(2, card.getId());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicUpdater] - Card " + card.getId() + " with new customer " + newCustomerID + " updated.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicUpdater] - Exception " + e + " encounterd in method updateCard with new customer ID.\n");
         }
     }
 
@@ -42,14 +45,16 @@ class DBAtomicUpdater {
      */
     void updateCard(Connection connection, Card card, int tradeID, int offer_col) {
         try {
+            System.err.println("[DBAtomicUpdater] - Updating card " + card.getId() + " in new trade " + tradeID + " in offer " + offer_col + "...\n");
             PreparedStatement ps = connection.prepareStatement("UPDATE cards SET trade_id = ?, offer_col = ? WHERE card_id = ?;");
             ps.setInt(1, tradeID);
             ps.setInt(2, offer_col);
             ps.setInt(3, card.getId());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicUpdater] - Card " + card.getId() + " in new trade " + tradeID + " in offer " + offer_col + " updated.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicUpdater] - Exception " + e + " encounterd in method updateCard with new trade parameters.\n");
         }
     }
 
@@ -60,19 +65,22 @@ class DBAtomicUpdater {
      */
     void updateCard(Connection connection, Card card) {
         try {
+            System.err.println("[DBAtomicUpdater] - Updating card " + card.getId() + "...\n");
             PreparedStatement ps = connection.prepareStatement("UPDATE cards SET trade_id = ?, offer_col = ? WHERE card_id = ?;");
             ps.setNull(1, Types.INTEGER);
             ps.setNull(2, Types.INTEGER);
             ps.setInt(3, card.getId());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicUpdater] - Card " + card.getId() + " updated.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicUpdater] - Exception " + e + " encounterd in method updateCard.\n");
         }
     }
 
     void updateTrade(Connection connection, Trade trade) {
         try {
+            System.err.println("[DBAtomicUpdater] - Updating trade " + trade.getId() + "...\n");
             PreparedStatement ps = connection.prepareStatement("UPDATE trades SET date = ?, user1_id = ?, user2_id = ?, donedeal = ? , positive_end = ? WHERE trade_id = ?;");
             ps.setDate(1, trade.getDate());
             ps.setString(2, trade.getCustomer1());
@@ -82,8 +90,9 @@ class DBAtomicUpdater {
             ps.setInt(6, trade.getId());
             ps.execute();
             connection.commit();
+            System.err.println("[DBAtomicUpdater] - Trade " + trade.getId() + " updated.\n");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("[DBAtomicUpdater] - Exception " + e + " encounterd in method updateTrade.\n");
         }
     }
 }
