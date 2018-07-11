@@ -1,5 +1,5 @@
 .root {
-    -fx-background-image: url("back.jpg");
+    -fx-background-image: url("imagePack/back.jpg");
     -fx-background-size: 1200px;
 }
 

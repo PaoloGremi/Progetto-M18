@@ -102,7 +102,7 @@ public class WishListScene{
                 flow.getChildren().remove(pane);
                 Socket socket;
                 try {
-                    socket = new Socket(ServerIP.ip, 8889);
+                    socket = new Socket(ServerIP.ip, ServerIP.port);
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
@@ -133,7 +133,7 @@ public class WishListScene{
                 System.out.println("welcome client");
                 Socket socket = null;
                 try {
-                    socket = new Socket(ServerIP.ip, 8889);
+                    socket = new Socket(ServerIP.ip, ServerIP.port);
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");

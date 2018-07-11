@@ -191,7 +191,7 @@ public class MainWindow {
         Socket socket = null;
         long startTime = System.currentTimeMillis();
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

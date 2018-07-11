@@ -6,10 +6,24 @@ import javafx.scene.layout.*;
 import javafx.scene.control.Button;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public  class Demo {
 
     static Pane display(Node e, String scene){
+        HashMap<String, Runnable> methodMap = new HashMap<>();
+        methodMap.put("wish", () -> {
+            try {
+                Wish();
+            } catch (IOException | ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }
+        });
+        methodMap.put("collection", Demo::Collection);
+        methodMap.put("other_user", Demo::OtherUser);
+        methodMap.put("searchDescription", Demo::SearchDescription);
+        methodMap.put("other", Demo::Other);
+        methodMap.put("trade", Demo::Trade);
         BorderPane pane = new BorderPane();
         if(!scene.equals("trade")) {
             e.setScaleX(pane.getScaleX() * 1.7);
@@ -29,39 +43,45 @@ public  class Demo {
         pane.setTop(hBox);
 
         button.setOnAction(event -> {
-            switch (scene){
-                case "wish": {MainWindow.refreshDynamicContent(WishListScene.refresh());
-                             break;}
-                case "collection": {
-                    try {
-                        MainWindow.refreshDynamicContent(CollectionScene.refresh());
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    } catch (ClassNotFoundException e1) {
-                        e1.printStackTrace();
-                    }
-                    break;}
-                case "other_user": {MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
-                    break;}
-                case"searchDescription":{
-                    try {
-                        MainWindow.refreshDynamicContent(SearchDescriptionScene.refresh());
-                        break;
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
 
-                }
-                case "other":
-                    MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
-                    break;
-                case "trade":
-                    MainWindow.refreshDynamicContent(TradeScene.refresh());
-            }
+            methodMap.get(scene).run();
+
         });
 
 
 
         return  pane;
+    }
+
+    private static void Wish() throws IOException, ClassNotFoundException {
+        MainWindow.refreshDynamicContent(CollectionScene.refresh());
+    }
+
+    private static void Collection(){
+        try {
+            MainWindow.refreshDynamicContent(CollectionScene.refresh());
+        } catch (IOException | ClassNotFoundException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private static void OtherUser(){
+        MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
+    }
+
+    private static void Other(){
+        MainWindow.refreshDynamicContent(OtherUserProfileScene.refresh());
+    }
+
+    private static void SearchDescription(){
+        try {
+            MainWindow.refreshDynamicContent(SearchDescriptionScene.refresh());
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+    private static void Trade(){
+        MainWindow.refreshDynamicContent(TradeScene.refresh());
     }
 }

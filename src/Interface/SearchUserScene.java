@@ -55,7 +55,7 @@ public class SearchUserScene {
             if(searchText == null) searchText = "";     //handling null string
 
             try {
-                Socket socket = new Socket(ServerIP.ip, 8889);
+                Socket socket = new Socket(ServerIP.ip, ServerIP.port);
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText, mySelf.getUsername()));
@@ -116,7 +116,7 @@ public class SearchUserScene {
         Customer updatedCustomer = null;
         Socket socket = null;
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

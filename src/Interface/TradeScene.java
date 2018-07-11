@@ -156,18 +156,18 @@ public class TradeScene {
         //listener bottoni
         raise.setOnAction(event -> {
             try {
-                Socket socket = new Socket(ServerIP.ip, 8889);
+                Socket socket = new Socket(ServerIP.ip, ServerIP.port);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 if(!flagStarted){
 
                     if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
 
-                            MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/infoSign.png", false));
+                            MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/imagePack/infoSign.png", false));
                             os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
                             Thread.sleep(100);
 
                     } else {
-                        MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections","Interface/2000px-Simple_Alert.svg.png", true));
+                        MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                     }
                 }else {
                     if (verifyUpdated(currentTrade)) {
@@ -195,7 +195,7 @@ public class TradeScene {
                                 if (!flag) {
                                     myCardOffer.getSet().remove(myCardOffer.getSet());
                                     otherCardOffer.getSet().remove(otherCardOffer.getSet());
-                                    MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/infoSign.png", false));
+                                    MainWindow.addDynamicContent(InfoScene.display("Offer changed", "Interface/imagePack/infoSign.png", false));
                                     System.out.println("raised new offer");
                                 } else {
                                     throw new AlreadyStartedTradeException(otherC.getUsername());
@@ -203,17 +203,17 @@ public class TradeScene {
                             } else {
                                 removeTrade(myC.getId(), otherC.getId());
                                 MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC, false, false));
-                                MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted", "Interface/2000px-Simple_Alert.svg.png", true));
+                                MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                             }
                         }else {
-                            MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections","Interface/2000px-Simple_Alert.svg.png", true));
+                            MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                         }
 
                     }else{
                         if(currentTrade!=null) {
                             infoOfferChanged();
                         }else{
-                            MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                            MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                         }
                     }
                 }
@@ -228,8 +228,8 @@ public class TradeScene {
         refuse.setOnAction(event -> {
             if(verifyUpdated(currentTrade)) {
                     try {
-                        MainWindow.addDynamicContent(InfoScene.display("Offer rejected", "Interface/infoSign.png", false));
-                        Socket socket = new Socket(ServerIP.ip, 8889);
+                        MainWindow.addDynamicContent(InfoScene.display("Offer rejected", "Interface/imagePack/infoSign.png", false));
+                        Socket socket = new Socket(ServerIP.ip, ServerIP.port);
                         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                         os.writeObject(new MessageServer(MessageType.ENDTRADE, trade, false));
                         Thread.sleep(100);
@@ -245,7 +245,7 @@ public class TradeScene {
                 if(currentTrade!=null) {
                     infoOfferChanged();
                 }else{
-                    MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                    MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                 }
             }
         });
@@ -276,7 +276,7 @@ public class TradeScene {
                        }else{
                             removeTrade(myC.getId(),otherC.getId());
                             MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC,false, false));
-                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted","Interface/2000px-Simple_Alert.svg.png", true));
+                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                         }
 
                 }
@@ -284,11 +284,11 @@ public class TradeScene {
                     if(currentTrade!=null) {
                         infoOfferChanged();
                     }else {
-                        MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade","Interface/2000px-Simple_Alert.svg.png", false));
+                        MainWindow.addDynamicContent(InfoScene.display("The trade has already been closed\nby the other customer\nsee the result in My Trade", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                     }
                 }
             }else{
-                MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer","Interface/2000px-Simple_Alert.svg.png", true));
+                MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                 System.err.println("You cannot accept your own offer Cugghiuna!");
             }
         });
@@ -538,7 +538,7 @@ public class TradeScene {
                         Duration.ZERO,
                         event -> {
 
-                            MainWindow.addDynamicContent(InfoScene.display("Deal done","Interface/pokeBall.png",false));
+                            MainWindow.addDynamicContent(InfoScene.display("Deal done", "Interface/imagePack/pokeBall.png",false));
                         }
                 ),
 
@@ -547,7 +547,7 @@ public class TradeScene {
                         event -> {
 
                             try {
-                                Socket socket = new Socket(ServerIP.ip, 8889);
+                                Socket socket = new Socket(ServerIP.ip, ServerIP.port);
                                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                                 os.writeObject(new MessageServer(MessageType.ENDTRADE,  trade, true));
                                 try {
@@ -571,7 +571,7 @@ public class TradeScene {
     private static ATrade retrieveActualTrade(ATrade trade){
         ATrade actualTrade = null;
         try {
-            Socket socket = new Socket(ServerIP.ip, 8889);
+            Socket socket = new Socket(ServerIP.ip, ServerIP.port);
             socket.setTcpNoDelay(true);
             //socket.setKeepAlive(true);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
@@ -602,7 +602,7 @@ public class TradeScene {
     private static void infoOfferChanged(){
         updateCustomers();
         restoreFromPreviousTrade(currentTrade);
-        MainWindow.addDynamicContent(InfoScene.display("The other customer changed\nthe offer", "Interface/2000px-Simple_Alert.svg.png",true));
+        MainWindow.addDynamicContent(InfoScene.display("The other customer changed\nthe offer", "Interface/imagePack/2000px-Simple_Alert.svg.png",true));
     }
 
     private static boolean stillInTheCollection(Collection collection, Collection offer){
@@ -618,7 +618,7 @@ public class TradeScene {
     private static void removeTrade(String myid, String otherId){
         Socket socket = null;
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.REMOVETRADE, myid, otherId));
             Thread.sleep(100);

@@ -6,7 +6,6 @@ import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
-import TradeCenter.Trades.Trade;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +18,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -90,7 +88,7 @@ public class OtherUserProfileScene {
             Socket socket = null;
             boolean flag = false;
             try {
-                socket = new Socket(ServerIP.ip, 8889);
+                socket = new Socket(ServerIP.ip, ServerIP.port);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer, otherCustomer));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
@@ -99,7 +97,7 @@ public class OtherUserProfileScene {
                     MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false, false));
                 }else{
 
-                    MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +" is already started\nsee it in My Trades","Interface/2000px-Simple_Alert.svg.png", false));
+                    MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +" is already started\nsee it in My Trades", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                 }
                 socket.close();
             } catch (IOException e) {

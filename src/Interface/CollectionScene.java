@@ -37,7 +37,7 @@ public class CollectionScene{
     static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException, ClassNotFoundException {
 
         System.out.println("welcome client");
-        Socket socket = new Socket(ServerIP.ip, 8889);
+        Socket socket = new Socket(ServerIP.ip, ServerIP.port);
         socket.setTcpNoDelay(true);
         System.out.println("Client connected");
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());

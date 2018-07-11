@@ -115,7 +115,7 @@ public class ListTradesScene {
         Socket socket = null;
         Customer customer = null;
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHUSERBYID, id));
@@ -130,7 +130,7 @@ public class ListTradesScene {
 
         Socket socket = null;
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHTRADE, trade.getCustomer1(), trade.getCustomer2()));
@@ -150,7 +150,7 @@ public class ListTradesScene {
     private static ArrayList<Trade> retrieveTrades(ObservableList<Trade> trades, Customer myCustomer){
         ArrayList<Trade> userTrades = new ArrayList<>();
         try {
-            Socket socket = new Socket(ServerIP.ip, 8889);
+            Socket socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHOFFER, myCustomer));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
@@ -185,7 +185,7 @@ public class ListTradesScene {
                             if(trade.isPositiveEnd()) {
                                 MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
                             }else{
-                                MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/infoSign.png",true));
+                                MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/imagePack/infoSign.png",true));
                             }
                         } else {
 
@@ -195,7 +195,7 @@ public class ListTradesScene {
                                 if (user.getId().equals(trade.getCustomer1())) {
 
                                     MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
                                 } else {
 
                                     MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
@@ -204,7 +204,7 @@ public class ListTradesScene {
                                 if (user.getId().equals(currentTrade.getCustomer1())) {
 
                                     MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/infoSign.png", true));
+                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
                                 } else {
 
                                     MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
@@ -226,7 +226,7 @@ public class ListTradesScene {
         Socket socket = null;
         String username = null;
         try {
-            socket = new Socket(ServerIP.ip, 8889);
+            socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.SEARCHUSERNAME, id));
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());

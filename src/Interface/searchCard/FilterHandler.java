@@ -2,6 +2,7 @@ package Interface.searchCard;
 
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import Interface.MainWindow;
 import Interface.SearchDescriptionScene;
 import Interface.searchCard.filterChoice.PokemonAll;
@@ -63,7 +64,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     mainBorder.setBottom(new Label("Type"+comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
                     Socket socket1;
                     try {
-                        socket1 = new Socket("localhost", 8889);
+                        socket1 = new Socket(ServerIP.ip, ServerIP.port);
                         System.out.println("Client connected");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
@@ -96,7 +97,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     mainBorder.setBottom(new Label("Type: "+comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue+"   REF: "+refValue));
                     Socket socket2;
                     try {
-                        socket2 = new Socket("localhost", 8889);
+                        socket2 = new Socket(ServerIP.ip, ServerIP.port);
                         System.out.println("Client connected");
                         ObjectOutputStream os = new ObjectOutputStream(socket2.getOutputStream());
                         System.out.println("Ok");
