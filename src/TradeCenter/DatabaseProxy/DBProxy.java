@@ -89,7 +89,7 @@ public class DBProxy implements IProxy,ISearch{
             case "pokemon_card":
                 System.err.println("[DBProxy] - Populating pokemon catalaog...");
                 size = dbRet.getTableSize(connection, tablename);
-                for(int i = 0; i<size; i++) {
+                for(int i=1; i<size; i++) {
                     cc.addDescription(dbRet.retrieveSinglePokemonDescription(connection, i));
                 }
                 System.err.println("[DBProxy] - Populating pokemon catalaog completed.");
