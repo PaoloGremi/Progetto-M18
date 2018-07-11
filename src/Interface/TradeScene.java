@@ -54,17 +54,17 @@ public class TradeScene {
     private static FlowPane otherOfferFlow;
     private static ArrayList<Card> myCollectionList = new ArrayList<Card>();
     private static ArrayList<Card> otherCollectionList = new ArrayList<Card>();
-    static Text myCollection;
-    static Text otherCollection;
-    static Text myOffer;
-    static Text otherOffer;
-    static TextFlow myCollectionTitle;
-    static TextFlow otherCollectionTitle;
-    static TextFlow myOfferTitle;
-    static TextFlow otherOfferTitle;
+    private static Text myCollection;
+    private static Text otherCollection;
+    private static Text myOffer;
+    private static Text otherOffer;
+    private static TextFlow myCollectionTitle;
+    private static TextFlow otherCollectionTitle;
+    private static TextFlow myOfferTitle;
+    private static TextFlow otherOfferTitle;
 
-    static Collection myCardOffer;
-    static Collection otherCardOffer;
+    private static Collection myCardOffer;
+    private static Collection otherCardOffer;
 
 
     private static ATrade currentTrade = null;
@@ -73,8 +73,6 @@ public class TradeScene {
 
         currentTrade=trade;
 
-        //todo il problema è che nel trade non viene fatto lo switch dei customer quindi quando lo usiamo per
-        //todo passarli (passasimao trade, trade.customer) a myCustomer ecc.., vengono passati sbagliati vedi listener accept
         myCardOffer = new Collection();
         otherCardOffer = new Collection();
         myC = myCustomer;
@@ -92,11 +90,7 @@ public class TradeScene {
         mainGrid = new GridPane();
         mainGrid.setHgap(10);
         mainGrid.setVgap(10);
-
-        //todo mettere le griglie ecc...
-        //titoli
-
-        myCollection = new Text(myCustomer.getUsername());       //todo abbellire i titoli
+        myCollection = new Text(myCustomer.getUsername());
         myCollectionTitle = new TextFlow(myCollection);
         myCollectionTitle.setPadding(new Insets(5));
         myCollectionTitle.setStyle("-fx-background-color: #aa12ff");
@@ -165,7 +159,6 @@ public class TradeScene {
                 Socket socket = new Socket(ServerIP.ip, 8889);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                 if(!flagStarted){
-                    //todo al primo scambio tira null pointer perche le collezioni sono vuote
 
                     if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
 
@@ -227,15 +220,11 @@ public class TradeScene {
 
                     socket.close();
 
-            } catch (IOException | ClassNotFoundException | AlreadyStartedTradeException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | ClassNotFoundException | AlreadyStartedTradeException | InterruptedException e) {
                 e.printStackTrace();
             }
-            //todo quando si fa il raise poi fare il display di una infobox con switch case che controlla cosa scrivere
-            //todo mettere il serializable in a trade poi capiamo per cosa (forse list trade scene)
         });
-        //todo vedere quando i bottoni possono essere attivi e quando devono essere disattivati
+
         refuse.setOnAction(event -> {
             if(verifyUpdated(currentTrade)) {
                     try {
@@ -354,47 +343,7 @@ public class TradeScene {
 
             Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-
-            imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-                public void handle(MouseEvent mouseEvent) {
-
-
-
-                    if(mouseEvent.getButton().equals(MouseButton.SECONDARY)){
-                        if(mouseEvent.getClickCount() == 1){
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
-                        }
-                    }
-                    if(flag) {
-                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                            if (mouseEvent.getClickCount() == 1) {
-
-
-                                addToOffer(myOfferGrid, card,flag);
-                                myOfferPane.setCenter(myOfferGrid);
-                                myCollectionList.remove(card);
-                                restoreCollection(null,flag,myCollFlow, myCollectionList);
-
-                            }
-                        }
-                    }
-                    else{
-                        if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                            if (mouseEvent.getClickCount() == 1) {
-
-
-                                addToOffer(otherOfferGrid,card,flag);
-                                otherOfferPane.setCenter(otherOfferGrid);
-                                otherCollectionList.remove(card);
-                                restoreCollection(null,flag, otherCollFlow, otherCollectionList );
-
-                            }
-                        }
-                    }
-                }
-
-            });
+            imageView.setOnMousePressed(moveCardsCollection(imageView,flag,card));
 
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -438,31 +387,8 @@ public class TradeScene {
             imageView1.setImage(image);
             imageView1.setPreserveRatio(true);
             imageView1.setFitHeight(161);
-            imageView1.setOnMousePressed(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+            imageView1.setOnMousePressed(moveCardsOffer(flow,pane,flag,c));
 
-                        if(flag) {
-                            myCardOffer.removeCardFromCollection(c);
-                            myCollFlow.getChildren().add(pane);
-                            restoreCollection(c, flag, myCollFlow, myCollectionList);
-                            myImageList.remove(c);
-                            flow.getChildren().remove(pane);
-
-                        }
-                        else{
-                            otherCardOffer.removeCardFromCollection(c);
-                            otherCollFlow.getChildren().add(pane);
-                            restoreCollection(c, flag, otherCollFlow, otherCollectionList);
-                            otherImageList.remove(c);
-                            flow.getChildren().remove(pane);
-
-                        }
-
-                    }
-                }
-            });
             pane.setCenter(imageView1);
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(10, 5, 10, 5));
@@ -489,42 +415,7 @@ public class TradeScene {
 
                 Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-                imageView.setOnMousePressed(new EventHandler<MouseEvent>() {
-
-                    public void handle(MouseEvent mouseEvent1) {
-
-
-                        if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
-                            if (mouseEvent1.getClickCount() == 1) {
-                                MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
-                            }
-                        }
-                        if (flag) {
-                            if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
-                                if (mouseEvent1.getClickCount() == 1) {
-                                    //myCardOffer.addCardToCollection(c);
-                                    myCollectionList.remove(c);
-                                    addToOffer(myOfferGrid, c, flag);
-                                    myOfferPane.setCenter(myOfferGrid);
-                                    restoreCollection(null,flag,myCollFlow, myCollectionList);
-
-
-                                }
-                            }
-                        } else {
-                            if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
-                                if (mouseEvent1.getClickCount() == 1) {
-                                   // otherCardOffer.addCardToCollection(c);
-                                    otherCollectionList.remove(c);
-                                    addToOffer(otherOfferGrid, c, flag);
-                                    otherOfferPane.setCenter(otherOfferGrid);
-                                    restoreCollection(null,flag, otherCollFlow, otherCollectionList );
-                                }
-                            }
-                        }
-                    }
-
-                });
+                imageView.setOnMousePressed(moveCardsCollection(imageView,flag,c));
 
                 flowPane.getChildren().add(cardPane);
                 flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -745,5 +636,78 @@ public class TradeScene {
 
         myC=currentMy;
         otherC=currentOther;
+    }
+
+    private static EventHandler<MouseEvent> moveCardsCollection(ImageView imageView, boolean flag, Card card){
+        EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent mouseEvent1) {
+
+
+                if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
+                    if (mouseEvent1.getClickCount() == 1) {
+                        MainWindow.refreshDynamicContent(Demo.display(imageView, "trade"));
+                    }
+                }
+                if (flag) {
+                    if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
+                        if (mouseEvent1.getClickCount() == 1) {
+
+                            handleEventCollection(myCollectionList,card,flag,myOfferGrid,myOfferPane,myCollFlow);
+
+                        }
+                    }
+                } else {
+                    if (mouseEvent1.getButton().equals(MouseButton.PRIMARY)) {
+                        if (mouseEvent1.getClickCount() == 1) {
+
+                            handleEventCollection(otherCollectionList,card,flag,otherOfferGrid,otherOfferPane,otherCollFlow);
+                        }
+                    }
+                }
+            }
+
+        };
+
+        return event;
+    }
+
+    private static void handleEventCollection(ArrayList<Card> collectionList, Card card, boolean flag, ScrollPane offerGrid, BorderPane offerPane, FlowPane collFlow){
+        collectionList.remove(card);
+        addToOffer(offerGrid, card, flag);
+        offerPane.setCenter(offerGrid);
+        restoreCollection(null,flag,collFlow, collectionList);
+    }
+
+    private static EventHandler<MouseEvent> moveCardsOffer(FlowPane flow, BorderPane pane, boolean flag, Card card){
+        EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+
+                    if(flag) {
+
+                        handleEventOffer(myCollectionList,card,flag, myCollFlow,flow,myImageList,myCardOffer,pane);
+
+                    }
+                    else{
+
+                        handleEventOffer(otherCollectionList,card,flag,otherCollFlow,flow,otherImageList,otherCardOffer,pane);
+
+                    }
+
+                }
+            }
+        };
+
+        return event;
+    }
+
+    private static void handleEventOffer(ArrayList<Card> collectionList, Card card, boolean flag, FlowPane collFlow, FlowPane flow, ArrayList<Card> imageList, Collection cardOffer, BorderPane pane){
+        cardOffer.removeCardFromCollection(card);
+        collFlow.getChildren().add(pane);
+        restoreCollection(card, flag, collFlow, collectionList);
+        imageList.remove(card);
+        flow.getChildren().remove(pane);
     }
 }
