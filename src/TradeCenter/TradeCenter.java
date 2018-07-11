@@ -148,7 +148,7 @@ public class TradeCenter {
         Random rand = new Random();
         Random random = new Random();
         while (i < 7){
-            cards.add(new Card(random.nextInt(2000), (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
+            cards.add(new Card(proxy.getNextCardID(), (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
             i++;
         }
         addCardtoCustomer(customer,cards);
@@ -272,18 +272,17 @@ public class TradeCenter {
      * @param description the card that has to be searched
      * @return the list of the users that have that card in their collection
      */
-    public ArrayList<HashMap<Customer, Collection>> searchByDescription(Description description){
-        ArrayList<HashMap<Customer, Collection>> cards = new ArrayList<HashMap<Customer, Collection>>();
+    public ArrayList<String> searchByDescription(Description description){
+        ArrayList<String> customersFound = new ArrayList<>();
 
         for(String key: customers.keySet()){
-            HashMap<Customer, Collection> customerCollection = customers.get(key).searchByDescription(description);
-                if(customerCollection!=null) {
-                    cards.add(customerCollection);
-                }
+            if(customers.get(key).searchByDescription(description)){
+                customersFound.add(customers.get(key).getUsername());
+            }
 
         }
 
-        return cards;
+        return customersFound;
     }
 
     /**

@@ -76,7 +76,7 @@ public class AddCardScene {
 
 
 
-    private static FlowPane populateFlow(Customer customer, MessageType type) throws IOException, ClassNotFoundException {
+    private static FlowPane populateFlow(Customer customer, MessageType type) throws IOException, ClassNotFoundException, InterruptedException {
         FlowPane flow = new FlowPane();
         flow.setPadding(new Insets(5, 5, 5, 5));
         flow.setVgap(4);
@@ -88,6 +88,7 @@ public class AddCardScene {
         System.out.println("Ok");
         os.writeObject(new MessageServer(type, customer));
         ArrayList<Card> cards = (ArrayList<Card>) is.readObject();
+        Thread.sleep(100);
         socket.close();
         for(Card card : cards){
             BorderPane pane = new BorderPane();
@@ -152,7 +153,7 @@ public class AddCardScene {
                                 scroll.setContent(populateFlow(customer, messageType));
                                 borderPane.setCenter(scroll);
                                 borderPane.setBottom(backButton(customer));
-                            } catch (IOException | ClassNotFoundException e) {
+                            } catch (IOException | ClassNotFoundException | InterruptedException e) {
                                 e.printStackTrace();
                             }
 

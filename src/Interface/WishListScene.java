@@ -139,8 +139,8 @@ public class WishListScene{
                     System.out.println("Ok");
                     os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, file2));
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                    ArrayList<HashMap<Customer, Collection>> returnMessage = (ArrayList<HashMap<Customer,Collection>>) is.readObject();
-                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(returnMessage, customer));
+                    ArrayList<String> returnMessage = (ArrayList<String>) is.readObject();
+                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(file2 ,returnMessage, customer));
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();

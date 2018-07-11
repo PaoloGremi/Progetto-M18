@@ -73,7 +73,7 @@ public class ServerProxy {
         return tradeCenter.showUserTrades(messageServer.getCustomer1());
     }
 
-    public ArrayList<HashMap<Customer, Collection>> searchDescription(MessageServer messageServer){
+    public ArrayList<String> searchDescription(MessageServer messageServer){
         return tradeCenter.searchByDescription(messageServer.getDescription());
     }
 

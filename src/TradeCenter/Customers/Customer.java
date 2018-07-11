@@ -181,18 +181,8 @@ public class Customer implements Serializable {
      * @param description String to search cards in the customer's collection.
      * @return HashSet of cards that match.
      */
-    public HashMap<Customer, Collection> searchByDescription(Description description) {
-
-        try {
-            HashMap<Customer, Collection> cardsFound = new HashMap<Customer, Collection>();
-            Collection cards = collection.searchByDescription(description);
-            cardsFound.put(this, cards);
-            return cardsFound;
-        } catch (CardNotFoundException e) {
-            System.err.println(e.cardNotFound(getId(), getUsername()));
-        }
-
-        return null;
+    public boolean searchByDescription(Description description) {
+        return collection.containsDescription(description);
     }
 
     /**

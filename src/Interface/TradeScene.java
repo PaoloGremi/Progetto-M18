@@ -179,20 +179,20 @@ public class TradeScene {
                 }else {
                     if (verifyUpdated(currentTrade)) {
                         Customer currentMy = null;
-                        Customer currentOther= null;
+                        Customer currentOther = null;
                         updateCustomers();
-                        if(myC.getId().equals(currentTrade.getCustomer1())){
+                        if (myC.getId().equals(currentTrade.getCustomer1())) {
                             currentMy = myC;
                             currentOther = otherC;
-                        }
-                        else {
+                        } else {
                             currentMy = otherC;
                             currentOther = myC;
                         }
-                        if(stillInTheCollection(currentMy.getCollection(),currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(),currentTrade.getOffer2())) {
-                                if(myC.getId().equals(currentTrade.getCustomer1())) {
+                        if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
+                            if (stillInTheCollection(currentMy.getCollection(), currentTrade.getOffer1()) && stillInTheCollection(currentOther.getCollection(), currentTrade.getOffer2())) {
+                                if (myC.getId().equals(currentTrade.getCustomer1())) {
                                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer, changedMind));
-                                }else{
+                                } else {
                                     os.writeObject(new MessageServer(MessageType.RAISEOFFER, currentMy.getId(), currentOther.getId(), otherCardOffer, myCardOffer, false));
                                 }
                                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
@@ -207,10 +207,13 @@ public class TradeScene {
                                 } else {
                                     throw new AlreadyStartedTradeException(otherC.getUsername());
                                 }
-                        }else{
-                            removeTrade(myC.getId(),otherC.getId());
-                            MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC,false, false));
-                            MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted","Interface/2000px-Simple_Alert.svg.png", true));
+                            } else {
+                                removeTrade(myC.getId(), otherC.getId());
+                                MainWindow.refreshDynamicContent(TradeScene.display(null, myC, otherC, false, false));
+                                MainWindow.addDynamicContent(InfoScene.display("The other customer traded one or\n more cards with someone else\nthe trade is restarted", "Interface/2000px-Simple_Alert.svg.png", true));
+                            }
+                        }else {
+                            MainWindow.addDynamicContent(InfoScene.display("You can't offer empty\ncollections","Interface/2000px-Simple_Alert.svg.png", true));
                         }
 
                     }else{

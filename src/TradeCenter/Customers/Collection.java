@@ -101,24 +101,7 @@ public class Collection implements Iterable<Card>, Serializable {
      * Search a Card by its description in the collection of the customer.
      *
      * @param description Description to search in the HashSet of the tags for every single card in the collection.
-     * @return HashSet of cards that match.
-     */
-    public Collection searchByDescription(Description description) { //todo check if really *really* necessary (could return empty set if nothing found)
-        Collection cards = new Collection();
-        for (Card card : cardSet){
-            Description cardDescription = card.getDescription();
-            if(description.equals(cardDescription)) {
-                cards.addCardToCollection(card);
-            }
-        }
-        if(cards.collectionIsEmpty()) throw new CardNotFoundException();
-        return cards;
-    }
-
-    /**
-     * Says if Collection contains a description
-     * @param description
-     * @return
+     * @return boolean if exists.
      */
      public boolean containsDescription(Description description){ //todo check if really necessary
         for (Card card : cardSet){
