@@ -100,8 +100,8 @@ public class TradeCenter {
      * @return the ID
      */
     private String customerID(){
-        contUsers++;
-        return "USER-" + contUsers;
+        //contUsers++;
+        return "USER-" + proxy.getNextCustomerID();//contUsers;
     }
 
     /**

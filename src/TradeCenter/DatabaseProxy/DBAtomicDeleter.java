@@ -12,7 +12,7 @@ import java.sql.SQLException;
 class DBAtomicDeleter {
 
     void removeWishlist(Connection connection, Customer customer, Description description) {
-        System.err.println("[DBAtomicDeleter] - Removing wishlist number " + description.getName() + " from customer " + customer.getId() + "...\n");
+        System.err.println("[DBAtomicDeleter] - Removing wishlist number " + description.getName() + " from customer " + customer.getId() + "...");
         try {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM wishlist WHERE customer_id = ? AND description_id = ? AND type = ?;");
             ps.setString(1, customer.getId());
@@ -25,9 +25,9 @@ class DBAtomicDeleter {
             }
             ps.execute();
             connection.commit();
-            System.err.println("[DBAtomicDeleter] - Wishlist number " + description.getName() + " from customer " + customer.getId() + " removed.\n");
+            System.err.println("[DBAtomicDeleter] - Wishlist number " + description.getName() + " from customer " + customer.getId() + " removed.");
         }catch (SQLException e){
-            System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeWishlist.\n");
+            System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeWishlist.");
         }
     }
 

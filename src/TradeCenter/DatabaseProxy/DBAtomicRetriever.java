@@ -29,7 +29,7 @@ class DBAtomicRetriever {
     Customer retrieveSingleCustomerByUsername(Connection connection, String username) {
         Customer customer = null;
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer by username " + username + "...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer by username " + username + "...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM customers where username = ?;");
             ps.setString(1, username);
             ResultSet rs = ps.executeQuery();
@@ -39,9 +39,9 @@ class DBAtomicRetriever {
                         rs.getString("username"),
                         rs.getString("password"));
             }
-            System.err.println("[DBAtomicRetriever] - Customer with username " + username + " retrieved.\n");
+            System.err.println("[DBAtomicRetriever] - Customer with username " + username + " retrieved.");
         }catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleCustomerByUsername.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleCustomerByUsername.");
         }
         return customer;
     }
@@ -55,7 +55,7 @@ class DBAtomicRetriever {
     Customer retrieveSingleCustomerByUserID(Connection connection, int id) {
         Customer customer = null;
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer by id " + id + "...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer by id " + id + "...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM customers where customer_id = ?;");
             String user_id = "USER-"+id;
             ps.setString(1, user_id);
@@ -65,9 +65,9 @@ class DBAtomicRetriever {
                         rs.getString("username"),
                         rs.getString("password"));
             }
-            System.err.println("[DBAtomicRetriever] - Customer with id " + id + " retrieved.\n");
+            System.err.println("[DBAtomicRetriever] - Customer with id " + id + " retrieved.");
         }catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleCustomerByUserID.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleCustomerByUserID.");
         }
         return customer;
     }
@@ -105,7 +105,7 @@ class DBAtomicRetriever {
                 return size;
             }
         }catch (SQLException | NullPointerException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method getTableSize for table " + tablename + ".\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method getTableSize for table " + tablename + ".");
         }
         return size;
     }
@@ -159,7 +159,7 @@ class DBAtomicRetriever {
                         level);
             }
         } catch (SQLException | IOException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSinglePokemonDescription for description " + id + ".\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSinglePokemonDescription for description " + id + ".");
         }
         return pokemonDescription;
     }
@@ -213,7 +213,7 @@ class DBAtomicRetriever {
                 );
             }
         } catch (SQLException | IOException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleYugiohDescription for description " + id + ".\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleYugiohDescription for description " + id + ".");
         }
         return yuGiOhDescription;
     }
@@ -227,7 +227,7 @@ class DBAtomicRetriever {
     ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, Customer customer) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'s collection...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'s collection...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE customer_id = ?;");
             ps.setString(1, customer.getId());
             ResultSet rs = ps.executeQuery();
@@ -243,9 +243,9 @@ class DBAtomicRetriever {
                 }
                 cards.add(new Card(rs.getInt("card_id"), description));
             }
-            System.err.println("[DBAtomicRetriever] - Retrieved customer " + customer.getId() + "'s collection.\n");
+            System.err.println("[DBAtomicRetriever] - Retrieved customer " + customer.getId() + "'s collection.");
         } catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInCustomerCollection.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInCustomerCollection.");
         }
         return cards;
     }
@@ -253,7 +253,7 @@ class DBAtomicRetriever {
     ArrayList<Card> retrieveCardsInTradeOffer(Connection connection, int trade_id, int offer_col) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving cards in trade " + trade_id + "'s offer " + offer_col + "...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving cards in trade " + trade_id + "'s offer " + offer_col + "...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col= ?");
             ps.setInt(1, trade_id);
             ps.setInt(2, offer_col);
@@ -270,9 +270,9 @@ class DBAtomicRetriever {
                 }
                 cards.add(new Card(rs.getInt("card_id"), description));
             }
-            System.err.println("[DBAtomicRetriever] - Ccards in trade " + trade_id + "'s offer " + offer_col + " retrieved.\n");
+            System.err.println("[DBAtomicRetriever] - Ccards in trade " + trade_id + "'s offer " + offer_col + " retrieved.");
         } catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInTradeOffer.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInTradeOffer.");
         }
         return cards;
     }
@@ -286,7 +286,7 @@ class DBAtomicRetriever {
     ArrayList<Description> retrieveDescriptionsInCustomerWishlist(Connection connection, Customer customer) {
         ArrayList<Description> wishlist = new ArrayList<>();
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'wishlist...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'wishlist...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM wishlist WHERE customer_id = ?");
             ps.setString(1, customer.getId());
             ResultSet rs = ps.executeQuery();
@@ -302,9 +302,9 @@ class DBAtomicRetriever {
                 }
                 wishlist.add(description);
             }
-            System.err.println("[DBAtomicRetriever] - Customer " + customer.getId() + "'wishlist retrieved.\n");
+            System.err.println("[DBAtomicRetriever] - Customer " + customer.getId() + "'wishlist retrieved.");
         } catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveDescriptionsInCustomerWishlist.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveDescriptionsInCustomerWishlist.");
         }
         return wishlist;
     }
@@ -318,7 +318,7 @@ class DBAtomicRetriever {
     Trade retrieveTrade(Connection connection, int id) {
         Trade trade = null;
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving trade number " + id + "...\n");
+            System.err.println("[DBAtomicRetriever] - Retrieving trade number " + id + "...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE trade_id = ?;");
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
@@ -383,9 +383,9 @@ class DBAtomicRetriever {
                 }
             }
             trade = new Trade(offer);
-            System.err.println("[DBAtomicRetriever] - Trade number " + id + " retrieved.\n");
+            System.err.println("[DBAtomicRetriever] - Trade number " + id + " retrieved.");
         } catch (SQLException e) {
-            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveTrade.\n");
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveTrade.");
         }
         return trade;
     }
