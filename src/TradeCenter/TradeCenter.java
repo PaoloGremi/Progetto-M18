@@ -148,7 +148,7 @@ public class TradeCenter {
         Random rand = new Random();
         Random random = new Random();
         while (i < 7){
-            cards.add(new Card(proxy.getNextCardID(), (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
+            cards.add(new Card(proxy.getNextCardID()+i, (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
             i++;
         }
         addCardtoCustomer(customer,cards);
