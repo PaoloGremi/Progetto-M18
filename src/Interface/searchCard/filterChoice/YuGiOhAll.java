@@ -3,17 +3,18 @@ package Interface.searchCard.filterChoice;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class YuGiOhAll {
+public class YuGiOhAll implements Serializable {
     String reference;
     int lev;
     int atk;
     int def;
     String monsterType;
     String type;
-    private static final long serialVersionUID = 2L;
+    private static final long serialVersionUID = 3L;
     public YuGiOhAll(String reference, int lev, int atk, int def, String monsterType, String type) {
-        reference = addCaseNull(reference);
+        this.reference = addCaseNull(reference);
         this.lev = lev;
         this.atk = atk;
         this.def = def;

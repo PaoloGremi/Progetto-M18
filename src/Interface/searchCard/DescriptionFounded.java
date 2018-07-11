@@ -1,11 +1,7 @@
 package Interface.searchCard;
-import ClientServer.MessageServer;
-import ClientServer.MessageType;
-import ClientServer.ServerIP;
 import Interface.MainWindow;
 import Interface.OtherUserProfileScene;
 import TradeCenter.Card.Description;
-import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
@@ -20,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,15 +32,17 @@ public class DescriptionFounded {
      * @param map :
      * @return
      */
-    static ScrollPane display(Customer user, HashMap<PokemonDescription,ArrayList<String>> map) {
+    static ScrollPane display(Customer user, HashMap<Description,ArrayList<String>> map) {
         BorderPane scene = new BorderPane();
         if(map.isEmpty()){
             System.out.println("Nessun user ha questa description");
         }
         ScrollPane scrollPane=new ScrollPane();
         VBox mainVbox=new VBox();
+        mainVbox.setStyle("-fx-background-color: #beff8e;");
+        mainVbox.setPrefHeight(100);
 
-        for (Map.Entry<PokemonDescription, ArrayList<String>> entry : map.entrySet()) {
+        for (Map.Entry<Description, ArrayList<String>> entry : map.entrySet()) {
             Description currentDescr = entry.getKey();
             ArrayList<String> customers = entry.getValue();
 
@@ -79,14 +78,14 @@ public class DescriptionFounded {
             descriptionBox.getChildren().add(usersList);
 
             mainVbox.getChildren().add(descriptionBox);
-                        }
-                scrollPane.setFitToHeight(true);
-                scrollPane.setFitToWidth(true);
-                scrollPane.setPadding(new Insets(5));
-                scrollPane.setStyle("-fx-background-color: #beff8e;");
-                scrollPane.setContent(mainVbox);
+            }
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setPadding(new Insets(5));
+            scrollPane.setStyle("-fx-background-color: #beff8e;");
+            scrollPane.setContent(mainVbox);
 
-                scene.getChildren().addAll(scrollPane);
-                return scrollPane;
+            scene.getChildren().addAll(scrollPane);
+            return scrollPane;
             }
         }

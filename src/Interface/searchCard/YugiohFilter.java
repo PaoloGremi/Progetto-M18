@@ -5,6 +5,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -19,6 +20,11 @@ public class YugiohFilter {
     static VBox defContainer;
     static VBox refContainer;
     static TextField referenceText;
+    static Slider levSlider;
+    static VBox levContainer;
+    static HBox atkLabelContainer;
+    static HBox defLabelContainer;
+    static HBox levLabelContainer;
 
     static Pane display(){
         mainPane=new Pane();
@@ -31,7 +37,7 @@ public class YugiohFilter {
         comboType.setPromptText("Type of Card");
 
 
-        comboMonster.getItems().addAll("--Type of Monster--",
+        comboMonster.getItems().addAll("--Nothing--",
                 "Aqua",
                 "Beast",
                 "Beast-Warrior",
@@ -53,7 +59,7 @@ public class YugiohFilter {
                 "Winged Beast",
                 "Zombie",
                 "Psychic");
-        comboType.getItems().addAll("--Type of Cards--",
+        comboType.getItems().addAll("--Nothing--",
                 "Normal monster",
                 "Effect monster",
                 "Fusion monster",
@@ -78,11 +84,16 @@ public class YugiohFilter {
         referenceText.setPrefWidth(55);
         refContainer.getChildren().addAll(new Label("Reference: "),referenceText);
 
-        //ATK e DEF
+        //ATK,DEF,LEV
         atkContainer=new VBox();
         defContainer=new VBox();
+        levContainer=new VBox();
+        atkLabelContainer=new HBox();
+        defLabelContainer=new HBox();
+        levLabelContainer=new HBox();
         atkSlider=new Slider();
         defSlider=new Slider();
+        levSlider=new Slider();
 
         atkContainer.setPadding(new Insets(15));
         atkContainer.setSpacing(7);
@@ -90,6 +101,10 @@ public class YugiohFilter {
         defContainer.setPadding(new Insets(15));
         defContainer.setSpacing(7);
         defContainer.setStyle("-fx-background-color: orange");
+        levContainer.setPadding(new Insets(15));
+        levContainer.setSpacing(7);
+        levContainer.setStyle("-fx-background-color: orange");
+
 
         atkSlider.setMin(0);
         atkSlider.setMax(5000);
@@ -99,8 +114,6 @@ public class YugiohFilter {
         atkSlider.setMinorTickCount(250);
         atkSlider.setBlockIncrement(500);
 
-
-
         defSlider.setMin(0);
         defSlider.setMax(5000);
         defSlider.setShowTickLabels(true);
@@ -109,33 +122,45 @@ public class YugiohFilter {
         defSlider.setMinorTickCount(250);
         defSlider.setBlockIncrement(500);
 
+        levSlider.setMin(0);
+        levSlider.setMax(7);
+        levSlider.setShowTickLabels(true);
+        levSlider.setShowTickMarks(true);
+        levSlider.setMajorTickUnit(1);
+        levSlider.setMinorTickCount(1);
+        levSlider.setBlockIncrement(1);
+
         Label atkLabel=new Label("--");
         Label defLabel=new Label("--");
-        atkContainer.getChildren().addAll(new Label("ATK:"),atkSlider,atkLabel);
-        defContainer.getChildren().addAll(new Label("DEF:") ,defSlider,defLabel);
+        Label levLabel=new Label("--");
+
+        atkLabelContainer.getChildren().addAll(new Label("ATK: "),atkLabel);
+        defLabelContainer.getChildren().addAll(new Label("DEF: "),defLabel);
+        levLabelContainer.getChildren().addAll(new Label("LEVEL: "),levLabel);
 
 
+        atkContainer.getChildren().addAll(atkLabelContainer,atkSlider);
+        defContainer.getChildren().addAll(defLabelContainer,defSlider);
+        levContainer.getChildren().addAll(levLabelContainer,levSlider);
 
 
         atkSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            double valueAtk = 0;
+            //double valueAtk = 0;
             atkLabel.setText(Integer.toString(newValue.intValue()   ));
-            valueAtk=newValue.doubleValue();
-
+//            valueAtk=newValue.doubleValue();
         });
-        /*
-        if(atkSlider.is)
-        Label valueLabel=new Label("value atk current?");
-        valueLabel.setText(Integer.toString((int) valueAtk));*/
 
         defSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             defLabel.setText(Integer.toString(newValue.intValue()   ));
+        });
 
+        levSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            levLabel.setText(Integer.toString(newValue.intValue()   ));
         });
 
 
 
-        vBoxMain.getChildren().addAll(comboType,comboMonster,refContainer,atkContainer,defContainer);
+        vBoxMain.getChildren().addAll(comboType,comboMonster,refContainer,atkContainer,defContainer,levContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
     }
@@ -158,5 +183,9 @@ public class YugiohFilter {
 
     public static Slider getDefSlider() {
         return defSlider;
+    }
+
+    public static Slider getLevSlider() {
+        return levSlider;
     }
 }

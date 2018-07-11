@@ -65,6 +65,7 @@ public class PokemonAll implements Serializable {
     public String getLen2() {
         return len2;
     }
+
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeInt(1);

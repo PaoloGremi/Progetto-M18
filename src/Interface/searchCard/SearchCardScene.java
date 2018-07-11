@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -34,20 +35,18 @@ public class SearchCardScene {
         mainBorder.setStyle("-fx-background-color: orange");
 
         Button buttSearch=new Button("Search  "+ "\uD83D\uDD0D");
-        Button buttFilter=new Button("Add Filters");
-        //buttFilter.setStyle("-fx-border-color:blue;-fx-border-width:2px;");
+        buttSearch.setAlignment(Pos.BOTTOM_RIGHT);
         TextField searchText=new TextField("    ");
         /***parte alta*/
         hBoxInner.setPadding(new Insets(3));
         hBoxInner.setSpacing(18);
-        hBoxInner.getChildren().add(buttFilter);
         hBoxInner.getChildren().add(buttSearch);
 
 
         vBoxTop.getChildren().addAll(searchText,hBoxInner);
         hBoxTop.getChildren().addAll(vBoxTop);
         /**action Searc**/
-        buttFilter.setOnAction(new FilterHandler(customer));
+        buttSearch.setOnAction(new FilterHandler(customer));
 
         /**filtri**/
 

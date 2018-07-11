@@ -24,6 +24,9 @@ public class PokemonFilter {
     static TextField textLen1;
     static TextField textLen2;
     static HBox checkContainer;
+    static HBox hpLabelContainer;
+    static HBox levLabelContainer;
+    static HBox weightLabelContainer;
 
     static Pane display(){
         mainPane=new Pane();
@@ -41,7 +44,7 @@ public class PokemonFilter {
         vBoxMain.setSpacing(10);
 
         comboType.setPromptText("Type of Pokèmon");
-        comboType.getItems().addAll("--Type of Card--",
+        comboType.getItems().addAll("--Nothing--",
                 "Psychic",
                 "Water",
                 "Fairy",
@@ -91,12 +94,21 @@ public class PokemonFilter {
         weightSlider.setMinorTickCount(2);
         weightSlider.setBlockIncrement(5);
 
+        hpLabelContainer=new HBox();
+        levLabelContainer=new HBox();
+        weightLabelContainer=new HBox();
+
         Label hpLabel=new Label("--");
         Label levLabel=new Label("--");
         Label weightLabel=new Label("--");
-        hpContainer.getChildren().addAll(new Label("HP: "), hpSlider,hpLabel);
-        levContainer.getChildren().addAll(new Label("Level: "), levSlider,levLabel);
-        weigthContainer.getChildren().addAll(new Label("Weigth: "), weightSlider,weightLabel);
+
+        hpLabelContainer.getChildren().addAll(new Label("HP: "),hpLabel);
+        levLabelContainer.getChildren().addAll(new Label("Level: "),levLabel);
+        weightLabelContainer.getChildren().addAll(new Label("Weigth: "),weightLabel);
+
+        hpContainer.getChildren().addAll(hpLabelContainer,hpSlider);
+        levContainer.getChildren().addAll(levLabelContainer,levSlider);
+        weigthContainer.getChildren().addAll(weightLabelContainer, weightSlider);
 
         //Length:
         lengContainer= new HBox();

@@ -1,6 +1,7 @@
 package ClientServer;
 
 import Interface.searchCard.filterChoice.PokemonAll;
+import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
@@ -26,8 +27,8 @@ public class MessageServer implements Serializable {
     private Collection offer2;
     private Trade trade1;
     private boolean flag;
-
     private PokemonAll pokemonAll;
+    private YuGiOhAll yuGiOhAll;
 
     private static final long serialVersionUID = 4415426162143895504L;
 
@@ -91,6 +92,10 @@ public class MessageServer implements Serializable {
     public MessageServer(MessageType message, PokemonAll pokemonAll) {
         this.message=message;
         this.pokemonAll=pokemonAll;
+    }
+    public MessageServer(MessageType message, YuGiOhAll yuGiOhAll){
+        this.message=message;
+        this.yuGiOhAll=yuGiOhAll;
     }
 
     public MessageServer(MessageType message, Trade trade1) {
@@ -177,5 +182,9 @@ public class MessageServer implements Serializable {
 
     public ATrade getTrade() {
         return trade;
+    }
+
+    public YuGiOhAll getYuGiOhAll() {
+        return yuGiOhAll;
     }
 }

@@ -1,7 +1,9 @@
 package ClientServer;
 
 import TradeCenter.Card.Card;
+import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
+import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
@@ -95,9 +97,14 @@ public class ServerProxy {
         tradeCenter.removeTrade(messageServer.getString1(),messageServer.getString2());
     }
 
-    public HashMap<PokemonDescription, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
+    public HashMap<Description, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
         HashSet<PokemonDescription> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
-        return tradeCenter.getCustomersFromDescriptions(descriptions);
+        return tradeCenter.getCustomersFromPoDescriptions( descriptions);
     }
+    public HashMap<Description,ArrayList<String>> filterYugiohDescr(MessageServer messageServer){
+        HashSet<YuGiOhDescription> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
+        return tradeCenter.getCustomersFromYuDescriptions(descriptions);
+    }
+
 
 }
