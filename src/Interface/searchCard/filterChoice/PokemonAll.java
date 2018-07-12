@@ -13,9 +13,11 @@ public class PokemonAll implements Serializable {
     int weigth;
     String len1;
     String len2;
+    String text;
     private static final long serialVersionUID = 1L;
 
-    public PokemonAll(String type, int hp, int lev, int weigth, String len1, String len2) {
+    public PokemonAll(String text,String type, int hp, int lev, int weigth, String len1, String len2) {
+        this.text=addCaseNull(text);
         this.hp = hp;
         this.lev = lev;
         this.weigth = weigth;
@@ -49,6 +51,10 @@ public class PokemonAll implements Serializable {
 
     public String getLen1() {
         return len1;
+    }
+
+    public String getText() {
+        return text;
     }
 
     /**

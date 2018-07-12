@@ -2,7 +2,6 @@ package ClientServer;
 
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
-import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
@@ -11,7 +10,6 @@ import TradeCenter.Trades.Offer;
 import TradeCenter.Trades.Trade;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class MessageServer implements Serializable {
 
@@ -30,7 +28,8 @@ public class MessageServer implements Serializable {
     private PokemonAll pokemonAll;
     private YuGiOhAll yuGiOhAll;
     private  Description descriptionToAdd;
-    private  Customer customerFrom;
+    private String customerFrom;
+    private String searchStrinh;
 
     private static final long serialVersionUID = 4415426162143895504L;
 
@@ -133,7 +132,7 @@ public class MessageServer implements Serializable {
         this.offer2 = offer2;
         this.flag = flag;
     }
-    public MessageServer(MessageType message,Description descriptionToAdd,Customer customerFrom){
+    public MessageServer(MessageType message, Description descriptionToAdd, String customerFrom){
         this.message=message;
         this.descriptionToAdd=descriptionToAdd;
         this.customerFrom=customerFrom;
@@ -199,7 +198,7 @@ public class MessageServer implements Serializable {
         return descriptionToAdd;
     }
 
-    public Customer getCustomerFrom() {
+    public String getCustomerFrom() {
         return customerFrom;
     }
 }

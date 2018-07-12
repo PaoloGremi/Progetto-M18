@@ -108,7 +108,7 @@ public class WishListScene{
                     System.out.println("Ok");
                     os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer.getId(), file2));
                     try {
-                        Thread.sleep(35);
+                        Thread.sleep(55);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

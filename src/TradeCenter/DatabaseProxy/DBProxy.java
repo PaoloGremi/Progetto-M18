@@ -6,7 +6,6 @@ import TradeCenter.Card.*;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,12 +34,27 @@ public class DBProxy implements IProxy,ISearch{
     }
 
     /**
+     * Search Descriptions by their name (All types of cards)
+     * @param s: String to search for Name of card
+     * @return: Description that match
+     */
+    public HashSet<Description> getFoundDescrByString(String s) {
+        connection=dbConn.connectToDB(connection);
+        HashSet<Description> descrFounded=new HashSet<>();
+        descrFounded=dbSearch.getDescrByString(connection,s);
+        connection=dbConn.disconnectFromDB(connection);
+
+        return descrFounded;
+    }
+
+    /**
      * Found Pokemon Descriptions which match with the filter
      * @param pokFilter: object pokemonAll
      * @return Descriptions foundend matched
      */
     @Override
-    public HashSet<PokemonDescription> getFoundDescrPokemon(PokemonAll pokFilter) {
+    public HashSet<Description> getFoundDescrPokemon(PokemonAll pokFilter) {
+        String text=pokFilter.getText();
         String typeInput = pokFilter.getType();
         String len1 = pokFilter.getLen1();
         String len2 = pokFilter.getLen2();
@@ -50,20 +64,21 @@ public class DBProxy implements IProxy,ISearch{
 
         connection = dbConn.connectToDB(connection);
 
-        HashSet<PokemonDescription> descrFound;
-        descrFound = dbSearch.getSearchedDescrPokemon(connection, typeInput, hpInput, lev, weigth, len1, len2);
+        HashSet<Description> descrFound;
+        descrFound = dbSearch.getSearchedDescrPokemon(connection,text,typeInput, hpInput, lev, weigth, len1, len2);
         connection = dbConn.disconnectFromDB(connection);
         return descrFound;
     }
 
     /**
      * Found YuGiOh Descriptions which match with the filter
-     * @param yugiohFilter: To filter     *
+     * @param yugiohFilter : To filter     *
      * @return YuGiOhDescription matched
      */
     @Override
-    public HashSet<YuGiOhDescription> getFoundDescrYugioh(YuGiOhAll yugiohFilter) {
+    public HashSet<Description> getFoundDescrYugioh(YuGiOhAll yugiohFilter) {
         String reference=yugiohFilter.getReference();
+        String text=yugiohFilter.getText();
         int lev=yugiohFilter.getLev();
         int atk=yugiohFilter.getAtk();
         int def=yugiohFilter.getDef();
@@ -71,8 +86,8 @@ public class DBProxy implements IProxy,ISearch{
         String typeID=yugiohFilter.getType();
 
         connection = dbConn.connectToDB(connection);
-        HashSet<YuGiOhDescription> descrFound;
-        descrFound = dbSearch.getSearchedDescrYuGiOh(connection,reference,lev,atk,def,monsterID,typeID);
+        HashSet<Description> descrFound;
+        descrFound = dbSearch.getSearchedDescrYuGiOh(connection,text,reference,lev,atk,def,monsterID,typeID);
         connection = dbConn.disconnectFromDB(connection);
         return descrFound;
     }

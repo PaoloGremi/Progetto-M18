@@ -42,9 +42,31 @@ public class FilterHandler implements EventHandler<ActionEvent> {
         HBox hBoxParent=(HBox)buttonSearch.getParent();
         BorderPane mainBorder=(BorderPane)hBoxParent.getParent().getParent().getParent();
         VBox vBoxFilterLeft=(VBox) mainBorder.getLeft();
-
+        String text=SearchCardScene.getSearchText().getText();
         if(vBoxFilterLeft.getChildren().size()<2){
             //todo: no filtri selezionati
+        }
+        if(vBoxFilterLeft.getChildren().size()==1 || ((ComboBox)vBoxFilterLeft.getChildren().get(0)).getValue().equals("--Nothing--") ){
+            Socket socket0;
+            try {
+                socket0 = new Socket(ServerIP.ip, ServerIP.port);
+                System.out.println("Client connected: Searching Description by Name");
+                ObjectOutputStream os = new ObjectOutputStream(socket0.getOutputStream());
+                System.out.println("Ok");
+                os.writeObject(new MessageServer(MessageType.SEARCHDESCRSBYTRING,SearchCardScene.getSearchText().getText()));
+                ObjectInputStream is = new ObjectInputStream(socket0.getInputStream());
+
+                HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
+
+                if(returnMessage.size()>=1)
+                    mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
+                socket0.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
         }
         if(vBoxFilterLeft.getChildren().size()==2){
 
@@ -65,10 +87,10 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     Socket socket1;
                     try {
                         socket1 = new Socket(ServerIP.ip, ServerIP.port);
-                        System.out.println("Client connected");
+                        System.out.println("Client connected: Searching Pokemon Description");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
-                        os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(comboTypePo,hpValue,levValue,weightValue,len1,len2)));
+                        os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(text,comboTypePo,hpValue,levValue,weightValue,len1,len2)));
                         ObjectInputStream is = new ObjectInputStream(socket1.getInputStream());
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
@@ -98,10 +120,10 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     Socket socket2;
                     try {
                         socket2 = new Socket(ServerIP.ip, ServerIP.port);
-                        System.out.println("Client connected");
+                        System.out.println("Client connected: Searching YuGiOh Description");
                         ObjectOutputStream os = new ObjectOutputStream(socket2.getOutputStream());
                         System.out.println("Ok");
-                        os.writeObject(new MessageServer(MessageType.FILTERYUGIOHDESCR, new YuGiOhAll(refValue,levelValue,atkValue,defValue,comboMonster,comboTypeYu)));
+                        os.writeObject(new MessageServer(MessageType.FILTERYUGIOHDESCR, new YuGiOhAll(text,refValue,levelValue,atkValue,defValue,comboMonster,comboTypeYu)));
                         ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();

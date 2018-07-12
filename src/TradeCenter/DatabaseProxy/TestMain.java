@@ -73,19 +73,19 @@ public class TestMain {
         */
 
         //Pokemon filtering example. Print on console description founded
-        HashSet<PokemonDescription> descrFounded;
-        PokemonAll pokFilter=new PokemonAll("Water",99,50,189,"","");
+        HashSet<Description> descrFounded;
+        PokemonAll pokFilter=new PokemonAll("","Water",99,50,189,"","");
         descrFounded=db.getFoundDescrPokemon(pokFilter);
         System.out.println("FILTER:\n \t"+pokFilter);
-        for (PokemonDescription descr:descrFounded) {
+        for (Description descr:descrFounded) {
             System.out.println(descr);
         }
 
-        HashSet<YuGiOhDescription> yuGiOhDescriptions;
-        YuGiOhAll yuFilter=new YuGiOhAll("",0,0,0,"Dragon","Normal Monster");
+        HashSet<Description> yuGiOhDescriptions;
+        YuGiOhAll yuFilter=new YuGiOhAll("","",0,0,0,"Dragon","Normal Monster");
         yuGiOhDescriptions=db.getFoundDescrYugioh(yuFilter);
         System.out.println("FILTER:\n \t"+yuFilter);
-        for (YuGiOhDescription descr:yuGiOhDescriptions) {
+        for (Description descr:yuGiOhDescriptions) {
             System.out.println(descr);
         }
 

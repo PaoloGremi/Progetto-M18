@@ -23,6 +23,7 @@ public class SearchCardScene {
     //filtri
     static VBox vBoxFilter;
     static JFXComboBox comboCardType;
+    static TextField searchText;
 
 
     public static BorderPane display(Customer customer){
@@ -36,7 +37,7 @@ public class SearchCardScene {
 
         Button buttSearch=new Button("Search  "+ "\uD83D\uDD0D");
         buttSearch.setAlignment(Pos.BOTTOM_RIGHT);
-        TextField searchText=new TextField("    ");
+        searchText=new TextField("");
         /***parte alta*/
         hBoxInner.setPadding(new Insets(3));
         hBoxInner.setSpacing(18);
@@ -58,10 +59,7 @@ public class SearchCardScene {
         vBoxFilter.setPadding(new Insets(5));
         vBoxFilter.setStyle("-fx-border-color:orange;-fx-border-width:5px;-fx-background-color: DAE6A2;");
 
-        comboCardType.getItems().addAll( //farlo dinamico
-          "Pokèmon",
-          "YU-GI-OH!"
-        );
+        comboCardType.getItems().addAll( "--Nothing--","Pokèmon","YU-GI-OH!");
         //action del combo
         comboCardType.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -88,5 +86,10 @@ public class SearchCardScene {
         mainBorder.setTop(hBoxTop);
         mainBorder.setLeft(vBoxFilter);
         return mainBorder;
+    }
+
+    public static TextField getSearchText() {
+
+        return searchText;
     }
 }

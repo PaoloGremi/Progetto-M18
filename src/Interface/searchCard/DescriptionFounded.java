@@ -3,8 +3,6 @@ import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import Interface.MainWindow;
 import Interface.OtherUserProfileScene;
-import Interface.WishListScene;
-import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXListView;
@@ -16,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,7 +24,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -44,11 +42,14 @@ public class DescriptionFounded {
      * @return
      */
     static ScrollPane display(Customer user, HashMap<Description,ArrayList<String>> map) {
-        BorderPane scene = new BorderPane();
-        if(map.isEmpty()){
-            System.out.println("Nessun user ha questa description");
-        }
         ScrollPane scrollPane=new ScrollPane();
+        BorderPane scene = new BorderPane();
+        if(map.isEmpty()){//TODO controlla
+            Label l=new Label("  No Descriptions Founded  ");
+            scrollPane.setContent(l);
+            return scrollPane;
+
+        }
         VBox mainVbox=new VBox();
         mainVbox.setStyle("-fx-background-color: #beff8e;");
         mainVbox.setPrefHeight(100);
@@ -60,6 +61,7 @@ public class DescriptionFounded {
             //interfaceElement
             HBox descriptionBox = new HBox();
             VBox figureContainer=new VBox();
+            figureContainer.setAlignment(Pos.CENTER);
             figureContainer.setStyle("-fx-background-color: orange");
             descriptionBox.setPadding(new Insets(5, 0, 0, 5));
             //Image
@@ -80,15 +82,17 @@ public class DescriptionFounded {
                         System.out.println("Client connected: Adding to WishList");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
-                        os.writeObject(new MessageServer(MessageType.ADDDESCRTOWHISLIST, currentDescr,user));
-                        Thread.sleep(100);
+                        os.writeObject(new MessageServer(MessageType.ADDDESCRTOWHISLIST, currentDescr,user.getUsername()));
+                        Thread.sleep(130);
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    MainWindow.refreshDynamicContent(WishListScene.display(user.getWishList(),user));
+                    figureContainer.getChildren().remove(addToWhishList);
+                    figureContainer.getChildren().add(new Button("!Added!"));
+                    //MainWindow.refreshDynamicContent(WishListScene.display(user.getWishList(),user));
 
                 }
             });

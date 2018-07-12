@@ -190,16 +190,24 @@ public class ServerProxy {
     }
     
     public HashMap<Description, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
-        HashSet<PokemonDescription> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
-        return tradeCenter.getCustomersFromPoDescriptions( descriptions);
+        HashSet<Description> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
+        return tradeCenter.getCustomersFromDescriptions( descriptions);
     }
     public HashMap<Description,ArrayList<String>> filterYugiohDescr(MessageServer messageServer){
-        HashSet<YuGiOhDescription> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
-        return tradeCenter.getCustomersFromYuDescriptions(descriptions);
+        HashSet<Description> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
+        return tradeCenter.getCustomersFromDescriptions(descriptions);
     }
     public void addDescrToWhishlist(MessageServer messageServer){
-        tradeCenter.addToWishList(messageServer.getDescriptionToAdd(),messageServer.getCustomerFrom());
+        Customer customer=tradeCenter.searchCustomer(messageServer.getCustomerFrom());
+        tradeCenter.addToWishList(messageServer.getDescriptionToAdd(),customer);
     }
+
+    public HashMap<Description,ArrayList<String>> searchDescrByString(MessageServer messageServer){
+        String s=messageServer.getString1();
+         HashSet<Description> descriptions=tradeCenter.filterByString(s);
+         return tradeCenter.getCustomersFromDescriptions(descriptions);
+    }
+
 
 
 }
