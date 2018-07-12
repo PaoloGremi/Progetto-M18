@@ -49,7 +49,7 @@ public class MultiThreadServer implements Runnable {
         methodMap.put(MessageType.SEARCHUSERNAME, ServerProxy.class.getMethod("searchUsernameById", MessageServer.class));
         methodMap.put(MessageType.FILTERPOKEMONDESCR,ServerProxy.class.getMethod("filterPokemonDescr", MessageServer.class));
         methodMap.put(MessageType.FILTERYUGIOHDESCR,ServerProxy.class.getMethod("filterYugiohDescr", MessageServer.class));
-
+        methodMap.put(MessageType.ADDDESCRTOWHISLIST,ServerProxy.class.getMethod("addDescrToWhishlist", MessageServer.class));
 
     }
 

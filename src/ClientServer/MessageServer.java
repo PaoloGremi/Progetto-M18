@@ -29,6 +29,8 @@ public class MessageServer implements Serializable {
     private boolean flag;
     private PokemonAll pokemonAll;
     private YuGiOhAll yuGiOhAll;
+    private  Description descriptionToAdd;
+    private  Customer customerFrom;
 
     private static final long serialVersionUID = 4415426162143895504L;
 
@@ -131,6 +133,11 @@ public class MessageServer implements Serializable {
         this.offer2 = offer2;
         this.flag = flag;
     }
+    public MessageServer(MessageType message,Description descriptionToAdd,Customer customerFrom){
+        this.message=message;
+        this.descriptionToAdd=descriptionToAdd;
+        this.customerFrom=customerFrom;
+    }
 
     public boolean isFlag() {
         return flag;
@@ -186,5 +193,13 @@ public class MessageServer implements Serializable {
 
     public YuGiOhAll getYuGiOhAll() {
         return yuGiOhAll;
+    }
+
+    public Description getDescriptionToAdd() {
+        return descriptionToAdd;
+    }
+
+    public Customer getCustomerFrom() {
+        return customerFrom;
     }
 }

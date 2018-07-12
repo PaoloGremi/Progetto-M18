@@ -197,6 +197,9 @@ public class ServerProxy {
         HashSet<YuGiOhDescription> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
         return tradeCenter.getCustomersFromYuDescriptions(descriptions);
     }
+    public void addDescrToWhishlist(MessageServer messageServer){
+        tradeCenter.addToWishList(messageServer.getDescriptionToAdd(),messageServer.getCustomerFrom());
+    }
 
 
 }

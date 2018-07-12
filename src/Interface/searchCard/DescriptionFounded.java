@@ -1,14 +1,21 @@
 package Interface.searchCard;
+import ClientServer.MessageServer;
+import ClientServer.MessageType;
 import Interface.MainWindow;
 import Interface.OtherUserProfileScene;
+import Interface.WishListScene;
+import Interface.searchCard.filterChoice.PokemonAll;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +24,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +59,8 @@ public class DescriptionFounded {
 
             //interfaceElement
             HBox descriptionBox = new HBox();
+            VBox figureContainer=new VBox();
+            figureContainer.setStyle("-fx-background-color: orange");
             descriptionBox.setPadding(new Insets(5, 0, 0, 5));
             //Image
             Image image3 = SwingFXUtils.toFXImage(currentDescr.getPic(), null);
@@ -55,8 +68,34 @@ public class DescriptionFounded {
             cardV.setImage(image3);
             cardV.setPreserveRatio(true);
             cardV.setFitHeight(285);
+            //Add to Whishlist button
+            Button addToWhishList=new Button("Add to Whishlist");
+            //addToWhishList.setAlignment(Pos.CENTER);
+            addToWhishList.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    Socket socket1;
+                    try {
+                        socket1 = new Socket("localhost", 8889);
+                        System.out.println("Client connected: Adding to WishList");
+                        ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
+                        System.out.println("Ok");
+                        os.writeObject(new MessageServer(MessageType.ADDDESCRTOWHISLIST, currentDescr,user));
+                        Thread.sleep(100);
+                        socket1.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    MainWindow.refreshDynamicContent(WishListScene.display(user.getWishList(),user));
 
-            descriptionBox.getChildren().add(cardV);
+                }
+            });
+
+            figureContainer.getChildren().addAll(cardV,addToWhishList);
+
+            descriptionBox.getChildren().add(figureContainer);
             //Button
             ObservableList<String> customersList = FXCollections.observableArrayList();
             customersList.addAll(customers);

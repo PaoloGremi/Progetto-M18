@@ -37,7 +37,7 @@ public class WishListScene{
     static ArrayList<Description> wish;
     static Customer user;
 
-    static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
+    public static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
 
         user=customer;
         wish=wishList;
