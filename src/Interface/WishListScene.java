@@ -106,7 +106,7 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer, file2));
+                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer.getId(), file2));
                     try {
                         Thread.sleep(35);
                     } catch (InterruptedException e) {
