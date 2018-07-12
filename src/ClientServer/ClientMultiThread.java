@@ -2,6 +2,9 @@ package ClientServer;
 
 import javafx.application.Application;
 
+/**
+ * Launch the LogIn in the new Thread
+ */
 class Client extends Thread{
 
             @Override
@@ -11,6 +14,9 @@ class Client extends Thread{
 
 }
 
+/**
+ * Create a new client Thread
+ */
 public class ClientMultiThread{
 
     public static void main(String[] args) throws InterruptedException {

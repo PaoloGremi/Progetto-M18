@@ -90,7 +90,7 @@ public class OtherUserProfileScene {
             try {
                 socket = new Socket(ServerIP.ip, ServerIP.port);
                 ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer, otherCustomer));
+                os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer.getId(), otherCustomer.getId()));
                 ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                 flag = (boolean)(is.readObject());
                 if(flag){

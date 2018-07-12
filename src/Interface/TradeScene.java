@@ -163,7 +163,7 @@ public class TradeScene {
                     if(!myCardOffer.collectionIsEmpty() && !otherCardOffer.collectionIsEmpty()) {
 
                             MainWindow.addDynamicContent(InfoScene.display("Your offer has been sent", "Interface/imagePack/infoSign.png", false));
-                            os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC, otherC, myCardOffer, otherCardOffer));
+                            os.writeObject(new MessageServer(MessageType.CREATEOFFER, myC.getId(), otherC.getId(), myCardOffer, otherCardOffer));
                             Thread.sleep(100);
 
                     } else {

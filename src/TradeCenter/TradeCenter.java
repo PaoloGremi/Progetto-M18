@@ -205,11 +205,11 @@ public class TradeCenter {
     /**
      * A method that removes a card from a Customer Wishlist
      * @param cardDescription the card to remove
-     * @param customer the customer that wants to remove the card
+     * @param id Id of the customer that wants to remove the card
      */
-    public void removeFromWishList(Description cardDescription, Customer customer) {
-        customers.get(customer.getId()).removeFromWishList(cardDescription);
-        proxy.updateCustomer(customers.get(customer.getId()));
+    public void removeFromWishList(Description cardDescription, String id) {
+        customers.get(id).removeFromWishList(cardDescription);
+        proxy.updateCustomer(customers.get(id));
     }
 
     /**
@@ -372,22 +372,22 @@ public class TradeCenter {
 
     /**
      * Method that create a trade between 2 customers
-     * @param customer1 the customer who make the trade
-     * @param customer2 the custumer who recive the trade
+     * @param customer1 id of the customer who make the trade
+     * @param customer2 id of the custumer who recive the trade
      * @param offer1 the offer of the first customer
      * @param offer2 the offer of the second customer
      */
-    public void createTrade(Customer customer1, Customer customer2, Collection offer1, Collection offer2){
-        if(notAlreadyTradingWith(customer1.getId(), customer2.getId())){
+    public void createTrade(String customer1, String customer2, Collection offer1, Collection offer2){
+        if(notAlreadyTradingWith(customer1, customer2)){
             try {
-                Trade Trade = new Trade(new Offer(customer1.getId(), customer2.getId(), offer1, offer2), proxy.getNextTradeID());
+                Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2), proxy.getNextTradeID());
                 activeTrades.add(Trade);
                 proxy.InsertTrade(Trade);
             }catch (MyselfTradeException | EmptyCollectionException e){
                 System.err.println(e.getMessage());
             }
         }else{
-            throw new AlreadyStartedTradeException(customer2.getUsername());
+            throw new AlreadyStartedTradeException(searchUsernameById(customer2));
             //todo propagar eccezione all'interfaccia tramite socket
         }
     }

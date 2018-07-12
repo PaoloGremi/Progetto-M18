@@ -14,6 +14,9 @@ import java.net.SocketException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Starts the server with a static tradecenter
+ */
 public class MultiThreadServer implements Runnable {
     private Socket csocket;
     private static TradeCenter tradeCenter = new TradeCenter();
@@ -49,6 +52,12 @@ public class MultiThreadServer implements Runnable {
 
 
     }
+
+    /**
+     * Create the socket for the server and starts it
+     * @param args
+     * @throws Exception
+     */
     public static void main(String args[]) throws Exception {
         ServerSocket ssock = new ServerSocket(8889);
         System.out.println("Listening");
@@ -59,6 +68,12 @@ public class MultiThreadServer implements Runnable {
             new Thread(new MultiThreadServer(sock, tradeCenter)).start();
         }
     }
+
+    /**
+     * Receive the message from the client and send a message back
+     * @throws CheckPasswordConditionsException
+     * @throws UsernameAlreadyTakenException
+     */
     public void run() throws CheckPasswordConditionsException, UsernameAlreadyTakenException {
         try {
             ObjectInputStream in = new ObjectInputStream(csocket.getInputStream());
@@ -71,16 +86,21 @@ public class MultiThreadServer implements Runnable {
 
         } catch (IOException e) {
             System.out.println(e);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+        } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException {
+    /**
+     * Elaborates the message from the client
+     * @param tag Type of the message to identify the method to use in rhe server proxy
+     * @param messageServer The message from the client
+     * @return The message in respond from the tradecenter
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     * @throws CheckPasswordConditionsException
+     */
+    private Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException {
         Object result = null;
         try {
             result = methodMap.get(tag).invoke(proxy ,messageServer);
