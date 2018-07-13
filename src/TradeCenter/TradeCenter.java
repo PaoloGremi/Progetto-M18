@@ -83,7 +83,7 @@ public class TradeCenter {
     /**
      * A method that check if the username is already in use
      *
-     * @param username
+     * @param username Candidate username
      * @return a boolean value
      */
     private boolean usernameTaken(String username){
@@ -118,8 +118,8 @@ public class TradeCenter {
 
     /**
      * A method that checks if the user's password is correct
-     * @param username
-     * @param password
+     * @param username Username to verify
+     * @param password Password to verify
      * @return if the login ended in a correct way
      */
     public boolean loggedIn(String username, String password){
@@ -144,16 +144,31 @@ public class TradeCenter {
 
     }
 
+    /**
+     * Verify if the customer is logged in another client
+     * @param username Username of the customer
+     * @return Boolean if is already logged or not
+     */
     public boolean isLogged(String username){
         if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
         return true;
     }
 
+    /**
+     * Log out the customer from the system
+     * @param username Username of the customer
+     */
     public void logOut(String username){
         loggedCustomers.remove(username);
     }
 
-    private ArrayList<Card> randomCards(Customer customer, CardCatalog catalog){
+    /**
+     * Open a pack with 7 cards
+     * @param userId Customer that open the pack
+     * @param catalog Catalog where take the random cards
+     * @return The 7 random cards
+     */
+    private ArrayList<Card> randomCards(String userId, CardCatalog catalog){
 
         ArrayList<Card> cards = new ArrayList();
         int i = 0;
@@ -163,18 +178,29 @@ public class TradeCenter {
             cards.add(new Card(proxy.getNextCardID()+i, (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
             i++;
         }
-        addCardtoCustomer(customer,cards);
+
+        addCardtoCustomer(searchCustomerById(userId),cards);
 
         return cards;
     }
 
-    public ArrayList<Card> fromPokemonCatalog(Customer customer){
-        ArrayList<Card> cards = randomCards(customer, pokemonCatalog);
+    /**
+     * Opens a pokemon pack
+     * @param customerId Customer that opens the pack
+     * @return the 7 cards
+     */
+    public ArrayList<Card> fromPokemonCatalog(String customerId){
+        ArrayList<Card> cards = randomCards(customerId, pokemonCatalog);
         return cards;
     }
 
-    public ArrayList<Card> fromYuGiOhCatalog(Customer customer){
-        ArrayList<Card> cards = randomCards(customer, yugiohCatalog);
+    /**
+     *Opens a yu-gi-ho pack
+     *@param customerId Customer that opens the pack
+     *@return the 7 cards
+     */
+    public ArrayList<Card> fromYuGiOhCatalog(String customerId){
+        ArrayList<Card> cards = randomCards(customerId, yugiohCatalog);
         return cards;
     }
 
@@ -192,7 +218,6 @@ public class TradeCenter {
         proxy.updateCustomer(customers.get(customer.getId()));
     }
 
-    //todo check if the customer exist,
 
     /**
      * method that remove a card from a customer's collection
@@ -267,12 +292,22 @@ public class TradeCenter {
         return results;
     }
 
+    /**
+     * Search a customer in the system by his id
+     * @param id Id to find
+     * @return Customer found
+     */
     public Customer searchCustomerById(String id){
 
         return customers.get(id);
 
     }
 
+    /**
+     * Search a username in the system by his id
+     * @param id Id to find
+     * @return Username found
+     */
     public String searchUsernameById(String id){
 
         return customers.get(id).getUsername();
@@ -396,7 +431,7 @@ public class TradeCenter {
     /**
      * Method that give the possibility to update the previus offer
      * @param offer the offer of a customer
-     * @return
+     * @return boolean if the trade is updated
      */
     public boolean updateTrade(Offer offer, boolean flag){
         Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
@@ -423,11 +458,21 @@ public class TradeCenter {
         return flag;
     }
 
+    /**
+     * Remove the trade from the active trades
+     * @param myCustomer Customer logged
+     * @param otherCustomer The other customer involved
+     */
     public void removeTrade(String myCustomer, String otherCustomer){
         activeTrades.remove(takeStartedTrade(myCustomer,otherCustomer));
     }
 
-    //todo add javadocs
+    /**
+     * Retrieve a trade if exists already
+     * @param myCustomer Customer logged in the client
+     * @param otherCustomer Other customer involved
+     * @return Trade found
+     */
     public Trade takeStartedTrade(String myCustomer, String otherCustomer){
         Trade searchTrade = null;
         for(Trade trade : activeTrades){
@@ -438,6 +483,11 @@ public class TradeCenter {
         return searchTrade;
     }
 
+    /**
+     * Check if the trade exists in the system
+     * @param trade Trade to found
+     * @return boolean if exists
+     */
     private boolean contains(Trade trade){
         for (Trade trade1 : activeTrades){
             if(trade1.betweenUsers(trade.getCustomer1()) || trade1.betweenUsers(trade.getCustomer2())){
@@ -475,6 +525,11 @@ public class TradeCenter {
         }
     }
 
+    /**
+     * End an active trade
+     * @param trade Trade to end
+     * @param result The result of the trade
+     */
     public void endTrade(Trade trade, boolean result){
         if(result){
             switchCards(trade);

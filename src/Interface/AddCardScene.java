@@ -86,7 +86,7 @@ public class AddCardScene {
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
         ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
         System.out.println("Ok");
-        os.writeObject(new MessageServer(type, customer));
+        os.writeObject(new MessageServer(type, customer.getId()));
         ArrayList<Card> cards = (ArrayList<Card>) is.readObject();
         Thread.sleep(100);
         socket.close();

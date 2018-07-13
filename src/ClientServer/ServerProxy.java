@@ -153,7 +153,7 @@ public class ServerProxy {
      * @return ArrayList of the card found
      */
     public ArrayList<Card> addPokemonRandom(MessageServer messageServer){
-        return tradeCenter.fromPokemonCatalog(messageServer.getCustomer1());
+        return tradeCenter.fromPokemonCatalog(messageServer.getString1());
     }
 
     /**
@@ -162,7 +162,7 @@ public class ServerProxy {
      * @return ArrayList of the card found
      */
     public ArrayList<Card> addYuGiOhRandom(MessageServer messageServer){
-        return tradeCenter.fromYuGiOhCatalog(messageServer.getCustomer1());
+        return tradeCenter.fromYuGiOhCatalog(messageServer.getString1());
     }
 
     /**
