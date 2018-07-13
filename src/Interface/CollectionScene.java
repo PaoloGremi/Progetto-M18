@@ -34,21 +34,18 @@ public class CollectionScene{
 
     //static HBox hbox;
 
-    static BorderPane display(Customer customer1, String username, boolean searchFlag) throws IOException, ClassNotFoundException {
-
-        System.out.println("welcome client");
-        Socket socket = new Socket(ServerIP.ip, ServerIP.port);
-        socket.setTcpNoDelay(true);
-        System.out.println("Client connected");
-        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-        System.out.println("Ok");
-        os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username));
-        ObjectInputStream is1 = new ObjectInputStream(socket.getInputStream());
-        Customer returnMessage1 = (Customer) is1.readObject();
-        socket.close();
+    /**
+     * Shows the collection of the customer
+     * @param customer Customer logged
+     * @param username Username of the customer
+     * @return BorderPane with the collection
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    static BorderPane display(Customer customer, String username) throws IOException, ClassNotFoundException {
 
 
-        cust=returnMessage1;
+        cust=SearchUserScene.retrieveCustomer(customer.getUsername());
         user=username;
         ScrollPane scroll;
         HBox hbox;
@@ -66,9 +63,8 @@ public class CollectionScene{
         textFlow.getChildren().add(text);
         textFlow.setPrefWidth(200);
         hbox.getChildren().add(textFlow);
-        if(!searchFlag) {
-            hbox.getChildren().add(buttonAdd);
-        }
+        hbox.getChildren().add(buttonAdd);
+
 
         FlowPane flow = new FlowPane();
 
@@ -82,62 +78,36 @@ public class CollectionScene{
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
 
-        for(Card file2 : cust.getCollection()){
+        for(Card card : cust.getCollection()){
             BorderPane pane = new BorderPane();
 
             pane.setPadding(new Insets(5,0,0,5));
 
-            Image image3 = SwingFXUtils.toFXImage(file2.getDescription().getPic(),null);
-            ImageView card = new ImageView();
-            card.setImage(image3);
-            card.setPreserveRatio(true);
-            card.setFitHeight(285);
+            Image image = SwingFXUtils.toFXImage(card.getDescription().getPic(),null);
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setPreserveRatio(true);
+            imageView.setFitHeight(285);
 
-            pane.setCenter(card);
+            pane.setCenter(imageView);
 
             EventHandler<javafx.scene.input.MouseEvent> eventHandlerBox =
                     new EventHandler<javafx.scene.input.MouseEvent>() {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(card, "collection"));
+                            MainWindow.refreshDynamicContent(Demo.display(imageView, "collection"));
                         }
                     };
 
-            card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
-
-            if(searchFlag){
-                HBox hbox1 = new HBox();
-                hbox1.setPadding(new Insets(10));
-                hbox1.setSpacing(10);
-                hbox1.setAlignment(Pos.CENTER);
-                Button buUser = new Button(username);
-                Button bTrade = new Button("Trade");
-                hbox1.getChildren().addAll(buUser, bTrade);
-                hbox1.setStyle("-fx-background-color: orange");
-                pane.setBottom(hbox1);
-                buUser.setOnAction(event -> {
-                    try {
-                        os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, username));
-                        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                        Customer returnMessage = (Customer) is.readObject();
-                        MainWindow.refreshDynamicContent(OtherUserProfileScene.display(customer1, returnMessage));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
-
-                });
-
-            }
+            imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }
         buttonAdd.setOnAction(event -> {
 
-            MainWindow.refreshDynamicContent(AddCardScene.display(customer1));
+            MainWindow.refreshDynamicContent(AddCardScene.display(customer));
 
         });
         scroll.setPadding(new Insets(3));
@@ -147,8 +117,14 @@ public class CollectionScene{
         return border;
     }
 
+    /**
+     * Refresh the scene
+     * @return BorderPane with the collection
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     static BorderPane refresh() throws IOException, ClassNotFoundException {
-        return display(cust ,user,false);
+        return display(cust ,user);
     }
 
 }

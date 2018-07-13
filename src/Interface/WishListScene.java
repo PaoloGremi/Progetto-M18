@@ -37,6 +37,7 @@ public class WishListScene{
     static ArrayList<Description> wish;
     static Customer user;
 
+
     public static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
 
         user=customer;
@@ -44,16 +45,16 @@ public class WishListScene{
 
         BorderPane border = new BorderPane();
         FlowPane flow = new FlowPane();
-        HBox hBox2 = new HBox();
-        hBox2.setPadding(new Insets(10));
-        hBox2.setSpacing(10);
-        hBox2.setStyle("-fx-background-color: orange");
-        hBox2.setAlignment(Pos.CENTER);
+        HBox titleBox = new HBox();
+        titleBox.setPadding(new Insets(10));
+        titleBox.setSpacing(10);
+        titleBox.setStyle("-fx-background-color: orange");
+        titleBox.setAlignment(Pos.CENTER);
         TextFlow textFlow = new TextFlow();
         Text text = new Text(customer.getUsername() +"'s wish list");
         text.setStyle("-fx-font-weight: bold");
         textFlow.getChildren().add(text);
-        hBox2.getChildren().add(textFlow);
+        titleBox.getChildren().add(textFlow);
 
 
         flow.setPadding(new Insets(5, 5, 5, 5));
@@ -66,39 +67,36 @@ public class WishListScene{
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
 
-        HBox hbox1;
-
-
-        for(Description file2 : wishList){
+        for(Description description : wishList){
             BorderPane pane = new BorderPane();
             Pane pane2 = new Pane();
             pane.setPadding(new Insets(0));
 
-            hbox1 = new HBox();
-            hbox1.setPadding(new Insets(10));
-            hbox1.setSpacing(10);
-            hbox1.setStyle("-fx-background-color: orange");
+            HBox buttonBox = new HBox();
+            buttonBox.setPadding(new Insets(10));
+            buttonBox.setSpacing(10);
+            buttonBox.setStyle("-fx-background-color: orange");
 
-            Button button1 = new Button("Remove "+ "\uD83D\uDD71");
-            button1.setPrefSize(100, 20);
-            hbox1.getChildren().add(button1);
+            Button remove = new Button("Remove "+ "\uD83D\uDD71");
+            remove.setPrefSize(100, 20);
+            buttonBox.getChildren().add(remove);
 
-            Button button2 = new Button("Search " + "\uD83D\uDD0D");
-            button1.setPrefSize(100, 20);
-            hbox1.getChildren().add(button2);
+            Button search = new Button("Search " + "\uD83D\uDD0D");
+            remove.setPrefSize(100, 20);
+            buttonBox.getChildren().add(search);
 
             
-            Image image3 = SwingFXUtils.toFXImage(file2.getPic(),null);
+            Image image = SwingFXUtils.toFXImage(description.getPic(),null);
             ImageView card = new ImageView();
-            card.setImage(image3);
+            card.setImage(image);
             pane2.getChildren().add(card);
             card.setPreserveRatio(true);
             card.setFitHeight(313);
 
             pane.setCenter(card);
-            pane.setBottom(hbox1);
+            pane.setBottom(buttonBox);
 
-            button1.setOnAction(event -> {
+            remove.setOnAction(event -> {
                 flow.getChildren().remove(pane);
                 Socket socket;
                 try {
@@ -106,7 +104,7 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer.getId(), file2));
+                    os.writeObject(new MessageServer(MessageType.REMOVEWISH, customer.getId(), description));
                     try {
                         Thread.sleep(35);
                     } catch (InterruptedException e) {
@@ -129,7 +127,7 @@ public class WishListScene{
 
             card.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
-            button2.setOnAction(event -> {
+            search.setOnAction(event -> {
                 System.out.println("welcome client");
                 Socket socket = null;
                 try {
@@ -137,10 +135,10 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, file2));
+                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, description));
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                     ArrayList<String> returnMessage = (ArrayList<String>) is.readObject();
-                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(file2 ,returnMessage, customer));
+                    MainWindow.refreshDynamicContent(SearchDescriptionScene.display(description ,returnMessage, customer));
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -157,7 +155,7 @@ public class WishListScene{
         scroll.setPadding(new Insets(3));
         scroll.setStyle("-fx-background-color: orange");
         border.setCenter(scroll);
-        border.setTop(hBox2);
+        border.setTop(titleBox);
         return border;
     }
 

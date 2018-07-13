@@ -129,7 +129,7 @@ public class OtherUserProfileScene {
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other"));
+                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
                         }
                     };
 
@@ -157,15 +157,7 @@ public class OtherUserProfileScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(300);
             cardPane.setCenter(imageView);
-            EventHandler<MouseEvent> eventHandlerBox =
-                    new EventHandler<javafx.scene.input.MouseEvent>() {
-
-                        @Override
-                        public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
-                        }
-                    };
-
+            EventHandler<MouseEvent> eventHandlerBox = mouseEvent(imageView);
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -177,6 +169,16 @@ public class OtherUserProfileScene {
         return cardGrid;
     }
 
+    public static EventHandler<MouseEvent> mouseEvent(ImageView imageView){
+        EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(javafx.scene.input.MouseEvent e) {
+                MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
+            }
+        };
+        return event;
+    }
     public static BorderPane refresh(){
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){

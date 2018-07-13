@@ -125,8 +125,8 @@ public class MainWindow {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
             long startTime = System.currentTimeMillis();
             try {
-                Customer updatedCustomer = retrieveCustomer(customer);
-                dynamicContent.getChildren().add(CollectionScene.display(updatedCustomer, updatedCustomer.getUsername(), false));
+                Customer updatedCustomer = SearchUserScene.retrieveCustomer(customer.getUsername());
+                dynamicContent.getChildren().add(CollectionScene.display(updatedCustomer, updatedCustomer.getUsername()));
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -134,13 +134,13 @@ public class MainWindow {
             System.out.println("That took " + (endTime - startTime) + " milliseconds");
         });
         myWishlist.setOnAction(event -> {
-            Customer updatedCustomer = retrieveCustomer(customer);
+            Customer updatedCustomer = SearchUserScene.retrieveCustomer(customer.getUsername());
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
             dynamicContent.getChildren().add(WishListScene.display(updatedCustomer.getWishList(), updatedCustomer));
         });
         searchCard.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(SearchCardScene.display(retrieveCustomer(customer)));
+            dynamicContent.getChildren().add(SearchCardScene.display(SearchUserScene.retrieveCustomer(customer.getUsername())));
         });
         searchUser.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
@@ -148,7 +148,7 @@ public class MainWindow {
         });
         myTrades.setOnAction(event -> {
             dynamicContent.getChildren().removeAll(dynamicContent.getChildren());
-            dynamicContent.getChildren().add(ListTradesScene.display(retrieveCustomer(customer)));
+            dynamicContent.getChildren().add(ListTradesScene.display(SearchUserScene.retrieveCustomer(customer.getUsername())));
         });
         logOut.setOnAction(event -> {
             window.close();
@@ -156,7 +156,7 @@ public class MainWindow {
         });
 
         // Beginning view set on customer's CollectionScene
-        dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername(), false));
+        dynamicContent.getChildren().add(CollectionScene.display(customer, customer.getUsername()));
 
         // Prepare scene and dispay it
         Scene scene = new Scene(layout, 1200, 700);
@@ -183,29 +183,6 @@ public class MainWindow {
     //todo add javadocs
     public static void removeDynamicContent(Node node){
         dynamicContent.getChildren().removeAll(node);
-    }
-
-    //todo add javadocs
-    protected static Customer retrieveCustomer(Customer customer){
-        Customer updatedCustomer = null;
-        Socket socket = null;
-        long startTime = System.currentTimeMillis();
-        try {
-            socket = new Socket(ServerIP.ip, ServerIP.port);
-            socket.setTcpNoDelay(true);
-            //socket.setKeepAlive(true);
-            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-            os.writeObject(new MessageServer(MessageType.SEARCHCUSTOMER, customer.getUsername()));
-            ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-            updatedCustomer = (Customer)is.readObject();
-            os.flush();
-            socket.close();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        long endTime = System.currentTimeMillis();
-        System.out.println("That took " + (endTime - startTime) + " milliseconds");
-        return updatedCustomer;
     }
 
 }

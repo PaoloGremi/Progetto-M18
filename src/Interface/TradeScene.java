@@ -30,6 +30,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static Interface.SearchUserScene.retrieveCustomer;
+
 
 public class TradeScene {
 
@@ -631,8 +633,8 @@ public class TradeScene {
     private static void updateCustomers(){
         Customer currentMy = null;
         Customer currentOther = null;
-        currentMy = MainWindow.retrieveCustomer(myC);
-        currentOther = MainWindow.retrieveCustomer(otherC);
+        currentMy = retrieveCustomer(myC.getUsername());
+        currentOther = retrieveCustomer(otherC.getUsername());
 
         myC=currentMy;
         otherC=currentOther;

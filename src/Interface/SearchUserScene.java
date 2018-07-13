@@ -67,18 +67,7 @@ public class SearchUserScene {
                     JFXListView<String> usersList = new JFXListView<>();
                     usersList.getItems().addAll(users);
                     if(!customers.isEmpty()){
-                        EventHandler<MouseEvent> eventHandlerBox =
-                                new EventHandler<javafx.scene.input.MouseEvent>() {
-                                    @Override
-                                    public void handle(javafx.scene.input.MouseEvent e) {
-                                        String otherCustomer = usersList.getSelectionModel().getSelectedItem();
-
-                                            MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(mySelf.getUsername()), retrieveCustomer(otherCustomer)));
-                                    }
-                                };
-
-                        //todo se funziona listener modificare tradeScene (magari metodo refresh)in modo che si apra come l'ultima offerta fatta e non come fosse la prima
-
+                        EventHandler<MouseEvent> eventHandlerBox = mouseEvent(usersList);
                         usersList.setOnMouseClicked(eventHandlerBox);
                     }
                     usersList.setEditable(true);
@@ -110,6 +99,18 @@ public class SearchUserScene {
         scene.setTop(topScene);
         scene.setCenter(pane);
         return scene;
+    }
+
+    public static EventHandler<MouseEvent> mouseEvent(JFXListView<String> usersList){
+        EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                String otherCustomer = usersList.getSelectionModel().getSelectedItem();
+                MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(myProfile.getUsername()), retrieveCustomer(otherCustomer)));
+            }
+
+        };
+        return event;
     }
 
     public static Customer retrieveCustomer(String customer){

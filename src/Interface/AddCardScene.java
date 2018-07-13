@@ -108,7 +108,7 @@ public class AddCardScene {
         JFXButton back = new JFXButton("Back to Collection");
         back.setOnAction(event1 -> {
             try {
-                MainWindow.refreshDynamicContent(CollectionScene.display(customer,customer.getUsername(), false));
+                MainWindow.refreshDynamicContent(CollectionScene.display(customer,customer.getUsername()));
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
