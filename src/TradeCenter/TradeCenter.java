@@ -284,15 +284,24 @@ public class TradeCenter {
 
         return customersFound;
     }
-
+    /**
+     *
+     * @param s
+     * @return
+     */
+    public HashSet<Description> filterByString(String s) {
+        HashSet<Description> descrMatched;
+        descrMatched=proxy.getFoundDescrByString(s);
+        return descrMatched;
+    }
     /**
      * Return Description foundend in DB filtered
      *
      * @param pokemonAll: Pokemon All
      * @return PokemonDescription matched
      */
-    public HashSet<PokemonDescription> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
-        HashSet<PokemonDescription> descrMatched;
+    public HashSet<Description> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
+        HashSet<Description> descrMatched;
         descrMatched=proxy.getFoundDescrPokemon(pokemonAll);
 
         /*if(descrMatched.size()==0)
@@ -307,8 +316,8 @@ public class TradeCenter {
      * @param yuGiOhAll: YuGiOh Description
      * @return YuGiOh Description matched
      */
-    public HashSet<YuGiOhDescription> filterYugiohDescr(YuGiOhAll yuGiOhAll){
-        HashSet<YuGiOhDescription> descrMatched=new HashSet<>();
+    public HashSet<Description> filterYugiohDescr(YuGiOhAll yuGiOhAll){
+        HashSet<Description> descrMatched=new HashSet<>();
         descrMatched=proxy.getFoundDescrYugioh(yuGiOhAll);
         return descrMatched;
     }
@@ -336,30 +345,10 @@ public class TradeCenter {
      * @param hashDescr: Descriptions
      * @return HashMap<Description,ArrayList<Customer>>
      */
-    public HashMap<Description,ArrayList<String>> getCustomersFromPoDescriptions(HashSet<PokemonDescription> hashDescr){
+    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr){
         HashMap<Description,ArrayList<String>> map=new HashMap<>();
         for (Description descr:hashDescr) {
            // Description descCasted=(Description) descr;
-            ArrayList<String> listCustomer=new ArrayList<>();
-            for (String key : customers.keySet()) {
-                if(customers.get(key).containDescription(descr))
-                    listCustomer.add(customers.get(key).getUsername());
-            }
-            map.put(descr,listCustomer);
-        }
-        return map;
-    }
-
-    /**
-     * Get customers from YuGiOh descriptions
-     *
-     * @param hashDescr:YuGiOh Descriptions
-     * @return: Customer matched for descriptions
-     */
-    public HashMap<Description,ArrayList<String>> getCustomersFromYuDescriptions(HashSet<YuGiOhDescription> hashDescr){
-        HashMap<Description,ArrayList<String>> map=new HashMap<>();
-        for (Description descr:hashDescr) {
-            // Description descCasted=(Description) descr;
             ArrayList<String> listCustomer=new ArrayList<>();
             for (String key : customers.keySet()) {
                 if(customers.get(key).containDescription(descr))
@@ -561,5 +550,4 @@ public class TradeCenter {
         tradesList.addAll(showUserDoneTrades(customer));
         return tradesList;
     }
-
 }

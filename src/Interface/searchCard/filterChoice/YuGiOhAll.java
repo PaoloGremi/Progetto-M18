@@ -12,8 +12,10 @@ public class YuGiOhAll implements Serializable {
     int def;
     String monsterType;
     String type;
+    String text;
     private static final long serialVersionUID = 3L;
-    public YuGiOhAll(String reference, int lev, int atk, int def, String monsterType, String type) {
+    public YuGiOhAll(String text,String reference, int lev, int atk, int def, String monsterType, String type) {
+        this.text=addCaseNull(text);
         this.reference = addCaseNull(reference);
         this.lev = lev;
         this.atk = atk;
@@ -64,5 +66,9 @@ public class YuGiOhAll implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public String getText() {
+        return text;
     }
 }

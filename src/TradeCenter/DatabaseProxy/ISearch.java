@@ -2,8 +2,7 @@ package TradeCenter.DatabaseProxy;
 
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
-import TradeCenter.Card.PokemonDescription;
-import TradeCenter.Card.YuGiOhDescription;
+import TradeCenter.Card.Description;
 
 import java.util.HashSet;
 
@@ -14,7 +13,7 @@ public interface ISearch {
      * @param pokFilter: To filter
      * @return PokemonDescription matched
      */
-    public HashSet<PokemonDescription> getFoundDescrPokemon(PokemonAll pokFilter) ;
+    HashSet<Description> getFoundDescrPokemon(PokemonAll pokFilter) ;
 
     /**
      * Search a YuGiOh card from filter in db
@@ -22,5 +21,14 @@ public interface ISearch {
      * @param yugiohFilter: To filter     *
      * @return YuGiOhDescription matched
      */
-    public HashSet<YuGiOhDescription> getFoundDescrYugioh(YuGiOhAll yugiohFilter) ;
+    HashSet<Description> getFoundDescrYugioh(YuGiOhAll yugiohFilter) ;
+
+    /**
+     * Search Descriptions by their name (All types of cards)
+     * @param s: String to search for Name of card
+     * @return: Description that match
+     */
+    HashSet<Description> getFoundDescrByString(String s);
+
+
 }
