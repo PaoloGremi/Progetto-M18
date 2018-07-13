@@ -102,20 +102,20 @@ public class DBProxy implements IProxy,ISearch{
         int size;
         switch(tablename) {
             case "pokemon_card":
-                System.err.println("[DBProxy] - Populating pokemon catalaog...");
+                System.err.println("[DBProxy] - Populating pokemon catalog...");
                 size = dbRet.getTableSize(connection, tablename);
                 for(int i=1; i<size; i++) {
                     cc.addDescription(dbRet.retrieveSinglePokemonDescription(connection, i));
                 }
-                System.err.println("[DBProxy] - Populating pokemon catalaog completed.");
+                System.err.println("[DBProxy] - Populating pokemon catalog completed.");
                 break;
             case "yugioh_card":
-                System.err.println("[DBProxy] - Populating yugioh catalaog...");
+                System.err.println("[DBProxy] - Populating yugioh catalog...");
                 size = dbRet.getTableSize(connection, tablename);
-                for(int i = 0; i<size; i++) {
+                for(int i=1; i<size; i++) {
                     cc.addDescription(dbRet.retrieveSingleYugiohDescription(connection, i));
                 }
-                System.err.println("[DBProxy] - Populating yugioh catalaog completed.");
+                System.err.println("[DBProxy] - Populating yugioh catalog completed.");
                 break;
         }
         connection = dbConn.disconnectFromDB(connection);
