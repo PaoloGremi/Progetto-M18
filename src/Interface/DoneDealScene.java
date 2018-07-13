@@ -28,6 +28,13 @@ import java.net.Socket;
 
 public class DoneDealScene {
 
+    /**
+     * Shows a closed trade
+     * @param trade Closed trade to show
+     * @param myUser User logged
+     * @param otherUser Other user ivolved in the trade
+     * @return BorderPane with the trade
+     */
     static BorderPane display(Trade trade, String myUser, String otherUser){
 
         BorderPane borderPane = new BorderPane();
@@ -78,6 +85,11 @@ public class DoneDealScene {
         return borderPane;
     }
 
+    /**
+     * Populate the FlowPane withe the new cards of the customers
+     * @param offer Cards to add to the FlowPane
+     * @return FlowPane with the cards
+     */
     static FlowPane populateFlow(Collection offer){
         FlowPane flowPane = new FlowPane();
         for(Card card : offer){

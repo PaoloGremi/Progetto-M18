@@ -151,6 +151,7 @@ public class MainWindow {
             dynamicContent.getChildren().add(ListTradesScene.display(SearchUserScene.retrieveCustomer(customer.getUsername())));
         });
         logOut.setOnAction(event -> {
+            logOut(customer.getUsername());
             window.close();
             Platform.exit();
         });
@@ -164,6 +165,20 @@ public class MainWindow {
         window.setScene(scene);
         window.setResizable(false);
         window.show();
+    }
+
+    private static void logOut(String username){
+        Socket socket = null;
+        try {
+            socket = new Socket(ServerIP.ip, ServerIP.port);
+            ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+            os.writeObject(new MessageServer(MessageType.LOGOUT, username));
+            os.flush();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

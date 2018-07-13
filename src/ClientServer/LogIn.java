@@ -3,6 +3,7 @@ package ClientServer;
 import Interface.MainWindow;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.InterfaceExceptions.EmptyUsernameException;
+import TradeCenter.Exceptions.UserExceptions.AlreadyLoggedInException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import com.jfoenix.controls.JFXButton;
@@ -112,15 +113,9 @@ public class LogIn extends Application{
         //listener bottoni
         logIn.setOnAction(event -> {
             try {
-                Socket socket3 = new Socket(ServerIP.ip, ServerIP.port);
-                ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.LOGDIN, username.getText(), password.getText()));
-                ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
-                System.out.println("connected");
-                if((boolean) is.readObject()){
-                    System.out.println("closed");
-                    socket3.close();
-                    Socket socket1 = new Socket(ServerIP.ip, 8889);
+                isLoggedIn(username.getText());
+                if(logIn(username.getText(), password.getText())){
+                    Socket socket1 = new Socket(ServerIP.ip, ServerIP.port);
                     ObjectOutputStream os2 = new ObjectOutputStream(socket1.getOutputStream());
                     ObjectInputStream is1 = new ObjectInputStream(socket1.getInputStream());
                     System.out.println("connected");
@@ -131,25 +126,13 @@ public class LogIn extends Application{
                     socket1.close();
                 }
                 else{
-                    info = new Text("Invalid Username or Password");
-                    password.setFocusColor(Paint.valueOf("#FF000E"));
-                    username.setFocusColor(Paint.valueOf("#FF000E"));
-                    //username.setStyle("-fx-background-color: rgba(255,0,0,0.63);");
-                    //password.setStyle("-fx-background-color: rgba(255,0,0,0.63);");
-                    password.setPromptText(password.getPromptText() + " \u26A0");
-                    username.setPromptText(username.getPromptText() + " \u26A0");
-                    infoFlow.setPadding(new Insets(5));
-                    infoFlow.setTextAlignment(TextAlignment.CENTER);
-                    infoFlow.getChildren().removeAll(infoFlow.getChildren());
-                    infoFlow.getChildren().add(info);
-
-                    socket3.close();
+                    modifyInfo("Invalid Username or Password",infoFlow);
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            }catch (AlreadyLoggedInException e){
+                modifyInfo(e.getMessage(),infoFlow);
             }
 
 
@@ -162,7 +145,7 @@ public class LogIn extends Application{
             passwordVerified.setLabelFloat(true);
             credentialBox.getChildren().remove(infoFlow);
             credentialBox.getChildren().add(passwordVerified);
-            Button confirm = new Button("Confirm");
+            JFXButton confirm = new JFXButton("Confirm");
 
 
             confirm.setOnAction(event1 -> {
@@ -187,7 +170,7 @@ public class LogIn extends Application{
                                 MainWindow.display(returnMessage);
                                 socket2.close();
 
-                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException | EmptyUsernameException e) {
+                            } catch (CheckPasswordConditionsException | UsernameAlreadyTakenException | EmptyUsernameException | AlreadyLoggedInException e) {
                                 Text errorText = new Text(e.getMessage());
 
                                 TextFlow error = new TextFlow();
@@ -218,14 +201,12 @@ public class LogIn extends Application{
                         stack.getChildren().removeAll(stack.getChildren());
                         stack.getChildren().add(error);
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             });
 
-            Button goBack = new Button("LogIn");
+            JFXButton goBack = new JFXButton("LogIn");
 
             goBack.setOnAction(event1 -> {
                 credentialBox.getChildren().removeAll(credentialBox.getChildren());
@@ -297,6 +278,41 @@ public class LogIn extends Application{
         boolean returnMessage = (boolean) is.readObject();
         socket.close();
         return  returnMessage;
+    }
+
+    private void modifyInfo(String message, TextFlow infoFlow){
+        info = new Text(message);
+        password.setFocusColor(Paint.valueOf("#FF000E"));
+        username.setFocusColor(Paint.valueOf("#FF000E"));
+        //username.setStyle("-fx-background-color: rgba(255,0,0,0.63);");
+        //password.setStyle("-fx-background-color: rgba(255,0,0,0.63);");
+        password.setPromptText(password.getPromptText() + " \u26A0");
+        username.setPromptText(username.getPromptText() + " \u26A0");
+        infoFlow.setPadding(new Insets(5));
+        infoFlow.setTextAlignment(TextAlignment.CENTER);
+        infoFlow.getChildren().removeAll(infoFlow.getChildren());
+        infoFlow.getChildren().add(info);
+    }
+
+    private boolean logIn(String username, String password) throws IOException, ClassNotFoundException {
+        Socket socket3 = new Socket(ServerIP.ip, ServerIP.port);
+        ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
+        os.writeObject(new MessageServer(MessageType.LOGDIN, username, password));
+        ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
+        System.out.println("connected");
+        boolean flag = (boolean) is.readObject();
+        socket3.close();
+        return flag;
+    }
+
+    private void isLoggedIn(String username) throws IOException, ClassNotFoundException {
+        Socket socket = new Socket(ServerIP.ip, ServerIP.port);
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        os.writeObject(new MessageServer(MessageType.ALREADYLOGGED, username));
+        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+        Object returnMessage = is.readObject();
+        socket.close();
+        if(returnMessage instanceof AlreadyLoggedInException) throw new AlreadyLoggedInException();
     }
 
 }

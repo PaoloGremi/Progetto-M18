@@ -1,6 +1,7 @@
 package ClientServer;
 
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
+import TradeCenter.Exceptions.UserExceptions.AlreadyLoggedInException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
@@ -51,6 +52,8 @@ public class MultiThreadServer implements Runnable {
         methodMap.put(MessageType.FILTERYUGIOHDESCR,ServerProxy.class.getMethod("filterYugiohDescr", MessageServer.class));
         methodMap.put(MessageType.ADDDESCRTOWHISLIST,ServerProxy.class.getMethod("addDescrToWhishlist", MessageServer.class));
         methodMap.put(MessageType.SEARCHDESCRSBYTRING,ServerProxy.class.getMethod("searchDescrByString", MessageServer.class));
+        methodMap.put(MessageType.ALREADYLOGGED,ServerProxy.class.getMethod("isLoggedIn", MessageServer.class));
+        methodMap.put(MessageType.LOGOUT,ServerProxy.class.getMethod("logOut", MessageServer.class));
 
     }
 
@@ -75,7 +78,7 @@ public class MultiThreadServer implements Runnable {
      * @throws CheckPasswordConditionsException
      * @throws UsernameAlreadyTakenException
      */
-    public void run() throws CheckPasswordConditionsException, UsernameAlreadyTakenException {
+    public void run() throws CheckPasswordConditionsException, UsernameAlreadyTakenException, AlreadyLoggedInException {
         try {
             ObjectInputStream in = new ObjectInputStream(csocket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(csocket.getOutputStream());
@@ -101,7 +104,7 @@ public class MultiThreadServer implements Runnable {
      * @throws IllegalAccessException
      * @throws CheckPasswordConditionsException
      */
-    private Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException {
+    private Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException, AlreadyLoggedInException {
         Object result = null;
         try {
             result = methodMap.get(tag).invoke(proxy ,messageServer);

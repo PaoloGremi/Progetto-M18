@@ -11,6 +11,7 @@ import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchDescriptionFoundedException;
 import TradeCenter.Exceptions.TradeExceptions.NoSuchTradeException;
+import TradeCenter.Exceptions.UserExceptions.AlreadyLoggedInException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
@@ -38,6 +39,7 @@ public class TradeCenter {
     private HashMap<String, Customer> customers;
     private ArrayList<Trade> activeTrades;
     private ArrayList<Trade> doneTrades;
+    private ArrayList<String> loggedCustomers = new ArrayList<>();
     private DBProxy proxy;
 
     /**
@@ -133,12 +135,22 @@ public class TradeCenter {
             return false;
         }
         if(customer.getUsername().equals(username) && customer.checkPassword(password)){
+            loggedCustomers.add(username);
             return true;
         }else{
             //usere registrato ma password sbagliata //todo richiedere password
             return false;
         }
 
+    }
+
+    public boolean isLogged(String username){
+        if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
+        return true;
+    }
+
+    public void logOut(String username){
+        loggedCustomers.remove(username);
     }
 
     private ArrayList<Card> randomCards(Customer customer, CardCatalog catalog){

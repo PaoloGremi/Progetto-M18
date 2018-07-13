@@ -85,24 +85,15 @@ public class OtherUserProfileScene {
             MainWindow.refreshDynamicContent(borderPane);
         });
         trade.setOnAction(event -> {
-            Socket socket = null;
-            boolean flag = false;
             try {
-                socket = new Socket(ServerIP.ip, ServerIP.port);
-                ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myCustomer.getId(), otherCustomer.getId()));
-                ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
-                flag = (boolean)(is.readObject());
-                if(flag){
+
+                if(possibleTrade(myCustomer.getId(),otherCustomer.getId())){
                     MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false, false));
                 }else{
 
                     MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +" is already started\nsee it in My Trades", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                 }
-                socket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
 
@@ -178,6 +169,16 @@ public class OtherUserProfileScene {
             }
         };
         return event;
+    }
+
+    private static boolean possibleTrade(String myId, String otehrId) throws IOException, ClassNotFoundException {
+        Socket socket = new Socket(ServerIP.ip, ServerIP.port);
+        ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+        os.writeObject(new MessageServer(MessageType.POSSIBLETRADE, myId, otehrId));
+        ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
+        boolean flag = (boolean)(is.readObject());
+        socket.close();
+        return flag;
     }
     public static BorderPane refresh(){
         cardList.getChildren().removeAll(cardList.getChildren());

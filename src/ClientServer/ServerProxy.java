@@ -7,6 +7,7 @@ import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
+import TradeCenter.Exceptions.UserExceptions.AlreadyLoggedInException;
 import TradeCenter.Exceptions.UserExceptions.CheckPasswordConditionsException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.TradeCenter;
@@ -208,6 +209,11 @@ public class ServerProxy {
          return tradeCenter.getCustomersFromDescriptions(descriptions);
     }
 
+    public boolean isLoggedIn(MessageServer messageServer) throws AlreadyLoggedInException {
+       return tradeCenter.isLogged(messageServer.getString1());
+    }
 
-
+    public void logOut(MessageServer messageServer){
+        tradeCenter.logOut(messageServer.getString1());
+    }
 }

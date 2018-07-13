@@ -254,13 +254,12 @@ public class TradeScene {
 
 
         accept.setOnAction(event -> {
-            //todo fare in modo che se premo e la offerta non è quella sul display si visualizza INFOBOX e poi ricarica la offerta aggiornata
             Customer currentmy = null;
             Customer currentOther= null;
             updateCustomers();
             boolean condition = myC.getId().equals(currentTrade.getCustomer2());
 
-            //todo ovvio che la condizione è vera, vedi come li passiamo
+
             if(condition){
                 if(verifyUpdated(currentTrade)) {
                     if(myC.getId().equals(currentTrade.getCustomer1())){
@@ -316,7 +315,7 @@ public class TradeScene {
         //FlowPane flowPane = new FlowPane();
         flowPane.setStyle("-fx-background-color: #fff910");
 
-        //todo togliere if e gestire le offerte
+
         if(customer == null){
             grid.setFitToWidth(true);
             grid.setFitToHeight(true);
@@ -324,7 +323,6 @@ public class TradeScene {
             grid.setStyle("-fx-background-color: #fffb48");
 
             pane.setCenter(grid);
-            //todo vedere se si possono settare spazi ecc...
             return pane;
         }
 
@@ -357,7 +355,6 @@ public class TradeScene {
         grid.setStyle("-fx-background-color: #fffb48");
 
         pane.setCenter(grid);
-        //todo vedere se si possono settare spazi ecc...
         return pane;
     }
 
