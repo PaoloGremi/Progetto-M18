@@ -123,10 +123,10 @@ public class PokemonFilter {
         lengContainer.getChildren().addAll(new Label("Length:"),textLen1,new Label(" ' "),textLen2,new Label(" '' "));
 
         //check boxes
-        CheckBox cbHp=new CheckBox("HP");
-        CheckBox cbLev=new CheckBox("Level");
-        CheckBox cbWeigth=new CheckBox("Weight");
-        CheckBox cbLenght=new CheckBox("Lenght");
+        CheckBox cbHp=new CheckBox("HP ");
+        CheckBox cbLev=new CheckBox("Level ");
+        CheckBox cbWeigth=new CheckBox("Weight ");
+        CheckBox cbLenght=new CheckBox("Lenght ");
         checkContainer.getChildren().addAll(cbHp,cbLev,cbWeigth,cbLenght);
 
 

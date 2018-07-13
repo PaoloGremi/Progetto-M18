@@ -3,6 +3,8 @@ import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import Interface.MainWindow;
 import Interface.OtherUserProfileScene;
+import Interface.SearchUserScene;
+import Interface.WishListScene;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXListView;
@@ -90,9 +92,13 @@ public class DescriptionFounded {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
+                    /*
                     figureContainer.getChildren().remove(addToWhishList);
                     figureContainer.getChildren().add(new Button("!Added!"));
-                    //MainWindow.refreshDynamicContent(WishListScene.display(user.getWishList(),user));
+                    */
+                    Customer customerUpdated=SearchUserScene.retrieveCustomer(user.getUsername());
+                    MainWindow.refreshDynamicContent(WishListScene.display(customerUpdated.getWishList(),customerUpdated));
 
                 }
             });

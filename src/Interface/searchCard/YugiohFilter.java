@@ -1,10 +1,9 @@
 package Interface.searchCard;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -157,10 +156,35 @@ public class YugiohFilter {
         levSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             levLabel.setText(Integer.toString(newValue.intValue()   ));
         });
+        //CheckBox
+        HBox checkContainer=new HBox();
+        CheckBox cbAtk=new CheckBox("ATK ");
+        CheckBox cbLev=new CheckBox("Level ");
+        CheckBox cbDef=new CheckBox("DEF ");
+        CheckBox cbReF=new CheckBox("Ref");
+        checkContainer.getChildren().addAll(cbAtk,cbDef,cbLev,cbReF);
+
+        //Action check
+        CheckBox cbList[]={cbAtk,cbDef,cbLev,cbReF};
+        Pane container[]={atkContainer,defContainer,levContainer,refContainer};
+        for (int i=0;i<cbList.length;i++) {
+            Pane containerCurr=container[i];
+            cbList[i].selectedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    if(newValue){
+                        vBoxMain.getChildren().add(containerCurr);
+                    }
+                    else if (vBoxMain.getChildren().contains(containerCurr)){
+                        vBoxMain.getChildren().remove(containerCurr);
+                    }
+                }
+            });
+        }
 
 
 
-        vBoxMain.getChildren().addAll(comboType,comboMonster,refContainer,atkContainer,defContainer,levContainer);
+        vBoxMain.getChildren().addAll(comboType,comboMonster,checkContainer);
         mainPane.getChildren().add(vBoxMain);
         return mainPane;
     }

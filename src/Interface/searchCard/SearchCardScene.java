@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -52,6 +53,7 @@ public class SearchCardScene {
         /**filtri**/
 
         vBoxFilter=new VBox();
+
         //hBoxFilterTop=new HBox();
         comboCardType=new JFXComboBox();
         comboCardType.setPromptText("Choose type of Card");
@@ -64,27 +66,32 @@ public class SearchCardScene {
         comboCardType.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if(comboCardType.getValue().equals("Pokèmon")){
-                   if(vBoxFilter.getChildren().size()==2)
-                   vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
-                   vBoxFilter.getChildren().add(PokemonFilter.display());
-                }
-                if (comboCardType.getValue().equals("YU-GI-OH!")){
-                    if(vBoxFilter.getChildren().size()==2)
-                    vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
-                    vBoxFilter.getChildren().add(YugiohFilter.display());
-
+                switch ((String) comboCardType.getValue()) {
+                    case ("Pokèmon"):
+                        if (vBoxFilter.getChildren().size() == 2)
+                            vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
+                        vBoxFilter.getChildren().add(PokemonFilter.display());
+                        break;
+                    case ("YU-GI-OH!"):
+                        if (vBoxFilter.getChildren().size() == 2)
+                            vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
+                        vBoxFilter.getChildren().add(YugiohFilter.display());
+                        break;
+                    case ("--Nothing--"):
+                        if (vBoxFilter.getChildren().size() == 2)
+                            vBoxFilter.getChildren().removeAll(vBoxFilter.getChildren().get(1));
+                        break;
                 }
             }
         });
-
-
         Pane paneProva=new Pane();
         paneProva.setStyle("-fx-background-color: DAE6A2;");
         mainBorder.setCenter(paneProva);
         vBoxFilter.getChildren().add(comboCardType);
         mainBorder.setTop(hBoxTop);
         mainBorder.setLeft(vBoxFilter);
+        mainBorder.getStylesheets().add("Interface/ComboBox.css");
+
         return mainBorder;
     }
 
