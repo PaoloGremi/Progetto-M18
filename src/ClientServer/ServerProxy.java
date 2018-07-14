@@ -135,7 +135,7 @@ public class ServerProxy {
      * @return ArrayList with all the trades
      */
     public ArrayList<Trade> searchOffer(MessageServer messageServer){
-        return tradeCenter.showUserTrades(messageServer.getCustomer1());
+        return tradeCenter.showUserTrades(messageServer.getString1());
     }
 
     /**

@@ -579,10 +579,10 @@ public class TradeCenter {
      * @param customer the customer that wants to see his trades
      * @return the list of the customer's trades
      */
-    private ArrayList<Trade> showUserActiveTrades(Customer customer){
+    private ArrayList<Trade> showUserActiveTrades(String customer){
         ArrayList<Trade> activeTradeList = new ArrayList<>();
         for(Trade trade : activeTrades){
-            if(trade.betweenUsers(customer.getId())){
+            if(trade.betweenUsers(customer)){
                 activeTradeList.add(trade);
             }
         }
@@ -595,10 +595,10 @@ public class TradeCenter {
      * @param customer the customer that wants to see his trades
      * @return the list of the customer's trades
      */
-    private ArrayList<Trade> showUserDoneTrades(Customer customer){
+    private ArrayList<Trade> showUserDoneTrades(String customer){
         ArrayList<Trade> doneTradesList = new ArrayList<>();
         for(Trade trade : doneTrades){
-            if(trade.betweenUsers(customer.getId())){
+            if(trade.betweenUsers(customer)){
                 doneTradesList.add(trade);
             }
         }
@@ -611,7 +611,7 @@ public class TradeCenter {
      * @param customer the user
      * @return the list of trades of the user, first the active ones
      */
-    public ArrayList<Trade> showUserTrades(Customer customer){
+    public ArrayList<Trade> showUserTrades(String customer){
         ArrayList<Trade> tradesList = new ArrayList<>();
         tradesList.addAll(showUserActiveTrades(customer));
         tradesList.addAll(showUserDoneTrades(customer));

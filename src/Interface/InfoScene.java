@@ -15,6 +15,13 @@ import javafx.scene.text.TextFlow;
 
 public class InfoScene {
 
+    /**
+     * Displays a Info Scene over the current Scene
+     * @param infoString Message to display
+     * @param url Url of the image to display with the message
+     * @param removable Set if the customer can remove the info scene clicking on it
+     * @return BorderPane with InfoScene
+     */
     public static BorderPane display(String infoString, String url, Boolean removable){
         BorderPane pane = new BorderPane();
         VBox vBox = new VBox();
@@ -43,7 +50,6 @@ public class InfoScene {
                 MainWindow.removeDynamicContent(pane);
             });
         }
-        //todo centrare scritta, mettere blur sotto, fare in  modo che fitta tutto lo schermo(vedi in basso)
         pane.setStyle("-fx-background-color: rgba(235,255,235,0.62);");
         return pane;
     }
