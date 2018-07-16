@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.HashSet;
 
+/**
+ * Abstract class that represents the parameters for an entire collection
+ */
+
 public abstract class Description implements Serializable {
 
     private static final long serialVersionUID = -7217318823889023675L;
@@ -77,12 +81,16 @@ public abstract class Description implements Serializable {
     }
 
     /**
+     * Getter of the name
+     *
      * @return the name of the card
      * */
     public String getName() {
         return name;
     }
     /**
+     * Getter of the text
+     *
      * @return the description of the card
      * */
     public String getText() {
@@ -90,14 +98,17 @@ public abstract class Description implements Serializable {
     }
 
     /**
-     * @return the image
+     * Getter of the image
      *
+     * @return the image
      * */
     public BufferedImage getPic() {
         return pic;
     }
 
     /**
+     * Getter of the list of the card's tag
+     *
      * @return the list of the card's tags
      * */
     public HashSet<String> getListTag() {
@@ -105,6 +116,7 @@ public abstract class Description implements Serializable {
     }
 
     /**
+     *Getter of the description
      *
      * @return the type of the card
      */

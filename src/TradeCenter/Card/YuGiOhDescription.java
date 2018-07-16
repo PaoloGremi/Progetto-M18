@@ -2,6 +2,10 @@ package TradeCenter.Card;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Calss that represents the YuGiOh collection
+ */
+
 public class YuGiOhDescription extends Description{
 
 
@@ -39,6 +43,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of the card ID
      *
      * @return the description of the card
      */
@@ -47,6 +52,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of the level
      *
      * @return the stars value of the yugioh card
      */
@@ -55,6 +61,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of he attack
      *
      * @return the attack value of the yugioh card
      */
@@ -63,6 +70,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of the defense
      *
      * @return the defense value of the yugioh card
      */
@@ -71,6 +79,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of the monster type
      *
      * @return the type of monster of the yugioh card
      */
@@ -79,6 +88,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Getter of the card type
      *
      * @return if the card is a monster, a magical or a trap
      */
@@ -87,6 +97,7 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     *Override toString method
      *
      * @return the card name
      */

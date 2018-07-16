@@ -2,6 +2,10 @@ package TradeCenter.Card;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * Class that rapresent the Pokemon collection
+ */
+
 public class PokemonDescription extends Description {
 
     private static final long serialVersionUID = 411009573434955301L;
@@ -38,6 +42,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the card ID
      *
      * @return the card id
      */
@@ -46,6 +51,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the pokemon type
      *
      * @return the pokemon type
      */
@@ -54,6 +60,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the pokemon health
      *
      * @return the pokemon health
      */
@@ -62,6 +69,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the pokeon weight
      *
      * @return the pokemon weight
      */
@@ -70,6 +78,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the pokemon lenght
      *
      * @return the pokemon lenght
      */
@@ -78,6 +87,7 @@ public class PokemonDescription extends Description {
     }
 
     /**
+     *Getter of the pokemon level
      *
      * @return the pokemon level
      */
@@ -85,6 +95,11 @@ public class PokemonDescription extends Description {
         return level;
     }
 
+    /**
+     * Overrive of toString method
+     *
+     * @return the description of a pokemon
+     */
     @Override
     public String toString() {
         return super.toString();

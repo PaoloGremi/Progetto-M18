@@ -11,6 +11,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ *Class that characterizes a customer
+ */
+
 public class Customer implements Serializable {
 
 
@@ -51,6 +55,10 @@ public class Customer implements Serializable {
 
     }
 
+    /**
+     * Method to add Cards to the Customer's collection.
+     * @param cards new cards add
+     */
     public void addCard(ArrayList<Card> cards) {
         try {
             for(Card card : cards) {
@@ -196,7 +204,7 @@ public class Customer implements Serializable {
     }
 
     /**
-     *
+     *Getter of the customer's collection
      * @return the collection of the customer
      */
     public Collection getCollection() {
@@ -204,6 +212,7 @@ public class Customer implements Serializable {
     }
 
     /**
+     *Getter of a customer's Wishlist
      *
      * @return the wishlist of the customer
      */
@@ -229,8 +238,18 @@ public class Customer implements Serializable {
         return username;
     }
 
+    /**
+     * Getter of the customer's password
+     *
+     * @return Customer's password
+     */
     public String getPassword() { return this.password; }
 
+    /**
+     * Override toString method
+     *
+     * @return The description of the User
+     */
     @Override
     public String toString() {
         return this.id + ": " + this.username + "\n";

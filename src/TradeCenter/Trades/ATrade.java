@@ -8,6 +8,10 @@ import TradeCenter.Customers.*;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
 
+/**
+ * An abstract class that controls the trade between two customers.
+ */
+
 public abstract class ATrade implements Serializable {
 
     /**
@@ -76,10 +80,18 @@ public abstract class ATrade implements Serializable {
         return offer2;
     }
 
+    /**
+     * Getter for trade's date
+     * @return date
+     */
     public Date getDate() {
         return date;
     }
 
+    /**
+     * Setter for the trade's date
+     * @param date current date
+     */
     void setDate(Date date) {
         this.date = date;
     }

@@ -10,6 +10,10 @@ import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.RemoveCardException;
 
+/**
+ * Class that represents a customer's collection.
+ */
+
 public class Collection implements Iterable<Card>, Serializable {
 
     private static final long serialVersionUID = -6729279270235007035L;

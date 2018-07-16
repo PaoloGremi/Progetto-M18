@@ -4,6 +4,10 @@ import TradeCenter.Customers.*;
 import TradeCenter.Card.Card;
 import TradeCenter.Exceptions.CardExceptions.*;
 
+/**
+ * Class that allows a customer to make an offer to another one
+ */
+
 public class Offer extends ATrade {
 
     private boolean acceptedOffer = false;
