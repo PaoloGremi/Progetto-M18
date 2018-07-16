@@ -31,4 +31,19 @@ class DBAtomicDeleter {
         }
     }
 
+    void removeActiveTradeCard(Connection connection, int cardID, int tradeID, int offerCol) {
+        try {
+            System.err.println("[DBAtomicDeleter] - Removing card " + cardID + " from trade " + tradeID + "...");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM cards_active WHERE trade_id = ? AND offer_col = ? AND card_id = ?;");
+            ps.setInt(1, tradeID);
+            ps.setInt(2, offerCol);
+            ps.setInt(3, cardID);
+            ps.execute();
+            connection.commit();
+            System.err.println("[DBAtomicDeleter] - Card " + cardID + " in trade " + tradeID + " removed.");
+        } catch (SQLException e) {
+            System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeActiveTradeCard.");
+        }
+    }
+
 }

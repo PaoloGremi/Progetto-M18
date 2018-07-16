@@ -92,11 +92,11 @@ class DBAtomicRetriever {
                 case "trades":
                     ps = connection.prepareStatement("SELECT COUNT(*) FROM trades;");
                     break;
-                case "pokemon_card":
-                    ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
-                    break;
                 case "yugioh_card":
                     ps = connection.prepareStatement("SELECT COUNT(*) FROM yugioh_card;");
+                    break;
+                case "pokemon_card":
+                    ps = connection.prepareStatement("SELECT COUNT(*) FROM pokemon_card;");
                     break;
             }
             ResultSet rs = ps.executeQuery();
@@ -254,7 +254,7 @@ class DBAtomicRetriever {
         ArrayList<Card> cards = new ArrayList<>();
         try {
             System.err.println("[DBAtomicRetriever] - Retrieving cards in trade " + trade_id + "'s offer " + offer_col + "...");
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col= ?");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col= ?");
             ps.setInt(1, trade_id);
             ps.setInt(2, offer_col);
             ResultSet rs = ps.executeQuery();
@@ -270,7 +270,7 @@ class DBAtomicRetriever {
                 }
                 cards.add(new Card(rs.getInt("card_id"), description));
             }
-            System.err.println("[DBAtomicRetriever] - Ccards in trade " + trade_id + "'s offer " + offer_col + " retrieved.");
+            System.err.println("[DBAtomicRetriever] - Cards in trade " + trade_id + "'s offer " + offer_col + " retrieved.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInTradeOffer.");
         }
@@ -345,11 +345,11 @@ class DBAtomicRetriever {
                     ps2.setInt(2, 2);
                 } else {
                     //first collection
-                    ps1 = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col = ?;");
+                    ps1 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
                     ps1.setInt(1, id);
                     ps1.setInt(2, 1);
                     //second collection
-                    ps2 = connection.prepareStatement("SELECT * FROM cards WHERE trade_id = ? AND offer_col = ?;");
+                    ps2 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
                     ps2.setInt(1, id);
                     ps2.setInt(2, 2);
                 }

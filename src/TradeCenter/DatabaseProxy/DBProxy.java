@@ -261,13 +261,13 @@ public class DBProxy implements IProxy,ISearch{
             ArrayList<Card> toAdd = new ArrayList<Card>(trade.getOffer2().getSet());
             toAdd.removeAll(oldOffer1);
             for(Card card : toAdd) {
-                dbUp.updateCard(connection, card, trade.getId(), 1);
+                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
                 // get cards to remove
             ArrayList<Card> toRemove = new ArrayList<Card>(trade.getOffer2().getSet());
             oldOffer1.removeAll(toRemove);
             for(Card card : oldOffer1) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
             // update cards in offer2
                 // get db's offer2
@@ -276,13 +276,13 @@ public class DBProxy implements IProxy,ISearch{
             ArrayList<Card> toAdd2 = new ArrayList<Card>(trade.getOffer1().getSet());
             toAdd2.removeAll(oldOffer2);
             for(Card card : toAdd2) {
-                dbUp.updateCard(connection, card, trade.getId(), 2);
+                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
                 // get cards to remove
             ArrayList<Card> toRemove2 = new ArrayList<Card>(trade.getOffer1().getSet());
             oldOffer2.removeAll(toRemove2);
             for(Card card : oldOffer2) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
             // free memory
             oldOffer1.clear();
@@ -299,10 +299,10 @@ public class DBProxy implements IProxy,ISearch{
             newCards.removeAll(oldOffer1);
                 // set to null all these cards
             for (Card card: oldOffer1) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
             for (Card card : newCards) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
                 // save new cards to db (old_cards)
             for (Card card : trade.getOffer2()) {
@@ -313,12 +313,13 @@ public class DBProxy implements IProxy,ISearch{
             // get new cards
             ArrayList<Card> newCards2 = new ArrayList<Card>(trade.getOffer1().getSet());
             newCards.removeAll(oldOffer2);
-            // set to null all these cards
+            // todo remove cards from cards_active
+                // set to null all these cards
             for (Card card: oldOffer2) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
             for (Card card : newCards2) {
-                dbUp.updateCard(connection, card);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
             // save new cards to db (old_cards)
             for (Card card : trade.getOffer1()) {
@@ -346,10 +347,10 @@ public class DBProxy implements IProxy,ISearch{
         dbIns.insertTrade(connection, trade);
         // update cards in the offers
         for (Card card : trade.getOffer1()) {
-            dbUp.updateCard(connection, card, trade.getId(), 1);
+            dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 1);
         }
         for (Card card : trade.getOffer2()) {
-            dbUp.updateCard(connection, card, trade.getId(), 2);
+            dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 2);
         }
         System.err.println("[DBProxy] - Trade number " + trade.getId() + " added to database.");
     }

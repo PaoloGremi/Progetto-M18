@@ -21,7 +21,7 @@ class DBAtomicInserter {
     void insertCard(Connection connection, Card card, Customer customer) {
         try {
             System.err.println("[DBAtomicInserter] - Adding card number " + card.getId() + " to database...");
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards VALUES (?,?,?,?,?,?) ON DUPLICATE KEY UPDATE customer_id = ?;");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE customer_id = ?;");
             ps.setInt(1,card.getId());
             ps.setString(2, customer.getId());
             switch (card.getDescription().getDescrType()) {
@@ -34,14 +34,25 @@ class DBAtomicInserter {
                     ps.setString(4, "yugioh");
                     break;
             }
-            ps.setNull(5, Types.INTEGER);
-            ps.setNull(6, Types.INTEGER);
-            ps.setString(7, customer.getId());
+            ps.setString(5, customer.getId());
             ps.execute();
             connection.commit();
             System.err.println("[DBAtomicInserter] - Card " + card.getId() + " added to database.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertCard.");
+        }
+    }
+
+    void insertActiveTradeCard(Connection connection, int cardID, int tradeID, int offerCol) {
+        try {
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_active VALUES (?,?,?);");
+            ps.setInt(1, tradeID);
+            ps.setInt(2, cardID);
+            ps.setInt(3, offerCol);
+            ps.execute();
+            connection.commit();
+        } catch(SQLException e) {
+            e.printStackTrace();
         }
     }
 
