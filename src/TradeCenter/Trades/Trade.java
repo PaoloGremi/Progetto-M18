@@ -4,6 +4,10 @@ import TradeCenter.DatabaseProxy.FakeOffer;
 
 import java.util.ArrayList;
 
+/**
+ * The actual trade between teo customers
+ */
+
 public class Trade extends ATrade {
 
     /**
@@ -46,7 +50,6 @@ public class Trade extends ATrade {
         super.updateParameters(offer.getCustomer1(), offer.getCustomer2(), offer.getOffer1(), offer.getOffer2(), offer.getDate(), flag);
     }
 
-
     /**
      * Returns wheter or not the trade is over and to be moved to the DoneTrades
      * @return boolean
@@ -72,6 +75,11 @@ public class Trade extends ATrade {
         return positiveEnd;
     }
 
+    /**
+     * Return if the trade is between a given customer ID
+     * @param id
+     * @return
+     */
     public boolean betweenUsers(String id) {
         return (super.getCustomer1().equals(id) || super.getCustomer2().equals(id));
     }
