@@ -32,6 +32,9 @@ import java.util.ArrayList;
 
 import static Interface.SearchUserScene.retrieveCustomer;
 
+/**
+ * The interface for the trade view
+ */
 
 public class TradeScene {
 
@@ -71,6 +74,15 @@ public class TradeScene {
 
     private static ATrade currentTrade = null;
 
+    /**
+     *
+     * @param trade a trade
+     * @param myCustomer the customer itself
+     * @param otherCustomer the customer you want to make an offer
+     * @param flagStarted build each grid
+     * @param changedMind
+     * @return
+     */
     static BorderPane display(ATrade trade, Customer myCustomer, Customer otherCustomer,  boolean flagStarted, boolean changedMind){
 
         currentTrade=trade;
@@ -130,7 +142,6 @@ public class TradeScene {
         otherOfferPane = new BorderPane();
 
         if(!flagStarted) {
-            //costruisco le singole griglie
             myCollectionPane = displayCards(myCustomer, myCollectionTitle, myCollectionGrid, myCollFlow, true, myCollectionList);
             otherCollectionPane = displayCards(otherCustomer, otherCollectionTitle, otherCollectionGrid, otherCollFlow, false, otherCollectionList);
             myOfferPane = displayCards(null, myOfferTitle, myOfferGrid, myOfferFlow, false, null);
@@ -309,6 +320,16 @@ public class TradeScene {
         return mainPane;
     }
 
+    /**
+     * method used to display cards
+     * @param customer the customer itself
+     * @param title title of the element
+     * @param grid where you add the element
+     * @param flowPane a type of pane
+     * @param flag tells if the collection is mine
+     * @param collection the collection
+     * @return the pane
+     */
     static BorderPane displayCards(Customer customer, TextFlow title, ScrollPane grid, FlowPane flowPane, boolean flag, ArrayList<Card> collection){
         BorderPane pane = new BorderPane();
         pane.setTop(title);                 //titolo
@@ -358,6 +379,13 @@ public class TradeScene {
         return pane;
     }
 
+    /**
+     * static method used to add a card
+     * @param scrollPane a pane type
+     * @param card the card
+     * @param flag used to know if the collection is mine
+     * @return the pane
+     */
     static ScrollPane addToOffer(ScrollPane scrollPane, Card card, boolean flag){
         ArrayList<Card> imageList;
 
@@ -422,6 +450,10 @@ public class TradeScene {
 
     }
 
+    /**
+     * display the already started trade
+     * @param trade the trade
+     */
     static void restoreFromPreviousTrade(ATrade trade){
         GridPane mainGrid1 = new GridPane();
         myImageList.removeAll(myImageList);
@@ -493,6 +525,12 @@ public class TradeScene {
 
     }
 
+    /**
+     * restore the scroll viwe
+     * @param borderPane type of pane
+     * @param scrollPane type of pane
+     * @param flowPane type of pane
+     */
     static void restoreScroll(BorderPane borderPane,ScrollPane scrollPane, FlowPane flowPane){
         borderPane.setStyle("-fx-background-color: #fff910");
         scrollPane.setFitToWidth(true);
@@ -505,6 +543,10 @@ public class TradeScene {
 
     }
 
+    /**
+     * method used to visualize the trade scene
+     * @return border pane
+     */
     static BorderPane refresh(){
 
         GridPane mainGrid1 = new GridPane();
@@ -529,6 +571,11 @@ public class TradeScene {
         return mainPane;
     }
 
+    /**
+     * method that close the trade with successful ends
+     * @param trade the trade
+     * @return a timeline in which you've done the trade
+     */
     private static Timeline loading(ATrade trade ){
 
         Timeline task = new Timeline(
@@ -567,6 +614,11 @@ public class TradeScene {
         return task;
     }
 
+    /**
+     * method to update the trade
+     * @param trade the trade you want to update
+     * @return updater trade
+     */
     private static ATrade retrieveActualTrade(ATrade trade){
         ATrade actualTrade = null;
         try {
@@ -585,6 +637,11 @@ public class TradeScene {
         return actualTrade;
     }
 
+    /**
+     * Verify if the trade is successfully updeter
+     * @param trade the trade to update
+     * @return a boolean
+     */
     private static boolean verifyUpdated(ATrade trade){
         ATrade actualTrade = retrieveActualTrade(trade);
         if(actualTrade!=null) {
@@ -598,12 +655,21 @@ public class TradeScene {
         return false;
     }
 
+    /**
+     * method used to change an offer
+     */
     private static void infoOfferChanged(){
         updateCustomers();
         restoreFromPreviousTrade(currentTrade);
         MainWindow.addDynamicContent(InfoScene.display("The other customer changed\nthe offer", "Interface/imagePack/2000px-Simple_Alert.svg.png",true));
     }
 
+    /**
+     * Check if the card is still in the customer's collection
+     * @param collection
+     * @param offer
+     * @return
+     */
     private static boolean stillInTheCollection(Collection collection, Collection offer){
         for(Card card : offer){
             if(!collection.isInTheCollection(card)){
@@ -614,6 +680,11 @@ public class TradeScene {
         return true;
     }
 
+    /**
+     * Remove the trade
+     * @param myid customer's id
+     * @param otherId other customer's id
+     */
     private static void removeTrade(String myid, String otherId){
         Socket socket = null;
         try {
@@ -627,6 +698,9 @@ public class TradeScene {
         }
     }
 
+    /**
+     * Update of the customer
+     */
     private static void updateCustomers(){
         Customer currentMy = null;
         Customer currentOther = null;
@@ -637,6 +711,13 @@ public class TradeScene {
         otherC=currentOther;
     }
 
+    /**
+     * Mouse event handler that move the cards from collection to offer
+     * @param imageView the card's image
+     * @param flag used to check if the mouse is clicked
+     * @param card the card
+     * @return the event
+     */
     private static EventHandler<MouseEvent> moveCardsCollection(ImageView imageView, boolean flag, Card card){
         EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
             public void handle(MouseEvent mouseEvent1) {
@@ -670,6 +751,15 @@ public class TradeScene {
         return event;
     }
 
+    /**
+     * method that move the card from the collection to the offer
+     * @param collectionList the collection
+     * @param card the card
+     * @param flag tells if the collection is mine
+     * @param offerGrid type of pane
+     * @param offerPane type of pane
+     * @param collFlow type of pane
+     */
     private static void handleEventCollection(ArrayList<Card> collectionList, Card card, boolean flag, ScrollPane offerGrid, BorderPane offerPane, FlowPane collFlow){
         collectionList.remove(card);
         addToOffer(offerGrid, card, flag);
@@ -677,6 +767,14 @@ public class TradeScene {
         restoreCollection(null,flag,collFlow, collectionList);
     }
 
+    /**
+     * Mouse handler to move the card from offer to collection
+     * @param flow type of pane
+     * @param pane tipe of pane
+     * @param flag to check if it's my collection
+     * @param card the card
+     * @return the event
+     */
     private static EventHandler<MouseEvent> moveCardsOffer(FlowPane flow, BorderPane pane, boolean flag, Card card){
         EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
 
@@ -702,6 +800,17 @@ public class TradeScene {
         return event;
     }
 
+    /**
+     * method to move the card from offer to collection
+     * @param collectionList the collection
+     * @param card the card
+     * @param flag tells if the collection is mine
+     * @param collFlow type of pane
+     * @param flow type of pane
+     * @param imageList card's image
+     * @param cardOffer the offered card
+     * @param pane type of pane
+     */
     private static void handleEventOffer(ArrayList<Card> collectionList, Card card, boolean flag, FlowPane collFlow, FlowPane flow, ArrayList<Card> imageList, Collection cardOffer, BorderPane pane){
         cardOffer.removeCardFromCollection(card);
         collFlow.getChildren().add(pane);

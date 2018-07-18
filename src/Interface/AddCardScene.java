@@ -26,6 +26,10 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ *Interface of the Card Scene
+ */
+
 public class AddCardScene {
 
 
@@ -124,6 +128,16 @@ public class AddCardScene {
         return hBox;
     }
 
+    /**
+     * Method for the loading animation and the trade center's call for the opening of the pack
+     * @param customer the customer
+     * @param vBox
+     * @param scroll
+     * @param borderPane
+     * @param bar
+     * @param messageType
+     * @return a time line in wich there are the loading's animation and the trade center's call for the openings of the packages
+     */
     private static Timeline loading(Customer customer, VBox vBox, ScrollPane scroll, BorderPane borderPane, ProgressIndicator bar, MessageType messageType ){
 
         Timeline task = new Timeline(

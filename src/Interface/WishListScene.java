@@ -31,13 +31,21 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * the interface of the Whishlist view
+ */
 
 public class WishListScene{
 
     static ArrayList<Description> wish;
     static Customer user;
 
-
+    /**
+     * constructor of the scene
+     * @param wishList a whishlist
+     * @param customer the customer
+     * @return the scene
+     */
     public static BorderPane display(ArrayList<Description> wishList, Customer customer)  {
 
         user=customer;
@@ -160,7 +168,10 @@ public class WishListScene{
     }
 
 
-
+    /**
+     * method to go back at the first view
+     * @return display the scene
+     */
     static BorderPane refresh(){
         return display(wish, user);
     }

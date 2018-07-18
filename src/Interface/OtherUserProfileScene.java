@@ -24,7 +24,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-
+/**
+ * Interface to see other user's account
+ */
 public class OtherUserProfileScene {
 
     static StackPane cardList;
@@ -37,6 +39,12 @@ public class OtherUserProfileScene {
     static Customer otherCustomer;
     static String displayed = "Collection";
 
+    /**
+     * method to display the scene
+     * @param myCustomer the customer itself
+     * @param otherUser the other customer
+     * @return the scene
+     */
     public static BorderPane display(Customer myCustomer, Customer otherUser) {
         otherCustomer = otherUser;
         borderPane = new BorderPane();
@@ -102,6 +110,11 @@ public class OtherUserProfileScene {
         return borderPane;
     }
 
+    /**
+     * method used to see the other user's collection
+     * @param customer the other customer
+     * @return the pane
+     */
     private static ScrollPane displayCollection(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
@@ -135,6 +148,12 @@ public class OtherUserProfileScene {
         cardGrid.setStyle("-fx-background-color: #fffd14");
         return cardGrid;
     }
+
+    /**
+     * Method used to show the other customer's whishlist
+     * @param customer the other customer
+     * @return the pane
+     */
     private static ScrollPane displayWishlist(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
@@ -160,6 +179,11 @@ public class OtherUserProfileScene {
         return cardGrid;
     }
 
+    /**
+     * method that handle the mouse event
+     * @param imageView the card's image
+     * @return the event of clicked card
+     */
     public static EventHandler<MouseEvent> mouseEvent(ImageView imageView){
         EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
 
@@ -171,6 +195,14 @@ public class OtherUserProfileScene {
         return event;
     }
 
+    /**
+     * method that talls if a trade is possible
+     * @param myId the id
+     * @param otehrId the other id
+     * @return if it's possible or not
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static boolean possibleTrade(String myId, String otehrId) throws IOException, ClassNotFoundException {
         Socket socket = new Socket(ServerIP.ip, ServerIP.port);
         ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
@@ -180,6 +212,11 @@ public class OtherUserProfileScene {
         socket.close();
         return flag;
     }
+
+    /**
+     * method that display the first view
+     * @return the pane
+     */
     public static BorderPane refresh(){
         cardList.getChildren().removeAll(cardList.getChildren());
         if(watchingWishlist){

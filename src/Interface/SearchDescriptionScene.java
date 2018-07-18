@@ -29,6 +29,9 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Interface for searching the users with the card's description you pass as parameter
+ */
 public class SearchDescriptionScene {
 
 
@@ -37,7 +40,13 @@ public class SearchDescriptionScene {
     static Customer user;
     static Description cardDescription;
 
-
+    /**
+     * method to display the search description scene
+     * @param description the description you're searching
+     * @param customers the customers
+     * @param customerThis the customer itself
+     * @return the scene
+     */
     public static BorderPane display(Description description, ArrayList<String> customers, Customer customerThis){
 
         if(customers.isEmpty()){
@@ -107,6 +116,11 @@ public class SearchDescriptionScene {
         return border;
     }
 
+    /**
+     * method to go back to the first view
+     * @return the scene
+     * @throws IOException
+     */
     static BorderPane refresh() throws IOException {
         return display(cardDescription, array, user);
     }

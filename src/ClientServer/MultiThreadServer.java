@@ -63,7 +63,7 @@ public class MultiThreadServer implements Runnable {
      * @throws Exception
      */
     public static void main(String args[]) throws Exception {
-        ServerSocket ssock = new ServerSocket(8889);
+        ServerSocket ssock = new ServerSocket(ServerIP.port);
         System.out.println("Listening");
 
         while (true) {

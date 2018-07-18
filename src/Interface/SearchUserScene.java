@@ -28,11 +28,20 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Interface for the Searching of Users
+ */
+
 
 public class SearchUserScene {
 
     static Customer myProfile;
 
+    /**
+     * display the scene
+     * @param mySelf the customer itself
+     * @return the scene
+     */
     static BorderPane display(Customer mySelf){
         myProfile = mySelf;
         BorderPane scene = new BorderPane();
@@ -100,7 +109,9 @@ public class SearchUserScene {
         scene.setCenter(pane);
         return scene;
     }
-
+/**
+ * a method that handle the mouse event when you click on the cell of the listview
+ */
     public static EventHandler<MouseEvent> mouseEvent(JFXListView<String> usersList){
         EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
             @Override
@@ -113,6 +124,11 @@ public class SearchUserScene {
         return event;
     }
 
+    /**
+     * a method that find a customer
+     * @param customer the searched customer
+     * @return the customer
+     */
     public static Customer retrieveCustomer(String customer){
         Customer updatedCustomer = null;
         Socket socket = null;
