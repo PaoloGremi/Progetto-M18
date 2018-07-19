@@ -161,6 +161,14 @@ public class DBProxy implements IProxy,ISearch{
         Customer customer = null;
         System.err.println("[DBProxy] - Retrieving customer " + username + "...");
         customer = dbRet.retrieveSingleCustomerByUsername(connection, username);
+        // add card collection
+        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer)) {
+            customer.addCard(card);
+        }
+        // add card wishlist
+        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
+            customer.addCardToWishList(description);
+        }
         System.err.println("[DBProxy] - Customer " + username + " retrieved.\n");
         connection = dbConn.disconnectFromDB(connection);
         return customer;

@@ -19,11 +19,7 @@ import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
 import TradeCenter.DatabaseProxy.DBProxy;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.IndexColorModel;
 import java.util.*;
-
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
  * Class representing the trading center.
@@ -33,7 +29,6 @@ import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
  */
 public class TradeCenter {
 
-    private int contUsers;
     private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
     private HashMap<String, Customer> customers;
@@ -46,14 +41,10 @@ public class TradeCenter {
      * Create a new trade center, with the database connection that load cards and users with their attributes
      */
     public TradeCenter() {
-        this.contUsers = 0;
         this.proxy = new DBProxy();
-        this.pokemonCatalog = new CardCatalog();
-        this.yugiohCatalog = new CardCatalog();
-        proxy.populateCatalog(pokemonCatalog, "pokemon_card");
-        proxy.populateCatalog(yugiohCatalog, "yugioh_card");
+        populateCatalogs();
         this.customers = new HashMap<String, Customer>();
-        contUsers = proxy.retrieveCustomers(customers);
+        //contUsers = proxy.retrieveCustomers(customers);
         this.activeTrades = new ArrayList<Trade>();
         this.doneTrades = new ArrayList<Trade>();
         for(int i=1; i<proxy.getNextTradeID(); i++) {
@@ -62,6 +53,17 @@ public class TradeCenter {
             else activeTrades.add(trade);
         }
     }
+
+    /**
+     * A method that populates the catalogs
+     */
+    private void populateCatalogs(){
+        this.pokemonCatalog = new CardCatalog();
+        this.yugiohCatalog = new CardCatalog();
+        proxy.populateCatalog(pokemonCatalog, "pokemon_card");
+        proxy.populateCatalog(yugiohCatalog, "yugioh_card");
+    }
+
     /**
      * Create an account for a new user
      */
@@ -262,15 +264,16 @@ public class TradeCenter {
      * @return
      */
     public Customer searchCustomer(String username){
-        long startTime = System.currentTimeMillis();
         for(String key : customers.keySet()){
             if((customers.get(key)).getUsername().equals(username)){
                 return customers.get(key);
             }
-            long endTime = System.currentTimeMillis();
-            System.out.println("That took " + (endTime - startTime) + " milliseconds");
         }
         //user not found
+        //todo create the method in proxy
+        Customer customer = proxy.retrieveSingleCustomer(username);
+        if(customer != null) return customer;
+
         throw new UserNotFoundException();
     }
 
@@ -546,23 +549,6 @@ public class TradeCenter {
 
 
     }
-
-    /**
-     * Check for deals that are over, if so it updates the list of active and done deals
-     * Also if a deal it's over, the exchange is done
-     */
-    /*per ora inutile viene tutto fatto nel metodo switchcards
-    public void checkDoneDeals(){
-        for(Trade trade : activeTrades){        //todo togliere ciclo, ricontrollare per sincronia con interfaccia grafica e db
-            if(trade.isDoneDeal()){
-                switchCards(trade);
-                doneTrades.add(trade);
-                activeTrades.remove(trade);
-            }
-        }
-    }
-
-    */
 
     /**
      * A method that shows a log of all the trades that ended
