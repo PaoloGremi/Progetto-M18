@@ -1,0 +1,42 @@
+
+.combo-box {
+    -fx-background-color:
+            linear-gradient(#ffd65b, #e68400),
+            linear-gradient(#ffef84, #f2ba44),
+            linear-gradient(#ffea6a, #efaa22),
+            linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%),
+            linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 7;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #ffd65b;
+}
+
+.combo-box-popup .list-view .list-cell:filled {
+    -fx-background-color: #ffd65b;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+    -fx-background-color: #e68400;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #e68400;
+}
+
+
+.check-box:selected > .box {
+    -fx-background-color: #ff3300;
+}
+
+.check-box > .box {
+    /* background color of unselected checkbox */
+    -fx-background-color: orange;
+}
+
+.check-box:selected > .box > .mark,
+.check-box:indeterminate  > .box > .mark {
+    /* modify mark color */
+    -fx-background-color: #ffef84;
+}
