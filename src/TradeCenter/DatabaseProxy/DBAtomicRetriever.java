@@ -52,13 +52,13 @@ class DBAtomicRetriever {
      * @param id: customer's id
      * @return customer
      */
-    Customer retrieveSingleCustomerByUserID(Connection connection, int id) {
+    Customer retrieveSingleCustomerByUserID(Connection connection, String id) {
         Customer customer = null;
         try {
             System.err.println("[DBAtomicRetriever] - Retrieving customer by id " + id + "...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM customers where customer_id = ?;");
-            String user_id = "USER-"+id;
-            ps.setString(1, user_id);
+            //String user_id = "USER-"+id;
+            ps.setString(1, id);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
                 customer = new Customer(rs.getString("customer_id"),
@@ -70,6 +70,22 @@ class DBAtomicRetriever {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveSingleCustomerByUserID.");
         }
         return customer;
+    }
+
+    ArrayList<String> getCustomersUsernames(Connection connection) {
+        ArrayList<String> usernames = new ArrayList<>();
+        try {
+            System.err.println("[DBAtomicRetriever] - Retrieving customer's usernames...");
+            PreparedStatement ps = connection.prepareStatement("SELECT username FROM customers;");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                usernames.add(rs.getString("username"));
+            }
+            System.err.println("[DBAtomicRetriever] - Customer usernames retrieved.");
+        }catch (SQLException | NullPointerException e) {
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method getCustomersUsernames.");
+        }
+        return usernames;
     }
 
     /**
@@ -388,6 +404,82 @@ class DBAtomicRetriever {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveTrade.");
         }
         return trade;
+    }
+
+    ArrayList<Trade> retrieveTradeByUser(Connection connection, String id) {
+        ArrayList<Trade> trades = new ArrayList<>();
+        try {
+            System.err.println("[DBAtomicRetriever] - Retrieving trade with customer number " + id + "...");
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM trades WHERE user1_id = ? OR user2_id = ?;");
+            ps.setString(1, id);
+            ps.setString(2, id);
+            ResultSet rs = ps.executeQuery();
+            FakeOffer offer = new FakeOffer();
+            while(rs.next()) {
+                offer.setId(rs.getInt("trade_id"));
+                offer.setCustomer1(rs.getString("user1_id"));
+                offer.setCustomer2(rs.getString("user2_id"));
+                offer.setDate(rs.getDate("date"));
+                Boolean donedeal = rs.getBoolean("donedeal");
+                offer.setDoneDeal(donedeal);
+                offer.setPositiveEnd(rs.getBoolean("positive_end"));
+                PreparedStatement ps1;
+                PreparedStatement ps2;
+                Card card;
+                if (donedeal) {
+                    //first collection
+                    ps1 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
+                    ps1.setInt(1, rs.getInt("trade_id"));
+                    ps1.setInt(2, 1);
+                    //second collection
+                    ps2 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
+                    ps2.setInt(1, rs.getInt("trade_id"));
+                    ps2.setInt(2, 2);
+                } else {
+                    //first collection
+                    ps1 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
+                    ps1.setInt(1, rs.getInt("trade_id"));
+                    ps1.setInt(2, 1);
+                    //second collection
+                    ps2 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
+                    ps2.setInt(1, rs.getInt("trade_id"));
+                    ps2.setInt(2, 2);
+                }
+                ResultSet rs1 = ps1.executeQuery();
+                while (rs1.next()) {
+                    Description description = null;
+                    switch (rs1.getString("card_Type")) {
+                        case "pokemon":
+                            description = retrieveSinglePokemonDescription(connection, rs1.getInt("description_id"));
+                            break;
+                        case "yugioh":
+                            description = retrieveSingleYugiohDescription(connection, rs1.getInt("description_id"));
+                            break;
+                    }
+                    card = new Card(rs1.getInt("card_id"), description);
+                    offer.addCardOffer1(card);
+                }
+                ResultSet rs2 = ps2.executeQuery();
+                while (rs2.next()) {
+                    Description description = null;
+                    switch (rs2.getString("card_Type")) {
+                        case "pokemon":
+                            description = retrieveSinglePokemonDescription(connection, rs2.getInt("description_id"));
+                            break;
+                        case "yugioh":
+                            description = retrieveSingleYugiohDescription(connection, rs2.getInt("description_id"));
+                            break;
+                    }
+                    card = new Card(rs2.getInt("card_id"), description);
+                    offer.addCardOffer2(card);
+                }
+                trades.add(new Trade(offer));
+            }
+            System.err.println("[DBAtomicRetriever] - Trade with customer number " + id + " retrieved.");
+        } catch (SQLException e) {
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveTradeByUser.");
+        }
+        return trades;
     }
 
 }

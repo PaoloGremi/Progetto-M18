@@ -124,11 +124,11 @@ public class DBProxy implements IProxy,ISearch{
 
     /**
      * Adds full customer to customer hashmap
-     * @param customers: hashmap to be populated
+     * //@param customers: hashmap to be populated
      * @return number of customers
      */
-    @Override
-    public int retrieveCustomers(HashMap<String, Customer> customers) {
+    //@Override
+    /*public int retrieveCustomers(HashMap<String, Customer> customers) {
         connection = dbConn.connectToDB(connection);
         System.err.println("[DBProxy] - Retrieving customers...");
         int n = dbRet.getTableSize(connection, "customers");
@@ -148,7 +148,7 @@ public class DBProxy implements IProxy,ISearch{
         System.err.println("[DBProxy] - Retrieved " + n + " customers.");
         connection = dbConn.disconnectFromDB(connection);
         return n;
-    }
+    }*/
 
     /**
      * Retrieve a single customer from the database given its username (used in LogIn procedure)
@@ -170,6 +170,31 @@ public class DBProxy implements IProxy,ISearch{
             customer.addCardToWishList(description);
         }
         System.err.println("[DBProxy] - Customer " + username + " retrieved.\n");
+        connection = dbConn.disconnectFromDB(connection);
+        return customer;
+    }
+
+    public ArrayList<String> getAllCustomersNames() {
+        connection = dbConn.connectToDB(connection);
+        ArrayList<String> customersNames = dbRet.getCustomersUsernames(connection);
+        connection = dbConn.disconnectFromDB(connection);
+        return customersNames;
+    }
+
+    public Customer retrieveSingleCustomerByID(String id) {
+        connection = dbConn.connectToDB(connection);
+        Customer customer = null;
+        System.err.println("[DBProxy] - Retrieving customer " + id + "...");
+        customer = dbRet.retrieveSingleCustomerByUserID(connection, id);
+        // add card collection
+        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer)) {
+            customer.addCard(card);
+        }
+        // add card wishlist
+        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
+            customer.addCardToWishList(description);
+        }
+        System.err.println("[DBProxy] - Customer " + id + " retrieved.\n");
         connection = dbConn.disconnectFromDB(connection);
         return customer;
     }
@@ -250,6 +275,15 @@ public class DBProxy implements IProxy,ISearch{
         connection = dbConn.connectToDB(connection);
         System.err.println("[DBProxy] - Retrieving trade number " + id + "...");
         Trade trade = dbRet.retrieveTrade(connection, id);
+        System.err.println("[DBProxy] - Trade retrieved.");
+        connection = dbConn.disconnectFromDB(connection);
+        return trade;
+    }
+
+    public ArrayList<Trade> getTradeByUser(String id) {
+        connection = dbConn.connectToDB(connection);
+        System.err.println("[DBProxy] - Retrieving trade with customer " + id + "...");
+        ArrayList<Trade> trade = dbRet.retrieveTradeByUser(connection, id);
         System.err.println("[DBProxy] - Trade retrieved.");
         connection = dbConn.disconnectFromDB(connection);
         return trade;

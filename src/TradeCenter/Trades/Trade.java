@@ -101,4 +101,28 @@ public class Trade extends ATrade {
         return getCustomer1() + " - " + getCustomer2() + "\nOn the " + super.getDate().toString() + "\n";
     }
 
+
+
+    /**
+     * Override of the equals method
+     * @param obj a card
+     * @return if two cards are equals to each other
+     *//*
+    @Override
+    public boolean equals(Object obj) {
+        Trade t= (Trade) obj;
+        return this.id == t.id;
+    }
+
+    /**
+     *Method that make the same trade have the same ID
+     *
+     * @return hashcode
+     */
+    /*
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * this.id;
+        return hash;
+    }*/
 }

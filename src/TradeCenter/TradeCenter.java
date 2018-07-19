@@ -32,8 +32,8 @@ public class TradeCenter {
     private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
     private HashMap<String, Customer> customers;
-    private ArrayList<Trade> activeTrades;
-    private ArrayList<Trade> doneTrades;
+    private HashSet<Trade> activeTrades;
+    private HashSet<Trade> doneTrades;
     private ArrayList<String> loggedCustomers = new ArrayList<>();
     private DBProxy proxy;
 
@@ -45,13 +45,13 @@ public class TradeCenter {
         populateCatalogs();
         this.customers = new HashMap<String, Customer>();
         //contUsers = proxy.retrieveCustomers(customers);
-        this.activeTrades = new ArrayList<Trade>();
-        this.doneTrades = new ArrayList<Trade>();
-        for(int i=1; i<proxy.getNextTradeID(); i++) {
+        this.activeTrades = new HashSet<>();
+        this.doneTrades = new HashSet<>();
+        /*for(int i=1; i<proxy.getNextTradeID(); i++) {
             Trade trade = proxy.getTrade(i);
             if(trade.isDoneDeal()) doneTrades.add(trade);
             else activeTrades.add(trade);
-        }
+        }*/
     }
 
     /**
@@ -137,6 +137,7 @@ public class TradeCenter {
             return false;
         }
         if(customer.getUsername().equals(username) && customer.checkPassword(password)){
+            customers.put(customer.getId(), customer);
             loggedCustomers.add(username);
             return true;
         }else{
@@ -172,16 +173,17 @@ public class TradeCenter {
      */
     private ArrayList<Card> randomCards(String userId, CardCatalog catalog){
 
-        ArrayList<Card> cards = new ArrayList();
+        ArrayList<Card> cards = new ArrayList<>();
         int i = 0;
+        int nextCard = proxy.getNextCardID();
         Random rand = new Random();
         Random random = new Random();
         while (i < 7){
-            cards.add(new Card(proxy.getNextCardID()+i, (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
+            cards.add(new Card(nextCard+i, (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
             i++;
         }
 
-        addCardtoCustomer(searchCustomerById(userId),cards);
+        addCardtoCustomer(searchCustomerById(userId).getId(),cards);
 
         return cards;
     }
@@ -211,13 +213,13 @@ public class TradeCenter {
 
     /**
      * a method that add a card to collection to a customer
-     * @param customer the customer itself
+     * @param customerId Id of the customer himself
      * @param cards the cards to add to a collection
      */
-    public void addCardtoCustomer(Customer customer, ArrayList<Card> cards){
+    public void addCardtoCustomer(String customerId, ArrayList<Card> cards){
 
-        customers.get(customer.getId()).addCard(cards);
-        proxy.updateCustomer(customers.get(customer.getId()));
+        customers.get(customerId).addCard(cards);
+        proxy.updateCustomer(customers.get(customerId));
     }
 
 
@@ -284,15 +286,16 @@ public class TradeCenter {
      * @return the list of customers that corresponds to the search
      */
     public ArrayList<String> searchUsers(String username, String myUsername){
-        ArrayList<String> results = new ArrayList<>();
+        ArrayList<String> usersFound = new ArrayList<>();
+        ArrayList<String> results = proxy.getAllCustomersNames();
         String usernameLow = username.toLowerCase();
-        for(String key: customers.keySet()){
-            String name = customers.get(key).getUsername().toLowerCase();
-            if(name.contains(usernameLow) && !customers.get(key).getUsername().equals(myUsername)){
-                results.add(customers.get(key).getUsername());
+        for(String customer: results){
+            String name = customer.toLowerCase();
+            if(name.contains(usernameLow) && !customer.equals(myUsername)){
+                usersFound.add(customer);
             }
         }
-        return results;
+        return usersFound;
     }
 
     /**
@@ -302,7 +305,9 @@ public class TradeCenter {
      */
     public Customer searchCustomerById(String id){
 
-        return customers.get(id);
+        if(customers.keySet().contains(id)) return customers.get(id);
+
+        return proxy.retrieveSingleCustomerByID(id);
 
     }
 
@@ -313,7 +318,9 @@ public class TradeCenter {
      */
     public String searchUsernameById(String id){
 
-        return customers.get(id).getUsername();
+        if(customers.keySet().contains(id)) return customers.get(id).getUsername();
+
+        return proxy.retrieveSingleCustomerByID(id).getUsername();
 
     }
 
@@ -572,6 +579,8 @@ public class TradeCenter {
                 activeTradeList.add(trade);
             }
         }
+
+
         return activeTradeList;
     }
 
@@ -598,6 +607,12 @@ public class TradeCenter {
      * @return the list of trades of the user, first the active ones
      */
     public ArrayList<Trade> showUserTrades(String customer){
+        doneTrades.clear();
+        activeTrades.clear();
+        for(Trade trade : proxy.getTradeByUser(customer)) {
+            if(trade.isDoneDeal()) doneTrades.add(trade);
+            else activeTrades.add(trade);
+        }
         ArrayList<Trade> tradesList = new ArrayList<>();
         tradesList.addAll(showUserActiveTrades(customer));
         tradesList.addAll(showUserDoneTrades(customer));

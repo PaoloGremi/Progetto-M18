@@ -11,8 +11,8 @@ import java.sql.SQLException;
 public class DBConnectionManager {
 
     private final String DATABASE = "CARDS";
-    private final String USERNAME = "tradecenter";
-    private final String PASSWORD = "Password1!";
+    private final String USERNAME = "root";
+    private final String PASSWORD = "Ocram1996_";
 
     /**
      * Connects to database
