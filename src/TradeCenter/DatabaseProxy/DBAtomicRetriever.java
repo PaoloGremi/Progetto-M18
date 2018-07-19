@@ -414,8 +414,8 @@ class DBAtomicRetriever {
             ps.setString(1, id);
             ps.setString(2, id);
             ResultSet rs = ps.executeQuery();
-            FakeOffer offer = new FakeOffer();
             while(rs.next()) {
+                FakeOffer offer = new FakeOffer();
                 offer.setId(rs.getInt("trade_id"));
                 offer.setCustomer1(rs.getString("user1_id"));
                 offer.setCustomer2(rs.getString("user2_id"));
@@ -430,11 +430,11 @@ class DBAtomicRetriever {
                     //first collection
                     ps1 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
                     ps1.setInt(1, rs.getInt("trade_id"));
-                    ps1.setInt(2, 1);
+                    ps1.setInt(2, 2);
                     //second collection
                     ps2 = connection.prepareStatement("SELECT * FROM cards_old WHERE trade_id = ? AND offer_col = ?;");
                     ps2.setInt(1, rs.getInt("trade_id"));
-                    ps2.setInt(2, 2);
+                    ps2.setInt(2, 1);
                 } else {
                     //first collection
                     ps1 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
