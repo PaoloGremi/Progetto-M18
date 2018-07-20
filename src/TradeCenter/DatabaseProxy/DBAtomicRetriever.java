@@ -439,11 +439,19 @@ class DBAtomicRetriever {
                     //first collection
                     ps1 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
                     ps1.setInt(1, rs.getInt("trade_id"));
-                    ps1.setInt(2, 1);
+                    if(rs.getString("user1_id").equals(id)) {
+                        ps1.setInt(2, 1);
+                    }else{
+                        ps1.setInt(2, 2);
+                    }
                     //second collection
                     ps2 = connection.prepareStatement("SELECT * FROM cards_active LEFT JOIN cards ON cards_active.card_id = cards.card_id WHERE trade_id = ? AND offer_col = ?;");
                     ps2.setInt(1, rs.getInt("trade_id"));
-                    ps2.setInt(2, 2);
+                    if(rs.getString("user1_id").equals(id)) {
+                        ps2.setInt(2, 2);
+                    }else{
+                        ps2.setInt(2, 1);
+                    }
                 }
                 ResultSet rs1 = ps1.executeQuery();
                 while (rs1.next()) {
@@ -456,8 +464,13 @@ class DBAtomicRetriever {
                             description = retrieveSingleYugiohDescription(connection, rs1.getInt("description_id"));
                             break;
                     }
+
                     card = new Card(rs1.getInt("card_id"), description);
-                    offer.addCardOffer1(card);
+                    if(rs.getString("user1_id").equals(id)) {
+                        offer.addCardOffer1(card);
+                    }else{
+                        offer.addCardOffer2(card);
+                    }
                 }
                 ResultSet rs2 = ps2.executeQuery();
                 while (rs2.next()) {
@@ -471,7 +484,11 @@ class DBAtomicRetriever {
                             break;
                     }
                     card = new Card(rs2.getInt("card_id"), description);
-                    offer.addCardOffer2(card);
+                    if(rs.getString("user1_id").equals(id)) {
+                        offer.addCardOffer2(card);
+                    }else{
+                        offer.addCardOffer1(card);
+                    }
                 }
                 trades.add(new Trade(offer));
             }
