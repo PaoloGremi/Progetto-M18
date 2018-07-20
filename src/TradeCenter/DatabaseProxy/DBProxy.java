@@ -169,7 +169,7 @@ public class DBProxy implements IProxy,ISearch{
         for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
             customer.addCardToWishList(description);
         }
-        System.err.println("[DBProxy] - Customer " + username + " retrieved.\n");
+        System.err.println("[DBProxy] - Customer " + username + " retrieved.");
         connection = dbConn.disconnectFromDB(connection);
         return customer;
     }
@@ -194,9 +194,16 @@ public class DBProxy implements IProxy,ISearch{
         for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
             customer.addCardToWishList(description);
         }
-        System.err.println("[DBProxy] - Customer " + id + " retrieved.\n");
+        System.err.println("[DBProxy] - Customer " + id + " retrieved.");
         connection = dbConn.disconnectFromDB(connection);
         return customer;
+    }
+
+    public ArrayList<String> getCustomersByDescription(Description description) {
+        connection = dbConn.connectToDB(connection);
+        ArrayList<String> customersNames = dbRet.getCustomersWhoHaveDescription(connection, description);
+        connection = dbConn.disconnectFromDB(connection);
+        return customersNames;
     }
 
     /**

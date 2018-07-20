@@ -88,6 +88,29 @@ class DBAtomicRetriever {
         return usernames;
     }
 
+    ArrayList<String> getCustomersWhoHaveDescription(Connection connection, Description description) {
+        ArrayList<String> usernames = new ArrayList<>();
+        try {
+            System.err.println("[DBAtomicRetriever] - Retrieving customers who have description " + description.getName() + " usernames...");
+            PreparedStatement ps = connection.prepareStatement("SELECT DISTINCT username FROM customers RIGHT JOIN cards ON customers.customer_id = cards.customer_id WHERE cards.description_id = ? AND cards.card_Type = ?;");
+            if(description instanceof PokemonDescription) {
+                ps.setInt(1, ((PokemonDescription) description).getCardID());
+                ps.setString(2, "pokemon");
+            } else {
+                ps.setInt(1, ((YuGiOhDescription) description).getCardID());
+                ps.setString(2, "yugioh");
+            }
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                usernames.add(rs.getString("username"));
+            }
+            System.err.println("[DBAtomicRetriever] - Customers who have description " + description.getName() + " retrieved.");
+        }catch (SQLException | NullPointerException e) {
+            System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method getCustomersWhoHaveDescription.");
+        }
+        return usernames;
+    }
+
     /**
      * Get the size of the selected table
      * @param connection: database connection
