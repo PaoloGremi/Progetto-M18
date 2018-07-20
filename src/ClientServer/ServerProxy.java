@@ -144,7 +144,7 @@ public class ServerProxy {
      * @return ArrayList with the usernames of the Customers
      */
     public ArrayList<String> searchDescription(MessageServer messageServer){
-        return tradeCenter.searchByDescription(messageServer.getDescription());
+        return tradeCenter.searchByDescription(messageServer.getDescriptionToAdd(),messageServer.getCustomerFrom());
     }
 
     /**

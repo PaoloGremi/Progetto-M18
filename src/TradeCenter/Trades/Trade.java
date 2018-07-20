@@ -107,11 +107,14 @@ public class Trade extends ATrade {
      * Override of the equals method
      * @param obj a card
      * @return if two cards are equals to each other
-     *//*
+     */
     @Override
     public boolean equals(Object obj) {
-        Trade t= (Trade) obj;
-        return this.id == t.id;
+        if(obj!=null) {
+            Trade t = (Trade) obj;
+            return this.id == t.id;
+        }
+        return false;
     }
 
     /**
@@ -119,10 +122,10 @@ public class Trade extends ATrade {
      *
      * @return hashcode
      */
-    /*
+
     public int hashCode() {
         int hash = 1;
         hash = hash * this.id;
         return hash;
-    }*/
+    }
 }

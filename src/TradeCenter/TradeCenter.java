@@ -330,12 +330,14 @@ public class TradeCenter {
      * @param description the card that has to be searched
      * @return the list of the users that have that card in their collection
      */
-    public ArrayList<String> searchByDescription(Description description){
+    public ArrayList<String> searchByDescription(Description description, String customerId){
         ArrayList<String> customersFound = new ArrayList<>();
 
         for(String key: customers.keySet()){
             if(customers.get(key).searchByDescription(description)){
-                customersFound.add(customers.get(key).getUsername());
+                if(!key.equals(customerId)) {
+                    customersFound.add(customers.get(key).getUsername());
+                }
             }
 
         }
@@ -602,19 +604,6 @@ public class TradeCenter {
     }
 
     /**
-     * Verify if the trade is already stored in the tradecenter
-     * @param trade Trade to verify if already exists
-     * @return Boolean with the result
-     */
-    private boolean verifyAlreadyStored(Trade trade){
-        if(!tradesStored.contains(trade.getId())) {
-            tradesStored.add(trade.getId());
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * A method that shows all the trades of a user
      *
      * @param customer the user
@@ -622,10 +611,10 @@ public class TradeCenter {
      */
     public ArrayList<Trade> showUserTrades(String customer){
         for(Trade trade : proxy.getTradeByUser(customer)) {
-            if(verifyAlreadyStored(trade)) {
-                if (trade.isDoneDeal()) doneTrades.add(trade);
-                else activeTrades.add(trade);
-            }
+
+            if (trade.isDoneDeal()) doneTrades.add(trade);
+            else activeTrades.add(trade);
+
         }
         ArrayList<Trade> tradesList = new ArrayList<>();
         tradesList.addAll(showUserActiveTrades(customer));
