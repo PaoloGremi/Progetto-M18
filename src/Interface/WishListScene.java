@@ -143,17 +143,14 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, description));
+                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, description, customer.getId()));
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                     ArrayList<String> returnMessage = (ArrayList<String>) is.readObject();
                     MainWindow.refreshDynamicContent(SearchDescriptionScene.display(description ,returnMessage, customer));
                     socket.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-
 
             });
 
