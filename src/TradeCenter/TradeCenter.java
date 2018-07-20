@@ -34,6 +34,7 @@ public class TradeCenter {
     private HashMap<String, Customer> customers;
     private HashSet<Trade> activeTrades;
     private HashSet<Trade> doneTrades;
+    private ArrayList<Integer> tradesStored = new ArrayList<>();
     private ArrayList<String> loggedCustomers = new ArrayList<>();
     private DBProxy proxy;
 
@@ -601,17 +602,30 @@ public class TradeCenter {
     }
 
     /**
+     * Verify if the trade is already stored in the tradecenter
+     * @param trade Trade to verify if already exists
+     * @return Boolean with the result
+     */
+    private boolean verifyAlreadyStored(Trade trade){
+        if(!tradesStored.contains(trade.getId())) {
+            tradesStored.add(trade.getId());
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * A method that shows all the trades of a user
      *
      * @param customer the user
      * @return the list of trades of the user, first the active ones
      */
     public ArrayList<Trade> showUserTrades(String customer){
-        doneTrades.clear();
-        activeTrades.clear();
         for(Trade trade : proxy.getTradeByUser(customer)) {
-            if(trade.isDoneDeal()) doneTrades.add(trade);
-            else activeTrades.add(trade);
+            if(verifyAlreadyStored(trade)) {
+                if (trade.isDoneDeal()) doneTrades.add(trade);
+                else activeTrades.add(trade);
+            }
         }
         ArrayList<Trade> tradesList = new ArrayList<>();
         tradesList.addAll(showUserActiveTrades(customer));
