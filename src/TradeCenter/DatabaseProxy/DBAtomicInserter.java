@@ -43,6 +43,13 @@ class DBAtomicInserter {
         }
     }
 
+    /**
+     * Insert a card in an active trade in the database
+     * @param connection: database connection
+     * @param cardID: id of the card to insert in database
+     * @param tradeID: id of the trade that contains the card
+     * @param offerCol: first or second offer
+     */
     void insertActiveTradeCard(Connection connection, int cardID, int tradeID, int offerCol) {
         try {
             PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_active VALUES (?,?,?) ON DUPLICATE KEY UPDATE offer_col = ?;");

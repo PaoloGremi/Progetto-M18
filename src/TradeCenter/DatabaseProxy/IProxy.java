@@ -23,7 +23,7 @@ public interface IProxy {
     // trades methods
     public Trade getTrade(int id);
 
-    public void InsertTrade(Trade trade);
+    public void insertTrade(Trade trade);
 
     public void updateTrade(Trade trade);
 

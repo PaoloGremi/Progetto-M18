@@ -11,6 +11,12 @@ import java.sql.SQLException;
 
 class DBAtomicDeleter {
 
+    /**
+     * Remove wishlist description from given customer
+     * @param connection: database connection
+     * @param customer: customer
+     * @param description: description to be removed
+     */
     void removeWishlist(Connection connection, Customer customer, Description description) {
         System.err.println("[DBAtomicDeleter] - Removing wishlist number " + description.getName() + " from customer " + customer.getId() + "...");
         try {
@@ -31,6 +37,13 @@ class DBAtomicDeleter {
         }
     }
 
+    /**
+     * Delete specific card from a trade
+     * @param connection: database connection
+     * @param cardID: id of card to be removed
+     * @param tradeID: trade's id
+     * @param offerCol: offer column
+     */
     void removeActiveTradeCard(Connection connection, int cardID, int tradeID, int offerCol) {
         try {
             System.err.println("[DBAtomicDeleter] - Removing card " + cardID + " from trade " + tradeID + "...");
@@ -43,6 +56,42 @@ class DBAtomicDeleter {
             System.err.println("[DBAtomicDeleter] - Card " + cardID + " in trade " + tradeID + " removed.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeActiveTradeCard.");
+        }
+    }
+
+    /**
+     * Delete all cards from a specific trade
+     * @param connection: database connection
+     * @param tradeID: trade's id
+     */
+    void removeActiveTradeCard(Connection connection, int tradeID) {
+        try {
+            System.err.println("[DBAtomicDeleter] - Removing cards in  trade " + tradeID + "...");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM cards_active WHERE trade_id = ?");
+            ps.setInt(1, tradeID);
+            ps.execute();
+            connection.commit();
+            System.err.println("[DBAtomicDeleter] - Cards in trade " + tradeID + " removed.");
+        } catch (SQLException e) {
+            System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeActiveTradeCard.");
+        }
+    }
+
+    /**
+     * Remove trade's informations
+     * @param connection: database connection
+     * @param tradeID: trade's id
+     */
+    void removeTradeInfo(Connection connection, int tradeID) {
+        try {
+            System.err.println("[DBAtomicDeleter] - Removing trade's informations...");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM trades WHERE trade_id = ?;");
+            ps.setInt(1, tradeID);
+            ps.execute();
+            connection.commit();
+            System.err.println("[DBAtomicDeleter] - Trade's informations removed.");
+        } catch (SQLException e) {
+            System.err.println("[DBAtomicDeleter] - Exception " + e + " encounterd in method removeTradeInfo.");
         }
     }
 
