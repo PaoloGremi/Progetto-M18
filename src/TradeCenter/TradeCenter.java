@@ -34,7 +34,6 @@ public class TradeCenter {
     private HashMap<String, Customer> customers;
     private HashSet<Trade> activeTrades;
     private HashSet<Trade> doneTrades;
-    private ArrayList<Integer> tradesStored = new ArrayList<>();
     private ArrayList<String> loggedCustomers = new ArrayList<>();
     private DBProxy proxy;
 
@@ -90,13 +89,7 @@ public class TradeCenter {
      * @return a boolean value
      */
     private boolean usernameTaken(String username){
-        for(String key : customers.keySet()){
-            if(customers.get(key).getUsername().equals(username)){
-                return true;
-            }
-
-        }
-        return false;
+        return proxy.getAllCustomersNames().contains(username);
     }
 
     /**
@@ -281,7 +274,10 @@ public class TradeCenter {
         //user not found
         //todo create the method in proxy
         Customer customer = proxy.retrieveSingleCustomer(username);
-        if(customer != null) return customer;
+        if(customer != null) {
+            customers.put(customer.getId(),customer);
+            return customer;
+        }
 
         throw new UserNotFoundException();
     }
@@ -314,7 +310,9 @@ public class TradeCenter {
 
         if(customers.keySet().contains(id)) return customers.get(id);
 
-        return proxy.retrieveSingleCustomerByID(id);
+        Customer customer = proxy.retrieveSingleCustomerByID(id);
+        customers.put(customer.getId(),customer);
+        return customer;
 
     }
 
@@ -327,7 +325,9 @@ public class TradeCenter {
 
         if(customers.keySet().contains(id)) return customers.get(id).getUsername();
 
-        return proxy.retrieveSingleCustomerByID(id).getUsername();
+        Customer customer = proxy.retrieveSingleCustomerByID(id);
+        customers.put(customer.getId(),customer);
+        return customer.getUsername();
 
     }
 
