@@ -8,6 +8,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXScrollPane;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
@@ -50,7 +51,8 @@ public class CollectionScene{
         ScrollPane scroll;
         HBox hbox;
         BorderPane border = new BorderPane();
-        Button buttonAdd= new Button("Add Card \uD83C\uDCCF");
+        JFXButton buttonAdd= new JFXButton("Add Card \uD83C\uDCCF");
+        buttonAdd.setButtonType(JFXButton.ButtonType.RAISED);
         hbox = new HBox();
         hbox.setPadding(new Insets(5));
         hbox.setSpacing(580);
@@ -106,8 +108,12 @@ public class CollectionScene{
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }
         buttonAdd.setOnAction(event -> {
-
-            MainWindow.refreshDynamicContent(AddCardScene.display(customer));
+            Image image = new Image("Interface/imagePack/PackOpening.jpg");
+            ImageView imageView = new ImageView(image);
+            imageView.setPreserveRatio(true);
+            imageView.setFitHeight(600);
+            MainWindow.refreshDynamicContent(imageView);
+            MainWindow.addDynamicContent(AddCardScene.display(customer));
 
         });
         scroll.setPadding(new Insets(3));

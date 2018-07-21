@@ -16,6 +16,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -51,7 +53,7 @@ public class MainWindow {
         JFXHamburger hamburger = new JFXHamburger();
         HBox pane = new HBox();
         pane.setPadding(new Insets(20));
-        pane.setAlignment(Pos.BASELINE_LEFT);
+        pane.setAlignment(Pos.BASELINE_LEFT); 
         pane.getChildren().add(hamburger);
         //pane.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
         hamburger.visibleProperty().set(true);
@@ -173,9 +175,10 @@ public class MainWindow {
             socket = new Socket(ServerIP.ip, ServerIP.port);
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
             os.writeObject(new MessageServer(MessageType.LOGOUT, username));
+            Thread.sleep(30);
             os.flush();
             socket.close();
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 

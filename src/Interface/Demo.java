@@ -1,5 +1,6 @@
 package Interface;
 
+import com.jfoenix.controls.JFXButton;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
@@ -38,7 +39,8 @@ public  class Demo {
             cardImage.setScaleY(pane.getScaleY() * 3);
         }
         HBox hBox = new HBox();
-        Button button = new Button("\u2B8C");
+        JFXButton button = new JFXButton("\u2B8C");
+        button.setButtonType(JFXButton.ButtonType.RAISED);
         hBox.getChildren().add(button);
         hBox.setPadding(new Insets(10));
         hBox.setStyle("-fx-background-color: orange;");

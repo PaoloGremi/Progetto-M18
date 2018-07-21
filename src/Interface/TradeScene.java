@@ -8,6 +8,7 @@ import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
+import com.jfoenix.controls.JFXButton;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -162,9 +163,12 @@ public class TradeScene {
         buttonsBox.setPadding(new Insets(7, 20, 7, 20));
         buttonsBox.setSpacing(10);
         buttonsBox.setStyle("-fx-background-color: #aa12ff");
-        Button refuse = new Button("Refuse");
-        Button raise = new Button("Raise");
-        Button accept = new Button("Accept");
+        JFXButton refuse = new JFXButton("Refuse");
+        refuse.setButtonType(JFXButton.ButtonType.RAISED);
+        JFXButton raise = new JFXButton("Raise");
+        raise.setButtonType(JFXButton.ButtonType.RAISED);
+        JFXButton accept = new JFXButton("Accept");
+        accept.setButtonType(JFXButton.ButtonType.RAISED);
 
         //listener bottoni
         raise.setOnAction(event -> {

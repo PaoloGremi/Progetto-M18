@@ -7,6 +7,7 @@ import ClientServer.ServerIP;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import com.jfoenix.controls.JFXButton;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -85,11 +86,13 @@ public class WishListScene{
             buttonBox.setSpacing(10);
             buttonBox.setStyle("-fx-background-color: orange");
 
-            Button remove = new Button("Remove "+ "\uD83D\uDD71");
+            JFXButton remove = new JFXButton("Remove "+ "\uD83D\uDD71");
+            remove.setButtonType(JFXButton.ButtonType.RAISED);
             remove.setPrefSize(100, 20);
             buttonBox.getChildren().add(remove);
 
-            Button search = new Button("Search " + "\uD83D\uDD0D");
+            JFXButton search = new JFXButton("Search " + "\uD83D\uDD0D");
+            search.setButtonType(JFXButton.ButtonType.RAISED);
             remove.setPrefSize(100, 20);
             buttonBox.getChildren().add(search);
 

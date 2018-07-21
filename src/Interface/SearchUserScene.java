@@ -48,15 +48,16 @@ public class SearchUserScene {
         JFXTextField searchString = new JFXTextField();
         searchString.setPrefWidth(800);
         JFXButton search = new JFXButton("Search");
+        search.setButtonType(JFXButton.ButtonType.RAISED);
         searchString.setStyle("-fx-background-color: white;");
         VBox results = new VBox();
         ScrollPane resultsArea = new ScrollPane();
         FlowPane flow = new FlowPane();
         Pane pane = new Pane();
 
-        flow.setStyle("-fx-background-color: #beff8e;");
-        results.setStyle("-fx-background-color: green;");
-        pane.setStyle("-fx-background-color: #beff8e;");
+        flow.setStyle("-fx-background-color: DAE6A2;");
+        results.setStyle("-fx-background-color: DAE6A2;");
+        pane.setStyle("-fx-background-color: DAE6A2;");
 
         search.setOnAction(event -> {
             results.getChildren().removeAll(results.getChildren());
@@ -88,7 +89,7 @@ public class SearchUserScene {
                     resultsArea.setFitToHeight(true);
                     resultsArea.setFitToWidth(true);
                     resultsArea.setPadding(new Insets(5));
-                    resultsArea.setStyle("-fx-background-color: #beff8e;");
+                    resultsArea.setStyle("-fx-background-color: DAE6A2;");
                     resultsArea.setContent(usersList);
                     scene.setCenter(resultsArea);
                 }
@@ -101,7 +102,7 @@ public class SearchUserScene {
 
         HBox topScene = new HBox();
         topScene.setAlignment(Pos.CENTER);
-        topScene.setStyle("-fx-background-color: #aa12ff");
+        topScene.setStyle("-fx-background-color: orange");
         topScene.setSpacing(5.0);
         topScene.setPadding(new Insets(5));
         topScene.getChildren().addAll(searchString, search);

@@ -42,21 +42,23 @@ public class AddCardScene {
         VBox vBox = new VBox();
         vBox.setStyle("-fx-background-color: rgba(255,140,2,0.58);");
         bar.setPrefSize(200, 24);
-
-
-
-
-        borderPane.setStyle("-fx-background-color: DAE6A2;");
+        BorderPane pokeBorder = new BorderPane();
         ImageView pokePack = new ImageView(new Image("Interface/imagePack/PokemonPack.JPG"));
         pokePack.setPreserveRatio(true);
         pokePack.setFitHeight(350);
+        pokeBorder.setCenter(pokePack);
+        pokeBorder.setPadding(new Insets(20,0,0,0));
+        BorderPane yugiBorder = new BorderPane();
         ImageView yugiPack = new ImageView(new Image("Interface/imagePack/YuGiOhPack.jpg"));
         yugiPack.setPreserveRatio(true);
         yugiPack.setFitHeight(350);
+        yugiBorder.setCenter(yugiPack);
+        yugiBorder.setPadding(new Insets(20,0,0,0));
         HBox packBox = new HBox();
         packBox.setAlignment(Pos.CENTER);
-        packBox.setSpacing(50);
-        packBox.getChildren().addAll(pokePack,yugiPack);
+        packBox.setSpacing(100);
+        packBox.getChildren().addAll(pokeBorder,yugiBorder);
+        packBox.setPadding(new Insets(100,0,0,0));
         borderPane.setCenter(packBox);
 
 
