@@ -103,7 +103,7 @@ public class OtherUserProfileScene {
                     MainWindow.refreshDynamicContent(TradeScene.display(null, myCustomer, otherCustomer,false, false));
                 }else{
 
-                    MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +" is already started\nsee it in My Trades", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
+                    MainWindow.addDynamicContent(InfoScene.display("The trade with "+ otherCustomer.getUsername() +"\nis already started\nsee it in My Trades", "Interface/imagePack/2000px-Simple_Alert.svg.png", false));
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

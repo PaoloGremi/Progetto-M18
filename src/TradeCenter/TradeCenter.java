@@ -139,6 +139,12 @@ public class TradeCenter {
         }
         if(customer.getUsername().equals(username) && customer.checkPassword(password)){
             customers.put(customer.getId(), customer);
+            for(Trade trade : proxy.getTradeByUser(customer.getId())) {
+
+                if (trade.isDoneDeal()) doneTrades.add(trade);
+                else activeTrades.add(trade);
+
+            }
             loggedCustomers.add(username);
             return true;
         }else{
@@ -422,7 +428,7 @@ public class TradeCenter {
             try {
                 Trade Trade = new Trade(new Offer(customer1, customer2, offer1, offer2), proxy.getNextTradeID());
                 activeTrades.add(Trade);
-                proxy.InsertTrade(Trade);
+                proxy.insertTrade(Trade);
             }catch (MyselfTradeException | EmptyCollectionException e){
                 System.err.println(e.getMessage());
             }
@@ -468,7 +474,9 @@ public class TradeCenter {
      * @param otherCustomer The other customer involved
      */
     public void removeTrade(String myCustomer, String otherCustomer){
-        activeTrades.remove(takeStartedTrade(myCustomer,otherCustomer));
+        Trade trade = takeStartedTrade(myCustomer,otherCustomer);
+        activeTrades.remove(trade);
+        proxy.removeTrade(trade.getId());
     }
 
     /**
@@ -601,12 +609,6 @@ public class TradeCenter {
      * @return the list of trades of the user, first the active ones
      */
     public ArrayList<Trade> showUserTrades(String customer){
-        for(Trade trade : proxy.getTradeByUser(customer)) {
-
-            if (trade.isDoneDeal()) doneTrades.add(trade);
-            else activeTrades.add(trade);
-
-        }
         ArrayList<Trade> tradesList = new ArrayList<>();
         tradesList.addAll(showUserActiveTrades(customer));
         tradesList.addAll(showUserDoneTrades(customer));
