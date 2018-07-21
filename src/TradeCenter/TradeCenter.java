@@ -330,18 +330,9 @@ public class TradeCenter {
      * @param description the card that has to be searched
      * @return the list of the users that have that card in their collection
      */
-    public ArrayList<String> searchByDescription(Description description, String customerId){
-        ArrayList<String> customersFound = new ArrayList<>();
-
-        for(String key: customers.keySet()){
-            if(customers.get(key).searchByDescription(description)){
-                if(!key.equals(customerId)) {
-                    customersFound.add(customers.get(key).getUsername());
-                }
-            }
-
-        }
-
+    public ArrayList<String> searchByDescription(Description description, String customerUsername){
+        ArrayList<String> customersFound = proxy.getCustomersByDescription(description);
+        customersFound.remove(customerUsername);
         return customersFound;
     }
     /**

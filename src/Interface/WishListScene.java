@@ -143,7 +143,7 @@ public class WishListScene{
                     System.out.println("Client connected");
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     System.out.println("Ok");
-                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, description, customer.getId()));
+                    os.writeObject(new MessageServer(MessageType.SEARCHDESCRIPTION, description, customer.getUsername()));
                     ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
                     ArrayList<String> returnMessage = (ArrayList<String>) is.readObject();
                     MainWindow.refreshDynamicContent(SearchDescriptionScene.display(description ,returnMessage, customer));
