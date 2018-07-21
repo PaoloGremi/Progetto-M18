@@ -105,22 +105,22 @@ public class TradeScene {
         mainGrid = new GridPane();
         mainGrid.setHgap(10);
         mainGrid.setVgap(10);
-        myCollection = new Text(myCustomer.getUsername());
+        myCollection = new Text(myCustomer.getUsername()+ "'s Collection");
         myCollectionTitle = new TextFlow(myCollection);
         myCollectionTitle.setPadding(new Insets(5));
-        myCollectionTitle.setStyle("-fx-background-color: #aa12ff");
+        myCollectionTitle.setStyle("-fx-background-color: orange;");
         otherCollection = new Text(otherCustomer.getUsername()+ "'s Collection");
         otherCollectionTitle = new TextFlow(otherCollection);
         otherCollectionTitle.setPadding(new Insets(5));
-        otherCollectionTitle.setStyle("-fx-background-color: #aa12ff");
-        myOffer = new Text("myOffer");
+        otherCollectionTitle.setStyle("-fx-background-color: orange");
+        myOffer = new Text(myCustomer.getUsername()+ "'s Offer");
         myOfferTitle = new TextFlow(myOffer);
         myOfferTitle.setPadding(new Insets(5));
-        myOfferTitle.setStyle("-fx-background-color: #aa12ff");
+        myOfferTitle.setStyle("-fx-background-color: orange");
         otherOffer = new Text(otherCustomer.getUsername()+ "'s Offer");
         otherOfferTitle = new TextFlow(otherOffer);
         otherOfferTitle.setPadding(new Insets(5));
-        otherOfferTitle.setStyle("-fx-background-color: #aa12ff");
+        otherOfferTitle.setStyle("-fx-background-color: orange;");
 
         //griglie
 
@@ -155,14 +155,14 @@ public class TradeScene {
             mainGrid.add(otherCollectionPane, 1, 2);
             mainGrid.add(myOfferPane, 2, 1);
             mainGrid.add(otherOfferPane, 2, 2);
-            mainGrid.setStyle("-fx-background-color: #55ff44");
+            mainGrid.setStyle("-fx-background-color: DAE6A2;");
             mainGrid.setAlignment(Pos.CENTER);
         }
         //bottoni
         buttonsBox = new HBox();
         buttonsBox.setPadding(new Insets(7, 20, 7, 20));
         buttonsBox.setSpacing(10);
-        buttonsBox.setStyle("-fx-background-color: #aa12ff");
+        buttonsBox.setStyle("-fx-background-color: orange;");
         JFXButton refuse = new JFXButton("Refuse");
         refuse.setButtonType(JFXButton.ButtonType.RAISED);
         JFXButton raise = new JFXButton("Raise");
@@ -338,14 +338,14 @@ public class TradeScene {
         BorderPane pane = new BorderPane();
         pane.setTop(title);                 //titolo
         //FlowPane flowPane = new FlowPane();
-        flowPane.setStyle("-fx-background-color: #fff910");
+        flowPane.setStyle("-fx-background-color: #ffe17a");
 
 
         if(customer == null){
             grid.setFitToWidth(true);
             grid.setFitToHeight(true);
             grid.setContent(flowPane);
-            grid.setStyle("-fx-background-color: #fffb48");
+            grid.setStyle("-fx-background-color: #ffe17a");
 
             pane.setCenter(grid);
             return pane;
@@ -377,7 +377,7 @@ public class TradeScene {
         grid.setFitToWidth(true);
         grid.setFitToHeight(true);
         grid.setContent(flowPane);
-        grid.setStyle("-fx-background-color: #fffb48");
+        grid.setStyle("-fx-background-color: #ffe17a");
 
         pane.setCenter(grid);
         return pane;
@@ -410,7 +410,7 @@ public class TradeScene {
         }
         FlowPane flow = new FlowPane();
         //flow.getChildren().remove(imageView);
-        flow.setStyle("-fx-background-color: #fff910");
+        flow.setStyle("-fx-background-color: #ffe17a");
         for (Card c: imageList) {
             BorderPane pane = new BorderPane();
             Image image = SwingFXUtils.toFXImage(c.getDescription().getPic(), null);
@@ -519,7 +519,7 @@ public class TradeScene {
         mainGrid1.add(otherCollectionPane,1,2);
         mainGrid1.add(myOfferPane,2,1);
         mainGrid1.add(otherOfferPane,2,2);
-        mainGrid1.setStyle("-fx-background-color: #55ff44");
+        mainGrid1.setStyle("-fx-background-color: DAE6A2;");
         mainGrid1.setAlignment(Pos.CENTER);
 
 
@@ -536,13 +536,13 @@ public class TradeScene {
      * @param flowPane type of pane
      */
     static void restoreScroll(BorderPane borderPane,ScrollPane scrollPane, FlowPane flowPane){
-        borderPane.setStyle("-fx-background-color: #fff910");
+        borderPane.setStyle("-fx-background-color: #ffe17a");
         scrollPane.setFitToWidth(true);
         scrollPane.setFitToHeight(true);
         scrollPane.setContent(flowPane);
-        scrollPane.setStyle("-fx-background-color: #fffb48");
-        flowPane.setStyle("-fx-background-color: #fff910");
-        scrollPane.setStyle("-fx-background-color: #fff910");
+        scrollPane.setStyle("-fx-background-color: #ffe17a");
+        flowPane.setStyle("-fx-background-color: #ffe17a");
+        scrollPane.setStyle("-fx-background-color: #ffe17a");
         scrollPane.setContent(flowPane);
 
     }
@@ -565,7 +565,7 @@ public class TradeScene {
         mainGrid1.add(otherCollectionPane,1,2);
         mainGrid1.add(myOfferPane,2,1);
         mainGrid1.add(otherOfferPane,2,2);
-        mainGrid1.setStyle("-fx-background-color: #55ff44");
+        mainGrid1.setStyle("-fx-background-color: DAE6A2;");
         mainGrid1.setAlignment(Pos.CENTER);
 
 
