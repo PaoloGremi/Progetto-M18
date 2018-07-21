@@ -45,10 +45,11 @@ class DBAtomicInserter {
 
     void insertActiveTradeCard(Connection connection, int cardID, int tradeID, int offerCol) {
         try {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_active VALUES (?,?,?);");
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO cards_active VALUES (?,?,?) ON DUPLICATE KEY UPDATE offer_col = ?;");
             ps.setInt(1, tradeID);
             ps.setInt(2, cardID);
             ps.setInt(3, offerCol);
+            ps.setInt(4, offerCol);
             ps.execute();
             connection.commit();
         } catch(SQLException e) {

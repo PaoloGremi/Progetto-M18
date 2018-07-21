@@ -58,26 +58,6 @@ class DBAtomicUpdater {
         }
     }
 
-    /**
-     * //Update a card that is no longer in a trade
-     * //@param connection: database connection
-     * //@param card: card to be updated
-     */
-    /*void updateCard(Connection connection, Card card) {
-        try {
-            System.err.println("[DBAtomicUpdater] - Updating card " + card.getId() + "...");
-            PreparedStatement ps = connection.prepareStatement("UPDATE cards SET trade_id = ?, offer_col = ? WHERE card_id = ?;");
-            ps.setNull(1, Types.INTEGER);
-            ps.setNull(2, Types.INTEGER);
-            ps.setInt(3, card.getId());
-            ps.execute();
-            connection.commit();
-            System.err.println("[DBAtomicUpdater] - Card " + card.getId() + " updated.");
-        } catch (SQLException e) {
-            System.err.println("[DBAtomicUpdater] - Exception " + e + " encounterd in method updateCard.");
-        }
-    }*/
-
     void updateTrade(Connection connection, Trade trade) {
         try {
             System.err.println("[DBAtomicUpdater] - Updating trade " + trade.getId() + "...");

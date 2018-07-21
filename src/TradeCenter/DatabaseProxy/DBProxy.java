@@ -308,30 +308,30 @@ public class DBProxy implements IProxy,ISearch{
             ArrayList<Card> oldOffer1 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
                 // get cards to add
             ArrayList<Card> toAdd = new ArrayList<Card>(trade.getOffer2().getSet());
-            toAdd.removeAll(oldOffer1);
+            //toAdd.removeAll(oldOffer1);
             for(Card card : toAdd) {
-                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 1);
+                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
                 // get cards to remove
             ArrayList<Card> toRemove = new ArrayList<Card>(trade.getOffer2().getSet());
             oldOffer1.removeAll(toRemove);
             for(Card card : oldOffer1) {
-                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
             // update cards in offer2
                 // get db's offer2
-            ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 2);
+            ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
                 // get cards to add
             ArrayList<Card> toAdd2 = new ArrayList<Card>(trade.getOffer1().getSet());
-            toAdd2.removeAll(oldOffer2);
+            //toAdd2.removeAll(oldOffer2);
             for(Card card : toAdd2) {
-                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 2);
+                dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
                 // get cards to remove
             ArrayList<Card> toRemove2 = new ArrayList<Card>(trade.getOffer1().getSet());
             oldOffer2.removeAll(toRemove2);
             for(Card card : oldOffer2) {
-                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
+                dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
             // free memory
             oldOffer1.clear();
