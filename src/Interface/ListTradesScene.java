@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
@@ -71,6 +72,8 @@ public class ListTradesScene {
         activeList.minHeight(200);
         activeList.maxWidth(200);
         JFXListView<Trade> doneList = new JFXListView<>();
+        doneList.minHeight(200);
+        doneList.maxWidth(200);
         activeList.getItems().addAll(activeTrades);
         changTextCell(activeList);
         doneList.getItems().addAll(doneTrades);
@@ -107,8 +110,8 @@ public class ListTradesScene {
         mainPane.setCenter(mainHbox);
 
         //todo mettere a posto stile del css
-        mainPane.getStylesheets().add("Interface/ListTradesCSS.css");
-        mainPane.setStyle("-fx-background-color: #afff4f");
+       // mainPane.getStylesheets().add("Interface/ListTradesCSS.css");
+        mainPane.setStyle("-fx-background-color: #e2e551");
         return mainPane;
     }
 
@@ -215,35 +218,37 @@ public class ListTradesScene {
                     @Override
                     public void handle(javafx.scene.input.MouseEvent e) {
                         Trade trade = tradeList.getSelectionModel().getSelectedItem();
-                        Customer customer1 = retrieveCustomerById(trade.getCustomer1());
-                        Customer customer2 = retrieveCustomerById(trade.getCustomer2());
-                        if (trade.isDoneDeal()) {
-                            if(trade.isPositiveEnd()) {
-                                MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
-                            }else{
-                                MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/imagePack/infoSign.png",true));
-                            }
-                        } else {
-
-
-                            if(sameTrade(trade)) {
-                                //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
-                                if (user.getId().equals(trade.getCustomer1())) {
-
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
+                        if (trade != null) {
+                            Customer customer1 = retrieveCustomerById(trade.getCustomer1());
+                            Customer customer2 = retrieveCustomerById(trade.getCustomer2());
+                            if (trade.isDoneDeal()) {
+                                if (trade.isPositiveEnd()) {
+                                    MainWindow.refreshDynamicContent(DoneDealScene.display(trade, customer1.getUsername(), customer2.getUsername()));
                                 } else {
-
-                                    MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
+                                    MainWindow.addDynamicContent(InfoScene.display("The offer has been rejected", "Interface/imagePack/infoSign.png", true));
                                 }
-                            }else{
-                                if (user.getId().equals(currentTrade.getCustomer1())) {
+                            } else {
 
-                                    MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
-                                    MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
+
+                                if (sameTrade(trade)) {
+                                    //todo devo capire come passare i customer, cosi non vengono scambiati, mettere direzione come booleano e poi rifare
+                                    if (user.getId().equals(trade.getCustomer1())) {
+
+                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer1, customer2, true, true));
+                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
+                                    } else {
+
+                                        MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
+                                    }
                                 } else {
+                                    if (user.getId().equals(currentTrade.getCustomer1())) {
 
-                                    MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
+                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
+                                    } else {
+
+                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                    }
                                 }
                             }
                         }
@@ -259,10 +264,12 @@ public class ListTradesScene {
      * @param date Date and time of the trade
      * @return Cell modified
      */
-    private static String cellText(String id1, String id2, Date date){
+    private static Text cellText(String id1, String id2, Date date){
         String username1 = usernameFromId(id1);
         String username2 = usernameFromId(id2);
-        return username1 + " - " + username2 + "\n" + date;
+        Text text = new Text(username1 + " - " + username2 + "\n" + date);
+        text.setTextAlignment(TextAlignment.CENTER);
+        return text;
     }
 
     /**
@@ -298,7 +305,7 @@ public class ListTradesScene {
                 if (empty) {
                     setText(null);
                 } else {
-                    setText(cellText(item.getCustomer1(), item.getCustomer2(), item.getDate()));
+                    setText(cellText(item.getCustomer1(), item.getCustomer2(), item.getDate()).getText());
                 }
             }
         });

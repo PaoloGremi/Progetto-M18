@@ -45,15 +45,16 @@ public class MainWindow {
         // Background
         BorderPane layout = new BorderPane();
 
-        layout.setStyle(" -fx-background-color: linear-gradient(from 35% 55% to 100% 100%, #1f45da, #abb5ff)");
+        layout.setStyle(" -fx-background-color: red");
         // Box for buttons on the left
         JFXDrawer drawer = new JFXDrawer();
         drawer.setPrefWidth(150);
-        drawer.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
+        drawer.setStyle("-fx-background-color: rgba(255,124,0,0.65);");
         JFXHamburger hamburger = new JFXHamburger();
         HBox pane = new HBox();
         pane.setPadding(new Insets(20));
-        pane.setAlignment(Pos.BASELINE_LEFT); 
+        pane.setAlignment(Pos.BASELINE_LEFT);
+        pane.setSpacing(200);
         pane.getChildren().add(hamburger);
         //pane.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
         hamburger.visibleProperty().set(true);
@@ -68,7 +69,7 @@ public class MainWindow {
 
         VBox vbox = new VBox();
         //vbox.setPrefWidth();
-        vbox.setStyle("-fx-background-color: rgba(19,0,255,0.65);");
+        vbox.setStyle("-fx-background-color: #ff0009;");
 
         //drawer.setOverLayVisible(true);
         vbox.setAlignment(Pos.TOP_LEFT);

@@ -118,7 +118,9 @@ public class SearchUserScene {
             @Override
             public void handle(MouseEvent event) {
                 String otherCustomer = usersList.getSelectionModel().getSelectedItem();
-                MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(myProfile.getUsername()), retrieveCustomer(otherCustomer)));
+                if(otherCustomer != null) {
+                    MainWindow.refreshDynamicContent(OtherUserProfileScene.display(retrieveCustomer(myProfile.getUsername()), retrieveCustomer(otherCustomer)));
+                }
             }
 
         };

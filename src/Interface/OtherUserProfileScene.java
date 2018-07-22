@@ -62,7 +62,7 @@ public class OtherUserProfileScene {
         trade.setButtonType(JFXButton.ButtonType.RAISED);
         buttons.getChildren().addAll(collection, wishlist, trade);
         HBox titleBox = new HBox();
-        Label title = new Label(otherUser.getUsername() + "'s" + displayed);
+        Label title = new Label(otherUser.getUsername() + "'s " + displayed);
         titleBox.setAlignment(Pos.CENTER);
         title.setStyle("-fx-font-weight: bold");
         title.setScaleX(1.35);
@@ -76,7 +76,7 @@ public class OtherUserProfileScene {
         hBox.getChildren().addAll(buttons, titleBox);
         hBox.setPadding(new Insets(10));
         hBox.setSpacing(300);
-        hBox.setStyle("-fx-background-color: #cc003a");
+        hBox.setStyle("-fx-background-color: orange");
 
         borderPane.setCenter(displayCollection(otherCustomer));
         borderPane.setBottom(hBox);
@@ -122,7 +122,7 @@ public class OtherUserProfileScene {
     private static ScrollPane displayCollection(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
-        flowPane.setStyle("-fx-background-color: #fbff2e");
+        flowPane.setStyle("-fx-background-color: DAE6A2;");
 
         for (Card card: customer.getCollection()){
             BorderPane cardPane = new BorderPane();
@@ -149,7 +149,7 @@ public class OtherUserProfileScene {
         cardGrid.setFitToWidth(true);
         cardGrid.setFitToHeight(true);
         cardGrid.setContent(flowPane);
-        cardGrid.setStyle("-fx-background-color: #fffd14");
+        cardGrid.setStyle("-fx-background-color: DAE6A2;");
         return cardGrid;
     }
 
@@ -161,7 +161,7 @@ public class OtherUserProfileScene {
     private static ScrollPane displayWishlist(Customer customer){
         FlowPane flowPane = new FlowPane();
         cardGrid = new ScrollPane();
-        flowPane.setStyle("-fx-background-color: #fff910");
+        flowPane.setStyle("-fx-background-color: DAE6A2;");
 
         for (Description card: customer.getWishList()){
             BorderPane cardPane = new BorderPane();
@@ -179,7 +179,7 @@ public class OtherUserProfileScene {
         cardGrid.setFitToWidth(true);
         cardGrid.setFitToHeight(true);
         cardGrid.setContent(flowPane);
-        cardGrid.setStyle("-fx-background-color: #fffb48");
+        cardGrid.setStyle("-fx-background-color: DAE6A2;");
         return cardGrid;
     }
 
