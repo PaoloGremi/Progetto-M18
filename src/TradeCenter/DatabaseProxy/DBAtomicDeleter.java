@@ -95,4 +95,22 @@ class DBAtomicDeleter {
         }
     }
 
+    /**
+     * TEST ONLY METHOD: Remove cards from a given customer and return updated cards count
+     * @param connection: database connection
+     * @param customerID: customer's id
+     */
+    void removeCardsFromCustomer(Connection connection, String customerID) {
+        try {
+            System.err.println("[DBAtomicDeleter] - *TEST ONLY* Removing customer " + customerID + "'s cards...");
+            PreparedStatement ps = connection.prepareStatement("DELETE FROM cards WHERE customer_id = ?;");
+            ps.setString(1, customerID);
+            ps.execute();
+            connection.commit();
+            System.err.println("[DBAtomicDeleter] - *TEST ONLY* Customer " + customerID + "'s cards removed.");
+        } catch (SQLException e) {
+            System.err.println("[DBAtomicDeleter] - *TEST ONLY* Exception " + e + " encounterd in method removeCardsFromCustomer.");
+        }
+    }
+
 }

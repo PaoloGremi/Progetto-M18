@@ -448,4 +448,17 @@ public class DBProxy implements IProxy,ISearch{
         connection = dbConn.disconnectFromDB(connection);
         return n;
     }
+
+    /**
+     * TEST ONLY METHOD: Remove cards from a given customer and return updated cards count
+     * @param customerID: customer's id
+     * @return: updated cards count
+     */
+    public int removeCardsFromCustomer(String customerID) {
+        connection = dbConn.connectToDB(connection);
+        dbDel.removeCardsFromCustomer(connection, customerID);
+        int n = dbRet.getTableSize(connection, "cards");
+        connection = dbConn.disconnectFromDB(connection);
+        return n;
+    }
 }
