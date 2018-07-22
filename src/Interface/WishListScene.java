@@ -8,6 +8,7 @@ import TradeCenter.Card.Description;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.FadeTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -23,6 +24,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,6 +159,12 @@ public class WishListScene{
 
             });
 
+            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }

@@ -6,6 +6,7 @@ import ClientServer.ServerIP;
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -73,9 +74,19 @@ public class AddCardScene {
 
         });
 
+        pokePack.setOnMouseMoved(event -> {
+            pokePack.setFitHeight(400);
+            yugiPack.setFitHeight(350);
+        });
+
         yugiPack.setOnMouseClicked(event -> {
             Timeline task = loading(customer,vBox,scroll,borderPane,bar,MessageType.ADDCARDYUGI);
             task.playFromStart();
+        });
+
+        yugiPack.setOnMouseMoved(event -> {
+            pokePack.setFitHeight(350);
+            yugiPack.setFitHeight(400);
         });
         return borderPane;
     }
@@ -105,6 +116,12 @@ public class AddCardScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(285);
             pane.setCenter(imageView);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flow.getChildren().add(pane);
         }
         return flow;

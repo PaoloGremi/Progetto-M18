@@ -76,7 +76,7 @@ public class SearchDescriptionScene {
         });
 
         VBox vBox = new VBox();
-        vBox.setStyle("-fx-background-color: #80c73f");
+        vBox.setStyle("-fx-background-color: rgb(255,140,2)");
         BorderPane pane = new BorderPane();
         Image image3 = SwingFXUtils.toFXImage(description.getPic(),null);
         ImageView cardV = new ImageView();

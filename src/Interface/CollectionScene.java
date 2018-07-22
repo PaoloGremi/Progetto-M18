@@ -10,6 +10,7 @@ import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXScrollPane;
+import javafx.animation.FadeTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -21,6 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.io.File;
 import java.io.IOException;
@@ -104,6 +106,13 @@ public class CollectionScene{
 
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
+
+            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flow.getChildren().add(pane);
             flow.setMargin(pane, new Insets(5, 0, 5, 0));
         }

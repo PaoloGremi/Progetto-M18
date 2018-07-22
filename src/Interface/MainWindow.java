@@ -8,6 +8,8 @@ import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +22,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,11 +61,17 @@ public class MainWindow {
         pane.getChildren().add(hamburger);
         //pane.setStyle("-fx-background-color: rgba(255,0,9,0.65);");
         hamburger.visibleProperty().set(true);
+        HamburgerBackArrowBasicTransition transition = new HamburgerBackArrowBasicTransition(hamburger);
+        transition.setRate(-1);
         hamburger.setOnMouseClicked(event -> {
             if(drawer.isOpened()) {
+                transition.setRate(transition.getRate()*-1);
+                transition.play();
                 drawer.close();
             }
             else {
+                transition.setRate(transition.getRate()*-1);
+                transition.play();
                 drawer.open();
             }
         });
@@ -196,6 +205,12 @@ public class MainWindow {
 
     //todo add javadocs
     public static void addDynamicContent(Node node){
+        FadeTransition ft = new FadeTransition(Duration.millis(500), node);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.setCycleCount(1);
+        ft.setAutoReverse(true);
+        ft.play();
         dynamicContent.getChildren().add(node);
     }
 

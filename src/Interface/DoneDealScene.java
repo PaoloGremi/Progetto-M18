@@ -7,6 +7,7 @@ import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.FadeTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -19,6 +20,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -100,6 +102,12 @@ public class DoneDealScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(161);
             cardPane.setCenter(imageView);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), cardPane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
         }

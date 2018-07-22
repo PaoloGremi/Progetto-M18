@@ -7,6 +7,7 @@ import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.FadeTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -142,6 +144,12 @@ public class OtherUserProfileScene {
                     };
 
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), cardPane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
         }
@@ -173,6 +181,12 @@ public class OtherUserProfileScene {
             cardPane.setCenter(imageView);
             EventHandler<MouseEvent> eventHandlerBox = mouseEvent(imageView);
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
+            FadeTransition ft = new FadeTransition(Duration.millis(500), cardPane);
+            ft.setFromValue(0);
+            ft.setToValue(1);
+            ft.setCycleCount(1);
+            ft.setAutoReverse(true);
+            ft.play();
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
         }
