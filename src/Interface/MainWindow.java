@@ -38,7 +38,7 @@ public class MainWindow {
 
     /**
      * Display the window
-     * @param customer //todo complete javadocs
+     * @param customer's window displayed
      */
     public static void display(Customer customer) throws IOException, ClassNotFoundException {
 
@@ -179,6 +179,10 @@ public class MainWindow {
         window.show();
     }
 
+    /**
+     * A Method used to log out
+     * @param username of the customer who want to log out
+     */
     private static void logOut(String username){
         Socket socket = null;
         try {
@@ -203,7 +207,10 @@ public class MainWindow {
         dynamicContent.getChildren().add(node);
     }
 
-    //todo add javadocs
+    /**
+     * Add a Dynamic Content pane
+     * @param node to be displayed in the pane
+     */
     public static void addDynamicContent(Node node){
         FadeTransition ft = new FadeTransition(Duration.millis(500), node);
         ft.setFromValue(0);
@@ -214,7 +221,10 @@ public class MainWindow {
         dynamicContent.getChildren().add(node);
     }
 
-    //todo add javadocs
+    /**
+     * Remove the Dynamic Content pane
+     * @param node to be removed
+     */
     public static void removeDynamicContent(Node node){
         dynamicContent.getChildren().removeAll(node);
     }
