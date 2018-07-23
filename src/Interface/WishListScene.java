@@ -131,7 +131,6 @@ public class WishListScene{
             });
             pane.setCenter(card);
             pane.setBottom(buttonBox);
-
             remove.setOnAction(event -> {
                 flow.getChildren().remove(pane);
                 Socket socket;

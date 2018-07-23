@@ -149,6 +149,11 @@ public class CollectionScene{
         return border;
     }
 
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
     public static ScaleTransition addScale(Node node){
         ScaleTransition translation = new ScaleTransition(Duration.millis(100), node);
         translation.setFromX(1);
@@ -160,6 +165,11 @@ public class CollectionScene{
         return translation;
     }
 
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
     public static ScaleTransition removeScale(Node node){
         ScaleTransition translation = new ScaleTransition(Duration.millis(100), node);
         translation.setFromX(1.05);

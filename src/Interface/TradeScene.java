@@ -496,7 +496,7 @@ public class TradeScene {
 
     /**
      * display the already started trade
-     * @param trade the trade
+     * @param trade the trade to restore
      */
     static void restoreFromPreviousTrade(ATrade trade){
         GridPane mainGrid1 = new GridPane();
@@ -710,9 +710,9 @@ public class TradeScene {
 
     /**
      * Check if the card is still in the customer's collection
-     * @param collection
-     * @param offer
-     * @return
+     * @param collection Collection of the customer
+     * @param offer Offer with the cards to verify
+     * @return Boolean with the result
      */
     private static boolean stillInTheCollection(Collection collection, Collection offer){
         for(Card card : offer){
@@ -863,6 +863,11 @@ public class TradeScene {
         flow.getChildren().remove(pane);
     }
 
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
     private static ScaleTransition addScaleTransition(Node node){
         ScaleTransition ft = new ScaleTransition(Duration.millis(200), node);
         ft.setFromX(0);
