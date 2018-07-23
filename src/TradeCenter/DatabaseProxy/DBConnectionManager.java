@@ -6,9 +6,8 @@ import java.sql.SQLException;
 
 /**
  * Management for database connection
- * @author Roberto Gallotta
  */
-public class DBConnectionManager {
+class DBConnectionManager {
 
     private final String DATABASE = "CARDS";
     private final String USERNAME = "tradecenter";
@@ -17,7 +16,7 @@ public class DBConnectionManager {
     /**
      * Connects to database
      */
-    protected Connection connectToDB(Connection connection) {
+    Connection connectToDB(Connection connection) {
         try {
             System.err.println("[DBConnectionManager] - Connecting to database " + DATABASE + "...");
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -33,7 +32,7 @@ public class DBConnectionManager {
     /**
      * Disconnects from database
      */
-    protected Connection disconnectFromDB(Connection connection) {
+    Connection disconnectFromDB(Connection connection) {
         try {
             System.err.println("[DBConnectionManager] - Disconnecting from database " + DATABASE + "...");
             connection.close();

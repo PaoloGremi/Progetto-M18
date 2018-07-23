@@ -4,8 +4,6 @@ import TradeCenter.Card.CardCatalog;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
-import java.util.HashMap;
-
 public interface IProxy {
 
     // cards methods

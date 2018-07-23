@@ -1,14 +1,12 @@
 package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.*;
-import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
 
 import java.sql.*;
 
 /**
  * Handles INSERT commands for database management
- * @author Roberto Gallotta
  */
 class DBAtomicInserter {
 
@@ -18,12 +16,12 @@ class DBAtomicInserter {
      * @param card: card to insert in database
      * @param customer: owner of the card
      */
-    void insertCard(Connection connection, Card card, Customer customer) {
+    void insertCard(Connection connection, Card card, String customer) {
         try {
             System.err.println("[DBAtomicInserter] - Adding card number " + card.getId() + " to database...");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO cards VALUES (?,?,?,?) ON DUPLICATE KEY UPDATE customer_id = ?;");
             ps.setInt(1,card.getId());
-            ps.setString(2, customer.getId());
+            ps.setString(2, customer);
             switch (card.getDescription().getDescrType()) {
                 case POKEMON:
                     ps.setInt(3, getDescriptionIDByName(connection, card.getDescription().getName(), CardType.POKEMON));
@@ -34,7 +32,7 @@ class DBAtomicInserter {
                     ps.setString(4, "yugioh");
                     break;
             }
-            ps.setString(5, customer.getId());
+            ps.setString(5, customer);
             ps.execute();
             connection.commit();
             System.err.println("[DBAtomicInserter] - Card " + card.getId() + " added to database.");
@@ -70,11 +68,11 @@ class DBAtomicInserter {
      * @param description: description to be added
      * @param customer:
      */
-    void insertWishlist(Connection connection, Description description, Customer customer) {
+    void insertWishlist(Connection connection, Description description, String customer) {
         try {
-            System.err.println("[DBAtomicInserter] - Adding wishlist element " + description.getName() + " to customer " + customer.getId() + "...");
+            System.err.println("[DBAtomicInserter] - Adding wishlist element " + description.getName() + " to customer " + customer + "...");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO wishlist VALUES (?,?,?);");
-            ps.setString(1, customer.getId());
+            ps.setString(1, customer);
             switch (description.getDescrType()) {
                 case POKEMON:
                     ps.setInt(2, getDescriptionIDByName(connection, description.getName(), CardType.POKEMON));
@@ -87,7 +85,7 @@ class DBAtomicInserter {
             }
             ps.execute();
             connection.commit();
-            System.err.println("[DBAtomicInserter] - Wishlist element " + description.getName() + " added to customer " + customer.getId() + ".");
+            System.err.println("[DBAtomicInserter] - Wishlist element " + description.getName() + " added to customer " + customer + ".");
         } catch (SQLException e) {
             System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertWishlist.");
         }
@@ -96,18 +94,20 @@ class DBAtomicInserter {
     /**
      * Insert a customer in the database (only customer primary data)
      * @param connection: database connection
-     * @param customer: customer to be added //TODO Maybe pass only ID, Username and Password?
+     * @param customerID: customer's ID
+     * @param customerUsername: customer's username
+     * @param customerPassword: customer's password
      */
-    void insertCustomer(Connection connection, Customer customer) {
+    void insertCustomer(Connection connection, String customerID, String customerUsername, String customerPassword) {
         try {
-            System.err.println("[DBAtomicInserter] - Adding customer " + customer.getId() + " to database...");
+            System.err.println("[DBAtomicInserter] - Adding customer " + customerID + " to database...");
             PreparedStatement ps = connection.prepareStatement("INSERT INTO customers VALUES (?,?,?);");
-            ps.setString(1, customer.getId());
-            ps.setString(2, customer.getUsername());
-            ps.setString(3, customer.getPassword());
+            ps.setString(1, customerID);
+            ps.setString(2, customerUsername);
+            ps.setString(3, customerPassword);
             ps.execute();
             connection.commit();
-            System.err.println("[DBAtomicInserter] - Customer " + customer.getId() + " added to database.");
+            System.err.println("[DBAtomicInserter] - Customer " + customerID + " added to database.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicInserter] - Exception " + e + " encounterd in method insertCustomer.");
         }

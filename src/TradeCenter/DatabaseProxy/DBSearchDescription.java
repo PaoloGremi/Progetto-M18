@@ -9,16 +9,19 @@ import java.util.HashSet;
 /**
  * Singleton
  */
-public class DBSearchDescription {
+class DBSearchDescription {
+
     static DBSearchDescription instance;
 
-    public static DBSearchDescription getInstance(){
+    //todo add javadocs
+    static DBSearchDescription getInstance(){
         if(instance==null)
             instance=new DBSearchDescription();
         return instance;
     }
 
-    public HashSet<Description> getDescrByString(Connection connection, String s) {
+    //todo add javadocs
+    HashSet<Description> getDescrByString(Connection connection, String s) {
         HashSet<Description> descriptions=new HashSet<>();
         System.err.println("Searching descriptions by Name...");
         PreparedStatement ps;
@@ -68,7 +71,7 @@ public class DBSearchDescription {
      * @param len2 :       Length2
      * @return Pokemon's descriptions founded
      */
-    public HashSet<Description> getSearchedDescrPokemon(Connection connection, String text, String typeInput, int hpInput, int lev, int weigth, String len1, String len2) {
+    HashSet<Description> getSearchedDescrPokemon(Connection connection, String text, String typeInput, int hpInput, int lev, int weigth, String len1, String len2) {
         //ckeck on lenght
         String lenghtComplete = checkLength(len1, len2);
 
@@ -118,7 +121,7 @@ public class DBSearchDescription {
      * @param typeID
      * @return
      */
-    public HashSet<Description> getSearchedDescrYuGiOh(Connection connection, String text, String reference, int lev, int atk, int def, String monsterID, String typeID) {
+    HashSet<Description> getSearchedDescrYuGiOh(Connection connection, String text, String reference, int lev, int atk, int def, String monsterID, String typeID) {
         HashSet<Description> descrFounded = new HashSet<>();
         System.err.println("Searching  YuGiOh descriptions...");
         PreparedStatement ps;
@@ -156,7 +159,6 @@ public class DBSearchDescription {
 
         return null;
     }
-
 
     /**
      * Retrieve descriptions from final view filtered
@@ -212,7 +214,6 @@ public class DBSearchDescription {
      * @param vectID: Vector of ID of YuGiOh Card which is searching
      * @return
      */
-
     private HashSet<Description> retrieveYugiohDescriptionFromID(Connection connection,int[] vectID){
         HashSet<Description> descrCreated = new HashSet<>();
         DBAtomicRetriever DBret = new DBAtomicRetriever();
@@ -221,7 +222,6 @@ public class DBSearchDescription {
         }
         return descrCreated;
     }
-
 
     /**
      * Size of a View
@@ -278,6 +278,8 @@ public class DBSearchDescription {
             stmt = connection.createStatement();
             int rs = stmt.executeUpdate(query);
     }
+
+    //todo add javadocs
     private void initYuGiOhView(Connection connection,String nameView) throws SQLException {
         Statement stmt ;
         String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID) as SELECT yugioh_description_id,Name,Description,Reference,Level,Atk,Def,MonsterTypeName,CardTypeName\n" +
@@ -286,7 +288,6 @@ public class DBSearchDescription {
         stmt = connection.createStatement();
         int rs = stmt.executeUpdate(query);
     }
-
 
     /**
      * Create a View from an other view with where clause and a string attribute
@@ -298,7 +299,6 @@ public class DBSearchDescription {
      * @param value: value of attribute
      * @throws SQLException
      */
-
     private void whereString(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,String value) throws  SQLException{
         Statement stmt;
         int rs;
@@ -357,7 +357,6 @@ public class DBSearchDescription {
      * @param value: value of attribute
      * @throws SQLException
      */
-
     private void whereInt(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,int value, int range) throws  SQLException{
         int rangeMin=value-range;
         int rangeMax=value+range;

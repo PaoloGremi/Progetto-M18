@@ -16,7 +16,6 @@ import java.util.ArrayList;
 
 /**
  * Single records retriever (database management module)
- * @author Roberto Gallotta
  */
 class DBAtomicRetriever {
 
@@ -72,6 +71,7 @@ class DBAtomicRetriever {
         return customer;
     }
 
+    //todo add javadocs
     ArrayList<String> getCustomersUsernames(Connection connection) {
         ArrayList<String> usernames = new ArrayList<>();
         try {
@@ -88,6 +88,7 @@ class DBAtomicRetriever {
         return usernames;
     }
 
+    //todo add javadocs
     ArrayList<String> getCustomersWhoHaveDescription(Connection connection, Description description) {
         ArrayList<String> usernames = new ArrayList<>();
         try {
@@ -289,6 +290,7 @@ class DBAtomicRetriever {
         return cards;
     }
 
+    //todo add javadocs
     ArrayList<Card> retrieveCardsInTradeOffer(Connection connection, int trade_id, int offer_col) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
@@ -429,6 +431,7 @@ class DBAtomicRetriever {
         return trade;
     }
 
+    //todo add javadocs
     ArrayList<Trade> retrieveTradeByUser(Connection connection, String id) {
         ArrayList<Trade> trades = new ArrayList<>();
         try {
