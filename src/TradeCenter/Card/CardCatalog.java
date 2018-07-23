@@ -1,12 +1,10 @@
 package TradeCenter.Card;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Class that represents a card catalog.
  */
-
 public class CardCatalog {
 
     private HashSet<Description> catalog = new HashSet<>();
