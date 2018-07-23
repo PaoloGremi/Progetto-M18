@@ -11,10 +11,14 @@ import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXScrollPane;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
@@ -24,6 +28,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -81,8 +86,8 @@ public class CollectionScene{
         scroll.setFitToHeight(true);
         scroll.setFitToWidth(true);
         scroll.setContent(flow);
-
         for(Card card : cust.getCollection()){
+
             BorderPane pane = new BorderPane();
 
             pane.setPadding(new Insets(5,0,0,5));
@@ -92,6 +97,9 @@ public class CollectionScene{
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(285);
+            ImageView imageCopy = new ImageView(image);
+            imageCopy.setPreserveRatio(true);
+            imageCopy.setFitHeight(285);
 
             pane.setCenter(imageView);
 
@@ -100,17 +108,26 @@ public class CollectionScene{
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "collection"));
+                            MainWindow.refreshDynamicContent(Demo.display(imageCopy, "collection"));
                         }
                     };
 
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
 
+            imageView.setOnMouseEntered(event -> {
+                ScaleTransition translation = addScale(imageView);
+                translation.play();
+            });
 
-            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.setCycleCount(1);
+            imageView.setOnMouseExited(event -> {
+                ScaleTransition translation = removeScale(imageView);
+                translation.play();
+            });
+            ScaleTransition ft = new ScaleTransition(Duration.millis(500), pane);
+            ft.setFromX(0);
+            ft.setFromY(0);
+            ft.setToX(1);
+            ft.setToY(1);
             ft.setAutoReverse(true);
             ft.play();
             flow.getChildren().add(pane);
@@ -130,6 +147,38 @@ public class CollectionScene{
         border.setCenter(scroll);
         border.setTop(hbox);
         return border;
+    }
+
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
+    public static ScaleTransition addScale(Node node){
+        ScaleTransition translation = new ScaleTransition(Duration.millis(100), node);
+        translation.setFromX(1);
+        translation.setFromY(1);
+        translation.setToX(1.05);
+        translation.setToY(1.05);
+        translation.setAutoReverse(true);
+        translation.setCycleCount(1);
+        return translation;
+    }
+
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
+    public static ScaleTransition removeScale(Node node){
+        ScaleTransition translation = new ScaleTransition(Duration.millis(100), node);
+        translation.setFromX(1.05);
+        translation.setFromY(1.05);
+        translation.setToX(1);
+        translation.setToY(1);
+        translation.setAutoReverse(true);
+        translation.setCycleCount(1);
+        return translation;
     }
 
     /**

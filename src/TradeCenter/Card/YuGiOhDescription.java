@@ -17,7 +17,7 @@ public class YuGiOhDescription extends Description{
     private String monster_type_id;
     private String card_type_id;
 
-
+    private static final long serialVersionUID = 8794060548502010738L;
     /**
      * Constructor method
      *
@@ -94,6 +94,14 @@ public class YuGiOhDescription extends Description{
      */
     public String getCard_type_id() {
         return card_type_id;
+    }
+
+    /**
+     * Getter of the reference
+     * @return: reference (a code of a card)
+     */
+    public String getReference() {
+        return reference;
     }
 
     /**

@@ -10,11 +10,13 @@ import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -362,7 +364,19 @@ public class TradeScene {
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(161);
+            ImageView imageCopy = new ImageView(image);
+            imageCopy.setPreserveRatio(true);
+            imageCopy.setFitHeight(161);
             cardPane.setCenter(imageView);
+
+            cardPane.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView);
+                st.play();
+            });
+            cardPane.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView);
+                st.play();
+            });
 
             Tooltip tooltip = new Tooltip();
 
@@ -418,7 +432,21 @@ public class TradeScene {
             imageView1.setImage(image);
             imageView1.setPreserveRatio(true);
             imageView1.setFitHeight(161);
+
+            imageView1.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView1);
+                st.play();
+            });
+            imageView1.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView1);
+                st.play();
+            });
+
             imageView1.setOnMousePressed(moveCardsOffer(flow,pane,flag,c));
+            if(c.equals(card)){
+                ScaleTransition ft = addScaleTransition(pane);
+                ft.play();
+            }
 
             pane.setCenter(imageView1);
             flow.getChildren().add(pane);
@@ -440,13 +468,25 @@ public class TradeScene {
                 imageView.setImage(image);
                 imageView.setPreserveRatio(true);
                 imageView.setFitHeight(161);
+                ImageView imageCopy = new ImageView(image);
+                imageCopy.setPreserveRatio(true);
+                imageCopy.setFitHeight(161);
                 cardPane.setCenter(imageView);
+
+                cardPane.setOnMouseEntered(event -> {
+                    ScaleTransition st = CollectionScene.addScale(imageView);
+                    st.play();
+                });
+                cardPane.setOnMouseExited(event -> {
+                    ScaleTransition st = CollectionScene.removeScale(imageView);
+                    st.play();
+                });
 
                 Tooltip tooltip = new Tooltip();
 
                 Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-                imageView.setOnMousePressed(moveCardsCollection(imageView,flag,c));
+                imageView.setOnMousePressed(moveCardsCollection(imageCopy,flag,c));
 
                 flowPane.getChildren().add(cardPane);
                 flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -456,7 +496,7 @@ public class TradeScene {
 
     /**
      * display the already started trade
-     * @param trade the trade
+     * @param trade the trade to restore
      */
     static void restoreFromPreviousTrade(ATrade trade){
         GridPane mainGrid1 = new GridPane();
@@ -670,9 +710,9 @@ public class TradeScene {
 
     /**
      * Check if the card is still in the customer's collection
-     * @param collection
-     * @param offer
-     * @return
+     * @param collection Collection of the customer
+     * @param offer Offer with the cards to verify
+     * @return Boolean with the result
      */
     private static boolean stillInTheCollection(Collection collection, Collection offer){
         for(Card card : offer){
@@ -821,5 +861,20 @@ public class TradeScene {
         restoreCollection(card, flag, collFlow, collectionList);
         imageList.remove(card);
         flow.getChildren().remove(pane);
+    }
+
+    /**
+     * Adds scale animation
+     * @param node Node to add animation
+     * @return The transition
+     */
+    private static ScaleTransition addScaleTransition(Node node){
+        ScaleTransition ft = new ScaleTransition(Duration.millis(200), node);
+        ft.setFromX(0);
+        ft.setFromY(0);
+        ft.setToX(1);
+        ft.setToY(1);
+        ft.setAutoReverse(true);
+        return ft;
     }
 }

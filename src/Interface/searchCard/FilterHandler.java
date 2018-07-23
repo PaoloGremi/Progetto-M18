@@ -50,16 +50,15 @@ public class FilterHandler implements EventHandler<ActionEvent> {
             Socket socket0;
             try {
                 socket0 = new Socket(ServerIP.ip, ServerIP.port);
-                System.out.println("Client connected: Searching Description by Name");
+                System.out.println("Client connected: Searching Description by Name"); //TODO da togliere
                 ObjectOutputStream os = new ObjectOutputStream(socket0.getOutputStream());
                 System.out.println("Ok");
-                os.writeObject(new MessageServer(MessageType.SEARCHDESCRSBYTRING,SearchCardScene.getSearchText().getText()));
+                os.writeObject(new MessageServer(MessageType.SEARCHDESCRSBYTRING,SearchCardScene.getSearchText().getText(),customer.getUsername()));
                 ObjectInputStream is = new ObjectInputStream(socket0.getInputStream());
 
                 HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
 
-                if(returnMessage.size()>=1)
-                    mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
+                mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
                 socket0.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -90,7 +89,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         System.out.println("Client connected: Searching Pokemon Description");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
-                        os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(text,comboTypePo,hpValue,levValue,weightValue,len1,len2)));
+                        os.writeObject(new MessageServer(MessageType.FILTERPOKEMONDESCR, new PokemonAll(text,comboTypePo,hpValue,levValue,weightValue,len1,len2),customer.getUsername()));
                         ObjectInputStream is = new ObjectInputStream(socket1.getInputStream());
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
@@ -123,7 +122,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         System.out.println("Client connected: Searching YuGiOh Description");
                         ObjectOutputStream os = new ObjectOutputStream(socket2.getOutputStream());
                         System.out.println("Ok");
-                        os.writeObject(new MessageServer(MessageType.FILTERYUGIOHDESCR, new YuGiOhAll(text,refValue,levelValue,atkValue,defValue,comboMonster,comboTypeYu)));
+                        os.writeObject(new MessageServer(MessageType.FILTERYUGIOHDESCR, new YuGiOhAll(text,refValue,levelValue,atkValue,defValue,comboMonster,comboTypeYu),customer.getUsername()));
                         ObjectInputStream is = new ObjectInputStream(socket2.getInputStream());
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();

@@ -23,7 +23,7 @@ public abstract class Description implements Serializable {
       */
     private String name;
     private String text;
-    transient private BufferedImage pic; //formati supportati: GIF,PNG,JPEG,BMP,WBMP
+    transient private BufferedImage pic; //supported formats: GIF,PNG,JPEG,BMP,WBMP
     private HashSet<String> listTag;
     private CardType descrType;
 
@@ -76,7 +76,7 @@ public abstract class Description implements Serializable {
      * @param tag the tag that will be added
      * @return boolean if the operatinons is done correctly
      * */
-    public boolean addTag(String tag){
+    private boolean addTag(String tag){
         return listTag.add(tag.toLowerCase()); //all tags are lowercase
     }
 
@@ -88,6 +88,7 @@ public abstract class Description implements Serializable {
     public String getName() {
         return name;
     }
+
     /**
      * Getter of the text
      *

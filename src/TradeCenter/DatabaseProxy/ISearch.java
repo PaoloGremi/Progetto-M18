@@ -29,6 +29,4 @@ public interface ISearch {
      * @return: Description that match
      */
     HashSet<Description> getFoundDescrByString(String s);
-
-
 }

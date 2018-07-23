@@ -6,7 +6,6 @@ import java.util.HashSet;
 /**
  * Class that represents a Card
  */
-
 public class Card implements Serializable {
 
     /**

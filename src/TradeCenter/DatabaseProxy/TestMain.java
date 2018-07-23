@@ -3,10 +3,7 @@ package TradeCenter.DatabaseProxy;
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.*;
-import TradeCenter.Customers.Customer;
-import TradeCenter.Trades.Trade;
 
-import java.util.HashMap;
 import java.util.HashSet;
 
 public class TestMain {

@@ -1,6 +1,7 @@
 package Interface.searchCard;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
+import ClientServer.ServerIP;
 import Interface.MainWindow;
 import Interface.OtherUserProfileScene;
 import Interface.SearchUserScene;
@@ -46,7 +47,7 @@ public class DescriptionFounded {
     static ScrollPane display(Customer user, HashMap<Description,ArrayList<String>> map) {
         ScrollPane scrollPane=new ScrollPane();
         BorderPane scene = new BorderPane();
-        if(map.isEmpty()){//TODO controlla
+        if(map.isEmpty()){
             Label l=new Label("  No Descriptions Founded  ");
             scrollPane.setContent(l);
             return scrollPane;
@@ -80,7 +81,7 @@ public class DescriptionFounded {
                 public void handle(ActionEvent event) {
                     Socket socket1;
                     try {
-                        socket1 = new Socket("localhost", 8889);
+                        socket1 = new Socket(ServerIP.ip,ServerIP.port);
                         System.out.println("Client connected: Adding to WishList");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");

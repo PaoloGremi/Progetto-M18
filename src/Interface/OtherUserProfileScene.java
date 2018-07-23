@@ -8,6 +8,7 @@ import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -133,15 +134,19 @@ public class OtherUserProfileScene {
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(285);
+            ImageView imageCopy = new ImageView(image);
+            imageCopy.setPreserveRatio(true);
+            imageCopy.setFitHeight(285);
             cardPane.setCenter(imageView);
-            EventHandler<MouseEvent> eventHandlerBox =
-                    new EventHandler<javafx.scene.input.MouseEvent>() {
-
-                        @Override
-                        public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(imageView, "other_user"));
-                        }
-                    };
+            imageView.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView);
+                st.play();
+            });
+            imageView.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView);
+                st.play();
+            });
+            EventHandler<MouseEvent> eventHandlerBox = mouseEvent(imageCopy);
 
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
             FadeTransition ft = new FadeTransition(Duration.millis(500), cardPane);
@@ -179,7 +184,18 @@ public class OtherUserProfileScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(300);
             cardPane.setCenter(imageView);
-            EventHandler<MouseEvent> eventHandlerBox = mouseEvent(imageView);
+            ImageView imageCopy = new ImageView(image);
+            imageCopy.setPreserveRatio(true);
+            imageCopy.setFitHeight(285);
+            imageView.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView);
+                st.play();
+            });
+            imageView.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView);
+                st.play();
+            });
+            EventHandler<MouseEvent> eventHandlerBox = mouseEvent(imageCopy);
             imageView.addEventHandler(javafx.scene.input.MouseEvent.MOUSE_CLICKED, eventHandlerBox);
             FadeTransition ft = new FadeTransition(Duration.millis(500), cardPane);
             ft.setFromValue(0);

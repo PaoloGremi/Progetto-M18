@@ -1,5 +1,6 @@
 package Interface.searchCard;
 
+import com.jfoenix.controls.JFXSlider;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -13,13 +14,13 @@ public class YugiohFilter {
     static ComboBox comboMonster;
     static ComboBox comboType;
     static VBox vBoxMain;
-    static Slider atkSlider;
-    static Slider defSlider;
+    static JFXSlider atkSlider;
+    static JFXSlider defSlider;
+    static JFXSlider levSlider;
     static VBox atkContainer;
     static VBox defContainer;
     static VBox refContainer;
     static TextField referenceText;
-    static Slider levSlider;
     static VBox levContainer;
     static HBox atkLabelContainer;
     static HBox defLabelContainer;
@@ -90,9 +91,9 @@ public class YugiohFilter {
         atkLabelContainer=new HBox();
         defLabelContainer=new HBox();
         levLabelContainer=new HBox();
-        atkSlider=new Slider();
-        defSlider=new Slider();
-        levSlider=new Slider();
+        atkSlider= new JFXSlider();
+        defSlider= new JFXSlider();
+        levSlider= new JFXSlider();
 
         atkContainer.setPadding(new Insets(15));
         atkContainer.setSpacing(7);
@@ -104,7 +105,7 @@ public class YugiohFilter {
         levContainer.setSpacing(7);
         levContainer.setStyle("-fx-background-color: orange");
 
-
+        atkSlider.setValue(0);
         atkSlider.setMin(0);
         atkSlider.setMax(5000);
         atkSlider.setShowTickLabels(true);
@@ -113,6 +114,7 @@ public class YugiohFilter {
         atkSlider.setMinorTickCount(250);
         atkSlider.setBlockIncrement(500);
 
+        defSlider.setValue(0);
         defSlider.setMin(0);
         defSlider.setMax(5000);
         defSlider.setShowTickLabels(true);
@@ -121,6 +123,7 @@ public class YugiohFilter {
         defSlider.setMinorTickCount(250);
         defSlider.setBlockIncrement(500);
 
+        levSlider.setValue(0);
         levSlider.setMin(0);
         levSlider.setMax(7);
         levSlider.setShowTickLabels(true);
@@ -132,6 +135,10 @@ public class YugiohFilter {
         Label atkLabel=new Label("--");
         Label defLabel=new Label("--");
         Label levLabel=new Label("--");
+
+        atkLabel.setStyle("-fx-background-color: #ff3300");
+        defLabel.setStyle("-fx-background-color: #ff3300");
+        levLabel.setStyle("-fx-background-color: #ff3300");
 
         atkLabelContainer.getChildren().addAll(new Label("ATK: "),atkLabel);
         defLabelContainer.getChildren().addAll(new Label("DEF: "),defLabel);

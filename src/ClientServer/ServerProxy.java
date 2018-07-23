@@ -191,12 +191,14 @@ public class ServerProxy {
     }
     
     public HashMap<Description, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
+        String customerFrom=messageServer.getCustomerFrom();
         HashSet<Description> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
-        return tradeCenter.getCustomersFromDescriptions( descriptions);
+        return tradeCenter.getCustomersFromDescriptions( descriptions,customerFrom);
     }
     public HashMap<Description,ArrayList<String>> filterYugiohDescr(MessageServer messageServer){
+        String customerFrom=messageServer.getCustomerFrom();
         HashSet<Description> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
-        return tradeCenter.getCustomersFromDescriptions(descriptions);
+        return tradeCenter.getCustomersFromDescriptions(descriptions,customerFrom);
     }
     public void addDescrToWhishlist(MessageServer messageServer){
         Customer customer=tradeCenter.searchCustomer(messageServer.getCustomerFrom());
@@ -204,9 +206,10 @@ public class ServerProxy {
     }
 
     public HashMap<Description,ArrayList<String>> searchDescrByString(MessageServer messageServer){
-        String s=messageServer.getString1();
-         HashSet<Description> descriptions=tradeCenter.filterByString(s);
-         return tradeCenter.getCustomersFromDescriptions(descriptions);
+        String stringToSearch=messageServer.getString1();
+        String username=messageServer.getString2();
+         HashSet<Description> descriptions=tradeCenter.filterByString(stringToSearch);
+         return tradeCenter.getCustomersFromDescriptions(descriptions,username);
     }
 
     public boolean isLoggedIn(MessageServer messageServer) throws AlreadyLoggedInException {

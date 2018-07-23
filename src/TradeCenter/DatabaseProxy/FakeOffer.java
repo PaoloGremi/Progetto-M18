@@ -2,7 +2,6 @@ package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Customers.Collection;
-import TradeCenter.Trades.Offer;
 
 import java.sql.Date;
 

@@ -61,6 +61,7 @@ public class MessageServer implements Serializable {
         this.string1 = username;
     }
 
+
     public MessageServer(MessageType message, Offer offer) {
         this.message = message;
         this.offer = offer;
@@ -90,13 +91,15 @@ public class MessageServer implements Serializable {
         this.offer2 = offer2;
     }
 
-    public MessageServer(MessageType message, PokemonAll pokemonAll) {
+    public MessageServer(MessageType message, PokemonAll pokemonAll,String customerFrom) {
         this.message=message;
         this.pokemonAll=pokemonAll;
+        this.customerFrom=customerFrom;
     }
-    public MessageServer(MessageType message, YuGiOhAll yuGiOhAll){
+    public MessageServer(MessageType message, YuGiOhAll yuGiOhAll,String customerFrom){
         this.message=message;
         this.yuGiOhAll=yuGiOhAll;
+        this.customerFrom=customerFrom;
     }
 
     public MessageServer(MessageType message, Trade trade1) {
