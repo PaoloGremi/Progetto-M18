@@ -116,12 +116,6 @@ public class AddCardScene {
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(285);
             pane.setCenter(imageView);
-            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
-            ft.setFromValue(0);
-            ft.setToValue(1);
-            ft.setCycleCount(1);
-            ft.setAutoReverse(true);
-            ft.play();
             flow.getChildren().add(pane);
         }
         return flow;

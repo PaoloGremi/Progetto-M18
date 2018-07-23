@@ -10,6 +10,7 @@ import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Trades.ATrade;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.KeyFrame;
+import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
@@ -362,13 +363,25 @@ public class TradeScene {
             imageView.setImage(image);
             imageView.setPreserveRatio(true);
             imageView.setFitHeight(161);
+            ImageView imageCopy = new ImageView(image);
+            imageCopy.setPreserveRatio(true);
+            imageCopy.setFitHeight(161);
             cardPane.setCenter(imageView);
+
+            cardPane.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView);
+                st.play();
+            });
+            cardPane.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView);
+                st.play();
+            });
 
             Tooltip tooltip = new Tooltip();
 
             Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-            imageView.setOnMousePressed(moveCardsCollection(imageView,flag,card));
+            imageView.setOnMousePressed(moveCardsCollection(imageCopy,flag,card));
 
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -418,6 +431,16 @@ public class TradeScene {
             imageView1.setImage(image);
             imageView1.setPreserveRatio(true);
             imageView1.setFitHeight(161);
+
+            imageView1.setOnMouseEntered(event -> {
+                ScaleTransition st = CollectionScene.addScale(imageView1);
+                st.play();
+            });
+            imageView1.setOnMouseExited(event -> {
+                ScaleTransition st = CollectionScene.removeScale(imageView1);
+                st.play();
+            });
+
             imageView1.setOnMousePressed(moveCardsOffer(flow,pane,flag,c));
 
             pane.setCenter(imageView1);
@@ -440,13 +463,25 @@ public class TradeScene {
                 imageView.setImage(image);
                 imageView.setPreserveRatio(true);
                 imageView.setFitHeight(161);
+                ImageView imageCopy = new ImageView(image);
+                imageCopy.setPreserveRatio(true);
+                imageCopy.setFitHeight(161);
                 cardPane.setCenter(imageView);
+
+                cardPane.setOnMouseEntered(event -> {
+                    ScaleTransition st = CollectionScene.addScale(imageView);
+                    st.play();
+                });
+                cardPane.setOnMouseExited(event -> {
+                    ScaleTransition st = CollectionScene.removeScale(imageView);
+                    st.play();
+                });
 
                 Tooltip tooltip = new Tooltip();
 
                 Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-                imageView.setOnMousePressed(moveCardsCollection(imageView,flag,c));
+                imageView.setOnMousePressed(moveCardsCollection(imageCopy,flag,c));
 
                 flowPane.getChildren().add(cardPane);
                 flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));

@@ -9,6 +9,9 @@ import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXButton;
 import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ScaleTransition;
+import javafx.animation.TranslateTransition;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -105,7 +108,27 @@ public class WishListScene{
             pane2.getChildren().add(card);
             card.setPreserveRatio(true);
             card.setFitHeight(313);
+            ImageView cardCopy = new ImageView(image);
+            cardCopy.setPreserveRatio(true);
+            cardCopy.setFitHeight(313);
 
+            card.setOnMouseEntered(event -> {
+                TranslateTransition translation = new TranslateTransition(Duration.millis(100), card);
+                translation.interpolatorProperty().set(Interpolator.SPLINE(.1, .1, .7, .7));
+                translation.setByY(-50);
+                translation.setAutoReverse(true);
+                translation.setCycleCount(2);
+                translation.play();
+            });
+            card.setOnMouseExited(event -> {
+                TranslateTransition translation = new TranslateTransition(Duration.millis(100), card);
+                translation.interpolatorProperty().set(Interpolator.SPLINE(.1, .1, .7, .7));
+                translation.setFromY(card.getY());
+                translation.setToY(-card.getY());
+                translation.setAutoReverse(true);
+                translation.setCycleCount(1);
+                translation.play();
+            });
             pane.setCenter(card);
             pane.setBottom(buttonBox);
 
@@ -134,7 +157,7 @@ public class WishListScene{
 
                         @Override
                         public void handle(javafx.scene.input.MouseEvent e) {
-                            MainWindow.refreshDynamicContent(Demo.display(card, "wish"));
+                            MainWindow.refreshDynamicContent(Demo.display(cardCopy, "wish"));
                         }
                     };
 
@@ -159,7 +182,14 @@ public class WishListScene{
 
             });
 
-            FadeTransition ft = new FadeTransition(Duration.millis(500), pane);
+            ScaleTransition st = new ScaleTransition(Duration.millis(500),card);
+            st.setFromX(0);
+            st.setFromY(0);
+            st.setToX(1);
+            st.setToY(1);
+            st.setAutoReverse(true);
+            st.play();
+            FadeTransition ft = new FadeTransition(Duration.millis(700), buttonBox);
             ft.setFromValue(0);
             ft.setToValue(1);
             ft.setCycleCount(1);

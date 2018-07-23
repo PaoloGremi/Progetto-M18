@@ -10,7 +10,9 @@ import com.jfoenix.controls.JFXDrawer;
 import com.jfoenix.controls.JFXHamburger;
 import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
 import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -22,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -176,6 +179,12 @@ public class MainWindow {
         scene.getStylesheets().add("Interface/ButtonsCSS.css");
         window.setScene(scene);
         window.setResizable(false);
+        window.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                logOut(customer.getUsername());
+            }
+        });
         window.show();
     }
 
@@ -205,9 +214,11 @@ public class MainWindow {
 
     //todo add javadocs
     public static void addDynamicContent(Node node){
-        FadeTransition ft = new FadeTransition(Duration.millis(500), node);
-        ft.setFromValue(0);
-        ft.setToValue(1);
+        ScaleTransition ft = new ScaleTransition(Duration.millis(500), node);
+        ft.setFromX(0);
+        ft.setFromY(0);
+        ft.setToX(1);
+        ft.setToY(1);
         ft.setCycleCount(1);
         ft.setAutoReverse(true);
         ft.play();

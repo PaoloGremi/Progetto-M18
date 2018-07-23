@@ -1,10 +1,12 @@
 package Interface;
 
 import com.jfoenix.controls.JFXButton;
+import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.layout.*;
 import javafx.scene.control.Button;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,14 +32,19 @@ public  class Demo {
         methodMap.put("searchDescription", Demo::SearchDescription);
         methodMap.put("trade", Demo::Trade);
         BorderPane pane = new BorderPane();
+        ScaleTransition ft = new ScaleTransition(Duration.millis(500), cardImage);
+        ft.setFromX(0.5);
+        ft.setFromY(0.5);
         if(!scene.equals("trade")) {
-            cardImage.setScaleX(pane.getScaleX() * 1.7);
-            cardImage.setScaleY(pane.getScaleY() * 1.7);
+            ft.setToX(1.7);
+            ft.setToY(1.7);
         }
         else {
-            cardImage.setScaleX(pane.getScaleX() * 3);
-            cardImage.setScaleY(pane.getScaleY() * 3);
+            ft.setToX(3);
+            ft.setToY(3);
         }
+        cardImage.setOnMouseDragEntered(null);
+        cardImage.setOnMouseDragExited(null);
         HBox hBox = new HBox();
         JFXButton button = new JFXButton("\u2B8C");
         button.setButtonType(JFXButton.ButtonType.RAISED);
@@ -45,6 +52,8 @@ public  class Demo {
         hBox.setPadding(new Insets(10));
         hBox.setStyle("-fx-background-color: orange;");
         pane.setStyle("-fx-background-color: DAE6A2;");
+        ft.setAutoReverse(true);
+        ft.play();
         pane.setCenter(cardImage);
         pane.setTop(hBox);
 
@@ -65,7 +74,7 @@ public  class Demo {
      * @throws ClassNotFoundException
      */
     private static void Wish() throws IOException, ClassNotFoundException {
-        MainWindow.refreshDynamicContent(CollectionScene.refresh());
+        MainWindow.refreshDynamicContent(WishListScene.refresh());
     }
 
     /**
