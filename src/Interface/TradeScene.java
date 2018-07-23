@@ -16,6 +16,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -381,7 +382,7 @@ public class TradeScene {
 
             Tooltip.install(imageView, new Tooltip("Right Click To Zoom"));
 
-            imageView.setOnMousePressed(moveCardsCollection(imageCopy,flag,card));
+            imageView.setOnMousePressed(moveCardsCollection(imageView,flag,card));
 
             flowPane.getChildren().add(cardPane);
             flowPane.setMargin(cardPane, new Insets(10, 5, 10, 5));
@@ -442,6 +443,10 @@ public class TradeScene {
             });
 
             imageView1.setOnMousePressed(moveCardsOffer(flow,pane,flag,c));
+            if(c.equals(card)){
+                ScaleTransition ft = addScaleTransition(pane);
+                ft.play();
+            }
 
             pane.setCenter(imageView1);
             flow.getChildren().add(pane);
@@ -856,5 +861,15 @@ public class TradeScene {
         restoreCollection(card, flag, collFlow, collectionList);
         imageList.remove(card);
         flow.getChildren().remove(pane);
+    }
+
+    private static ScaleTransition addScaleTransition(Node node){
+        ScaleTransition ft = new ScaleTransition(Duration.millis(200), node);
+        ft.setFromX(0);
+        ft.setFromY(0);
+        ft.setToX(1);
+        ft.setToY(1);
+        ft.setAutoReverse(true);
+        return ft;
     }
 }
