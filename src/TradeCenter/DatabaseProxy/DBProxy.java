@@ -15,7 +15,7 @@ import java.util.HashSet;
  */
 public class DBProxy implements IProxy,ISearch{
 
-    static DBProxy instance;
+    private static DBProxy instance;
 
     private Connection connection;
     private DBAtomicRetriever dbRet = new DBAtomicRetriever();
@@ -34,7 +34,7 @@ public class DBProxy implements IProxy,ISearch{
     /**
      * Search Descriptions by their name (All types of cards)
      * @param s: String to search for Name of card
-     * @return: Description that match
+     * @return Description that match
      */
     public HashSet<Description> getFoundDescrByString(String s) {
         connection = dbConn.connectToDB(connection);
@@ -127,11 +127,11 @@ public class DBProxy implements IProxy,ISearch{
         Customer customer = dbRet.retrieveSingleCustomerByUsername(connection, username);
         System.err.println("[DBProxy] - Retrieving customer " + username + "...");
         // add card collection
-        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer)) {
+        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer.getId())) {
             customer.addCard(card);
         }
         // add card wishlist
-        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
+        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer.getId())) {
             customer.addCardToWishList(description);
         }
         System.err.println("[DBProxy] - Customer " + username + " retrieved.");
@@ -149,11 +149,11 @@ public class DBProxy implements IProxy,ISearch{
         Customer customer = dbRet.retrieveSingleCustomerByUserID(connection, id);
         System.err.println("[DBProxy] - Retrieving customer " + id + "...");
         // add card collection
-        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer)) {
+        for(Card card: dbRet.retrieveCardsInCustomerCollection(connection, customer.getId())) {
             customer.addCard(card);
         }
         // add card wishlist
-        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer)) {
+        for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer.getId())) {
             customer.addCardToWishList(description);
         }
         System.err.println("[DBProxy] - Customer " + id + " retrieved.");
@@ -167,7 +167,7 @@ public class DBProxy implements IProxy,ISearch{
      */
     public ArrayList<String> getAllCustomersNames() {
         connection = dbConn.connectToDB(connection);
-        ArrayList<String> customersNames = dbRet.getCustomersUsernames(connection);
+        ArrayList<String> customersNames = dbRet.getCustomersUsername(connection);
         connection = dbConn.disconnectFromDB(connection);
         return customersNames;
     }
@@ -216,7 +216,7 @@ public class DBProxy implements IProxy,ISearch{
         System.err.println("[DBProxy] - Updating customer " + customer.getId() + "...");
         // update customer's cards
             //get db's customer's collection
-        ArrayList<Card> oldCollection = dbRet.retrieveCardsInCustomerCollection(connection, customer);
+        ArrayList<Card> oldCollection = dbRet.retrieveCardsInCustomerCollection(connection, customer.getId());
             //get cards to update
         ArrayList<Card> toUpdate = new ArrayList<>(customer.getCollection().getSet());
         toUpdate.removeAll(oldCollection);
@@ -228,7 +228,7 @@ public class DBProxy implements IProxy,ISearch{
         toUpdate.clear();
         // update customer's wishlist
             //get db's wishlist
-        ArrayList<Description> oldWishlist = dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer);
+        ArrayList<Description> oldWishlist = dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer.getId());
             //get wishlists to add
         ArrayList<Description> toAdd = new ArrayList<>(customer.getWishList());
         toAdd.removeAll(oldWishlist);
@@ -252,7 +252,7 @@ public class DBProxy implements IProxy,ISearch{
     /**
      * Gets a trade given its id
      * @param id: trade id
-     * @return: trade
+     * @return trade
      */
     @Override
     public Trade getTrade(int id) {
@@ -267,7 +267,7 @@ public class DBProxy implements IProxy,ISearch{
     /**
      * Gets all trades with a given customer
      * @param id: customer's id
-     * @return: list of trades
+     * @return list of trades
      */
     public ArrayList<Trade> getTradeByUser(String id) {
         connection = dbConn.connectToDB(connection);
@@ -304,28 +304,29 @@ public class DBProxy implements IProxy,ISearch{
             for(Card card : oldOffer1) {
                 dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 2);
             }
+            // free memory
+            oldOffer1.clear();
+            toAdd.clear();
+            toRemove.clear();
             // update cards in offer2
                 // get db's offer2
             ArrayList<Card> oldOffer2 = dbRet.retrieveCardsInTradeOffer(connection, trade.getId(), 1);
                 // get cards to add
-            ArrayList<Card> toAdd2 = new ArrayList<>(trade.getOffer1().getSet());
+            toAdd = new ArrayList<>(trade.getOffer1().getSet());
             //toAdd2.removeAll(oldOffer2);
-            for(Card card : toAdd2) {
+            for(Card card : toAdd) {
                 dbIns.insertActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
                 // get cards to remove
-            ArrayList<Card> toRemove2 = new ArrayList<>(trade.getOffer1().getSet());
-            oldOffer2.removeAll(toRemove2);
+            toRemove = new ArrayList<>(trade.getOffer1().getSet());
+            oldOffer2.removeAll(toRemove);
             for(Card card : oldOffer2) {
                 dbDel.removeActiveTradeCard(connection, card.getId(), trade.getId(), 1);
             }
             // free memory
-            oldOffer1.clear();
-            //todo migliorare, fix
+            oldOffer2.clear();
             toAdd.clear();
             toRemove.clear();
-            toAdd2.clear();
-            toRemove2.clear();
         } else {
             // update cards in offer1
                 // get db's offer1
@@ -406,7 +407,7 @@ public class DBProxy implements IProxy,ISearch{
 
     /**
      * Quick method to get next card ID
-     * @return: next card ID
+     * @return next card ID
      */
     @Override
     public int getNextCardID() {
@@ -418,7 +419,7 @@ public class DBProxy implements IProxy,ISearch{
 
     /**
      * Quick method to get next customer ID
-     * @return: next customer ID
+     * @return next customer ID
      */
     @Override
     public int getNextCustomerID() {
@@ -430,7 +431,7 @@ public class DBProxy implements IProxy,ISearch{
 
     /**
      * Quick method to get next trade ID
-     * @return: next trade ID
+     * @return next trade ID
      */
     @Override
     public int getNextTradeID() {
@@ -443,7 +444,7 @@ public class DBProxy implements IProxy,ISearch{
     /**
      * TEST ONLY METHOD: Remove cards from a given customer and return updated cards count
      * @param customerID: customer's id
-     * @return: updated cards count
+     * @return updated cards count
      */
     public int removeCardsFromCustomer(String customerID) {
         connection = dbConn.connectToDB(connection);

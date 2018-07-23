@@ -71,8 +71,12 @@ class DBAtomicRetriever {
         return customer;
     }
 
-    //todo add javadocs
-    ArrayList<String> getCustomersUsernames(Connection connection) {
+    /**
+     * Get all customers' username from database
+     * @param connection: database connection
+     * @return list of customers' username
+     */
+    ArrayList<String> getCustomersUsername(Connection connection) {
         ArrayList<String> usernames = new ArrayList<>();
         try {
             System.err.println("[DBAtomicRetriever] - Retrieving customer's usernames...");
@@ -88,7 +92,12 @@ class DBAtomicRetriever {
         return usernames;
     }
 
-    //todo add javadocs
+    /**
+     * Get a list of usernames of customers who have the given description in their collection
+     * @param connection: database connection
+     * @param description: filtering description
+     * @return list of customers' username
+     */
     ArrayList<String> getCustomersWhoHaveDescription(Connection connection, Description description) {
         ArrayList<String> usernames = new ArrayList<>();
         try {
@@ -140,11 +149,10 @@ class DBAtomicRetriever {
                     break;
             }
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                size = rs.getInt(1);
-                return size;
-            }
-        }catch (SQLException | NullPointerException e) {
+            rs.next();
+            size = rs.getInt(1);
+            return size;
+        }catch (NullPointerException | SQLException e) {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method getTableSize for table " + tablename + ".");
         }
         return size;
@@ -261,36 +269,33 @@ class DBAtomicRetriever {
     /**
      * Retrieve the cards in the selected customer's collection
      * @param connection: database connection
-     * @param customer: selected customer //TODO change this to customer ID for less visibility?
+     * @param customerID: selected customer's id
      * @return array of cards
      */
-    ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, Customer customer) {
+    ArrayList<Card> retrieveCardsInCustomerCollection(Connection connection, String customerID) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'s collection...");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customerID + "'s collection...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM cards WHERE customer_id = ?;");
-            ps.setString(1, customer.getId());
+            ps.setString(1, customerID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                Description description = null;
-                switch (rs.getString("card_Type")) {
-                    case "pokemon":
-                        description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
-                        break;
-                    case "yugioh":
-                        description = retrieveSingleYugiohDescription(connection, rs.getInt("description_id"));
-                        break;
-                }
-                cards.add(new Card(rs.getInt("card_id"), description));
+                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs)));
             }
-            System.err.println("[DBAtomicRetriever] - Retrieved customer " + customer.getId() + "'s collection.");
+            System.err.println("[DBAtomicRetriever] - Retrieved customer " + customerID + "'s collection.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveCardsInCustomerCollection.");
         }
         return cards;
     }
 
-    //todo add javadocs
+    /**
+     * Retrieve the cards in the selected trade's offer
+     * @param connection: database connection
+     * @param trade_id: trade's id
+     * @param offer_col: either 1 or 2
+     * @return list of cards
+     */
     ArrayList<Card> retrieveCardsInTradeOffer(Connection connection, int trade_id, int offer_col) {
         ArrayList<Card> cards = new ArrayList<>();
         try {
@@ -300,16 +305,7 @@ class DBAtomicRetriever {
             ps.setInt(2, offer_col);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                Description description = null;
-                switch (rs.getString("card_Type")) {
-                    case "pokemon":
-                        description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
-                        break;
-                    case "yugioh":
-                        description = retrieveSingleYugiohDescription(connection, rs.getInt("description_id"));
-                        break;
-                }
-                cards.add(new Card(rs.getInt("card_id"), description));
+                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs)));
             }
             System.err.println("[DBAtomicRetriever] - Cards in trade " + trade_id + "'s offer " + offer_col + " retrieved.");
         } catch (SQLException e) {
@@ -321,29 +317,20 @@ class DBAtomicRetriever {
     /**
      * Retrieve the descriptions in the selected customer's wishlist
      * @param connection: database connection
-     * @param customer: selected customer //TODO change this to customer ID for less visibility?
+     * @param customerID: selected customer's id
      * @return array of descriptions
      */
-    ArrayList<Description> retrieveDescriptionsInCustomerWishlist(Connection connection, Customer customer) {
+    ArrayList<Description> retrieveDescriptionsInCustomerWishlist(Connection connection, String customerID) {
         ArrayList<Description> wishlist = new ArrayList<>();
         try {
-            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customer.getId() + "'wishlist...");
+            System.err.println("[DBAtomicRetriever] - Retrieving customer " + customerID + "'wishlist...");
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM wishlist WHERE customer_id = ?");
-            ps.setString(1, customer.getId());
+            ps.setString(1, customerID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                Description description = null;
-                switch (rs.getString("type")) {
-                    case "pokemon":
-                        description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
-                        break;
-                    case "yugioh":
-                        description = retrieveSingleYugiohDescription(connection, rs.getInt("description_id"));
-                        break;
-                }
-                wishlist.add(description);
+                wishlist.add(caseDescriptionHandler(connection, rs));
             }
-            System.err.println("[DBAtomicRetriever] - Customer " + customer.getId() + "'wishlist retrieved.");
+            System.err.println("[DBAtomicRetriever] - Customer " + customerID + "'wishlist retrieved.");
         } catch (SQLException e) {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveDescriptionsInCustomerWishlist.");
         }
@@ -396,30 +383,12 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs1 = ps1.executeQuery();
                 while (rs1.next()) {
-                    Description description = null;
-                    switch (rs1.getString("card_Type")) {
-                        case "pokemon":
-                            description = retrieveSinglePokemonDescription(connection, rs1.getInt("description_id"));
-                            break;
-                        case "yugioh":
-                            description = retrieveSingleYugiohDescription(connection, rs1.getInt("description_id"));
-                            break;
-                    }
-                    card = new Card(rs1.getInt("card_id"), description);
+                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1));
                     offer.addCardOffer1(card);
                 }
                 ResultSet rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    Description description = null;
-                    switch (rs2.getString("card_Type")) {
-                        case "pokemon":
-                            description = retrieveSinglePokemonDescription(connection, rs2.getInt("description_id"));
-                            break;
-                        case "yugioh":
-                            description = retrieveSingleYugiohDescription(connection, rs2.getInt("description_id"));
-                            break;
-                    }
-                    card = new Card(rs2.getInt("card_id"), description);
+                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2));
                     offer.addCardOffer2(card);
                 }
             }
@@ -431,7 +400,12 @@ class DBAtomicRetriever {
         return trade;
     }
 
-    //todo add javadocs
+    /**
+     * Get list of all customer's trades (both as customer1 or customer2)
+     * @param connection: database connection
+     * @param id: customer's id
+     * @return list of trades
+     */
     ArrayList<Trade> retrieveTradeByUser(Connection connection, String id) {
         ArrayList<Trade> trades = new ArrayList<>();
         try {
@@ -481,17 +455,7 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs1 = ps1.executeQuery();
                 while (rs1.next()) {
-                    Description description = null;
-                    switch (rs1.getString("card_Type")) {
-                        case "pokemon":
-                            description = retrieveSinglePokemonDescription(connection, rs1.getInt("description_id"));
-                            break;
-                        case "yugioh":
-                            description = retrieveSingleYugiohDescription(connection, rs1.getInt("description_id"));
-                            break;
-                    }
-
-                    card = new Card(rs1.getInt("card_id"), description);
+                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1));
                     if(rs.getString("user1_id").equals(id)) {
                         offer.addCardOffer1(card);
                     }else{
@@ -500,16 +464,7 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    Description description = null;
-                    switch (rs2.getString("card_Type")) {
-                        case "pokemon":
-                            description = retrieveSinglePokemonDescription(connection, rs2.getInt("description_id"));
-                            break;
-                        case "yugioh":
-                            description = retrieveSingleYugiohDescription(connection, rs2.getInt("description_id"));
-                            break;
-                    }
-                    card = new Card(rs2.getInt("card_id"), description);
+                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2));
                     if(rs.getString("user1_id").equals(id)) {
                         offer.addCardOffer2(card);
                     }else{
@@ -523,6 +478,23 @@ class DBAtomicRetriever {
             System.err.println("[DBAtomicRetriever] - Exception " + e + " encounterd in method retrieveTradeByUser.");
         }
         return trades;
+    }
+
+    private Description caseDescriptionHandler(Connection connection, ResultSet rs) {
+        Description description = null;
+        try {
+            switch (rs.getString("card_Type")) {
+                case "pokemon":
+                    description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
+                    break;
+                case "yugioh":
+                    description = retrieveSingleYugiohDescription(connection, rs.getInt("description_id"));
+                    break;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return description;
     }
 
 }
