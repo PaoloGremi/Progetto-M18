@@ -5,7 +5,6 @@ import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.*;
 
 import TradeCenter.Customers.Collection;
-import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import TradeCenter.Exceptions.CardExceptions.EmptyCollectionException;
 import TradeCenter.Exceptions.TradeExceptions.AlreadyStartedTradeException;
 import TradeCenter.Exceptions.TradeExceptions.MyselfTradeException;
@@ -41,7 +40,7 @@ public class TradeCenter {
      * Create a new trade center, with the database connection that load cards and users with their attributes
      */
     public TradeCenter() {
-        this.proxy = new DBProxy();
+        this.proxy = DBProxy.getInstance();
         populateCatalogs();
         this.customers = new HashMap<String, Customer>();
         this.activeTrades = new HashSet<>();
