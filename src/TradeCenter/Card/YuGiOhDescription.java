@@ -97,6 +97,14 @@ public class YuGiOhDescription extends Description{
     }
 
     /**
+     * Getter of the reference
+     * @return: reference (a code of a card)
+     */
+    public String getReference() {
+        return reference;
+    }
+
+    /**
      *Override toString method
      *
      * @return the card name

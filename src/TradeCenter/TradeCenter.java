@@ -367,15 +367,11 @@ public class TradeCenter {
      * @param hashDescr: Descriptions
      * @return HashMap<Description,ArrayList<Customer>>
      */
-    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr){
+    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr,String username){
         HashMap<Description,ArrayList<String>> map=new HashMap<>();
         for (Description descr:hashDescr) {
-           // Description descCasted=(Description) descr;
-            ArrayList<String> listCustomer=new ArrayList<>();
-            for (String key : customers.keySet()) {
-                if(customers.get(key).containDescription(descr))
-                    listCustomer.add(customers.get(key).getUsername());
-            }
+            ArrayList<String> listCustomer;
+            listCustomer=searchByDescription(descr,username);
             map.put(descr,listCustomer);
         }
         return map;

@@ -1,5 +1,6 @@
 package Interface.searchCard;
 
+import com.jfoenix.controls.JFXSlider;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -14,9 +15,9 @@ public class PokemonFilter {
     static Pane mainPane;
     static VBox vBoxMain;
     static ComboBox comboType;
-    static Slider hpSlider;
-    static Slider levSlider;
-    static Slider weightSlider;
+    static JFXSlider hpSlider;
+    static JFXSlider levSlider;
+    static JFXSlider weightSlider;
     static VBox hpContainer;
     static VBox levContainer;
     static VBox weigthContainer;
@@ -32,9 +33,9 @@ public class PokemonFilter {
         mainPane=new Pane();
         vBoxMain=new VBox();
         comboType=new ComboBox();
-        hpSlider=new Slider();
-        levSlider=new Slider();
-        weightSlider=new Slider();
+        hpSlider= new JFXSlider();
+        levSlider= new JFXSlider();
+        weightSlider= new JFXSlider();
         hpContainer=new VBox();
         levContainer=new VBox();
         weigthContainer=new VBox();
@@ -70,6 +71,7 @@ public class PokemonFilter {
         weigthContainer.setStyle("-fx-background-color: orange");
 
 
+        hpSlider.setValue(0);
         hpSlider.setMin(0);
         hpSlider.setMax(200);
         hpSlider.setShowTickLabels(true);
@@ -78,6 +80,7 @@ public class PokemonFilter {
         hpSlider.setMinorTickCount(5);
         hpSlider.setBlockIncrement(10);
 
+        levSlider.setValue(0);
         levSlider.setMin(0);
         levSlider.setMax(76);
         levSlider.setShowTickLabels(true);
@@ -86,6 +89,7 @@ public class PokemonFilter {
         levSlider.setMinorTickCount(2);
         levSlider.setBlockIncrement(5);
 
+        weightSlider.setValue(0);
         weightSlider.setMin(0);
         weightSlider.setMax(100);//518
         weightSlider.setShowTickLabels(true);
@@ -101,6 +105,10 @@ public class PokemonFilter {
         Label hpLabel=new Label("--");
         Label levLabel=new Label("--");
         Label weightLabel=new Label("--");
+
+        hpLabel.setStyle("-fx-background-color: #ff3300");
+        levLabel.setStyle("-fx-background-color: #ff3300");
+        weightLabel.setStyle("-fx-background-color: #ff3300");
 
         hpLabelContainer.getChildren().addAll(new Label("HP: "),hpLabel);
         levLabelContainer.getChildren().addAll(new Label("Level: "),levLabel);

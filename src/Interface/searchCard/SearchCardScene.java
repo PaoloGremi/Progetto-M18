@@ -1,8 +1,6 @@
 package Interface.searchCard;
 
 
-import Interface.searchCard.PokemonFilter;
-import Interface.searchCard.YugiohFilter;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXComboBox;
 import javafx.event.ActionEvent;
@@ -10,10 +8,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 
 
 public class SearchCardScene {

@@ -40,3 +40,29 @@
     /* modify mark color */
     -fx-background-color: #ffef84;
 }
+
+/* Styling the slider track */
+.jfx-slider > .track {
+    -fx-background-color: white;
+}
+
+/* Styling the slider thumb */
+.jfx-slider > .thumb {
+    -fx-background-color: #ff3300;
+}
+
+/* Styling the filled track */
+.jfx-slider > .colored-track {
+    -fx-background-color: #ff3300;
+}
+
+/* Styling the animated thumb */
+.jfx-slider > .animated-thumb {
+    -fx-background-color: #ff3300;
+}
+
+/* Styling the slider value text inside animated thumb */
+.jfx-slider .slider-value {
+    -fx-fill: white;
+    -fx-stroke: white;
+}
