@@ -44,14 +44,8 @@ public class TradeCenter {
         this.proxy = new DBProxy();
         populateCatalogs();
         this.customers = new HashMap<String, Customer>();
-        //contUsers = proxy.retrieveCustomers(customers);
         this.activeTrades = new HashSet<>();
         this.doneTrades = new HashSet<>();
-        /*for(int i=1; i<proxy.getNextTradeID(); i++) {
-            Trade trade = proxy.getTrade(i);
-            if(trade.isDoneDeal()) doneTrades.add(trade);
-            else activeTrades.add(trade);
-        }*/
     }
 
     /**
@@ -81,7 +75,26 @@ public class TradeCenter {
         return temporaryCustomer;
     }
 
+    //session methods
+    /**
+     * Verify if the customer is logged in another client
+     * @param username Username of the customer
+     * @return Boolean if is already logged or not
+     */
+    public boolean isLogged(String username){
+        if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
+        return true;
+    }
 
+    /**
+     * Log out the customer from the system
+     * @param username Username of the customer
+     */
+    public void logOut(String username){
+        loggedCustomers.remove(username);
+    }
+
+    //sign-up methods
     /**
      * A method that check if the username is already in use
      *
@@ -98,8 +111,7 @@ public class TradeCenter {
      * @return the ID
      */
     private String customerID(){
-        //contUsers++;
-        return "USER-" + proxy.getNextCustomerID();//contUsers;
+        return "USER-" + proxy.getNextCustomerID();
     }
 
     /**
@@ -148,21 +160,23 @@ public class TradeCenter {
     }
 
     /**
-     * Verify if the customer is logged in another client
-     * @param username Username of the customer
-     * @return Boolean if is already logged or not
+     * User can find another user by searching his name
+     * @return
      */
-    public boolean isLogged(String username){
-        if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
-        return true;
-    }
-
-    /**
-     * Log out the customer from the system
-     * @param username Username of the customer
-     */
-    public void logOut(String username){
-        loggedCustomers.remove(username);
+    public Customer searchCustomer(String username){
+        for(String key : customers.keySet()){
+            if((customers.get(key)).getUsername().equals(username)){
+                return customers.get(key);
+            }
+        }
+        //user not in map
+        Customer customer = proxy.retrieveSingleCustomer(username);
+        if(customer != null) {
+            customers.put(customer.getId(),customer);
+            return customer;
+        }
+        //user dont exist
+        throw new UserNotFoundException();
     }
 
     /**
@@ -208,7 +222,6 @@ public class TradeCenter {
         return cards;
     }
 
-
     //todo check if the customer exist,
 
     /**
@@ -221,7 +234,6 @@ public class TradeCenter {
         customers.get(customerId).addCard(cards);
         proxy.updateCustomer(customers.get(customerId));
     }
-
 
     /**
      * method that remove a card from a customer's collection
@@ -251,35 +263,6 @@ public class TradeCenter {
     public void removeFromWishList(Description cardDescription, String id) {
         customers.get(id).removeFromWishList(cardDescription);
         proxy.updateCustomer(customers.get(id));
-    }
-
-    /**
-     * A Method that updates the customer's attributes, like wishlist
-     * @param customer the user that has to be updated
-     */
-    private void updateCustomer(Customer customer){
-        proxy.updateCustomer(customer);
-    }
-
-    /**
-     * User can find another user by searching his name
-     * @return
-     */
-    public Customer searchCustomer(String username){
-        for(String key : customers.keySet()){
-            if((customers.get(key)).getUsername().equals(username)){
-                return customers.get(key);
-            }
-        }
-        //user not found
-        //todo create the method in proxy
-        Customer customer = proxy.retrieveSingleCustomer(username);
-        if(customer != null) {
-            customers.put(customer.getId(),customer);
-            return customer;
-        }
-
-        throw new UserNotFoundException();
     }
 
     /**
@@ -377,24 +360,6 @@ public class TradeCenter {
         HashSet<Description> descrMatched=new HashSet<>();
         descrMatched=proxy.getFoundDescrYugioh(yuGiOhAll);
         return descrMatched;
-    }
-
-    /**
-     * Users can search a card, they see all users that match the search
-     *
-     * @param searchString name or description of a card
-     * @return a list of customers with their own collections
-     */
-    public HashMap<Customer, Collection> searchByString(String searchString){
-        HashMap<Customer, Collection> searched = new HashMap<>();
-        for(String key : customers.keySet()){
-            searched.put(customers.get(key), customers.get(key).searchByString(searchString));
-        }
-        if(searched.size() == 0){
-            //nothing found
-            throw new CardNotFoundException();          //todo eccezione da risolvere, se nessuno ha la carta il software deve continuare
-        }                                               //todo PARLARE CON FEDE
-        return searched;
     }
 
     /**
@@ -557,15 +522,6 @@ public class TradeCenter {
             //deve essere cosi l'ordine altrimenti trade != trade negli active trade
 
 
-    }
-
-    /**
-     * A method that shows a log of all the trades that ended
-     */
-    public void logDoneTrades(){
-        for (Trade trade : doneTrades){
-            System.out.println(trade);
-        }
     }
 
     /**
