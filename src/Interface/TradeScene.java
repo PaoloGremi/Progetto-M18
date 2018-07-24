@@ -799,8 +799,11 @@ public class TradeScene {
         return event;
     }
 
-    private static boolean toDisable(){
-        return myCardOffer.getSet().equals(currentTrade.getOffer1().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) || myCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer1().getSet());
+    private static boolean toDisable() {
+        if (currentTrade != null){
+            return myCardOffer.getSet().equals(currentTrade.getOffer1().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) || myCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer1().getSet());
+        }
+        return true;
     }
 
     /**
