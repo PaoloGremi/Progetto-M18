@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-class ServerProxy {
+public class ServerProxy {
 
     private TradeCenter tradeCenter;
 
@@ -23,7 +23,7 @@ class ServerProxy {
      * Constructor for the server proxy
      * @param tradeCenter The static tradecenter from the server
      */
-    ServerProxy(TradeCenter tradeCenter) {
+    public ServerProxy(TradeCenter tradeCenter) {
         this.tradeCenter = tradeCenter;
     }
 
@@ -32,7 +32,7 @@ class ServerProxy {
      * @param messageServer Message with inside the two strings
      * @return
      */
-    boolean verifyPassword(MessageServer messageServer){
+    public boolean verifyPassword(MessageServer messageServer){
         return tradeCenter.verifyPassword(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -41,7 +41,7 @@ class ServerProxy {
      * @param messageServer Message with inside the two strings
      * @return
      */
-    boolean loggedIn(MessageServer messageServer){
+    public boolean loggedIn(MessageServer messageServer){
         return tradeCenter.loggedIn(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -52,7 +52,7 @@ class ServerProxy {
      * @throws CheckPasswordConditionsException
      * @throws UsernameAlreadyTakenException
      */
-    Customer addCustomer(MessageServer messageServer) throws CheckPasswordConditionsException,UsernameAlreadyTakenException {
+    public Customer addCustomer(MessageServer messageServer) throws CheckPasswordConditionsException,UsernameAlreadyTakenException {
        return tradeCenter.addCustomer(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -61,7 +61,7 @@ class ServerProxy {
      * @param messageServer The string to search and the username of the customer that send the message
      * @return The list of the customers that contain that string in the username
      */
-    ArrayList<String> searchUsers(MessageServer messageServer){
+    public ArrayList<String> searchUsers(MessageServer messageServer){
         return tradeCenter.searchUsers(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -70,7 +70,7 @@ class ServerProxy {
      * @param messageServer Message from the client with username of the customer
      * @return The customer found
      */
-    Customer searchCustomer(MessageServer messageServer){
+    public Customer searchCustomer(MessageServer messageServer){
         return tradeCenter.searchCustomer(messageServer.getString1());
     }
 
@@ -78,7 +78,7 @@ class ServerProxy {
      * Remove a description from the wishlist of the customer
      * @param messageServer Message with the description to remove and id of the customer
      */
-    void removeFromWishList(MessageServer messageServer){
+    public void removeFromWishList(MessageServer messageServer){
         tradeCenter.removeFromWishList(messageServer.getDescription(), messageServer.getString1());
     }
 
@@ -87,7 +87,7 @@ class ServerProxy {
      * @param messageServer Message with the id of the customers
      * @return boolean if the trade i already startd or not
      */
-    boolean possibleTrade(MessageServer messageServer){
+    public boolean possibleTrade(MessageServer messageServer){
         return tradeCenter.notAlreadyTradingWith(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -96,7 +96,7 @@ class ServerProxy {
      * @param messageServer Message with the ids of the customers and the two offers
      * @throws AlreadyStartedTradeException
      */
-    void createTrade(MessageServer messageServer) throws AlreadyStartedTradeException {
+    public void createTrade(MessageServer messageServer) throws AlreadyStartedTradeException {
         tradeCenter.createTrade(messageServer.getString1(), messageServer.getString2(), messageServer.getOffer1(), messageServer.getOffer2());
     }
 
@@ -105,7 +105,7 @@ class ServerProxy {
      * @param messageServer Message withe the new parameters of the offer
      * @return boolean of the result
      */
-    boolean updateOffer(MessageServer messageServer){
+    public boolean updateOffer(MessageServer messageServer){
         return tradeCenter.updateTrade(new Offer(messageServer.getString1(), messageServer.getString2(), messageServer.getOffer1(), messageServer.getOffer2()),messageServer.isFlag());
     }
 
@@ -114,7 +114,7 @@ class ServerProxy {
      * @param messageServer Message with the two customers of the trade
      * @return The Trade found
      */
-    Trade searchTrade(MessageServer messageServer){
+    public Trade searchTrade(MessageServer messageServer){
         return tradeCenter.takeStartedTrade(messageServer.getString1(), messageServer.getString2());
     }
 
@@ -122,7 +122,7 @@ class ServerProxy {
      * Close the trade
      * @param messageServer Message with the trade and the result
      */
-    void endTrades(MessageServer messageServer){
+    public void endTrades(MessageServer messageServer){
         tradeCenter.endTrade((Trade) messageServer.getTrade(), messageServer.isFlag());
     }
 
@@ -131,7 +131,7 @@ class ServerProxy {
      * @param messageServer Message with the id of the customer
      * @return ArrayList with all the trades
      */
-    ArrayList<Trade> searchOffer(MessageServer messageServer){
+    public ArrayList<Trade> searchOffer(MessageServer messageServer){
         return tradeCenter.showUserTrades(messageServer.getString1());
     }
 
@@ -140,7 +140,7 @@ class ServerProxy {
      * @param messageServer Message with the description of the card
      * @return ArrayList with the usernames of the Customers
      */
-    ArrayList<String> searchDescription(MessageServer messageServer){
+    public  ArrayList<String> searchDescription(MessageServer messageServer){
         return tradeCenter.searchUserByDescription(messageServer.getDescriptionToAdd(),messageServer.getCustomerFrom());
     }
 
@@ -149,7 +149,7 @@ class ServerProxy {
      * @param messageServer Id the of the customer that opens the pack
      * @return ArrayList of the card found
      */
-    ArrayList<Card> addPokemonRandom(MessageServer messageServer){
+    public ArrayList<Card> addPokemonRandom(MessageServer messageServer){
         return tradeCenter.fromPokemonCatalog(messageServer.getString1());
     }
 
@@ -158,7 +158,7 @@ class ServerProxy {
      * @param messageServer Id the of the customer that opens the pack
      * @return ArrayList of the card found
      */
-    ArrayList<Card> addYuGiOhRandom(MessageServer messageServer){
+    public ArrayList<Card> addYuGiOhRandom(MessageServer messageServer){
         return tradeCenter.fromYuGiOhCatalog(messageServer.getString1());
     }
 
@@ -167,7 +167,7 @@ class ServerProxy {
      * @param messageServer Message with the id of the customer
      * @return Customer found
      */
-    Customer searchCustomerByID(MessageServer messageServer){
+    public Customer searchCustomerByID(MessageServer messageServer){
         return tradeCenter.searchCustomerById(messageServer.getString1());
     }
     /**
@@ -175,7 +175,7 @@ class ServerProxy {
      * @param messageServer Message with the id of the customer
      * @return Username found
      */
-    String searchUsernameById(MessageServer messageServer){
+    public String searchUsernameById(MessageServer messageServer){
         return tradeCenter.searchUsernameById(messageServer.getString1());
     }
 
@@ -183,40 +183,40 @@ class ServerProxy {
      * Remove the trade form the tradecenter
      * @param messageServer Message with the two customers of the trade to remove
      */
-    void removeTrade(MessageServer messageServer){
+    public void removeTrade(MessageServer messageServer){
         tradeCenter.removeTrade(messageServer.getString1(),messageServer.getString2());
     }
 
     //todo add javadocs
-    HashMap<Description, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
+    public HashMap<Description, ArrayList<String>> filterPokemonDescr(MessageServer messageServer){
         String customerFrom=messageServer.getCustomerFrom();
         HashSet<Description> descriptions=tradeCenter.filterPokemonDescr(messageServer.getPokemonAll());
         return tradeCenter.getCustomersFromDescriptions( descriptions,customerFrom);
     }
 
-    HashMap<Description,ArrayList<String>> filterYugiohDescr(MessageServer messageServer){
+    public HashMap<Description,ArrayList<String>> filterYugiohDescr(MessageServer messageServer){
         String customerFrom=messageServer.getCustomerFrom();
         HashSet<Description> descriptions=tradeCenter.filterYugiohDescr(messageServer.getYuGiOhAll());
         return tradeCenter.getCustomersFromDescriptions(descriptions,customerFrom);
     }
 
-    void addDescrToWhishlist(MessageServer messageServer){
+    public void addDescrToWhishlist(MessageServer messageServer){
         Customer customer=tradeCenter.searchCustomer(messageServer.getCustomerFrom());
         tradeCenter.addToWishList(messageServer.getDescriptionToAdd(),customer);
     }
 
-    HashMap<Description,ArrayList<String>> searchDescrByString(MessageServer messageServer){
+    public HashMap<Description,ArrayList<String>> searchDescrByString(MessageServer messageServer){
         String stringToSearch=messageServer.getString1();
         String username=messageServer.getString2();
          HashSet<Description> descriptions=tradeCenter.filterByString(stringToSearch);
          return tradeCenter.getCustomersFromDescriptions(descriptions,username);
     }
 
-    boolean isLoggedIn(MessageServer messageServer) throws AlreadyLoggedInException {
+    public boolean isLoggedIn(MessageServer messageServer) throws AlreadyLoggedInException {
        return tradeCenter.isLogged(messageServer.getString1());
     }
 
-    void logOut(MessageServer messageServer){
+    public void logOut(MessageServer messageServer){
         tradeCenter.logOut(messageServer.getString1());
     }
 }
