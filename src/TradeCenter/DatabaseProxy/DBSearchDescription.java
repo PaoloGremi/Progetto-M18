@@ -13,22 +13,30 @@ class DBSearchDescription {
 
     static DBSearchDescription instance;
 
-    //todo add javadocs
+    /**
+     * method to create the singleton
+     *
+     * @return the instance of DBSearchDescription
+     */
     static DBSearchDescription getInstance(){
         if(instance==null)
             instance=new DBSearchDescription();
         return instance;
     }
 
-    //todo add javadocs
+    /**
+     * Search the card, with a string
+     *
+     * @param connection : Database connection
+     * @param s : string for searching
+     * @return card's description founded
+     */
     HashSet<Description> getDescrByString(Connection connection, String s) {
         HashSet<Description> descriptions=new HashSet<>();
         System.err.println("Searching descriptions by Name...");
-        PreparedStatement ps;
-        ResultSet rs;
         try{
             //PokemonDescription Search
-            HashSet<Description> pokemonDescr=new HashSet<>();
+            HashSet<Description> pokemonDescr;
             initPokemonView(connection, "InitPokemonViewString");
             whereLikeString(connection,"InitPokemonViewString","FinalViewPoString","Name",s);
 
@@ -39,7 +47,7 @@ class DBSearchDescription {
             dropView(connection,"FinalViewPoString");
 
             //YuGiOhDescription Search
-            HashSet<Description> yugiohDescr=new HashSet<>();
+            HashSet<Description> yugiohDescr;
             initYuGiOhView(connection, "InitYugiohViewString");
             whereLikeString(connection,"InitYugiohViewString","FinalViewYuString","Name",s);
 
@@ -53,15 +61,15 @@ class DBSearchDescription {
             descriptions.addAll(yugiohDescr);
             return  descriptions;
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     /**
+     * Search pokemon cards, with parameters
+     *
      * @param connection : Database connection
      * @param typeInput :  Card Type
      * @param hpInput :    HP
@@ -75,10 +83,8 @@ class DBSearchDescription {
         //ckeck on lenght
         String lenghtComplete = checkLength(len1, len2);
 
-        HashSet<Description> descrFounded = new HashSet<>();
+        HashSet<Description> descrFounded;
         System.err.println("Searching a Pokemon description...");
-        PreparedStatement ps;
-        ResultSet rs;
         try {
             initPokemonView(connection, "InitPokemonView");
             //String attribute
@@ -101,9 +107,7 @@ class DBSearchDescription {
             dropView(connection, "PoView4");
             dropView(connection, "PoFinalView");
             return descrFounded;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
         //finally drop view;
@@ -111,7 +115,10 @@ class DBSearchDescription {
         return null;
     }
 
+    //todo nel metodo
     /**
+     * Search Yugioh cards, with parameters
+     *
      * @param connection
      * @param reference
      * @param lev
@@ -122,10 +129,8 @@ class DBSearchDescription {
      * @return
      */
     HashSet<Description> getSearchedDescrYuGiOh(Connection connection, String text, String reference, int lev, int atk, int def, String monsterID, String typeID) {
-        HashSet<Description> descrFounded = new HashSet<>();
+        HashSet<Description> descrFounded;
         System.err.println("Searching  YuGiOh descriptions...");
-        PreparedStatement ps;
-        ResultSet rs;
         try {
             initYuGiOhView(connection, "InitYuGiOhView");
             //String attribute
@@ -150,11 +155,11 @@ class DBSearchDescription {
             dropView(connection, "YuView5");
             dropView(connection, "YuFinalView");
             return descrFounded;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
+        //todo è fatto il finally ??, vedi anche metodo sopra getSearchedDescrPokemon() e getDescrByString()
         //finally drop view;
 
         return null;
@@ -171,19 +176,14 @@ class DBSearchDescription {
      */
     private int[] getIDDescriptionFromView(Connection connection, String lastViewName,String idAttribute) throws SQLException, IOException {
 
-        Statement stmt;
-        ResultSet rs;
-        String quey = "select *\n" + "from " + lastViewName + ";";
-        stmt = connection.createStatement();
-        rs = stmt.executeQuery(quey);
+        Statement stmt = connection.createStatement();
+        String query = "select *\n" + "from " + lastViewName + ";";
+        ResultSet rs = stmt.executeQuery(query);
 
         int length = getViewSize(connection, lastViewName);
         int[] listIDfounded = new int[length];
-        int i = 0;
-        while (rs.next()) {
-            int idCurrent = rs.getInt(idAttribute);
-            listIDfounded[i] = idCurrent;
-            i++;
+        for(int i =0;rs.next();i++){
+            listIDfounded[i] = rs.getInt(idAttribute);
         }
         return listIDfounded;
     }
@@ -197,7 +197,7 @@ class DBSearchDescription {
      * @return PokemonDescription matched vectID
      */
     private HashSet<Description> retrievePokemonDescriptionFromID(Connection connection,int[] vectID){
-        System.err.println("Retrieving " + " Pokemon description");
+        System.err.println("Retrieving Pokemon description");
         HashSet<Description> descrCreated = new HashSet<>();
         DBAtomicRetriever DBret = new DBAtomicRetriever();
         for (int i = 0; i < vectID.length; i++) {
@@ -215,37 +215,13 @@ class DBSearchDescription {
      * @return
      */
     private HashSet<Description> retrieveYugiohDescriptionFromID(Connection connection,int[] vectID){
+        System.err.println("Retrieving Yugioh description");
         HashSet<Description> descrCreated = new HashSet<>();
         DBAtomicRetriever DBret = new DBAtomicRetriever();
         for (int i = 0; i < vectID.length; i++) {
             descrCreated.add(DBret.retrieveSingleYugiohDescription(connection, vectID[i]));
         }
         return descrCreated;
-    }
-
-    /**
-     * Size of a View
-     *
-     * @param connection:Connection to DB
-     * @param viewname: View
-     * @return size of View
-     */
-    int getViewSize(Connection connection, String viewname) {
-        int size = 0;
-        try {
-            PreparedStatement ps = null;
-            String query="SELECT COUNT(*) FROM "+viewname+";";
-            ps = connection.prepareStatement(query);
-
-            ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
-                size = rs.getInt(1);
-                return size;
-            }
-        }catch (SQLException | NullPointerException e) {
-            e.printStackTrace();
-        }
-        return size;
     }
 
     /**
@@ -264,32 +240,6 @@ class DBSearchDescription {
     }
 
     /**
-     * Initialize a View in DB with all Pokemon or YuGiOh Description
-     *
-     * @param connection: Connection to DB
-     * @param nameView: Name of View to create
-     */
-    private void initPokemonView(Connection connection,String nameView) throws SQLException {
-        Statement stmt ;
-        String query = "create view "+nameView+"(pokemon_description_id,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
-                "select *" +
-                "    from pokemon_card;";
-
-            stmt = connection.createStatement();
-            int rs = stmt.executeUpdate(query);
-    }
-
-    //todo add javadocs
-    private void initYuGiOhView(Connection connection,String nameView) throws SQLException {
-        Statement stmt ;
-        String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID) as SELECT yugioh_description_id,Name,Description,Reference,Level,Atk,Def,MonsterTypeName,CardTypeName\n" +
-                "FROM yugioh_card AS a LEFT JOIN (SELECT Monster_Type_ID, Name AS MonsterTypeName FROM monster_Type) AS b ON a.Monster_Type_ID = b.Monster_Type_ID LEFT JOIN (SELECT Type_ID, Name AS CardTypeName FROM card_Type) AS c ON a.Type_ID = c.Type_ID;";
-
-        stmt = connection.createStatement();
-        int rs = stmt.executeUpdate(query);
-    }
-
-    /**
      * Create a View from an other view with where clause and a string attribute
      *
      * @param connection: Conncection to DB
@@ -300,21 +250,19 @@ class DBSearchDescription {
      * @throws SQLException
      */
     private void whereString(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,String value) throws  SQLException{
-        Statement stmt;
-        int rs;
+        Statement stmt = connection.createStatement();
         String query;
-        if(!(value==(null))) {
+        if(value!=null) {
              query = "create view " + NameViewNext + " as " +
                     " select * " +
                     "from " + NameViewPrevious + " where " + attribute + "='" + value + "';";
         }
         else {
-            query="create view " + NameViewNext + " as " +
+            query = "create view " + NameViewNext + " as " +
                     " select *" +
                     "from " + NameViewPrevious+";";
         }
-        stmt=connection.createStatement();
-        rs=stmt.executeUpdate(query);
+        stmt.executeUpdate(query);
     }
 
     /**
@@ -328,10 +276,9 @@ class DBSearchDescription {
      * @throws SQLException
      */
     private void whereLikeString(Connection connection,String NameViewPrevious,String NameViewNext,String attribute,String value) throws SQLException {
-        Statement stmt;
-        int rs;
+        Statement stmt = connection.createStatement();
         String query;
-        if(!(value==(null))) {
+        if(value!=null) {
             query = "create view " + NameViewNext + " as " +
                     " select * " +
                     "from " + NameViewPrevious + " where " + attribute + " like '%" + value + "%';";
@@ -341,11 +288,9 @@ class DBSearchDescription {
                     " select *" +
                     "from " + NameViewPrevious+";";
         }
-        stmt=connection.createStatement();
-        rs=stmt.executeUpdate(query);
+        stmt.executeUpdate(query);
 
     }
-
 
     /**
      * Create a View from an other view with where clause and int as attribute
@@ -363,10 +308,9 @@ class DBSearchDescription {
         if(rangeMin<0) //forse non serve
             rangeMin=0;
 
-        Statement stmt;
-        int rs;
+        Statement stmt = connection.createStatement();
         String query;
-        if(!(value==0)) {
+        if(value!=0) {
             query = "create view " + NameViewNext + " as " +
                     "select * " +
                     "from " + NameViewPrevious + " where " + attribute + "<=" + rangeMax + " and "+attribute+">="+rangeMin+";";
@@ -376,8 +320,60 @@ class DBSearchDescription {
                     "select *" +
                     "from " + NameViewPrevious+";";
         }
-        stmt=connection.createStatement();
-        rs=stmt.executeUpdate(query);
+        stmt.executeUpdate(query);
+    }
+
+    /**
+     * Initialize a View in DB with all Pokemon's Description
+     *
+     * @param connection: Connection to DB
+     * @param nameView: Name of View to create
+     */
+    private void initPokemonView(Connection connection,String nameView) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "create view "+nameView+"(pokemon_description_id,Name,Type,Hp,Description,Length,Weigth,Level,Picture) as " +
+                "select *" +
+                "    from pokemon_card;";
+        stmt.executeUpdate(query);
+    }
+
+    /**
+     * Initialize a View in DB with all YuGiOh's Description
+     *
+     * @param connection : Database connection
+     * @param nameView: Name of View to create
+     * @throws SQLException
+     */
+    private void initYuGiOhView(Connection connection,String nameView) throws SQLException {
+        Statement stmt = connection.createStatement();
+        String query = "create view "+nameView+"(yugioh_description_id,Name,Description,Reference,Level,Atk,Def,Monster_Type_ID,Type_ID) as SELECT yugioh_description_id,Name,Description,Reference,Level,Atk,Def,MonsterTypeName,CardTypeName\n" +
+                "FROM yugioh_card AS a LEFT JOIN (SELECT Monster_Type_ID, Name AS MonsterTypeName FROM monster_Type) AS b ON a.Monster_Type_ID = b.Monster_Type_ID LEFT JOIN (SELECT Type_ID, Name AS CardTypeName FROM card_Type) AS c ON a.Type_ID = c.Type_ID;";
+        stmt.executeUpdate(query);
+    }
+
+    //todo in method
+    /**
+     * Size of a View
+     *
+     * @param connection:Connection to DB
+     * @param viewname: View
+     * @return size of View
+     */
+    int getViewSize(Connection connection, String viewname) {
+        int size = 0;
+        try {
+            String query="SELECT COUNT(*) FROM "+viewname+";";
+            PreparedStatement ps = connection.prepareStatement(query);
+
+            ResultSet rs = ps.executeQuery();       //todo serve realmente il while??
+            while(rs.next()) {
+                size = rs.getInt(1);
+                return size;
+            }
+        }catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
+        }
+        return size;
     }
 
     /**
@@ -388,10 +384,8 @@ class DBSearchDescription {
      *
      */
     private void dropView(Connection connection,String NameView) throws SQLException {
-        Statement stmt ;
+        Statement stmt = connection.createStatement();
         String query = "DROP VIEW "+NameView+";";
-
-            stmt = connection.createStatement();
-            int rs = stmt.executeUpdate(query);
+        stmt.executeUpdate(query);
     }
 }
