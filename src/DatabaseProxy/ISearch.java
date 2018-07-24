@@ -1,4 +1,4 @@
-package TradeCenter.DatabaseProxy;
+package DatabaseProxy;
 
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;

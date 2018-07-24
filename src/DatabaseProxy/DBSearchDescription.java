@@ -1,4 +1,4 @@
-package TradeCenter.DatabaseProxy;
+package DatabaseProxy;
 
 import TradeCenter.Card.Description;
 

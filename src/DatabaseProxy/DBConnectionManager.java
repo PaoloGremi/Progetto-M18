@@ -1,4 +1,4 @@
-package TradeCenter.DatabaseProxy;
+package DatabaseProxy;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
