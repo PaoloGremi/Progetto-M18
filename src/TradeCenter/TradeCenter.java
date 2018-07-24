@@ -16,7 +16,7 @@ import TradeCenter.Exceptions.UserExceptions.UserNotFoundException;
 import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import TradeCenter.Trades.*;
 import TradeCenter.Customers.*;
-import TradeCenter.DatabaseProxy.DBProxy;
+import DatabaseProxy.DBProxy;
 
 import java.util.*;
 

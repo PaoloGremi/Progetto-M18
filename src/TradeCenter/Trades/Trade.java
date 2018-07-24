@@ -1,8 +1,6 @@
 package TradeCenter.Trades;
 
-import TradeCenter.DatabaseProxy.FakeOffer;
-
-import java.util.ArrayList;
+import DatabaseProxy.FakeOffer;
 
 /**
  * The actual trade between teo customers
