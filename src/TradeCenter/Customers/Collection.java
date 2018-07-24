@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import TradeCenter.Card.Card;
 import TradeCenter.Card.Description;
+import TradeCenter.Exceptions.CardExceptions.AddCardException;
 import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 
 /**
@@ -31,7 +32,10 @@ public class Collection implements Iterable<Card>, Serializable {
      * @return boolean to check wheter or not the method ran fine
      */
     public boolean addCardToCollection(Card card) {
-        return cardSet.add(card);
+         if(cardSet.add(card)==false)
+             throw new AddCardException();
+         else
+             return true;
     }
 
     /**

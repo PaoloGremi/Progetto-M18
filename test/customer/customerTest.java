@@ -5,6 +5,8 @@ import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
+import TradeCenter.Exceptions.CardExceptions.AddCardException;
+import TradeCenter.Exceptions.CardExceptions.CardNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,6 +25,9 @@ public class customerTest {
     public Card card3;
     public Card card4;
 
+    /**
+     * Scenario principale
+     */
 
     @Before
     public void initTradeCenter(){
@@ -42,12 +47,6 @@ public class customerTest {
         Card card3=new Card(3,yd1);
         Card card4=new Card(4,yd2);
 
-        c1.addCard(card1);
-        c1.addCard(card3);
-
-        c2.addCard(card2);
-        c2.addCard(card4);
-
         this.c1=c1;
         this.c2=c2;
         this.pd1=pd1;
@@ -62,21 +61,30 @@ public class customerTest {
     }
 
     /**
-     * Search a one Description in Customer's collection of cards by a string
+     * Add and remove card to Customer's collection
      */
     @Test
-    public void searchByString1(){
-      /* Collection coll=c1.searchByString("priceless");
-       assertEquals(true,coll.isInTheCollection(card3));*/
+    public void addRemoveCard() {
+        c1.addCard(card1);
+        assertTrue(c1.getCollection().isInTheCollection(card1));
+        c1.removeCard(card1);
+        assertTrue(!c1.getCollection().isInTheCollection(card1));
     }
     /**
-     * Search a two Description in Customer's collection of cards by a string
+     * Catch exception in add remove card in Customer
      */
-    @Test
-    public void searchByString2(){
-        /*Collection coll=c1.searchByString("jewels");
-        assertEquals(true,coll.isInTheCollection(card3));
-        assertEquals(true,coll.isInTheCollection(card1));*/
+    @Test(expected=AddCardException.class)
+    public void addCard(){
+        c1.getCollection().addCardToCollection(card1);
+        c1.getCollection().addCardToCollection(card1);
+    }
+
+    /**
+     * remove Card that is not in collection
+     */
+    @Test(expected=CardNotFoundException.class)
+    public void removeCardException(){
+        c1.getCollection().removeCardFromCollection(card1);
     }
 
 }
