@@ -280,7 +280,7 @@ class DBAtomicRetriever {
             ps.setString(1, customerID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs)));
+                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs, "card_Type")));
             }
             System.err.println("[DBAtomicRetriever] - Retrieved customer " + customerID + "'s collection.");
         } catch (SQLException e) {
@@ -305,7 +305,7 @@ class DBAtomicRetriever {
             ps.setInt(2, offer_col);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs)));
+                cards.add(new Card(rs.getInt("card_id"), caseDescriptionHandler(connection, rs,"card_Type")));
             }
             System.err.println("[DBAtomicRetriever] - Cards in trade " + trade_id + "'s offer " + offer_col + " retrieved.");
         } catch (SQLException e) {
@@ -328,7 +328,7 @@ class DBAtomicRetriever {
             ps.setString(1, customerID);
             ResultSet rs = ps.executeQuery();
             while(rs.next()) {
-                wishlist.add(caseDescriptionHandler(connection, rs));
+                wishlist.add(caseDescriptionHandler(connection, rs, "type"));
             }
             System.err.println("[DBAtomicRetriever] - Customer " + customerID + "'wishlist retrieved.");
         } catch (SQLException e) {
@@ -383,12 +383,12 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs1 = ps1.executeQuery();
                 while (rs1.next()) {
-                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1));
+                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1, "card_Type"));
                     offer.addCardOffer1(card);
                 }
                 ResultSet rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2));
+                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2, "card_Type"));
                     offer.addCardOffer2(card);
                 }
             }
@@ -455,7 +455,7 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs1 = ps1.executeQuery();
                 while (rs1.next()) {
-                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1));
+                    card = new Card(rs1.getInt("card_id"), caseDescriptionHandler(connection, rs1, "card_Type"));
                     if(rs.getString("user1_id").equals(id)) {
                         offer.addCardOffer1(card);
                     }else{
@@ -464,7 +464,7 @@ class DBAtomicRetriever {
                 }
                 ResultSet rs2 = ps2.executeQuery();
                 while (rs2.next()) {
-                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2));
+                    card = new Card(rs2.getInt("card_id"), caseDescriptionHandler(connection, rs2, "card_Type"));
                     if(rs.getString("user1_id").equals(id)) {
                         offer.addCardOffer2(card);
                     }else{
@@ -480,10 +480,10 @@ class DBAtomicRetriever {
         return trades;
     }
 
-    private Description caseDescriptionHandler(Connection connection, ResultSet rs) {
+    private Description caseDescriptionHandler(Connection connection, ResultSet rs, String type) {
         Description description = null;
         try {
-            switch (rs.getString("card_Type")) {
+            switch (rs.getString(type)) {
                 case "pokemon":
                     description = retrieveSinglePokemonDescription(connection, rs.getInt("description_id"));
                     break;

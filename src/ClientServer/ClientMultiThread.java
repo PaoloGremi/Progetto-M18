@@ -26,6 +26,3 @@ public class ClientMultiThread{
     }
 
 }
-
-//todo per Gore
-//https://discussions.apple.com/thread/7960044 per fixare bug touchbar

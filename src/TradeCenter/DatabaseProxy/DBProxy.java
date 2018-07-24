@@ -133,6 +133,7 @@ public class DBProxy implements IProxy,ISearch{
         // add card wishlist
         for(Description description: dbRet.retrieveDescriptionsInCustomerWishlist(connection, customer.getId())) {
             customer.addCardToWishList(description);
+            System.out.println(description.getName());
         }
         System.err.println("[DBProxy] - Customer " + username + " retrieved.");
         connection = dbConn.disconnectFromDB(connection);
