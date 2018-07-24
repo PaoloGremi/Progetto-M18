@@ -1,8 +1,11 @@
 package TradeCenter.DatabaseProxy;
 
 import TradeCenter.Card.CardCatalog;
+import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import TradeCenter.Trades.Trade;
+
+import java.util.ArrayList;
 
 public interface IProxy {
 
@@ -10,16 +13,20 @@ public interface IProxy {
     public void populateCatalog(CardCatalog cc, String tablename);
 
     // customers methods
-    //public int retrieveCustomers(HashMap<String, Customer> customers);
+    public ArrayList<String> getAllCustomersNames();
 
     public Customer retrieveSingleCustomer(String username);
+
+    public Customer retrieveSingleCustomerByID(String id);
+
+    public ArrayList<String> getCustomersByDescription(Description description);
 
     public void addCustomerToDatabase(Customer customer);
 
     public void updateCustomer(Customer customer);
 
     // trades methods
-    public Trade getTrade(int id);
+    public ArrayList<Trade> getTradeByUser(String id);
 
     public void insertTrade(Trade trade);
 

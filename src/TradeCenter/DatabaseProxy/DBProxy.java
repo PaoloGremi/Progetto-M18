@@ -144,6 +144,7 @@ public class DBProxy implements IProxy,ISearch{
      * @param id: customer's id
      * @return customer
      */
+    @Override
     public Customer retrieveSingleCustomerByID(String id) {
         connection = dbConn.connectToDB(connection);
         Customer customer = dbRet.retrieveSingleCustomerByUserID(connection, id);
@@ -165,6 +166,7 @@ public class DBProxy implements IProxy,ISearch{
      * Retrieves list of customer's usernames from database
      * @return arraylist of usernames
      */
+    @Override
     public ArrayList<String> getAllCustomersNames() {
         connection = dbConn.connectToDB(connection);
         ArrayList<String> customersNames = dbRet.getCustomersUsername(connection);
@@ -250,25 +252,11 @@ public class DBProxy implements IProxy,ISearch{
     }
 
     /**
-     * Gets a trade given its id
-     * @param id: trade id
-     * @return trade
-     */
-    @Override
-    public Trade getTrade(int id) {
-        connection = dbConn.connectToDB(connection);
-        System.err.println("[DBProxy] - Retrieving trade number " + id + "...");
-        Trade trade = dbRet.retrieveTrade(connection, id);
-        System.err.println("[DBProxy] - Trade retrieved.");
-        connection = dbConn.disconnectFromDB(connection);
-        return trade;
-    }
-
-    /**
      * Gets all trades with a given customer
      * @param id: customer's id
      * @return list of trades
      */
+    @Override
     public ArrayList<Trade> getTradeByUser(String id) {
         connection = dbConn.connectToDB(connection);
         System.err.println("[DBProxy] - Retrieving trade with customer " + id + "...");
