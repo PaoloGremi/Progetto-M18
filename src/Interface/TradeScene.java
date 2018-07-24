@@ -76,7 +76,7 @@ public class TradeScene {
 
 
     private static ATrade currentTrade = null;
-
+    private static JFXButton accept;
     /**
      *
      * @param trade a trade
@@ -169,7 +169,7 @@ public class TradeScene {
         refuse.setButtonType(JFXButton.ButtonType.RAISED);
         JFXButton raise = new JFXButton("Raise");
         raise.setButtonType(JFXButton.ButtonType.RAISED);
-        JFXButton accept = new JFXButton("Accept");
+        accept = new JFXButton("Accept");
         accept.setButtonType(JFXButton.ButtonType.RAISED);
 
         //listener bottoni
@@ -765,7 +765,11 @@ public class TradeScene {
     private static EventHandler<MouseEvent> moveCardsCollection(ImageView imageView, boolean flag, Card card){
         EventHandler<MouseEvent> event = new EventHandler<MouseEvent>() {
             public void handle(MouseEvent mouseEvent1) {
-
+                if(toDisable()) {
+                    accept.setDisable(true);
+                }else{
+                    accept.setDisable(false);
+                }
 
                 if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
                     if (mouseEvent1.getClickCount() == 1) {
@@ -793,6 +797,10 @@ public class TradeScene {
         };
 
         return event;
+    }
+
+    private static boolean toDisable(){
+        return myCardOffer.getSet().equals(currentTrade.getOffer1().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) || myCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer1().getSet());
     }
 
     /**
@@ -824,6 +832,11 @@ public class TradeScene {
 
             @Override
             public void handle(MouseEvent mouseEvent) {
+                if(toDisable()) {
+                    accept.setDisable(true);
+                }else{
+                    accept.setDisable(false);
+                }
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 
                     if(flag) {

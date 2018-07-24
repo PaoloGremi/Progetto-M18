@@ -146,6 +146,7 @@ public class CollectionScene{
         scroll.setStyle("-fx-background-color: orange");
         border.setCenter(scroll);
         border.setTop(hbox);
+        canPack(buttonAdd);
         return border;
     }
 
@@ -189,6 +190,12 @@ public class CollectionScene{
      */
     static BorderPane refresh() throws IOException, ClassNotFoundException {
         return display(cust ,user);
+    }
+
+    private static void canPack(JFXButton button){
+        if(cust.getCollection().getSet().size()>7){
+            button.setDisable(true);
+        }
     }
 
 }
