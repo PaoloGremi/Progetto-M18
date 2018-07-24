@@ -29,7 +29,6 @@ public class MessageServer implements Serializable {
     private YuGiOhAll yuGiOhAll;
     private  Description descriptionToAdd;
     private String customerFrom;
-    private String searchStrinh;
 
     private static final long serialVersionUID = 4415426162143895504L;
 
@@ -145,10 +144,6 @@ public class MessageServer implements Serializable {
         return flag;
     }
 
-    public Trade getTrade1() {
-        return trade1;
-    }
-
     public PokemonAll getPokemonAll() {
         return pokemonAll;
     }
@@ -191,6 +186,10 @@ public class MessageServer implements Serializable {
 
     public ATrade getTrade() {
         return trade;
+    }
+
+    public Trade getTrade1() {
+        return trade1;
     }
 
     public YuGiOhAll getYuGiOhAll() {

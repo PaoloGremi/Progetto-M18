@@ -9,15 +9,10 @@ import TradeCenter.Exceptions.UserExceptions.UsernameAlreadyTakenException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.skins.JFXButtonSkin;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.SkinBase;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
@@ -34,8 +29,6 @@ public class LogIn extends Application{
 
     private Stage window;
     private JFXButton logIn, signUp;
-    //private TextField username;
-    //private PasswordField password;
     private Text credentials;
     private Text info;
     private BorderPane border;
@@ -250,15 +243,6 @@ public class LogIn extends Application{
         window.show();
 
 
-    }
-
-    private BorderPane displayLogin(){
-        BorderPane mainPane = new BorderPane();
-//metodo che in pratica ritorna cio che è layout, l'idea è di fare 2 metodi da associare ai bottoni di singin e login per far cambiare la grafica
-        //poi fare in modo che la prima volta (all'apertura chiama il metodo displaylogin), le volte dopo  in base al bottone chiama il metodo giusto
-        //todo vedere come implementare
-
-        return mainPane;
     }
 
     /**

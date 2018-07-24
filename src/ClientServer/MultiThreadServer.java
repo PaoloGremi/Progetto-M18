@@ -90,7 +90,7 @@ public class MultiThreadServer implements Runnable {
 
         } catch (IOException e) {
             System.out.println(e);
-        } catch (IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+        } catch (IllegalAccessException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -100,12 +100,11 @@ public class MultiThreadServer implements Runnable {
      * @param tag Type of the message to identify the method to use in rhe server proxy
      * @param messageServer The message from the client
      * @return The message in respond from the tradecenter
-     * @throws InvocationTargetException
      * @throws IllegalAccessException
      * @throws CheckPasswordConditionsException
      */
-    private Object returnMessage(MessageType tag, MessageServer messageServer) throws InvocationTargetException, IllegalAccessException, CheckPasswordConditionsException, AlreadyLoggedInException {
-        Object result = null;
+    private Object returnMessage(MessageType tag, MessageServer messageServer) throws IllegalAccessException, CheckPasswordConditionsException, AlreadyLoggedInException {
+        Object result;
         try {
             result = methodMap.get(tag).invoke(proxy ,messageServer);
         }

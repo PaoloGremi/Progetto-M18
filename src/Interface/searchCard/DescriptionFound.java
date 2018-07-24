@@ -14,7 +14,6 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -82,7 +81,7 @@ public class DescriptionFound {
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
                         System.out.println("Ok");
                         os.writeObject(new MessageServer(MessageType.ADDDESCRTOWHISLIST, currentDescr,user.getUsername()));
-                        Thread.sleep(130);
+                        Thread.sleep(600);
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
