@@ -42,7 +42,7 @@ public class TradeCenter {
     public TradeCenter() {
         this.proxy = DBProxy.getInstance();
         populateCatalogs();
-        this.customers = new HashMap<String, Customer>();
+        this.customers = new HashMap<>();
         this.activeTrades = new HashSet<>();
         this.doneTrades = new HashSet<>();
     }
@@ -57,6 +57,7 @@ public class TradeCenter {
         proxy.populateCatalog(yugiohCatalog, "yugioh_card");
     }
 
+    //sign-up methods
     /**
      * Create an account for a new user
      */
@@ -70,30 +71,9 @@ public class TradeCenter {
             customers.put(id, temporaryCustomer);
             proxy.addCustomerToDatabase(temporaryCustomer);
         }
-
         return temporaryCustomer;
     }
 
-    //session methods
-    /**
-     * Verify if the customer is logged in another client
-     * @param username Username of the customer
-     * @return Boolean if is already logged or not
-     */
-    public synchronized boolean isLogged(String username){
-        if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
-        return true;
-    }
-
-    /**
-     * Log out the customer from the system
-     * @param username Username of the customer
-     */
-    public void logOut(String username){
-        loggedCustomers.remove(username);
-    }
-
-    //sign-up methods
     /**
      * A method that check if the username is already in use
      *
@@ -113,16 +93,7 @@ public class TradeCenter {
         return "USER-" + proxy.getNextCustomerID();
     }
 
-    /**
-     * A method that verify if the passwords are the same when singin-up
-     * @param password1 the password
-     * @param password2 check for first password
-     * @return if the password are equals
-     */
-    public synchronized boolean verifyPassword(String password1, String password2){
-        return password1.equals(password2);
-    }
-
+    //session methods
     /**
      * A method that checks if the user's password is correct
      * @param username Username to verify
@@ -138,66 +109,64 @@ public class TradeCenter {
             e.printStackTrace();
         }
         if(customer == null){
-            //todo username inesistente fare registrare
             return false;
         }
-        if(customer.getUsername().equals(username) && customer.checkPassword(password)){
+        if(customer.checkPassword(password)){
             customers.put(customer.getId(), customer);
             for(Trade trade : proxy.getTradeByUser(customer.getId())) {
-
                 if (trade.isDoneDeal()) doneTrades.add(trade);
                 else activeTrades.add(trade);
-
             }
             loggedCustomers.add(username);
             return true;
-        }else{
-            //usere registrato ma password sbagliata //todo richiedere password
-            return false;
         }
-
+        return false;
     }
 
     /**
-     * User can find another user by searching his name
-     * @return
+     * A method that verify if the passwords are the same when singin-up
+     * @param password1 the password
+     * @param password2 check for first password
+     * @return if the password are equals
      */
-    public synchronized Customer searchCustomer(String username){
-        for(String key : customers.keySet()){
-            if((customers.get(key)).getUsername().equals(username)){
-                return customers.get(key);
-            }
-        }
-        //user not in map
-        Customer customer = proxy.retrieveSingleCustomer(username);
-        if(customer != null) {
-            customers.put(customer.getId(),customer);
-            return customer;
-        }
-        //user dont exist
-        throw new UserNotFoundException();
+    public synchronized boolean verifyPassword(String password1, String password2){
+        return password1.equals(password2);
     }
 
+    /**
+     * Verify if the customer is logged in another client
+     * @param username Username of the customer
+     * @return Boolean if is already logged or not
+     */
+    public synchronized boolean isLogged(String username){
+        if(loggedCustomers.contains(username)) throw new AlreadyLoggedInException();
+        return false;
+    }
+
+    /**
+     * Log out the customer from the system
+     * @param username Username of the customer
+     */
+    public void logOut(String username){
+        loggedCustomers.remove(username);
+    }
+
+    //add cards to users
     /**
      * Open a pack with 7 cards
      * @param userId Customer that open the pack
      * @param catalog Catalog where take the random cards
      * @return The 7 random cards
      */
-    private ArrayList<Card> randomCards(String userId, CardCatalog catalog){
+    private synchronized ArrayList<Card> randomCards(String userId, CardCatalog catalog){
 
         ArrayList<Card> cards = new ArrayList<>();
-        int i = 0;
         int nextCard = proxy.getNextCardID();
-        Random rand = new Random();
         Random random = new Random();
-        while (i < 7){
-            cards.add(new Card(nextCard+i, (Description) catalog.getCatalog().toArray()[rand.nextInt(catalog.getCatalog().size())]));
-            i++;
+        for(int i =0; i<7 ;i++){
+            cards.add(new Card(nextCard+i, (Description) catalog.getCatalog().toArray()[random.nextInt(catalog.getCatalog().size())]));
         }
-
-        addCardtoCustomer(searchCustomerById(userId).getId(),cards);
-
+        addCardToCustomer(searchCustomerById(userId).getId(),cards);
         return cards;
     }
 
@@ -206,7 +175,7 @@ public class TradeCenter {
      * @param customerId Customer that opens the pack
      * @return the 7 cards
      */
-    public ArrayList<Card> fromPokemonCatalog(String customerId){
+    public synchronized ArrayList<Card> fromPokemonCatalog(String customerId){
         ArrayList<Card> cards = randomCards(customerId, pokemonCatalog);
         return cards;
     }
@@ -216,32 +185,29 @@ public class TradeCenter {
      *@param customerId Customer that opens the pack
      *@return the 7 cards
      */
-    public ArrayList<Card> fromYuGiOhCatalog(String customerId){
+    public synchronized ArrayList<Card> fromYuGiOhCatalog(String customerId){
         ArrayList<Card> cards = randomCards(customerId, yugiohCatalog);
         return cards;
     }
-
-    //todo check if the customer exist,
 
     /**
      * a method that add a card to collection to a customer
      * @param customerId Id of the customer himself
      * @param cards the cards to add to a collection
      */
-    public synchronized void addCardtoCustomer(String customerId, ArrayList<Card> cards){
-
+    private synchronized void addCardToCustomer(String customerId, ArrayList<Card> cards){
         customers.get(customerId).addCard(cards);
         proxy.updateCustomer(customers.get(customerId));
     }
 
     /**
      * method that remove a card from a customer's collection
-     * @param customer the customer itself
-     * @param card the trade element
+     * @param customerID ID of the customer
+     * @param card the to remove from a collection
      */
-    public void removeCardFromCustomer(Customer customer, Card card){
-        customers.get(customer.getId()).removeCard(card);
-        proxy.updateCustomer(customers.get(customer.getId()));
+    public synchronized void removeCardFromCustomer(String customerID, Card card){
+        customers.get(customerID).removeCard(card);
+        proxy.updateCustomer(customers.get(customerID));
     }
 
     /**
@@ -264,6 +230,27 @@ public class TradeCenter {
         proxy.updateCustomer(customers.get(id));
     }
 
+    //search user
+    /**
+     * User can find another user by searching his name
+     * @return
+     */
+    public synchronized Customer searchCustomer(String username){
+        for(String key : customers.keySet()){
+            if((customers.get(key)).getUsername().equals(username)){
+                return customers.get(key);
+            }
+        }
+        //user not in map
+        Customer customer = proxy.retrieveSingleCustomer(username);
+        if(customer != null) {
+            customers.put(customer.getId(),customer);
+            return customer;
+        }
+        //user dont exist
+        throw new UserNotFoundException();
+    }
+
     /**
      * A method that search all the customers that have a username similar to a string searched
      * @param username the string for the research
@@ -272,11 +259,9 @@ public class TradeCenter {
      */
     public ArrayList<String> searchUsers(String username, String myUsername){
         ArrayList<String> usersFound = new ArrayList<>();
-        ArrayList<String> results = proxy.getAllCustomersNames();
-        String usernameLow = username.toLowerCase();
-        for(String customer: results){
-            String name = customer.toLowerCase();
-            if(name.contains(usernameLow) && !customer.equals(myUsername)){
+        ArrayList<String> allCustomersNames = proxy.getAllCustomersNames();
+        for(String customer: allCustomersNames){
+            if(customer.toLowerCase().contains(username.toLowerCase()) && !customer.equals(myUsername)){
                 usersFound.add(customer);
             }
         }
@@ -313,26 +298,42 @@ public class TradeCenter {
 
     }
 
+    //search cards, and owners
     /**
      *  A method that checks if any of the user has a given card
      * @param description the card that has to be searched
      * @return the list of the users that have that card in their collection
      */
-    public ArrayList<String> searchByDescription(Description description, String customerUsername){
+    public ArrayList<String> searchUserByDescription(Description description, String customerUsername){
         ArrayList<String> customersFound = proxy.getCustomersByDescription(description);
         customersFound.remove(customerUsername);
         return customersFound;
     }
+
     /**
-     *
-     * @param s
-     * @return
+     * Hashmap with k=Description, V=ArrayList<Customer> thats have the description
+     * @param hashDescr: Descriptions
+     * @return HashMap<Description,ArrayList<Customer>> a map with for every description, the list of custumers that owns that
      */
-    public HashSet<Description> filterByString(String s) {
-        HashSet<Description> descrMatched;
-        descrMatched=proxy.getFoundDescrByString(s);
-        return descrMatched;
+    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr, String username){
+        HashMap<Description,ArrayList<String>> map = new HashMap<>();
+        for (Description descr : hashDescr) {
+            map.put(descr,searchUserByDescription(descr,username));
+        }
+        return map;
     }
+
+    //search cards with filters
+    /**
+     *Search cards with a string
+     *
+     * @param s the string for search
+     * @return the set of cards
+     */
+    public HashSet<Description> filterByString(String s) throws NoSuchDescriptionFoundedException  {
+        return proxy.getFoundDescrByString(s);
+    }
+
     /**
      * Return Description foundend in DB filtered
      *
@@ -340,13 +341,7 @@ public class TradeCenter {
      * @return PokemonDescription matched
      */
     public HashSet<Description> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
-        HashSet<Description> descrMatched;
-        descrMatched=proxy.getFoundDescrPokemon(pokemonAll);
-
-        /*if(descrMatched.size()==0)
-            throw new NoSuchDescriptionFoundedException();
-            */
-        return descrMatched;
+        return proxy.getFoundDescrPokemon(pokemonAll);
     }
 
     /**
@@ -355,27 +350,11 @@ public class TradeCenter {
      * @param yuGiOhAll: YuGiOh Description
      * @return YuGiOh Description matched
      */
-    public HashSet<Description> filterYugiohDescr(YuGiOhAll yuGiOhAll){
-        HashSet<Description> descrMatched=new HashSet<>();
-        descrMatched=proxy.getFoundDescrYugioh(yuGiOhAll);
-        return descrMatched;
+    public HashSet<Description> filterYugiohDescr(YuGiOhAll yuGiOhAll) throws NoSuchDescriptionFoundedException {
+        return proxy.getFoundDescrYugioh(yuGiOhAll);
     }
 
-    /**
-     * Hasmap with k=Description, V=ArrayList<Customer> thats have the description
-     * @param hashDescr: Descriptions
-     * @return HashMap<Description,ArrayList<Customer>>
-     */
-    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr,String username){
-        HashMap<Description,ArrayList<String>> map=new HashMap<>();
-        for (Description descr:hashDescr) {
-            ArrayList<String> listCustomer;
-            listCustomer=searchByDescription(descr,username);
-            map.put(descr,listCustomer);
-        }
-        return map;
-    }
-
+    //trade methods
     /**
      * Method that create a trade between 2 customers
      * @param customer1 id of the customer who make the trade
@@ -394,20 +373,7 @@ public class TradeCenter {
             }
         }else{
             throw new AlreadyStartedTradeException(searchUsernameById(customer2));
-            //todo propagar eccezione all'interfaccia tramite socket
         }
-    }
-
-    /**
-     * Method that give the possibility to update the previus offer
-     * @param offer the offer of a customer
-     * @return boolean if the trade is updated
-     */
-    public synchronized boolean updateTrade(Offer offer, boolean flag){
-        Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
-        trade.update(offer, flag);
-        proxy.updateTrade(trade);
-        return true;
     }
 
     /**
@@ -419,24 +385,13 @@ public class TradeCenter {
      */
     public boolean notAlreadyTradingWith(String myCustomer, String otherCustomer){
         boolean flag = true;
+        if(myCustomer.equals(otherCustomer)) return false; //cannot trade with yourself
         for(Trade trade: activeTrades){
             if(trade.betweenUsers(myCustomer) && trade.betweenUsers(otherCustomer)){
-                //todo vedere quando passa se stesso con se stesso, non si puo creare a monte
                 flag = false;
             }
         }
         return flag;
-    }
-
-    /**
-     * Remove the trade from the active trades
-     * @param myCustomer Customer logged
-     * @param otherCustomer The other customer involved
-     */
-    public synchronized void removeTrade(String myCustomer, String otherCustomer){
-        Trade trade = takeStartedTrade(myCustomer,otherCustomer);
-        activeTrades.remove(trade);
-        proxy.removeTrade(trade.getId());
     }
 
     /**
@@ -460,14 +415,38 @@ public class TradeCenter {
      * @param trade Trade to found
      * @return boolean if exists
      */
-    private boolean contains(Trade trade){
+    private boolean isActive(Trade trade){
         for (Trade trade1 : activeTrades){
-            if(trade1.betweenUsers(trade.getCustomer1()) || trade1.betweenUsers(trade.getCustomer2())){
+            if(trade1.betweenUsers(trade.getCustomer1()) && trade1.betweenUsers(trade.getCustomer2())){
                 return true;
             }
         }
-
         return false;
+    }
+
+    /**
+     * Method that give the possibility to update the previus offer
+     * @param offer the offer of a customer
+     * @param flag
+     * @return boolean if the trade is updated
+     */
+    //todo cosa è il flag
+    public synchronized boolean updateTrade(Offer offer, boolean flag){
+        Trade trade = takeStartedTrade(offer.getCustomer1(), offer.getCustomer2());
+        trade.update(offer, flag);
+        proxy.updateTrade(trade);
+        return true;
+    }
+
+    /**
+     * Remove the trade from the active trades
+     * @param myCustomer Customer logged
+     * @param otherCustomer The other customer involved
+     */
+    public synchronized void removeTrade(String myCustomer, String otherCustomer){
+        Trade trade = takeStartedTrade(myCustomer,otherCustomer);
+        activeTrades.remove(trade);
+        proxy.removeTrade(trade.getId());
     }
 
     /**
@@ -476,8 +455,7 @@ public class TradeCenter {
      * @param trade a card exchange
      */
     private synchronized void switchCards(Trade trade){
-        if(contains(trade)) {
-
+        if(isActive(trade)) {
             for (Card card : trade.getOffer1()) {       //take card offered from customer1, add to customer2
                 customers.get(trade.getCustomer2()).addCard(card);
             }
@@ -513,10 +491,7 @@ public class TradeCenter {
                 doneTrades.add(trade);
                 proxy.updateTrade(trade);
             }
-        }
-            //deve essere cosi l'ordine altrimenti trade != trade negli active trade
-
-
+        }//must be this order or trade != activetrade
     }
 
     /**
