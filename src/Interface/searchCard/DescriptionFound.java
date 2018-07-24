@@ -35,7 +35,7 @@ import java.util.Map;
 
 import static Interface.SearchUserScene.retrieveCustomer;
 
-public class DescriptionFounded {
+public class DescriptionFound {
 
 
     /**

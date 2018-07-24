@@ -3,13 +3,9 @@ package Interface.searchCard;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import ClientServer.ServerIP;
-import Interface.MainWindow;
-import Interface.SearchDescriptionScene;
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.Description;
-import TradeCenter.Card.PokemonDescription;
-import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,9 +21,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class FilterHandler implements EventHandler<ActionEvent> {
 
@@ -58,7 +52,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
 
                 HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
 
-                mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
+                mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
                 socket0.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,7 +89,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
 
                         if(returnMessage.size()>=1)
-                            mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
+                            mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -129,7 +123,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
 
                         //todo provvisorio
                         //if(returnMessage.size()>=1)
-                            mainBorder.setCenter(DescriptionFounded.display(customer, returnMessage));
+                            mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
                         socket2.close();
                     } catch (IOException e) {
                         e.printStackTrace();
