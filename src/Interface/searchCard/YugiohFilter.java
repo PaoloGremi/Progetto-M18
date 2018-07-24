@@ -136,9 +136,6 @@ public class YugiohFilter {
         Label defLabel=new Label("--");
         Label levLabel=new Label("--");
 
-        atkLabel.setStyle("-fx-background-color: #ff3300");
-        defLabel.setStyle("-fx-background-color: #ff3300");
-        levLabel.setStyle("-fx-background-color: #ff3300");
 
         atkLabelContainer.getChildren().addAll(new Label("ATK: "),atkLabel);
         defLabelContainer.getChildren().addAll(new Label("DEF: "),defLabel);

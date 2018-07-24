@@ -106,10 +106,6 @@ public class PokemonFilter {
         Label levLabel=new Label("--");
         Label weightLabel=new Label("--");
 
-        hpLabel.setStyle("-fx-background-color: #ff3300");
-        levLabel.setStyle("-fx-background-color: #ff3300");
-        weightLabel.setStyle("-fx-background-color: #ff3300");
-
         hpLabelContainer.getChildren().addAll(new Label("HP: "),hpLabel);
         levLabelContainer.getChildren().addAll(new Label("Level: "),levLabel);
         weightLabelContainer.getChildren().addAll(new Label("Weigth: "),weightLabel);

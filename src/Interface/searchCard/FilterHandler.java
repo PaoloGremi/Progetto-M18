@@ -88,8 +88,8 @@ public class FilterHandler implements EventHandler<ActionEvent> {
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
 
-                        if(returnMessage.size()>=1)
-                            mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
+
+                        mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
                         socket1.close();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -108,7 +108,6 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         comboMonster="";
                     if(comboTypeYu==null || comboTypeYu.equals("--Nothing--"))
                         comboTypeYu="";
-                    //Double levValue=
                     mainBorder.setBottom(new Label("Type: "+comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue+"   REF: "+refValue));
                     Socket socket2;
                     try {
@@ -121,8 +120,6 @@ public class FilterHandler implements EventHandler<ActionEvent> {
 
                         HashMap<Description,ArrayList<String>> returnMessage = (HashMap<Description, ArrayList<String>>) is.readObject();
 
-                        //todo provvisorio
-                        //if(returnMessage.size()>=1)
                             mainBorder.setCenter(DescriptionFound.display(customer, returnMessage));
                         socket2.close();
                     } catch (IOException e) {

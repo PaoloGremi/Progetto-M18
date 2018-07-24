@@ -2,10 +2,7 @@ package Interface.searchCard;
 import ClientServer.MessageServer;
 import ClientServer.MessageType;
 import ClientServer.ServerIP;
-import Interface.MainWindow;
-import Interface.OtherUserProfileScene;
-import Interface.SearchUserScene;
-import Interface.WishListScene;
+import Interface.*;
 import TradeCenter.Card.Description;
 import TradeCenter.Customers.Customer;
 import com.jfoenix.controls.JFXListView;
@@ -48,8 +45,7 @@ public class DescriptionFound {
         ScrollPane scrollPane=new ScrollPane();
         BorderPane scene = new BorderPane();
         if(map.isEmpty()){
-            Label l=new Label("  No Descriptions Founded  ");
-            scrollPane.setContent(l);
+            MainWindow.addDynamicContent(InfoScene.display("No Descriptions Found","Interface/imagePack/infoSign.png", true));
             return scrollPane;
 
         }
@@ -94,10 +90,6 @@ public class DescriptionFound {
                         e.printStackTrace();
                     }
 
-                    /*
-                    figureContainer.getChildren().remove(addToWhishList);
-                    figureContainer.getChildren().add(new Button("!Added!"));
-                    */
                     Customer customerUpdated=SearchUserScene.retrieveCustomer(user.getUsername());
                     MainWindow.refreshDynamicContent(WishListScene.display(customerUpdated.getWishList(),customerUpdated));
 
