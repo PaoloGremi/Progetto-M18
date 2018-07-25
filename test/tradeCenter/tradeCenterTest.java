@@ -1,10 +1,10 @@
 package tradeCenter;
+import DatabaseProxy.DBProxy;
 import TradeCenter.Card.Card;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Collection;
 import TradeCenter.Customers.Customer;
-import TradeCenter.DatabaseProxy.DBProxy;
 import TradeCenter.TradeCenter;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class tradeCenterTest {
      */
     @Before
     public void initTradeCenter(){
-        tradeCenter=new TradeCenter();
+        tradeCenter=TradeCenter.getInstance();
         this.tradeCenter=tradeCenter;
         DBProxy proxy=DBProxy.getInstance();
         this.proxy=proxy;

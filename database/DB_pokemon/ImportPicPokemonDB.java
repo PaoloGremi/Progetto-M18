@@ -1,8 +1,7 @@
-import com.mysql.jdbc.Connection;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.Comparator;
 
 
 
-public class ImportPicPokemonMain {
+public class ImportPicPokemonDB {
     public static void main(String[] args) {
         try {
             Class.forName("com.mysql.jdbc.Driver");

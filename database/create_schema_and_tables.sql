@@ -1,5 +1,35 @@
-CREATE DATABASE  IF NOT EXISTS `CARDS`
+DROP DATABASE  IF  EXISTS `CARDS`;
+CREATE DATABASE  IF NOT EXISTS `CARDS`;
 USE `CARDS`;
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+CREATE TABLE `customers` (
+  `customer_id` varchar(120) NOT NULL,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  PRIMARY KEY (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+--
+-- Table structure for table `trades`
+--
+
+DROP TABLE IF EXISTS `trades`;
+CREATE TABLE `trades` (
+  `trade_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `user1_id` varchar(120) NOT NULL,
+  `user2_id` varchar(120) NOT NULL,
+  `donedeal` tinyint(4) NOT NULL,
+  `positive_end` tinyint(4) NOT NULL,
+  PRIMARY KEY (`trade_id`),
+  KEY `customer_id_idx` (`user1_id`,`user2_id`),
+  KEY `trades_ibfk_2` (`user2_id`),
+  CONSTRAINT `trades_ibfk_1` FOREIGN KEY (`user1_id`) REFERENCES `customers` (`customer_id`),
+  CONSTRAINT `trades_ibfk_2` FOREIGN KEY (`user2_id`) REFERENCES `customers` (`customer_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `card_Type`
@@ -61,17 +91,6 @@ CREATE TABLE `cards_old` (
   CONSTRAINT `cards_old_ibfk_3` FOREIGN KEY (`trade_id`) REFERENCES `trades` (`trade_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Table structure for table `customers`
---
-
-DROP TABLE IF EXISTS `customers`;
-CREATE TABLE `customers` (
-  `customer_id` varchar(120) NOT NULL,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  PRIMARY KEY (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `monster_Type`
@@ -101,25 +120,6 @@ CREATE TABLE `pokemon_card` (
   `Picture` mediumblob,
   PRIMARY KEY (`pokemon_description_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Table structure for table `trades`
---
-
-DROP TABLE IF EXISTS `trades`;
-CREATE TABLE `trades` (
-  `trade_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `user1_id` varchar(120) NOT NULL,
-  `user2_id` varchar(120) NOT NULL,
-  `donedeal` tinyint(4) NOT NULL,
-  `positive_end` tinyint(4) NOT NULL,
-  PRIMARY KEY (`trade_id`),
-  KEY `customer_id_idx` (`user1_id`,`user2_id`),
-  KEY `trades_ibfk_2` (`user2_id`),
-  CONSTRAINT `trades_ibfk_1` FOREIGN KEY (`user1_id`) REFERENCES `customers` (`customer_id`),
-  CONSTRAINT `trades_ibfk_2` FOREIGN KEY (`user2_id`) REFERENCES `customers` (`customer_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Table structure for table `wishlist`

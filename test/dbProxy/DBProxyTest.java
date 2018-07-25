@@ -1,19 +1,16 @@
 package dbProxy;
 
+import DatabaseProxy.DBProxy;
 import TradeCenter.Card.Card;
-import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Customers.Customer;
-import TradeCenter.DatabaseProxy.DBProxy;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class DBProxyTest {
     private DBProxy proxy;

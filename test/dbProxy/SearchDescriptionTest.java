@@ -1,5 +1,6 @@
 package dbProxy;
 
+import DatabaseProxy.DBProxy;
 import Interface.searchCard.filterChoice.PokemonAll;
 import Interface.searchCard.filterChoice.YuGiOhAll;
 import TradeCenter.Card.Card;
@@ -7,7 +8,6 @@ import TradeCenter.Card.Description;
 import TradeCenter.Card.PokemonDescription;
 import TradeCenter.Card.YuGiOhDescription;
 import TradeCenter.Customers.Customer;
-import TradeCenter.DatabaseProxy.DBProxy;
 import org.junit.Before;
 import org.junit.Test;
 
