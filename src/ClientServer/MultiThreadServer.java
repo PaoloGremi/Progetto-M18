@@ -22,7 +22,7 @@ public class MultiThreadServer implements Runnable {
     private Socket csocket;
     private static TradeCenter tradeCenter = TradeCenter.getInstance();
     private ServerProxy proxy;
-    Map<MessageType, Method> methodMap = new HashMap<>();
+    private Map<MessageType, Method> methodMap = new HashMap<>();
 
     MultiThreadServer(Socket csocket, TradeCenter tradeCenter) throws NoSuchMethodException, SocketException {
         this.csocket = csocket;

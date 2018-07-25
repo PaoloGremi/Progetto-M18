@@ -264,7 +264,7 @@ public class TradeCenter {
      * @param myUsername a string to exclude myself from the research
      * @return the list of customers that corresponds to the search
      */
-    public ArrayList<String> searchUsers(String username, String myUsername){
+    public synchronized ArrayList<String> searchUsers(String username, String myUsername){
         ArrayList<String> usersFound = new ArrayList<>();
         ArrayList<String> allCustomersNames = proxy.getAllCustomersNames();
         for(String customer: allCustomersNames){
@@ -280,7 +280,7 @@ public class TradeCenter {
      * @param id Id to find
      * @return Customer found
      */
-    public Customer searchCustomerById(String id){
+    public synchronized Customer searchCustomerById(String id){
 
         if(customers.keySet().contains(id)) return customers.get(id);
 
@@ -295,7 +295,7 @@ public class TradeCenter {
      * @param id Id to find
      * @return Username found
      */
-    public String searchUsernameById(String id){
+    public synchronized String searchUsernameById(String id){
 
         if(customers.keySet().contains(id)) return customers.get(id).getUsername();
 
@@ -311,7 +311,7 @@ public class TradeCenter {
      * @param description the card that has to be searched
      * @return the list of the users that have that card in their collection
      */
-    public ArrayList<String> searchUserByDescription(Description description, String customerUsername){
+    public synchronized ArrayList<String> searchUserByDescription(Description description, String customerUsername){
         ArrayList<String> customersFound = proxy.getCustomersByDescription(description);
         customersFound.remove(customerUsername);
         return customersFound;
@@ -322,7 +322,7 @@ public class TradeCenter {
      * @param hashDescr: Descriptions
      * @return HashMap<Description,ArrayList<Customer>> a map with for every description, the list of custumers that owns that
      */
-    public HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr, String username){
+    public synchronized HashMap<Description,ArrayList<String>> getCustomersFromDescriptions(HashSet<Description> hashDescr, String username){
         HashMap<Description,ArrayList<String>> map = new HashMap<>();
         for (Description descr : hashDescr) {
             map.put(descr,searchUserByDescription(descr,username));
@@ -337,7 +337,7 @@ public class TradeCenter {
      * @param s the string for search
      * @return the set of cards
      */
-    public HashSet<Description> filterByString(String s) throws NoSuchDescriptionFoundedException  {
+    public synchronized HashSet<Description> filterByString(String s) throws NoSuchDescriptionFoundedException  {
         return proxy.getFoundDescrByString(s);
     }
 
@@ -347,7 +347,7 @@ public class TradeCenter {
      * @param pokemonAll: Pokemon All
      * @return PokemonDescription matched
      */
-    public HashSet<Description> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
+    public synchronized HashSet<Description> filterPokemonDescr(PokemonAll pokemonAll) throws NoSuchDescriptionFoundedException {
         return proxy.getFoundDescrPokemon(pokemonAll);
     }
 
@@ -357,7 +357,7 @@ public class TradeCenter {
      * @param yuGiOhAll: YuGiOh Description
      * @return YuGiOh Description matched
      */
-    public HashSet<Description> filterYugiohDescr(YuGiOhAll yuGiOhAll) throws NoSuchDescriptionFoundedException {
+    public synchronized HashSet<Description> filterYugiohDescr(YuGiOhAll yuGiOhAll) throws NoSuchDescriptionFoundedException {
         return proxy.getFoundDescrYugioh(yuGiOhAll);
     }
 
@@ -390,7 +390,7 @@ public class TradeCenter {
      * @param otherCustomer customer2
      * @return if the user are already trading
      */
-    public boolean notAlreadyTradingWith(String myCustomer, String otherCustomer){
+    public synchronized boolean notAlreadyTradingWith(String myCustomer, String otherCustomer){
         boolean flag = true;
         if(myCustomer.equals(otherCustomer)) return false; //cannot trade with yourself
         for(Trade trade: activeTrades){
