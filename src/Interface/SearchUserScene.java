@@ -71,7 +71,7 @@ public class SearchUserScene {
                 outputStream.writeObject(new MessageServer(MessageType.SEARCHUSER, searchText, mySelf.getUsername()));
                 ArrayList<String> users = (ArrayList<String>)(inputStream.readObject());
                 socket.close();
-                if(users != null){
+                if(users != null && !users.isEmpty()){
                     ObservableList<String> customers = FXCollections.observableArrayList();
                     customers.addAll(users);
                     JFXListView<String> usersList = new JFXListView<>();
@@ -93,7 +93,7 @@ public class SearchUserScene {
                     resultsArea.setContent(usersList);
                     scene.setCenter(resultsArea);
                 } else {
-                    InfoScene.display("No Descriptions Found", "Interface/imagePack/2000px-Simple_Alert.svg.png", true);
+                    MainWindow.addDynamicContent(InfoScene.display("No Customers Found", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
                 }
             } catch (IOException e) {
                 e.printStackTrace();
