@@ -212,7 +212,7 @@ public class TradeCenter {
      * @param customerID ID of the customer
      * @param card the to remove from a collection
      */
-    public synchronized void removeCardFromCustomer(String customerID, Card card){
+    private synchronized void removeCardFromCustomer(String customerID, Card card){
         customers.get(customerID).removeCard(card);
         proxy.updateCustomer(customers.get(customerID));
     }

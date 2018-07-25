@@ -10,33 +10,33 @@ import java.util.ArrayList;
 public interface IProxy {
 
     // cards methods
-    public void populateCatalog(CardCatalog cc, String tablename);
+    void populateCatalog(CardCatalog cc, String tablename);
 
     // customers methods
-    public ArrayList<String> getAllCustomersNames();
+    ArrayList<String> getAllCustomersNames();
 
-    public Customer retrieveSingleCustomer(String username);
+    Customer retrieveSingleCustomer(String username);
 
-    public Customer retrieveSingleCustomerByID(String id);
+    Customer retrieveSingleCustomerByID(String id);
 
-    public ArrayList<String> getCustomersByDescription(Description description);
+    ArrayList<String> getCustomersByDescription(Description description);
 
-    public void addCustomerToDatabase(Customer customer);
+    void addCustomerToDatabase(Customer customer);
 
-    public void updateCustomer(Customer customer);
+    void updateCustomer(Customer customer);
 
     // trades methods
-    public ArrayList<Trade> getTradeByUser(String id);
+    ArrayList<Trade> getTradeByUser(String id);
 
-    public void insertTrade(Trade trade);
+    void insertTrade(Trade trade);
 
-    public void updateTrade(Trade trade);
+    void updateTrade(Trade trade);
 
     // random methods
-    public int getNextCardID();
+    int getNextCardID();
 
-    public int getNextCustomerID();
+    int getNextCustomerID();
 
-    public int getNextTradeID();
+    int getNextTradeID();
 
 }
