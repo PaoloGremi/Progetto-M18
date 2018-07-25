@@ -307,7 +307,7 @@ public class TradeScene {
                 }
             }else{
                 MainWindow.addDynamicContent(InfoScene.display("You can't accept your own offer", "Interface/imagePack/2000px-Simple_Alert.svg.png", true));
-                System.err.println("You cannot accept your own offer Cugghiuna!");
+                System.err.println("You cannot accept your own offer");
             }
         });
         //buttonsBox.getChildren().addAll(refuse, raise, accept);
@@ -802,6 +802,10 @@ public class TradeScene {
         return event;
     }
 
+    /**
+     * Disable the accept button if the customer change the offers
+     * @return boolean if the button is to disable
+     */
     private static boolean toDisable() {
         if (currentTrade != null){
             return myCardOffer.getSet().equals(currentTrade.getOffer1().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) || myCardOffer.getSet().equals(currentTrade.getOffer2().getSet()) && otherCardOffer.getSet().equals(currentTrade.getOffer1().getSet());
