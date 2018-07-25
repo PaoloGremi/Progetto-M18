@@ -457,6 +457,9 @@ public class TradeScene {
     }
 
     static void restoreCollection(Card card, boolean flag, FlowPane flowPane, ArrayList<Card> cardList){
+        if(!toDisable()){
+            accept.setDisable(true);
+        }
         flowPane.getChildren().removeAll(flowPane.getChildren());
         if(card!=null) {
             cardList.add(card);

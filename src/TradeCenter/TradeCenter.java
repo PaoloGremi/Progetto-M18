@@ -28,6 +28,8 @@ import java.util.*;
  */
 public class TradeCenter {
 
+    private static TradeCenter instance;
+
     private CardCatalog pokemonCatalog;
     private CardCatalog yugiohCatalog;
     private HashMap<String, Customer> customers;
@@ -39,12 +41,17 @@ public class TradeCenter {
     /**
      * Create a new trade center, with the database connection that load cards and users with their attributes
      */
-    public TradeCenter() {
+    private TradeCenter() {
         this.proxy = DBProxy.getInstance();
         populateCatalogs();
         this.customers = new HashMap<>();
         this.activeTrades = new HashSet<>();
         this.doneTrades = new HashSet<>();
+    }
+
+    public static TradeCenter getInstance() {
+        if(instance == null) instance = new TradeCenter();
+        return instance;
     }
 
     /**

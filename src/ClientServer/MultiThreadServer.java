@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class MultiThreadServer implements Runnable {
     private Socket csocket;
-    private static TradeCenter tradeCenter = new TradeCenter();
+    private static TradeCenter tradeCenter = TradeCenter.getInstance();
     private ServerProxy proxy;
     Map<MessageType, Method> methodMap = new HashMap<>();
 
