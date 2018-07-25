@@ -76,7 +76,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                     int weightValue=(int)PokemonFilter.getWeightSlider().getValue();
                     String len1=PokemonFilter.getTextLen1().getText();
                     String len2=PokemonFilter.getTextLen2().getText();
-                    mainBorder.setBottom(new Label("Type"+comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
+                    //mainBorder.setBottom(new Label("Type"+comboTypePo+"    len1: "+len1+"    len2: "+len2+"    HP: "+(hpValue)+"    LEV: "+(levValue)+"    WEIGHT: "+(weightValue)));
                     Socket socket1;
                     try {
                         socket1 = new Socket(ServerIP.ip, ServerIP.port);
@@ -108,7 +108,7 @@ public class FilterHandler implements EventHandler<ActionEvent> {
                         comboMonster="";
                     if(comboTypeYu==null || comboTypeYu.equals("--Nothing--"))
                         comboTypeYu="";
-                    mainBorder.setBottom(new Label("Type: "+comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue+"   REF: "+refValue));
+                    //mainBorder.setBottom(new Label("Type: "+comboTypeYu+"    Monster:"+comboMonster+"    ATK:"+atkValue+"    DEF:"+defValue+"   REF: "+refValue));
                     Socket socket2;
                     try {
                         socket2 = new Socket(ServerIP.ip, ServerIP.port);

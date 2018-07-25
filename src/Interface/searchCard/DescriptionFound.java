@@ -18,6 +18,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -35,9 +36,10 @@ public class DescriptionFound {
 
 
     /**
+     * Display Descriptions found and their Customers
      *
      * @param user :user logged
-     * @param map :
+     * @param map : Descriptions found and Customers who have them
      * @return
      */
     static ScrollPane display(Customer user, HashMap<Description,ArrayList<String>> map) {
@@ -79,7 +81,6 @@ public class DescriptionFound {
                         socket1 = new Socket(ServerIP.ip,ServerIP.port);
                         System.out.println("Client connected: Adding to WishList");
                         ObjectOutputStream os = new ObjectOutputStream(socket1.getOutputStream());
-                        System.out.println("Ok");
                         os.writeObject(new MessageServer(MessageType.ADDDESCRTOWHISLIST, currentDescr,user.getUsername()));
                         Thread.sleep(600);
                         socket1.close();
@@ -94,16 +95,21 @@ public class DescriptionFound {
 
                 }
             });
+            HBox buttonContainer=new HBox();
+            buttonContainer.setPadding(new Insets(5));
+            buttonContainer.getChildren().add(addToWhishList);
+            buttonContainer.setAlignment(Pos.CENTER);
 
-            figureContainer.getChildren().addAll(cardV,addToWhishList);
+            figureContainer.getChildren().addAll(cardV,buttonContainer);
 
             descriptionBox.getChildren().add(figureContainer);
-            //Button
+            //List of customers
+
             ObservableList<String> customersList = FXCollections.observableArrayList();
             customersList.addAll(customers);
             JFXListView<String> usersList = new JFXListView<>();
-            usersList.getItems().addAll(customers);
             if (!customersList.isEmpty()) {
+                usersList.getItems().addAll(customers);
                 EventHandler<MouseEvent> eventHandlerBox =
                         new EventHandler<MouseEvent>() {
                             @Override
@@ -114,6 +120,9 @@ public class DescriptionFound {
                             }
                         };
                 usersList.setOnMouseClicked(eventHandlerBox);
+            }
+            else {
+                usersList.getItems().add("       No User found");
             }
             usersList.setEditable(true);
             descriptionBox.getChildren().add(usersList);
