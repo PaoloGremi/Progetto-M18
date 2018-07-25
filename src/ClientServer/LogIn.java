@@ -126,6 +126,8 @@ public class LogIn extends Application{
                 e.printStackTrace();
             }catch (AlreadyLoggedInException e){
                 modifyInfo(e.getMessage(),infoFlow);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
 
 
@@ -278,15 +280,19 @@ public class LogIn extends Application{
         infoFlow.getChildren().add(info);
     }
 
-    private boolean logIn(String username, String password) throws IOException, ClassNotFoundException {
+    private boolean logIn(String username, String password) throws IOException, ClassNotFoundException, InterruptedException {
+
         Socket socket3 = new Socket(ServerIP.ip, ServerIP.port);
         ObjectOutputStream os = new ObjectOutputStream(socket3.getOutputStream());
         os.writeObject(new MessageServer(MessageType.LOGDIN, username, password));
         ObjectInputStream is = new ObjectInputStream(socket3.getInputStream());
         System.out.println("connected");
-        boolean flag = (boolean) is.readObject();
+        Object flag = is.readObject();
+        if(flag instanceof NullPointerException){
+            return false;
+        }
         socket3.close();
-        return flag;
+        return (boolean) flag;
     }
 
     private void isLoggedIn(String username) throws IOException, ClassNotFoundException {
