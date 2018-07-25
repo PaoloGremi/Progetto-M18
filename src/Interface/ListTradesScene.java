@@ -148,7 +148,7 @@ public class ListTradesScene {
      * @param trade Trade to verify
      * @return Boolean if the trade is the same
      */
-    static private boolean sameTrade(Trade trade){
+    static private boolean sameTrade(Trade trade) throws NullPointerException{
 
         Socket socket = null;
         try {
@@ -161,9 +161,10 @@ public class ListTradesScene {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
-        if(currentTrade.getOffer1().getSet().equals(trade.getOffer1().getSet()) && currentTrade.getOffer2().getSet().equals(trade.getOffer2().getSet())){
-            return true;
+        if(currentTrade!=null) {
+            if (currentTrade.getOffer1().getSet().equals(trade.getOffer1().getSet()) && currentTrade.getOffer2().getSet().equals(trade.getOffer2().getSet())) {
+                return true;
+            }
         }
 
         return false;
@@ -241,13 +242,17 @@ public class ListTradesScene {
                                         MainWindow.refreshDynamicContent(TradeScene.display(trade, customer2, customer1, true, false));
                                     }
                                 } else {
-                                    if (user.getId().equals(currentTrade.getCustomer1())) {
+                                    if(currentTrade != null) {
+                                        if (user.getId().equals(currentTrade.getCustomer1())) {
 
-                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
-                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
-                                    } else {
+                                            MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer1, customer2, true, true));
+                                            MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has not answered yet\nYou can still change the offer", "Interface/imagePack/infoSign.png", true));
+                                        } else {
 
-                                        MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                            MainWindow.refreshDynamicContent(TradeScene.display(currentTrade, customer2, customer1, true, false));
+                                        }
+                                    }else{
+                                        MainWindow.addDynamicContent(InfoScene.display(customer2.getUsername() + " has already ended\nthe trade, watch the\nresult in MyTrades", "Interface/imagePack/infoSign.png", false));
                                     }
                                 }
                             }
