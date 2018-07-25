@@ -92,6 +92,8 @@ public class SearchUserScene {
                     resultsArea.setStyle("-fx-background-color: DAE6A2;");
                     resultsArea.setContent(usersList);
                     scene.setCenter(resultsArea);
+                } else {
+                    InfoScene.display("No Descriptions Found", "Interface/imagePack/2000px-Simple_Alert.svg.png", true);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
