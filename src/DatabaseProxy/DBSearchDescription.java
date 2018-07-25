@@ -5,23 +5,8 @@ import TradeCenter.Card.Description;
 import java.sql.*;
 import java.util.HashSet;
 
-/**
- * Singleton
- */
 class DBSearchDescription {
 
-    private static DBSearchDescription instance;
-
-    /**
-     * Method to create the singleton
-     *
-     * @return the instance of DBSearchDescription
-     */
-    static DBSearchDescription getInstance(){
-        if(instance == null)
-            instance = new DBSearchDescription();
-        return instance;
-    }
 
     /**
      * Search the card, with a string

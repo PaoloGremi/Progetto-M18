@@ -24,7 +24,7 @@ public class DBProxy implements IProxy,ISearch{
     private DBAtomicDeleter dbDel = new DBAtomicDeleter();
     private DBConnectionManager dbConn = new DBConnectionManager();
     //Singleton
-    private DBSearchDescription dbSearch=DBSearchDescription.getInstance();
+    private DBSearchDescription dbSearch= new DBSearchDescription();
 
     public static DBProxy getInstance() {
         if(instance == null) instance = new DBProxy();
